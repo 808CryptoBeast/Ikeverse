@@ -137,8 +137,101 @@ document.addEventListener('DOMContentLoaded', function() {
           {name: "Terrace Farming", desc: "Advanced agricultural engineering"},
           {name: "Celestial Observation", desc: "Mountain-top astronomical sites"}
         ]
+      },
+      // New additions below
+      {
+        name: "Ancient China",
+        coords: [116.4074, 39.9042], // Beijing coordinates
+        desc: "Chinese civilization developed advanced technologies like paper, gunpowder, and the compass, along with profound philosophical traditions including Confucianism and Taoism.",
+        symbol: "㊣",
+        location: "East Asia",
+        tags: ["Technology", "Philosophy", "Medicine"],
+        connections: [
+          {name: "Five Elements", desc: "System of cosmic cycles applied to medicine and philosophy"},
+          {name: "Celestial Empire", desc: "Precise astronomical records and imperial astrology"},
+          {name: "Silk Road", desc: "Network of cultural and technological exchange"}
+        ]
+      },
+      {
+        name: "Ancient Japan",
+        coords: [139.6917, 35.6895], // Tokyo coordinates
+        desc: "Japanese culture synthesized indigenous Shinto traditions with imported knowledge, developing unique arts, martial traditions, and ecological wisdom.",
+        symbol: "🗾",
+        location: "East Asia",
+        tags: ["Ecology", "Spirituality", "Arts"],
+        connections: [
+          {name: "Shinto", desc: "Nature-based spiritual tradition emphasizing harmony"},
+          {name: "Bushido", desc: "Way of the warrior emphasizing discipline and ethics"},
+          {name: "Zen", desc: "Meditative tradition influencing arts and culture"}
+        ]
+      },
+      {
+        name: "Celtic Tribes",
+        coords: [-4.0, 53.0], // Wales coordinates
+        desc: "The Celtic peoples of Europe developed rich oral traditions, sophisticated metalwork, and a profound connection to nature through druidic wisdom.",
+        symbol: "♣",
+        location: "Western Europe",
+        tags: ["Oral Tradition", "Metalwork", "Astronomy"],
+        connections: [
+          {name: "Druidic Wisdom", desc: "Oral tradition preserving knowledge through poetry"},
+          {name: "Coligny Calendar", desc: "Lunisolar calendar system"},
+          {name: "Ogham Script", desc: "Early symbolic writing system"}
+        ]
+      },
+      {
+        name: "Norse Culture",
+        coords: [18.6435, 60.1282], // Stockholm coordinates
+        desc: "Viking explorers and Norse settlers combined seafaring prowess with rich mythological traditions and runic knowledge systems.",
+        symbol: "ᛟ",
+        location: "Northern Europe",
+        tags: ["Navigation", "Mythology", "Craftsmanship"],
+        connections: [
+          {name: "Runes", desc: "Symbolic alphabet with magical associations"},
+          {name: "Longship Technology", desc: "Advanced naval engineering"},
+          {name: "Eddic Poetry", desc: "Complex oral tradition preserving wisdom"}
+        ]
+      },
+      {
+        name: "Persian Empire",
+        coords: [53.6880, 32.4279], // Persepolis coordinates
+        desc: "The Persian Empire connected East and West, fostering advances in astronomy, medicine, and governance while preserving ancient Zoroastrian wisdom.",
+        symbol: "☀️",
+        location: "Southwest Asia",
+        tags: ["Astronomy", "Governance", "Philosophy"],
+        connections: [
+          {name: "Achaemenid Roads", desc: "Early highway system enabling cultural exchange"},
+          {name: "Zoroastrianism", desc: "Dualistic philosophy influencing many traditions"},
+          {name: "Qanat Irrigation", desc: "Sustainable underground water system"}
+        ]
+      },
+      {
+        name: "Mali Empire",
+        coords: [-8.0029, 12.6392], // Timbuktu coordinates
+        desc: "West African empires like Mali developed advanced administrative systems, centers of learning, and trans-Saharan trade networks.",
+        symbol: "📚",
+        location: "West Africa",
+        tags: ["Education", "Trade", "Governance"],
+        connections: [
+          {name: "Timbuktu Manuscripts", desc: "Vast libraries preserving scientific knowledge"},
+          {name: "Griot Tradition", desc: "Oral historians preserving cultural memory"},
+          {name: "Gold Trade", desc: "Complex economic networks"}
+        ]
+      },
+      {
+        name: "Native American Nations",
+        coords: [-98.5795, 39.8283], // Great Plains coordinates
+        desc: "Diverse indigenous cultures of North America developed sustainable agricultural systems, complex social structures, and profound ecological knowledge.",
+        symbol: "🏹",
+        location: "North America",
+        tags: ["Ecology", "Agriculture", "Spirituality"],
+        connections: [
+          {name: "Three Sisters", desc: "Sustainable corn-beans-squash agricultural system"},
+          {name: "Medicine Wheels", desc: "Astronomical and ceremonial stone structures"},
+          {name: "Tipi Technology", desc: "Portable, thermally efficient housing"}
+        ]
       }
     ];
+
     
     // Create connections between nodes
     const connections = [];
