@@ -67,9 +67,9 @@
 }
 
 .crawl-title {
-  font-size: 6rem;
+  font-size: clamp(3rem, 10vw, 6rem); /* Dynamic sizing based on viewport width */
   text-transform: uppercase;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   text-shadow: 0 0 20px #FFE81F;
   opacity: 0;
   animation: fadeIn 0.1s ease-out 2.5s forwards;
@@ -81,9 +81,13 @@
   text-fill-color: transparent;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: 5px;
-  width: 100%;
+  letter-spacing: 1px;
+  width: 95%; /* Slightly reduced width */
   text-align: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+  word-wrap: break-word; /* Ensure long words don't overflow */
+  line-height: 1.1; /* Tighter line height for mobile */
 }
 
 .crawl-text {
@@ -540,20 +544,46 @@
   margin: 1rem 0;
 }
 
-/* Responsive adjustments */
+/* Update the .starwars-crawl-content for mobile */
 @media (max-width: 768px) {
-  .principle {
-    flex-direction: column;
-    text-align: center;
-    font-size: 1.6rem;
+  .starwars-crawl-content {
+    width: 100%;
+    margin-left: -50%;
+    padding: 0 15px;
+    box-sizing: border-box;
   }
   
-  .bridge-pair {
-    flex-direction: column;
-    gap: 0.5rem;
+  .crawl-title {
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+    line-height: 1;
   }
   
-  .call-to-action {
-    font-size: 1.8rem;
+  /* Adjust the perspective for better mobile viewing */
+  .starwars-crawl {
+    perspective: 200px;
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  .crawl-title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    line-height: 0.9;
+  }
+  
+  /* Adjust the crawl angle for better visibility */
+  .starwars-crawl-content {
+    transform: rotateX(20deg) translateY(100%);
+  }
+}
+
+/* Ensure the title stays centered during animation */
+@keyframes crawl {
+  0% { 
+    transform: rotateX(25deg) translateY(100%); 
+  }
+  100% { 
+    transform: rotateX(25deg) translateY(-100%); 
   }
 }
