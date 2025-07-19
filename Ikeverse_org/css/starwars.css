@@ -1,4 +1,4 @@
-/* STAR WARS CRAWL - PERFECTLY SIZED FOR GALAXY CONTAINER */
+/* STAR WARS CRAWL - PERFECTLY SIZED FOR 956×498 CONTAINER */
 :root {
   --quantum-blue: #4fc3f7;
   --quantum-blue-dark: #3a9bc7;
@@ -14,8 +14,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 956px; /* Galaxy container width */
-  height: 498px; /* Galaxy container height */
+  width: 956px;
+  height: 498px;
   overflow: hidden;
   z-index: 10;
   perspective: 350px;
@@ -26,34 +26,31 @@
     rgba(10,14,23,0.95) 100%);
 }
 
-/* MAIN CRAWL CONTENT - WITH 20px MARGINS */
 .starwars-crawl-content {
   position: absolute;
   top: 0;
-  left: 50%;
-  width: 916px; /* 956 - 20px margins each side */
-  margin-left: -458px; /* Half of width to center */
+  left: 0;
+  width: 100%;
   transform-origin: 50% 100%;
   transform: rotateX(25deg) translateY(100%);
-  animation: crawl 60s linear forwards;
-  filter: drop-shadow(0 0 10px rgba(255,232,31,0.3));
+  animation: crawl 70s linear forwards;
+  filter: drop-shadow(0 0 15px rgba(255,232,31,0.5));
   transition: opacity 1s ease-out;
   opacity: 0;
-  padding: 0 20px; /* Creates the margin */
+  padding: 0 30px;
   box-sizing: border-box;
 }
 
-/* INTRO SEQUENCE */
 .crawl-intro {
   position: absolute;
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 3.5rem;
+  font-size: 4.5rem;
   text-transform: uppercase;
   opacity: 0;
   color: var(--quantum-blue);
-  text-shadow: 0 0 10px var(--quantum-blue);
+  text-shadow: 0 0 15px var(--quantum-blue);
   font-style: italic;
   white-space: nowrap;
   width: 90%;
@@ -70,10 +67,10 @@
 }
 
 .crawl-title {
-  font-size: 6rem;
+  font-size: 8rem;
   text-transform: uppercase;
-  margin-bottom: 3rem;
-  text-shadow: 0 0 20px #FFE81F;
+  margin-bottom: 5rem;
+  text-shadow: 0 0 30px #FFE81F;
   opacity: 0;
   animation: fadeIn 0.1s ease-out 2.5s forwards;
   background: linear-gradient(to right, 
@@ -81,63 +78,63 @@
     var(--quantum-blue),
     var(--ancestral-gold));
   background-clip: text;
-  text-fill-color: transparent;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: 5px;
+  letter-spacing: 8px;
   width: 100%;
   text-align: center;
+  line-height: 1.2;
+  padding: 0 20px;
 }
 
 .crawl-text {
-  font-size: 2.4rem;
-  line-height: 1.6;
-  letter-spacing: 2px;
+  font-size: 3.5rem;
+  line-height: 1.8;
+  letter-spacing: 3px;
   text-align: justify;
-  margin: 0 auto 3rem;
+  margin: 0 auto 5rem;
   width: 100%;
   opacity: 0;
   animation: fadeIn 0.5s ease-out 3s forwards;
-  text-shadow: 0 0 5px rgba(255,232,31,0.7);
-  padding: 0 20px;
+  text-shadow: 0 0 10px rgba(255,232,31,0.8);
+  padding: 0 30px;
   box-sizing: border-box;
 }
 
 .crawl-mission {
-  font-size: 2.6rem;
-  margin-top: 5rem;
+  font-size: 4rem;
+  margin-top: 7rem;
   text-align: center;
   opacity: 0;
   animation: fadeIn 0.5s ease-out 3.5s forwards;
   color: var(--quantum-blue);
+  text-shadow: 0 0 25px rgba(79, 195, 247, 0.8);
   width: 100%;
-  padding: 0 20px;
+  padding: 0 30px;
   box-sizing: border-box;
+  line-height: 1.5;
 }
 
-/* CULTURAL DIVIDERS */
 .cultural-divider {
-  font-size: 4.5rem;
-  margin: 3rem 0;
+  font-size: 6rem;
+  margin: 5rem 0;
   text-align: center;
   opacity: 0;
   animation: fadeIn 0.5s ease-out 3s forwards;
   color: var(--ancestral-gold);
-  text-shadow: 0 0 10px var(--ancestral-gold-dark);
+  text-shadow: 0 0 20px var(--ancestral-gold-dark);
 }
 
-/* ANIMATIONS */
 @keyframes crawl {
   0% { transform: rotateX(25deg) translateY(100%); }
   100% { transform: rotateX(25deg) translateY(-100%); }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* STAR PARTICLES */
 .star-particle {
   position: absolute;
   background: #FFE81F;
@@ -147,7 +144,6 @@
   z-index: -1;
 }
 
-/* PLAY BUTTON */
 .crawl-play-btn {
   position: absolute;
   top: 50%;
@@ -158,7 +154,7 @@
   border: 2px solid #FFE81F;
   border-radius: 50px;
   padding: 15px 30px;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-family: 'Pathway Gothic One', sans-serif;
   text-transform: uppercase;
   cursor: pointer;
@@ -176,10 +172,9 @@
 }
 
 .crawl-play-btn i {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 }
 
-/* CRAWL CONTROLS */
 .crawl-controls {
   position: fixed;
   bottom: 20px;
@@ -198,7 +193,7 @@
   cursor: pointer;
   font-family: 'Pathway Gothic One', sans-serif;
   text-transform: uppercase;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: all 0.3s ease;
   opacity: 0.7;
   display: flex;
@@ -211,7 +206,6 @@
   background: rgba(79, 195, 247, 0.2);
 }
 
-/* ENDING SEQUENCE */
 .crawl-ending-container {
   position: fixed;
   top: 0;
@@ -259,7 +253,6 @@
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* Cultural Symbols */
 .cultural-symbols {
   display: flex;
   justify-content: center;
@@ -299,7 +292,6 @@
   text-shadow: 0 0 15px var(--quantum-blue);
 }
 
-/* Language Styling */
 .dual-language-block {
   text-align: center;
   width: 100%;
@@ -343,7 +335,6 @@
   line-height: 1.3;
 }
 
-/* Content Sections */
 .sacred-message {
   background: rgba(10,14,23,0.7);
   border-left: 3px solid var(--ancestral-gold);
@@ -360,7 +351,6 @@
   margin: 2rem 0;
 }
 
-/* CTA Button */
 .quantum-btn {
   background: linear-gradient(
     45deg,
@@ -398,29 +388,29 @@
     0 5px 25px rgba(79, 195, 247, 0.4);
 }
 
-/* RESPONSIVE ADJUSTMENTS */
-@media (max-width: 1024px) {
+@media (max-width: 956px) {
   .starwars-crawl {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 956/498;
-  }
-  
-  .starwars-crawl-content {
-    width: calc(100% - 40px);
-    margin-left: calc(-50% + 20px);
+    width: 100vw;
+    height: calc(100vw * (498/956));
   }
   
   .crawl-title {
-    font-size: 4.5rem;
+    font-size: 6rem;
+    padding: 0 20px;
   }
   
   .crawl-text {
-    font-size: 2rem;
+    font-size: 2.8rem;
+    padding: 0 20px;
   }
   
-  .crawl-intro {
-    font-size: 2.4rem;
+  .crawl-mission {
+    font-size: 3rem;
+    padding: 0 20px;
+  }
+  
+  .cultural-divider {
+    font-size: 4.5rem;
   }
 }
 
@@ -430,22 +420,22 @@
   }
   
   .crawl-title {
-    font-size: 3rem;
-    margin-bottom: 2rem;
+    font-size: 4.5rem;
+    margin-bottom: 3rem;
   }
   
   .crawl-text {
-    font-size: 1.6rem;
-    line-height: 1.5;
+    font-size: 2.2rem;
+    line-height: 1.7;
   }
   
   .crawl-mission {
-    font-size: 1.8rem;
-    margin-top: 3rem;
+    font-size: 2.5rem;
+    margin-top: 4rem;
   }
   
   .cultural-divider {
-    font-size: 3.5rem;
+    font-size: 3.8rem;
   }
   
   .crawl-controls {
@@ -455,12 +445,12 @@
   
   .crawl-control-btn {
     padding: 6px 12px;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
   
   .crawl-play-btn {
     padding: 12px 24px;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
   
   .crawl-ending {
@@ -475,11 +465,15 @@
 
 @media (max-height: 700px) {
   .crawl-title {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
   }
   
   .crawl-text {
-    font-size: 1.4rem;
+    font-size: 2rem;
+  }
+  
+  .crawl-mission {
+    font-size: 2.5rem;
   }
   
   .crawl-ending-container {
@@ -492,7 +486,6 @@
   }
 }
 
-/* Additional CSS for new elements */
 .sacred-principle {
   margin: 2rem 0;
   text-align: center;
@@ -549,7 +542,6 @@
   margin: 1rem 0;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .principle {
     flex-direction: column;
