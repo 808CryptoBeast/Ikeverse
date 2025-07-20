@@ -540,20 +540,45 @@
   margin: 1rem 0;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .principle {
-    flex-direction: column;
-    text-align: center;
-    font-size: 1.6rem;
-  }
+.crawl-text {
+  /* Fluid scaling based on viewport minimum dimension */
+  font-size: clamp(1.2rem, min(3.5vw, 3.5vh), 1.8rem);
   
-  .bridge-pair {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+  /* Dynamic line height based on font size */
+  line-height: calc(1.2em + 0.5vw);
   
-  .call-to-action {
-    font-size: 1.8rem;
+  /* Responsive letter spacing */
+  letter-spacing: clamp(0.3px, 0.1vw, 1px);
+  
+  /* Padding that scales with viewport */
+  padding: 0 clamp(10px, 3vw, 20px);
+  
+  /* Ensure optimal text rendering */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Special adjustments for portrait mobile */
+@media (orientation: portrait) and (max-width: 768px) {
+  .crawl-text {
+    /* Slightly larger font size in portrait */
+    font-size: clamp(1.4rem, min(4vw, 4vh), 1.8rem);
+    
+    /* More line height for readability */
+    line-height: calc(1.3em + 0.8vw);
+    
+    /* Wider spacing for narrow screens */
+    letter-spacing: clamp(0.5px, 0.2vw, 1.2px);
+  }
+}
+
+/* Landscape mobile adjustments */
+@media (orientation: landscape) and (max-height: 600px) {
+  .crawl-text {
+    /* Slightly smaller text to fit more content */
+    font-size: clamp(1.1rem, min(3vw, 3vh), 1.5rem);
+    
+    /* Tighter line height */
+    line-height: calc(1.1em + 0.3vw);
   }
 }
