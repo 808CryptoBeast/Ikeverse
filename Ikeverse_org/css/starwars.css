@@ -557,34 +557,50 @@
     font-size: 1.8rem;
   }
 }
-/* MOBILE-ONLY ADJUSTMENTS (will not affect desktop) */
+/* MOBILE-ONLY ADJUSTMENTS - SCALE ENTIRE CRAWL */
 @media (max-width: 768px) {
-  .crawl-text {
-    /* Bigger, more readable text */
-    font-size: clamp(2rem, 5.5vw, 2.4rem) !important; /* 20-24px base size */
-    
-    /* Wider text container */
-    width: 98% !important;
-    padding: 0 1% !important;
-    
-    /* Better line spacing */
-    line-height: 1.8 !important;
-    
-    /* Slightly tighter letter spacing */
-    letter-spacing: 0.3px !important;
+  .starwars-crawl {
+    /* Scale up the entire container */
+    transform: scale(1.5) translateY(25%); /* 1.5x larger */
+    transform-origin: center top;
+    width: 100vw;
+    height: 150vh; /* Extra height for scaling */
   }
 
-  /* Optional: Adjust container if text still feels cramped */
   .starwars-crawl-content {
-    width: 100% !important;
-    margin-left: -50% !important;
+    /* Adjust for the scaled container */
+    width: 200% !important; /* Double width for perspective */
+    left: 50% !important;
+    margin-left: -100% !important;
+    top: 0 !important;
+    /* Maintain perspective but scaled up */
+    transform: perspective(300px) rotateX(25deg) scale(1);
+  }
+
+  .crawl-text {
+    /* Slightly larger text to match scale */
+    font-size: clamp(2rem, 6vw, 2.5rem) !important;
+    line-height: 1.8 !important;
+  }
+
+  /* Adjust star particles for scaled view */
+  .star-particle {
+    transform: scale(1.5);
   }
 }
 
-/* Extra boost for very small phones */
+/* Extra adjustments for very small phones */
 @media (max-width: 480px) {
+  .starwars-crawl {
+    transform: scale(1.8) translateY(30%); /* Even larger on small phones */
+    height: 180vh;
+  }
+
+  .starwars-crawl-content {
+    transform: perspective(400px) rotateX(25deg) scale(1);
+  }
+
   .crawl-text {
-    font-size: clamp(2.2rem, 6vw, 2.6rem) !important; /* 22-26px */
-    line-height: 2 !important;
+    font-size: clamp(2.2rem, 7vw, 2.8rem) !important;
   }
 }
