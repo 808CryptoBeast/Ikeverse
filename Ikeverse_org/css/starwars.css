@@ -557,3 +557,34 @@
     font-size: 1.8rem;
   }
 }
+/* MOBILE-ONLY ADJUSTMENTS (will not affect desktop) */
+@media (max-width: 768px) {
+  .crawl-text {
+    /* Bigger, more readable text */
+    font-size: clamp(2rem, 5.5vw, 2.4rem) !important; /* 20-24px base size */
+    
+    /* Wider text container */
+    width: 98% !important;
+    padding: 0 1% !important;
+    
+    /* Better line spacing */
+    line-height: 1.8 !important;
+    
+    /* Slightly tighter letter spacing */
+    letter-spacing: 0.3px !important;
+  }
+
+  /* Optional: Adjust container if text still feels cramped */
+  .starwars-crawl-content {
+    width: 100% !important;
+    margin-left: -50% !important;
+  }
+}
+
+/* Extra boost for very small phones */
+@media (max-width: 480px) {
+  .crawl-text {
+    font-size: clamp(2.2rem, 6vw, 2.6rem) !important; /* 22-26px */
+    line-height: 2 !important;
+  }
+}
