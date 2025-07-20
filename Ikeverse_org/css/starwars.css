@@ -395,190 +395,62 @@
     0 5px 25px rgba(79, 195, 247, 0.4);
 }
 
-/* RESPONSIVE ADJUSTMENTS */
+/* ===== CRAWL TEXT - FULL VIEWPORT OPTIMIZATION ===== */
+.starwars-crawl-content {
+  width: 100%; /* Full viewport width */
+  margin-left: -50%; /* Perfect centering */
+  padding: 0 1%; /* Minimal padding */
+}
+
+.crawl-text {
+  /* Full width text */
+  width: 100%;
+  padding: 0 0.5%; /* Ultra-minimal padding */
+  
+  /* Perfectly sized text for all screens */
+  font-size: clamp(1.5rem, min(4vw, 4.5vh), 2.2rem);
+  
+  /* Optimal spacing */
+  line-height: 1.4;
+  letter-spacing: 0.4px;
+  
+  /* Text rendering improvements */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  hyphens: auto;
+}
+
+/* ===== TABLET/MOBILE OPTIMIZATIONS ===== */
 @media (max-width: 1024px) {
-  .starwars-crawl-content {
-    width: 95%;
-    margin-left: -47.5%;
-  }
-  
-  .crawl-title {
-    font-size: 4.5rem;
-  }
-  
   .crawl-text {
-    font-size: 2rem;
-  }
-  
-  .crawl-intro {
-    font-size: 2.4rem;
+    font-size: clamp(1.4rem, min(4.5vw, 5vh), 2rem);
+    line-height: 1.5;
   }
 }
 
 @media (max-width: 768px) {
   .starwars-crawl {
-    perspective: 250px;
-  }
-  
-  .crawl-title {
-    font-size: 3rem;
-    margin-bottom: 2rem;
+    perspective: 200px; /* Reduced 3D effect */
   }
   
   .crawl-text {
-    font-size: 1.6rem;
-    line-height: 1.5;
-  }
-  
-  .crawl-mission {
-    font-size: 1.8rem;
-    margin-top: 3rem;
-  }
-  
-  .cultural-divider {
-    font-size: 3.5rem;
-  }
-  
-  .crawl-controls {
-    bottom: 10px;
-    right: 10px;
-  }
-  
-  .crawl-control-btn {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-  }
-  
-  .crawl-play-btn {
-    padding: 12px 24px;
-    font-size: 1rem;
-  }
-  
-  .crawl-ending {
-    padding: 1.5rem;
-    margin: 1rem auto;
-  }
-  
-  .crawl-ending-wrapper {
-    padding: 20px;
+    font-size: clamp(1.3rem, min(5vw, 5vh), 1.8rem);
+    line-height: 1.6;
+    padding: 0 1%; /* Slightly more padding for mobile */
   }
 }
 
+/* ===== LANDSCAPE OPTIMIZATION ===== */
+@media (orientation: landscape) {
+  .crawl-text {
+    font-size: clamp(1.3rem, min(3.5vw, 4vh), 1.7rem);
+  }
+}
+
+/* ===== SMALL HEIGHT ADJUSTMENTS ===== */
 @media (max-height: 700px) {
-  .crawl-title {
-    font-size: 2.5rem;
-  }
-  
   .crawl-text {
-    font-size: 1.4rem;
-  }
-  
-  .crawl-ending-container {
-    justify-content: flex-start;
-  }
-  
-  .crawl-ending-wrapper {
-    padding-top: 1rem;
-    justify-content: flex-start;
-  }
-}
-
-/* Additional CSS for new elements */
-.sacred-principle {
-  margin: 2rem 0;
-  text-align: center;
-}
-
-.principle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  margin: 1.5rem 0;
-  font-size: 2rem;
-}
-
-.principle-title {
-  font-size: 2.2rem;
-  color: var(--ancestral-gold);
-  margin-bottom: 2rem;
-}
-
-.technology-bridge {
-  background: rgba(79, 195, 247, 0.1);
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 2rem 0;
-}
-
-.bridge-pair {
-  display: flex;
-  justify-content: space-between;
-  margin: 1rem 0;
-  padding: 0.8rem;
-  border-bottom: 1px dashed var(--ancestral-gold);
-}
-
-.ancient {
-  color: var(--hawaiian-yellow);
-  font-style: italic;
-}
-
-.modern {
-  color: var(--quantum-blue);
-  font-weight: bold;
-}
-
-.call-to-action {
-  margin-top: 3rem;
-  font-size: 2.2rem;
-  text-align: center;
-  line-height: 1.6;
-}
-
-.call-to-action p {
-  margin: 1rem 0;
-}
-
-.crawl-text {
-  /* Fluid scaling based on viewport minimum dimension */
-  font-size: clamp(1.2rem, min(3.5vw, 3.5vh), 1.8rem);
-  
-  /* Dynamic line height based on font size */
-  line-height: calc(1.2em + 0.5vw);
-  
-  /* Responsive letter spacing */
-  letter-spacing: clamp(0.3px, 0.1vw, 1px);
-  
-  /* Padding that scales with viewport */
-  padding: 0 clamp(10px, 3vw, 20px);
-  
-  /* Ensure optimal text rendering */
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Special adjustments for portrait mobile */
-@media (orientation: portrait) and (max-width: 768px) {
-  .crawl-text {
-    /* Slightly larger font size in portrait */
-    font-size: clamp(1.4rem, min(4vw, 4vh), 1.8rem);
-    
-    /* More line height for readability */
-    line-height: calc(1.3em + 0.8vw);
-    
-    /* Wider spacing for narrow screens */
-    letter-spacing: clamp(0.5px, 0.2vw, 1.2px);
-  }
-}
-
-/* Landscape mobile adjustments */
-@media (orientation: landscape) and (max-height: 600px) {
-  .crawl-text {
-    /* Slightly smaller text to fit more content */
-    font-size: clamp(1.1rem, min(3vw, 3vh), 1.5rem);
-    
-    /* Tighter line height */
-    line-height: calc(1.1em + 0.3vw);
+    font-size: clamp(1.2rem, min(4vw, 4vh), 1.6rem);
+    line-height: 1.5;
   }
 }
