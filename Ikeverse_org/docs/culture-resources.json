@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "cultures": {
+    "kanaka_kumulipo": {
+      "readingLinks": [
+        {
+          "title": "The Kumulipo: a Hawaiian Creation Chant (Beckwith, Ulukau edition)",
+          "url": "https://ulukau.org/ulukau-books/?a=d&d=EBOOK-BECKWIT2.1.2",
+          "kind": "Primary Text",
+          "desc": "Full text + Beckwith commentary (digital library)."
+        },
+        {
+          "title": "Kumulipo (Text and Translation) PDF (KSBE / Ke Aliʻi Daki)",
+          "url": "https://blogs.ksbe.edu/adakina/files/2008/02/kumulipo-text.pdf",
+          "kind": "Primary Text",
+          "desc": "PDF excerpt/edition: Hawaiian + English translation."
+        },
+        {
+          "title": "Kumulipo (Bishop Museum featured article)",
+          "url": "https://www.bishopmuseum.org/japanese-featured-article-4/",
+          "kind": "Museum",
+          "desc": "Museum context for Kumulipo exhibit (Japanese page)."
+        },
+        {
+          "title": "Kumulipo overview (Wikipedia)",
+          "url": "https://en.wikipedia.org/wiki/Kumulipo",
+          "kind": "Reference",
+          "desc": "Quick overview and bibliography pointers."
+        }
+      ]
+    },
+    "polynesia": {
+      "readingLinks": [
+        {
+          "title": "Bishop Museum — 2025 Nānā i ke Kumu Series (voyaging / knowledge sharing)",
+          "url": "https://www.bishopmuseum.org/2025-nana-i-ke-kumu-series/",
+          "kind": "Museum",
+          "desc": "Public programming on voyaging knowledge lineage."
+        }
+      ]
+    },
+    "kemet": {
+      "readingLinks": [
+        {
+          "title": "Creation myths and forms of the gods in ancient Egypt (Smarthistory)",
+          "url": "https://smarthistory.org/creation-myths-and-forms-of-the-gods-in-ancient-egypt/",
+          "kind": "Essay",
+          "desc": "Overview of major Egyptian cosmogonies (Heliopolitan, etc.)."
+        },
+        {
+          "title": "Atum (Wikipedia)",
+          "url": "https://en.wikipedia.org/wiki/Atum",
+          "kind": "Reference",
+          "desc": "Primer on Atum and links to further resources."
+        }
+      ]
+    },
+    "taino": {
+      "readingLinks": [
+        {
+          "title": "Taíno Society (Florida Museum of Natural History)",
+          "url": "https://www.floridamuseum.ufl.edu/histarch/research/haiti/en-bas-saline/taino-society/",
+          "kind": "Reference",
+          "desc": "Accessible overview: economy, conucos, trade, social life."
+        },
+        {
+          "title": "SARE project note on conucos / agroforestry (Puerto Rico)",
+          "url": "https://projects.sare.org/sare_project/gs23-287/",
+          "kind": "Reference",
+          "desc": "Short description of conuco practice and citations."
+        }
+      ]
+    }
+  }
+}

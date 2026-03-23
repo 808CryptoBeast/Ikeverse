@@ -1,0 +1,530 @@
+{
+  "overrides": {
+    "kemet": {
+      "agricultureSystems": [
+        "Nile floodplain basin irrigation; flood timing coordinated via calendars and nilometer readings",
+        "Granaries and taxation-in-kind as food security infrastructure",
+        "State/temple estates coordinating labor, seed, and storage"
+      ],
+      "governanceSystems": [
+        "Pharaonic kingship with administrative bureaucracy (scribes, nomes, tax systems)",
+        "Temple institutions as civic-economic anchors and knowledge archives",
+        "Ma’at as an ethic of balance used to legitimate law and governance"
+      ],
+      "technologyAndInfrastructure": [
+        "Surveying/geometry for land measurement and monumental alignment",
+        "Writing systems (hieroglyphic/hieratic) and papyrus as administrative tech",
+        "Stone architecture and logistics for long-horizon construction"
+      ],
+      "readingLinks": [
+        {
+          "title": "UCL Digital Egypt for Universities — Egyptology resource hub",
+          "url": "https://www.ucl.ac.uk/museums-static/digitalegypt/",
+          "kind": "reference"
+        },
+        {
+          "title": "The Met — Heilbrunn Timeline: Egypt, 3100–30 B.C.",
+          "url": "https://www.metmuseum.org/toah/hd/egyp/hd_egyp.htm",
+          "kind": "reference"
+        },
+        {
+          "title": "British Museum — Ancient Egypt",
+          "url": "https://www.britishmuseum.org/collection/galleries/egyptian-sculpture",
+          "kind": "reference"
+        },
+        {
+          "title": "Wikipedia — Ancient Egypt",
+          "url": "https://en.wikipedia.org/wiki/Ancient_Egypt",
+          "kind": "overview"
+        }
+      ]
+    },
+    "kush": {
+      "agricultureSystems": [
+        "Upper Nile flood agriculture with mixed farming and pastoral strategies",
+        "River corridor provisioning for towns, forts, and ceremonial centers",
+        "Ironworking-era agrarian intensification around Meroë (phase-dependent)"
+      ],
+      "governanceSystems": [
+        "Royal legitimacy tied to sacred landscapes; multi-phase state systems (Kerma/Napata/Meroë)",
+        "Trade corridor control along the Nile and Red Sea interfaces",
+        "Queenship (kandake) and court institutions (phase-dependent)"
+      ],
+      "technologyAndInfrastructure": [
+        "Meroitic writing system (phase-dependent) and distinctive pyramid traditions",
+        "Ironworking and metallurgy at scale around Meroë (phase-dependent)",
+        "Riverine logistics: boats, storage, and corridor defense"
+      ],
+      "readingLinks": [
+        {
+          "title": "UNESCO — Gebel Barkal and the Sites of the Napatan Region",
+          "url": "https://whc.unesco.org/en/list/1073/",
+          "kind": "reference"
+        },
+        {
+          "title": "UNESCO — Archaeological Sites of the Island of Meroe",
+          "url": "https://whc.unesco.org/en/list/1336/",
+          "kind": "reference"
+        },
+        {
+          "title": "The Met — Heilbrunn Timeline: Nubia",
+          "url": "https://www.metmuseum.org/toah/hd/nub/hd_nub.htm",
+          "kind": "reference"
+        },
+        {
+          "title": "Wikipedia — Kingdom of Kush",
+          "url": "https://en.wikipedia.org/wiki/Kingdom_of_Kush",
+          "kind": "overview"
+        }
+      ]
+    },
+    "kanaka_kumulipo": {
+      "agricultureSystems": [
+        "Ahupuaʻa land division integrating mauka→makai (mountain-to-sea) water flow and stewardship",
+        "Loʻi kalo (taro terraces) and ʻauwai irrigation governance maintained through communal labor",
+        "Lokoiʻa (fishpond aquaculture) and reef stewardship through kapu/protocol and seasonal knowledge",
+        "Dryland field systems and agroforestry adapted to island microclimates"
+      ],
+      "governanceSystems": [
+        "Aliʻi governance with konohiki land stewardship; resource access managed through protocol",
+        "Kapu system regulating timing/access (reef closures, harvest cycles, ceremony)",
+        "Genealogy (moʻokūʻauhau) as civic legitimacy and stewardship responsibility"
+      ],
+      "technologyAndInfrastructure": [
+        "Wayfinding: star paths, swells, winds, clouds, birds (multi-signal inference)",
+        "ʻAuwai irrigation engineering and loko iʻa fishpond design",
+        "Chant and protocol as memory technology (Kumulipo genealogy as structured archive)"
+      ],
+      "readingLinks": [
+        {
+          "title": "Ulukau: The Hawaiian Electronic Library — Kumulipo (search)",
+          "url": "https://ulukau.org/cgi-bin/hpn?e=q-0hpn--00-0-0--010-0-0--11en-50-0--0-0-0-0-0-0-0-0-0-0&sfq=0&sb=0&q=kumulipo",
+          "kind": "reference"
+        },
+        {
+          "title": "Wikipedia — Kumulipo",
+          "url": "https://en.wikipedia.org/wiki/Kumulipo",
+          "kind": "overview"
+        },
+        {
+          "title": "Polynesian Voyaging Society — Hōkūleʻa & wayfinding",
+          "url": "https://hokulea.com/",
+          "kind": "community"
+        },
+        {
+          "title": "Wikipedia — Ahupuaʻa",
+          "url": "https://en.wikipedia.org/wiki/Ahupua%CA%BBa",
+          "kind": "overview"
+        }
+      ]
+    },
+    "polynesia": {
+      "agricultureSystems": [
+        "Island agroforestry (breadfruit, coconut, pandanus) paired with reef/lagoon food systems",
+        "Taro and yam horticulture coordinated with rainfall, soils, and ritual calendars",
+        "Exchange of cultivars, canoe tech, and ecological knowledge across archipelagos"
+      ],
+      "governanceSystems": [
+        "Chiefly systems and community protocol regulating land/reef use (tapu/rahui equivalents vary)",
+        "Voyaging alliances and exchange networks as political infrastructure",
+        "Knowledge custody in specialist roles (navigators, carvers, ritual experts)"
+      ],
+      "technologyAndInfrastructure": [
+        "Double-hulled canoe engineering and sailcraft optimized for ocean voyaging",
+        "Star-compass pedagogy and route-memory systems",
+        "Oral cartographies encoded in chant and genealogy"
+      ],
+      "readingLinks": [
+        {
+          "title": "Polynesian Voyaging Society — Hōkūleʻa",
+          "url": "https://hokulea.com/",
+          "kind": "community"
+        },
+        {
+          "title": "Te Ara — Polynesian migration (NZ Encyclopedia)",
+          "url": "https://teara.govt.nz/en/polynesians",
+          "kind": "overview"
+        },
+        {
+          "title": "Wikipedia — Polynesian navigation",
+          "url": "https://en.wikipedia.org/wiki/Polynesian_navigation",
+          "kind": "overview"
+        }
+      ]
+    },
+    "maori": {
+      "agricultureSystems": [
+        "Kūmara horticulture with storage/seasonal management in temperate climates",
+        "Marine/river harvesting governed by rāhui and seasonal indicators",
+        "Pa gardens, wetlands, and local microclimate strategies"
+      ],
+      "governanceSystems": [
+        "Iwi/hapū governance and tikanga as living law; marae as civic nodes",
+        "Kaitiakitanga (guardianship) regulating resource use through protocol",
+        "Whakapapa as identity + obligation binding people to place"
+      ],
+      "technologyAndInfrastructure": [
+        "Waka building and ocean navigation inheritance from Polynesian ancestors",
+        "Pa fortification engineering and tactical landscape use",
+        "Carving/weaving design languages as memory storage"
+      ],
+      "readingLinks": [
+        {
+          "title": "Te Ara — Māori",
+          "url": "https://teara.govt.nz/en/maori",
+          "kind": "overview"
+        },
+        {
+          "title": "Te Ara — Māori arrival and settlement",
+          "url": "https://teara.govt.nz/en/maori-arrival-and-settlement",
+          "kind": "overview"
+        },
+        {
+          "title": "Wikipedia — Māori people",
+          "url": "https://en.wikipedia.org/wiki/M%C4%81ori_people",
+          "kind": "overview"
+        }
+      ]
+    },
+    "papua_new_guinea": {
+      "agricultureSystems": [
+        "Wetland agriculture and drainage engineering traditions (e.g., Kuk Swamp complex)",
+        "Highland horticulture (taro, yams, sweet potato) adapted to microclimates and altitude gradients",
+        "Exchange corridors linking highlands and coasts via trade goods and marriage alliances"
+      ],
+      "governanceSystems": [
+        "Highly diverse governance: clans, 'big-man' systems, and ritual authority (varies widely)",
+        "Exchange networks (e.g., moka-style prestige economies in some regions) stabilizing alliances",
+        "Land stewardship and tenure systems encoded through clan identity and ritual"
+      ],
+      "technologyAndInfrastructure": [
+        "Wetland drainage/field engineering (e.g., Kuk landscape modifications)",
+        "Stone/wood tool traditions and sophisticated horticultural practices",
+        "Ceremonial technologies (masking, music, exchange valuables) varying widely by region"
+      ],
+      "readingLinks": [
+        {
+          "title": "UNESCO — Kuk Early Agricultural Site",
+          "url": "https://whc.unesco.org/en/list/887/",
+          "kind": "reference"
+        },
+        {
+          "title": "Wikipedia — Kuk Swamp",
+          "url": "https://en.wikipedia.org/wiki/Kuk_Swamp",
+          "kind": "overview"
+        },
+        {
+          "title": "Wikipedia — Papua New Guinea",
+          "url": "https://en.wikipedia.org/wiki/Papua_New_Guinea",
+          "kind": "overview"
+        }
+      ]
+    },
+    "philippines": {
+      "agricultureSystems": [
+        "Terraced rice agriculture and irrigation governance (e.g., Cordillera terraces)",
+        "Swidden/forest farming systems paired with coastal fisheries across islands",
+        "Inter-island exchange of crops, ceramics, and metallurgy via boat corridors"
+      ],
+      "governanceSystems": [
+        "Barangay-level polities and datuship (precolonial/varied) with trade-node governance",
+        "Alliance and kinship networks across islands enabling exchange and migration",
+        "Craft/martial lineages as social institutions of training and legitimacy"
+      ],
+      "technologyAndInfrastructure": [
+        "Rice terrace engineering and irrigation maintenance governance",
+        "Balangay and other boatbuilding traditions supporting maritime networks",
+        "Arnis/Eskrima weapon systems as embodied knowledge archives"
+      ],
+      "readingLinks": [
+        {
+          "title": "UNESCO — Rice Terraces of the Philippine Cordilleras",
+          "url": "https://whc.unesco.org/en/list/722/",
+          "kind": "reference"
+        },
+        {
+          "title": "Wikipedia — Arnis",
+          "url": "https://en.wikipedia.org/wiki/Arnis",
+          "kind": "overview"
+        },
+        {
+          "title": "Wikipedia — Balangay",
+          "url": "https://en.wikipedia.org/wiki/Balangay",
+          "kind": "overview"
+        },
+        {
+          "title": "Wikipedia — Austronesian peoples",
+          "url": "https://en.wikipedia.org/wiki/Austronesian_peoples",
+          "kind": "overview"
+        }
+      ]
+    },
+    "indonesia": {
+      "agricultureSystems": [
+        "Subak cooperative irrigation governance integrating water temples and rice terraces (Bali)",
+        "Spice agroforestry and coastal provisioning linked to monsoon trade routes",
+        "Adat (customary law) coordinating land, water, and communal labor across regions"
+      ],
+      "governanceSystems": [
+        "Adat customary law coordinating land/water rights and community obligations",
+        "Port-polity governance across straits; diplomacy and trade as statecraft",
+        "Ritual institutions integrating stewardship (water temples, communal labor)"
+      ],
+      "technologyAndInfrastructure": [
+        "Subak irrigation governance integrating hydrology, temples, and terraced landscapes",
+        "Pencak Silat as embodied system blending self-defense, art, and spirituality",
+        "Maritime tech for strait navigation (outriggers, monsoon routing)"
+      ],
+      "readingLinks": [
+        {
+          "title": "UNESCO — Cultural Landscape of Bali Province: the Subak System",
+          "url": "https://whc.unesco.org/en/list/1194/",
+          "kind": "reference"
+        },
+        {
+          "title": "UNESCO — Traditions of Pencak Silat (Intangible Heritage)",
+          "url": "https://ich.unesco.org/en/RL/traditions-of-pencak-silat-01391",
+          "kind": "reference"
+        },
+        {
+          "title": "Wikipedia — Austronesian peoples",
+          "url": "https://en.wikipedia.org/wiki/Austronesian_peoples",
+          "kind": "overview"
+        },
+        {
+          "title": "Wikipedia — Maritime Southeast Asia",
+          "url": "https://en.wikipedia.org/wiki/Maritime_Southeast_Asia",
+          "kind": "overview"
+        }
+      ]
+    },
+    "khmer": {
+      "agricultureSystems": [
+        "Baray reservoirs, canals, and managed floodplains coordinating rice agriculture at scale",
+        "Temple-city hydrology linking legitimacy, labor organization, and water distribution",
+        "Seasonal timing and maintenance as long-horizon infrastructure practice"
+      ],
+      "governanceSystems": [
+        "Devarāja (divine kingship) legitimacy expressed through temple-city design",
+        "Institutions coordinating labor for hydrology, agriculture, and monumental building",
+        "Corridor management connecting inland centers to exchange routes"
+      ],
+      "technologyAndInfrastructure": [
+        "Hydraulic engineering at scale: reservoirs, canals, controlled water distribution",
+        "Temple architecture encoding cosmology through alignment and design",
+        "Labor organization systems sustaining maintenance over centuries"
+      ],
+      "readingLinks": [
+        {
+          "title": "UNESCO — Angkor",
+          "url": "https://whc.unesco.org/en/list/668/",
+          "kind": "reference"
+        },
+        {
+          "title": "Wikipedia — Khmer Empire",
+          "url": "https://en.wikipedia.org/wiki/Khmer_Empire",
+          "kind": "overview"
+        },
+        {
+          "title": "The Met — Heilbrunn Timeline: Angkor",
+          "url": "https://www.metmuseum.org/toah/hd/angk/hd_angk.htm",
+          "kind": "reference"
+        }
+      ]
+    },
+    "tiwanaku": {
+      "agricultureSystems": [
+        "Raised-field (waru-waru) agriculture and canal systems for frost/water management",
+        "High-altitude provisioning across microclimates via corridor networks",
+        "Infrastructure linked to ceremonial centers and political coordination"
+      ],
+      "governanceSystems": [
+        "State-level coordination integrating ceremonial center with regional resource zones",
+        "Corridor networks linking highland and valley ecologies",
+        "Ritual-political authority structuring labor and exchange"
+      ],
+      "technologyAndInfrastructure": [
+        "Monumental stone architecture and precise masonry at ceremonial core",
+        "Raised-field agriculture engineering for frost and water management",
+        "Corridor logistics linking resource zones across the Altiplano"
+      ],
+      "readingLinks": [
+        {
+          "title": "UNESCO — Tiwanaku: Spiritual and Political Centre of the Tiwanaku Culture",
+          "url": "https://whc.unesco.org/en/list/567/",
+          "kind": "reference"
+        },
+        {
+          "title": "Wikipedia — Tiwanaku",
+          "url": "https://en.wikipedia.org/wiki/Tiwanaku",
+          "kind": "overview"
+        }
+      ]
+    },
+    "inca": {
+      "agricultureSystems": [
+        "Terrace (andenes) agriculture managing microclimates and soil-water stability",
+        "Qollqa granaries and state logistics for food security and redistribution",
+        "Qhapaq Ñan roads and relay/storage nodes integrating provisioning across the Andes"
+      ],
+      "governanceSystems": [
+        "State administration integrating labor (mit’a), census/tribute, and road logistics",
+        "Quipu-based accounting and relay communication supporting coordination",
+        "Multi-ecology governance (vertical archipelago) across elevation zones"
+      ],
+      "technologyAndInfrastructure": [
+        "Qhapaq Ñan road network with tambos, bridges, and storage nodes",
+        "Quipu accounting and distributed logistics for large territories",
+        "Terrace and water engineering across steep Andean gradients"
+      ],
+      "readingLinks": [
+        {
+          "title": "UNESCO — Qhapaq Ñan, Andean Road System",
+          "url": "https://whc.unesco.org/en/list/1459/",
+          "kind": "reference"
+        },
+        {
+          "title": "Wikipedia — Inca Empire",
+          "url": "https://en.wikipedia.org/wiki/Inca_Empire",
+          "kind": "overview"
+        },
+        {
+          "title": "Wikipedia — Quipu",
+          "url": "https://en.wikipedia.org/wiki/Quipu",
+          "kind": "reference"
+        }
+      ]
+    },
+    "mali": {
+      "agricultureSystems": [
+        "Niger River floodplain agriculture supporting cities and caravan trade hubs",
+        "Sahel agro-pastoral strategies balancing crops, herds, and drought risk",
+        "Scholarly centers provisioned through trade and local food systems"
+      ],
+      "governanceSystems": [
+        "Scholarly institutions (madrasas, teaching circles) embedded in civic life",
+        "Trade corridors (Trans-Saharan) as governance and intelligence routes",
+        "Legal/ethical reasoning traditions shaping mediation and administration"
+      ],
+      "technologyAndInfrastructure": [
+        "Manuscript production, copying, and teaching-circle organization",
+        "Caravan logistics and urban provisioning supporting scholarship",
+        "Architectural technologies of Sahel cities (mosques, mudbrick maintenance)"
+      ],
+      "readingLinks": [
+        {
+          "title": "UNESCO — Timbuktu",
+          "url": "https://whc.unesco.org/en/list/119/",
+          "kind": "reference"
+        },
+        {
+          "title": "UNESCO — Story: Community conservation Timbuktu",
+          "url": "https://whc.unesco.org/en/story-timbuktu/",
+          "kind": "reference"
+        },
+        {
+          "title": "Wikipedia — Mali Empire",
+          "url": "https://en.wikipedia.org/wiki/Mali_Empire",
+          "kind": "overview"
+        }
+      ]
+    },
+    "haudenosaunee": {
+      "agricultureSystems": [
+        "Three Sisters agriculture (corn/beans/squash) as ecological polyculture",
+        "Longhouse communities coordinating planting, storage, and diplomacy",
+        "Seasonal mobility and trade along Great Lakes–river corridors"
+      ],
+      "governanceSystems": [
+        "Great Law of Peace: confederacy governance balancing nations via councils",
+        "Wampum as constitutional memory and diplomatic recordkeeping",
+        "Clan system organizing responsibility, adoption, and conflict resolution"
+      ],
+      "technologyAndInfrastructure": [
+        "Wampum belts as diplomatic/constitutional memory technology",
+        "Longhouse architecture supporting social organization",
+        "Agricultural and storage tech supporting large communities and travel"
+      ],
+      "readingLinks": [
+        {
+          "title": "Haudenosaunee Confederacy (official)",
+          "url": "https://www.haudenosauneeconfederacy.com/",
+          "kind": "community"
+        },
+        {
+          "title": "Wikipedia — Great Law of Peace",
+          "url": "https://en.wikipedia.org/wiki/Great_Law_of_Peace",
+          "kind": "overview"
+        },
+        {
+          "title": "Smithsonian NMAI — Haudenosaunee (search)",
+          "url": "https://americanindian.si.edu/search?query=Haudenosaunee",
+          "kind": "reference"
+        }
+      ]
+    },
+    "inuit": {
+      "agricultureSystems": [
+        "Sea-ice and marine hunting systems coordinated with seasonal knowledge",
+        "Food sharing networks and storage practices for risk management",
+        "Travel systems (qajaq/umiak/sled) integrated with ice and weather intelligence"
+      ],
+      "governanceSystems": [
+        "Kinship governance and consensus decision-making adapted to mobile lifeways",
+        "Food-sharing obligations as social safety net",
+        "Knowledge authority in skilled roles (hunters, seamstresses, elders)"
+      ],
+      "technologyAndInfrastructure": [
+        "Qajaq/umiak boat engineering and sled technology for sea-ice travel",
+        "Clothing and material tech enabling survival in extreme cold",
+        "Navigation via ice, stars, winds, and animal behavior"
+      ],
+      "readingLinks": [
+        {
+          "title": "Inuit Tapiriit Kanatami (ITK)",
+          "url": "https://www.itk.ca/",
+          "kind": "community"
+        },
+        {
+          "title": "Wikipedia — Inuit",
+          "url": "https://en.wikipedia.org/wiki/Inuit",
+          "kind": "overview"
+        },
+        {
+          "title": "Alaska Native Knowledge Network (search)",
+          "url": "https://www.ankn.uaf.edu/search.html?q=inuit",
+          "kind": "reference"
+        }
+      ]
+    },
+    "sakha": {
+      "agricultureSystems": [
+        "Horse/cattle pastoralism adapted to extreme cold; haymaking and winter fodder storage",
+        "River-basin seasonal mobility and cold-weather settlement strategies",
+        "Olonkho epic tradition as knowledge custody and identity infrastructure"
+      ],
+      "governanceSystems": [
+        "Community governance coordinating seasonal mobility and livestock management",
+        "Epic/ritual traditions supporting identity, ethics, and continuity",
+        "River-basin corridor planning embedded in practical knowledge systems"
+      ],
+      "technologyAndInfrastructure": [
+        "Olonkho epic performance as high-complexity oral archive",
+        "Cold-weather horse/cattle management technologies and winter settlement systems",
+        "River navigation and seasonal route planning across extreme environments"
+      ],
+      "readingLinks": [
+        {
+          "title": "UNESCO — Olonkho, Yakut heroic epos (Intangible Heritage)",
+          "url": "https://ich.unesco.org/en/RL/olonkho-yakut-heroic-epos-00145",
+          "kind": "reference"
+        },
+        {
+          "title": "Wikipedia — Sakha people",
+          "url": "https://en.wikipedia.org/wiki/Sakha_people",
+          "kind": "overview"
+        }
+      ]
+    }
+  }
+}

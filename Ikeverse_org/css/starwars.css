@@ -144,7 +144,7 @@
   z-index: -1;
 }
 
-/* PLAY BUTTON */
+/* BUTTON STYLES */
 .crawl-play-btn {
   position: absolute;
   top: 50%;
@@ -208,10 +208,28 @@
   background: rgba(79, 195, 247, 0.2);
 }
 
+.close-ending-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: #FFE81F;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.close-ending-btn:hover {
+  color: var(--quantum-blue);
+  transform: rotate(90deg);
+}
+
 /* ENDING SEQUENCE */
 .crawl-ending-container {
   position: fixed;
-  top: 0;
+  top: 0; /* Changed from 90px to 0 to ensure full coverage */
   left: 0;
   width: 100%;
   height: 100%;
@@ -232,9 +250,10 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* Changed from center to flex-start */
   align-items: center;
-  padding: 40px 20px;
+  padding: 90px 20px 40px; /* Added top padding of 90px to account for nav */
+  position: relative;
 }
 
 .crawl-ending {
@@ -242,7 +261,7 @@
   width: 100%;
   max-width: 900px;
   padding: 2rem;
-  margin: auto;
+  margin: 2rem auto; /* Increased margin for better spacing */
   background: rgba(10, 14, 23, 0.9);
   border-radius: 10px;
   box-shadow: 0 0 30px rgba(79, 195, 247, 0.3);
@@ -251,11 +270,24 @@
   animation: scaleIn 1.5s ease-out forwards;
 }
 
+/* Ensure close button stays visible */
+.close-ending-btn {
+  position: fixed; /* Changed from absolute to fixed */
+  top: 100px; /* Adjusted to account for nav */
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: #FFE81F;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 30; /* Higher than container */
+}
+
 @keyframes scaleIn {
   0% { transform: scale(0.9); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
-
 /* Cultural Symbols */
 .cultural-symbols {
   display: flex;
@@ -462,6 +494,27 @@
   .crawl-ending-wrapper {
     padding: 20px;
   }
+
+  /* MOBILE TEXT ADJUSTMENTS */
+  .crawl-text {
+    font-size: clamp(2rem, 5.5vw, 2.4rem) !important;
+    width: 98% !important;
+    padding: 0 1% !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.3px !important;
+  }
+
+  .starwars-crawl-content {
+    width: 100% !important;
+    margin-left: -50% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .crawl-text {
+    font-size: clamp(2.2rem, 6vw, 2.6rem) !important;
+    line-height: 2 !important;
+  }
 }
 
 @media (max-height: 700px) {
@@ -483,7 +536,7 @@
   }
 }
 
-/* Additional CSS for new elements */
+/* Additional Content Styles */
 .sacred-principle {
   margin: 2rem 0;
   text-align: center;
@@ -540,7 +593,6 @@
   margin: 1rem 0;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .principle {
     flex-direction: column;
@@ -555,52 +607,5 @@
   
   .call-to-action {
     font-size: 1.8rem;
-  }
-}
-/* MOBILE-ONLY ADJUSTMENTS - SCALE ENTIRE CRAWL */
-@media (max-width: 768px) {
-  .starwars-crawl {
-    /* Scale up the entire container */
-    transform: scale(1.5) translateY(25%); /* 1.5x larger */
-    transform-origin: center top;
-    width: 100vw;
-    height: 150vh; /* Extra height for scaling */
-  }
-
-  .starwars-crawl-content {
-    /* Adjust for the scaled container */
-    width: 200% !important; /* Double width for perspective */
-    left: 50% !important;
-    margin-left: -100% !important;
-    top: 0 !important;
-    /* Maintain perspective but scaled up */
-    transform: perspective(300px) rotateX(25deg) scale(1);
-  }
-
-  .crawl-text {
-    /* Slightly larger text to match scale */
-    font-size: clamp(2rem, 6vw, 2.5rem) !important;
-    line-height: 1.8 !important;
-  }
-
-  /* Adjust star particles for scaled view */
-  .star-particle {
-    transform: scale(1.5);
-  }
-}
-
-/* Extra adjustments for very small phones */
-@media (max-width: 480px) {
-  .starwars-crawl {
-    transform: scale(1.8) translateY(30%); /* Even larger on small phones */
-    height: 180vh;
-  }
-
-  .starwars-crawl-content {
-    transform: perspective(400px) rotateX(25deg) scale(1);
-  }
-
-  .crawl-text {
-    font-size: clamp(2.2rem, 7vw, 2.8rem) !important;
   }
 }

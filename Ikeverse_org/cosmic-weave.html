@@ -1,26 +1,32 @@
+<!-- file: cosmic-weave.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mode="quantum">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>The Cosmic Weave | Ikeverse</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/cosmic-weave.css">
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/cosmic-weave.css" />
+
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script src="https://d3js.org/d3.v7.min.js" defer></script>
+  <script src="https://unpkg.com/topojson@3" defer></script>
+  <script src="js/cosmic-weave.js" defer></script>
 </head>
+
 <body>
-  <!-- Video Background -->
   <div class="cosmic-video-background">
-    <video autoplay muted loop id="cosmic-video">
+    <video autoplay muted loop playsinline id="cosmic-video">
       <source src="assets/images/cosmic.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
   </div>
 
-  <!-- Navigation -->
   <nav class="quantum-nav cosmic-nav">
-    <div class="nav-portal">
+    <div class="nav-portal" id="nav-portal">
       <div class="portal-ring outer"></div>
       <div class="portal-ring middle"></div>
       <div class="portal-ring inner"></div>
@@ -28,8 +34,8 @@
         <span class="logo-icon">🌌</span>
       </div>
     </div>
-    
-    <div class="nav-links-container">
+
+    <div class="nav-links-container" id="nav-links">
       <ul class="nav-links">
         <li class="nav-item">
           <a href="index.html" class="nav-link">
@@ -53,7 +59,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="whitepaper.pdf" class="nav-link cta" target="_blank">
+          <a href="whitepaper.pdf" class="nav-link cta" target="_blank" rel="noopener">
             <span class="link-icon"><i class="fas fa-scroll"></i></span>
             <span class="link-text">White Paper</span>
             <span class="link-pulse"></span>
@@ -61,119 +67,207 @@
         </li>
       </ul>
     </div>
-    
+
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" type="button">
+      <i class="fas fa-bars"></i>
+    </button>
+
     <div class="nav-scanline"></div>
     <div class="nav-hologram"></div>
   </nav>
 
-  <!-- Hero Section -->
   <section class="cosmic-hero">
     <h1>The Cosmic Weave</h1>
     <p class="hero-slogan">"All knowledge is connected like the threads of a great mat" - Polynesian proverb</p>
+    <p class="hero-hint">Globe ↔ Map ↔ Split • Lenses show meaning • Layers show structure • Weave Paths explain links</p>
     <div class="floating-glyphs">
-      <span>🌐</span>
-      <span>🌌</span>
-      <span>🔗</span>
+      <span>🌐</span><span>🌌</span><span>🔗</span>
     </div>
   </section>
 
-  <!-- Globe Section -->
   <section class="globe-section">
-    <div id="globe-container">
-      <div class="globe-ui">
-        <button class="globe-control" id="zoomIn" title="Zoom In">+</button>
-        <button class="globe-control" id="zoomOut" title="Zoom Out">-</button>
-        <button class="globe-control" id="resetView" title="Reset View">↺</button>
-        <button class="globe-control" id="toggleConnections" title="Toggle Connections">
-          <i class="fas fa-project-diagram"></i>
-        </button>
-      </div>
-      <svg id="globe"></svg>
-      <div class="culture-tooltip" id="tooltip"></div>
-    </div>
-    
-    <div class="culture-info">
-      <div class="culture-details">
-        <div class="culture-header">
-          <div class="culture-icon" id="culture-symbol">🌐</div>
-          <div>
-            <h2 class="culture-name" id="culture-name">Select a Wisdom Tradition</h2>
-            <div class="culture-location" id="culture-location"></div>
+    <div id="globe-container" class="viz-mode-globe" aria-label="Cosmic Weave world view">
+      <div class="cw-world-toolbar" role="toolbar" aria-label="World toolbar">
+        <div class="cw-toolbar-left" aria-label="View mode tabs">
+          <button id="tabGlobe" class="viz-tab active" type="button"><i class="fas fa-globe"></i> Globe</button>
+          <button id="tabMap" class="viz-tab" type="button"><i class="fas fa-map"></i> Map</button>
+          <button id="tabSplit" class="viz-tab" type="button"><i class="fas fa-columns"></i> Split</button>
+        </div>
+
+        <!-- MERGED: Lenses + Layers + Guide -->
+        <div class="cw-toolbar-center" aria-label="Meaning and structure">
+          <div class="cw-toolbar-row cw-toolbar-row--lenses" aria-label="Focus lenses">
+            <button class="cw-lens active" data-lens="all" type="button"><i class="fas fa-layer-group"></i> All</button>
+            <button class="cw-lens" data-lens="Creation" type="button"><i class="fas fa-stars"></i> Creation</button>
+            <button class="cw-lens" data-lens="Navigation" type="button"><i class="fas fa-compass"></i> Navigation</button>
+            <button class="cw-lens" data-lens="Martial Arts" type="button"><i class="fas fa-hand-fist"></i> Martial Arts</button>
+            <button class="cw-lens" data-lens="Stewardship" type="button"><i class="fas fa-leaf"></i> Stewardship</button>
+            <button class="cw-lens" data-lens="Ecology" type="button"><i class="fas fa-water"></i> Ecology</button>
+            <button class="cw-lens" data-lens="Governance" type="button"><i class="fas fa-scale-balanced"></i> Governance</button>
+          </div>
+
+          <div class="cw-toolbar-row cw-toolbar-row--layers" aria-label="Project layers">
+            <button class="cw-layer-btn active" data-layer="paths" type="button"><i class="fas fa-route"></i> Weave Path</button>
+            <button class="cw-layer-btn" data-layer="food" type="button"><i class="fas fa-seedling"></i> Food</button>
+            <button class="cw-layer-btn" data-layer="water" type="button"><i class="fas fa-water"></i> Water</button>
+            <button class="cw-layer-btn" data-layer="navigation" type="button"><i class="fas fa-compass"></i> Navigation</button>
+            <button class="cw-layer-btn" data-layer="trade" type="button"><i class="fas fa-coins"></i> Trade</button>
+            <button class="cw-layer-btn" data-layer="stewardship" type="button"><i class="fas fa-leaf"></i> Stewardship</button>
+            <button class="cw-layer-btn" data-layer="governance" type="button"><i class="fas fa-scale-balanced"></i> Governance</button>
+            <button class="cw-layer-btn" data-layer="suggested" type="button"><i class="fas fa-wand-magic-sparkles"></i> Suggested</button>
+
+            <button id="toggleLayerLegend" class="cw-layer-btn cw-layer-btn--legend" type="button">
+              <i class="fas fa-circle-info"></i> Guide
+            </button>
+          </div>
+
+          <div id="layerLegend" class="cw-layer-legend cw-scroll" hidden aria-label="Guide panel"></div>
+        </div>
+
+        <div class="cw-toolbar-right" aria-label="World controls">
+          <div class="cw-controls cw-controls--globe">
+            <button class="globe-control" id="zoomIn" title="Zoom In" type="button">+</button>
+            <button class="globe-control" id="zoomOut" title="Zoom Out" type="button">-</button>
+            <button class="globe-control" id="resetView" title="Reset View" type="button">↺</button>
+            <button class="globe-control" id="toggleConnections" title="Toggle Connections" type="button"><i class="fas fa-project-diagram"></i></button>
+            <button class="globe-control" id="toggleLabels" title="Toggle Labels" type="button"><i class="fas fa-tag"></i></button>
+          </div>
+
+          <div class="cw-controls cw-controls--map">
+            <button class="globe-control" id="btnLocate" title="Current location" type="button"><i class="fas fa-location-crosshairs"></i></button>
+            <button class="globe-control" id="btnResetMap" title="Reset map" type="button"><i class="fas fa-rotate-left"></i></button>
+            <button class="globe-control" id="toggleMapConnections" title="Toggle selected threads" type="button"><i class="fas fa-project-diagram"></i></button>
           </div>
         </div>
-        <p class="culture-desc" id="culture-desc">Click on any civilization on the globe to explore its wisdom traditions and connections to other cultures.</p>
-        <div class="culture-tags" id="culture-tags"></div>
       </div>
-      
-      <div class="culture-connections">
-        <h3 class="connections-title">
-          <i class="fas fa-link"></i> Quantum-Ancestral Connections
-        </h3>
-        <div class="connections-grid" id="connections">
-          <!-- Will be populated by JavaScript -->
+
+      <div class="viz-stage" aria-label="World stage">
+        <svg id="globe" aria-label="3D globe visualization"></svg>
+        <div id="map" aria-label="Interactive map"></div>
+      </div>
+
+      <div class="culture-tooltip" id="tooltip"></div>
+    </div>
+
+    <!-- Culture Details -->
+    <section class="cw-panel cw-panel--details" aria-label="Culture details">
+      <header class="cw-panel-header cw-details-header">
+        <div>
+          <div class="cw-panel-title"><i class="fas fa-scroll"></i> Culture Details</div>
+          <div class="cw-panel-sub">Cards are equal height. Long content scrolls with a custom cosmic scrollbar.</div>
+        </div>
+
+        <div class="cw-details-actions" aria-label="Actions">
+          <button id="toggleCompare" type="button"><i class="fas fa-columns"></i> Compare</button>
+          <button id="btnSuggestLinks" type="button"><i class="fas fa-wand-magic-sparkles"></i> Suggestions</button>
+          <button id="btnDownloadSuggestions" type="button"><i class="fas fa-download"></i> Download</button>
+          <button id="btnCopyLink" type="button"><i class="fas fa-link"></i> Copy Link</button>
+        </div>
+      </header>
+
+      <div class="cw-panel-body cw-details-body">
+        <div class="cw-details-top">
+          <div class="culture-header">
+            <div class="culture-icon" id="culture-symbol">🌐</div>
+            <div>
+              <h2 class="culture-name" id="culture-name">Select a Wisdom Tradition</h2>
+              <div class="culture-location" id="culture-location"></div>
+              <div class="culture-era" id="culture-era"></div>
+            </div>
+          </div>
+
+          <p class="culture-desc" id="culture-desc">
+            Click a culture on the globe/map to explore details and connections.
+          </p>
+
+          <div class="culture-tags" id="culture-tags"></div>
+        </div>
+
+        <div class="culture-extra" id="culture-extra"></div>
+      </div>
+    </section>
+
+    <!-- Weave Paths (replaces Corridor Studio entirely) -->
+    <section class="cw-panel cw-panel--paths" aria-label="Weave Paths">
+      <header class="cw-panel-header">
+        <div>
+          <div class="cw-panel-title"><i class="fas fa-route"></i> Weave Paths</div>
+          <div class="cw-panel-sub">
+            Guided meaning journeys built from your real links. Each leg shows the connection label + explanation.
+          </div>
+        </div>
+      </header>
+
+      <div class="cw-panel-body">
+        <div class="cw-path-controls">
+          <div class="cw-path-select">
+            <label for="weavePreset" class="cw-label">Path</label>
+            <select id="weavePreset" aria-label="Select a weave path"></select>
+          </div>
+
+          <div class="cw-path-buttons">
+            <button id="weavePrev" type="button"><i class="fas fa-arrow-left"></i> Prev</button>
+            <button id="weaveNext" type="button">Next <i class="fas fa-arrow-right"></i></button>
+            <button id="weaveShuffle" type="button"><i class="fas fa-shuffle"></i> Shuffle</button>
+            <button id="weaveAuto" type="button"><i class="fas fa-play"></i> Auto</button>
+          </div>
+
+          <div class="cw-path-meta" id="weaveSummary">Select a path to begin.</div>
+        </div>
+
+        <div class="cw-path-grid">
+          <div class="cw-path-stops">
+            <div class="cw-mini-title">Stops</div>
+            <ul class="cw-path-list cw-scroll" id="weaveStops" aria-label="Weave stops"></ul>
+          </div>
+
+          <div class="cw-path-notes cw-scroll" id="weaveNotes" aria-label="Weave notes">
+            Pick a path. Click a stop to focus. The leg-by-leg explanations appear here.
+          </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Compare Panel -->
+    <section class="cw-panel cw-panel--compare" id="comparePanel" aria-label="Compare cultures" style="display:none">
+      <header class="cw-panel-header">
+        <div class="cw-panel-title"><i class="fas fa-columns"></i> Compare</div>
+        <div class="cw-panel-sub">Pin A and Pin B, then compare themes and details.</div>
+      </header>
+
+      <div class="cw-panel-body">
+        <div id="compareShared"></div>
+        <div class="cw-compare-grid">
+          <div id="compareA"></div>
+          <div id="compareB"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Connections -->
+    <section class="cw-panel cw-panel--connections" aria-label="Connections">
+      <header class="cw-panel-header">
+        <div class="cw-panel-title"><i class="fas fa-project-diagram"></i> Connections</div>
+        <div class="cw-panel-sub">Related threads for the selected culture. Click a card to jump.</div>
+      </header>
+      <div class="cw-panel-body">
+        <div id="connections"></div>
+      </div>
+    </section>
   </section>
 
-  <!-- Footer -->
   <footer class="cosmic-footer">
-    <div class="footer-grid">
-      <div class="footer-about">
-        <h4><span class="footer-icon">🌌</span> IKEVERSE</h4>
-        <p>Weaving ancient wisdom with quantum understanding</p>
-        <div class="footer-links-mobile">
-          <a href="#" class="social-link" title="DAO"><i class="fas fa-users"></i></a>
-          <a href="#" class="social-link" title="Research"><i class="fas fa-book"></i></a>
-          <a href="#" class="social-link" title="Elders"><i class="fas fa-hand-holding-heart"></i></a>
-        </div>
+    <div class="footer-content">
+      <div class="footer-logo">
+        <span class="logo-icon">🌌</span>
+        <span class="logo-text">IKEVERSE</span>
       </div>
-      
-      <div class="footer-sections">
-        <div class="footer-section">
-          <h5>Explore</h5>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="cosmic-weave.html">Cosmic Weave</a></li>
-            <li><a href="roadmap.html">Our Journey</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-section">
-          <h5>Resources</h5>
-          <ul>
-            <li><a href="whitepaper.pdf">White Paper</a></li>
-            <li><a href="#">Research Portal</a></li>
-            <li><a href="#">Media Kit</a></li>
-          </ul>
-        </div>
-        
-        <div class="footer-section">
-          <h5>Connect</h5>
-          <ul>
-            <li><a href="#">Community Forum</a></li>
-            <li><a href="#">Contact Elders</a></li>
-            <li><a href="#">Donate</a></li>
-          </ul>
-        </div>
+      <p>© 2026 Ikeverse. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="roadmap.html">Roadmap</a>
+        <a href="whitepaper.pdf" target="_blank" rel="noopener">White Paper</a>
       </div>
-    </div>
-    
-    <div class="footer-bottom">
-      <div class="footer-legal">
-        <span>© 2023 Ikeverse Foundation</span>
-        <span><a href="#">Terms</a></span>
-        <span><a href="#">Privacy</a></span>
-        <span><a href="#">Cultural Protocols</a></span>
-      </div>
-      <div class="footer-pulse"></div>
     </div>
   </footer>
-
-  <!-- Scripts -->
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="https://unpkg.com/topojson@3"></script>
-  <script src="https://unpkg.com/d3-geo@3"></script>
-  <script src="js/cosmic-weave.js"></script>
 </body>
 </html>

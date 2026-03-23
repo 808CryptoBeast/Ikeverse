@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "generatedAt": "2026-03-20T00:00:00.000Z",
+    "input": "docs/cultures.json",
+    "totalCultures": 0,
+    "totalOfficialLinks": 0,
+    "totalSuggestedLinks": 0,
+    "minShared": 2,
+    "perNodeCap": 6,
+    "maxLinks": 220
+  },
+  "links": []
+}

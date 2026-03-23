@@ -5,11 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ikeverse | Quantum-Ancestral Knowledge Matrix</title>
   <meta name="description" content="Bridging ancient wisdom with quantum science through immersive visualization">
-  <link rel="stylesheet" href="Ikeverse_org/css/style.css">
-  <link rel="stylesheet" href="Ikeverse_org/css/starwars.css">
+
+  <link rel="stylesheet" href="/Ikeverse_org/css/style.css">
+  <link rel="stylesheet" href="/Ikeverse_org/css/starwars.css">
+  <link rel="stylesheet" href="/Ikeverse_org/css/starwars.patch.css">
+  <link rel="stylesheet" href="/Ikeverse_org/css/knowledge-matrix.css">
+
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-   <script src="Ikeverse_org/js/starwars.js" defer></script>
+
+  <script src="/Ikeverse_org/js/starwars.js" defer></script>
+  <script src="/Ikeverse_org/js/site.js"></script>
 </head>
 <body class="loading" data-mode="quantum">
   <!-- Preloader -->
@@ -21,7 +27,7 @@
   <!-- Video Background -->
   <div class="video-background">
     <video autoplay muted loop id="starfield-video">
-      <source src="Ikeverse_org/assets/images/starfield.mp4" type="video/mp4">
+      <source src="/Ikeverse_org/assets/images/starfield.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
   </div>
@@ -40,28 +46,28 @@
     <div class="nav-links-container">
       <ul class="nav-links">
         <li class="nav-item">
-          <a href="index.html" class="nav-link active">
+          <a href="/Ikeverse_org/index.html" class="nav-link active">
             <span class="link-icon"><i class="fas fa-home"></i></span>
             <span class="link-text">Home</span>
             <span class="link-pulse"></span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="Ikeverse_org/cosmic-weave.html" class="nav-link">
+          <a href="/Ikeverse_org/cosmic-weave.html" class="nav-link">
             <span class="link-icon"><i class="fas fa-atom"></i></span>
             <span class="link-text">Cosmic Weave</span>
             <span class="link-pulse"></span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="Ikeverse_org/roadmap.html" class="nav-link">
+          <a href="/Ikeverse_org/roadmap.html" class="nav-link">
             <span class="link-icon"><i class="fas fa-timeline"></i></span>
             <span class="link-text">Timeline</span>
             <span class="link-pulse"></span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="Ikeverse_org/whitepaper.pdf" class="nav-link cta" target="_blank">
+          <a href="/Ikeverse_org/whitepaper.pdf" class="nav-link cta" target="_blank">
             <span class="link-icon"><i class="fas fa-scroll"></i></span>
             <span class="link-text">White Paper</span>
             <span class="link-pulse"></span>
@@ -109,7 +115,7 @@
       </div>
     </section>
 
-<!-- Knowledge Galaxy Section -->
+    <!-- Knowledge Galaxy Section -->
     <section class="galaxy-section" id="galaxy">
       <div class="section-header">
         <h2>THE LIVING KNOWLEDGE MATRIX</h2>
@@ -122,12 +128,21 @@
       </div>
       
       <div class="galaxy-container">
+        <!-- Main Play Button -->
         <button class="crawl-play-btn" id="startCrawl">
           <i class="fas fa-play"></i> BEGIN KNOWLEDGE FLOW
         </button>
         
+        <!-- Crawl Intro Element -->
+        <div class="crawl-intro">
+          <div class="intro-content">
+            <h2>A LONG TIME AGO...</h2>
+            <p>In an Ancestral Memory...</p>
+          </div>
+        </div>
+        
+        <!-- Star Wars Crawl Container -->
         <div class="starwars-crawl" id="ikeverseCrawl">
-          <div class="crawl-intro">A LONG TIME AGO...</div>
           <div class="starwars-bg"></div>
           <div class="starwars-crawl-content">
             <div class="crawl-title">THE IKEVERSE</div>
@@ -223,7 +238,6 @@
 
   <!-- CSS2DRenderer with guaranteed initialization -->
   <script>
-    // Custom loader that works with any version of Three.js
     function loadCSS2DRenderer() {
       return new Promise((resolve) => {
         const script = document.createElement('script');
@@ -278,12 +292,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
 
   <script>
-    // Simple loading state management
     let loadingFailed = false;
     
-    // Navigation functionality
     document.addEventListener('DOMContentLoaded', function() {
-      // Nav expansion toggle
       const navExpand = document.getElementById('nav-expand');
       const navLinks = document.querySelector('.nav-links');
       
@@ -295,7 +306,6 @@
         });
       }
       
-      // Mode toggle functionality
       const modeOptions = document.querySelectorAll('.mode-option');
       modeOptions.forEach(option => {
         option.addEventListener('click', function() {
@@ -305,7 +315,6 @@
           const mode = this.dataset.mode;
           document.body.setAttribute('data-mode', mode);
           
-          // Add visual feedback
           const pulse = document.createElement('div');
           pulse.className = 'mode-pulse';
           pulse.style.backgroundColor = mode === 'quantum' ? 
@@ -318,11 +327,9 @@
         });
       });
       
-      // Enter Matrix button effect
       const enterBtn = document.getElementById('enterMatrix');
       if (enterBtn) {
         enterBtn.addEventListener('click', function() {
-          // Add ripple effect
           const ripple = document.createElement('span');
           ripple.className = 'btn-ripple';
           this.appendChild(ripple);
@@ -331,7 +338,6 @@
             ripple.remove();
           }, 1000);
           
-          // Navigate to galaxy section
           document.getElementById('galaxy').scrollIntoView({
             behavior: 'smooth'
           });
@@ -341,18 +347,14 @@
 
     async function initializeApp() {
       try {
-        // 1. Load CSS2DRenderer (with fallback)
         await loadCSS2DRenderer();
         
-        // 2. Verify minimum requirements
         if (!window.THREE) {
           throw new Error('Three.js failed to load');
         }
         
-        // 3. Load main application
-        await loadScript('Ikeverse_org/js/galaxy.js');
+        await loadScript('/Ikeverse_org/js/galaxy.js');
         
-        // 4. Complete initialization
         completeLoading();
         
       } catch (error) {
@@ -373,7 +375,6 @@
     }
     
     function completeLoading() {
-      // Remove preloader after short delay for smooth transition
       setTimeout(() => {
         document.body.classList.remove('loading');
         document.body.classList.add('loaded');
@@ -381,7 +382,6 @@
     }
     
     function showErrorFallback(message) {
-      // Create error display
       const errorDiv = document.createElement('div');
       errorDiv.id = 'error-fallback';
       errorDiv.innerHTML = `
@@ -393,7 +393,6 @@
         </div>
       `;
       
-      // Add styles directly
       const style = document.createElement('style');
       style.textContent = `
         #error-fallback {
@@ -436,21 +435,18 @@
       document.head.appendChild(style);
       document.body.appendChild(errorDiv);
       
-      // Add reload functionality
       document.getElementById('reload-button').addEventListener('click', () => {
         window.location.reload();
       });
     }
     
-    // Start initialization with timeout
     initializeApp();
     
-    // Add timeout in case initialization hangs
     setTimeout(() => {
       if (document.body.classList.contains('loading') && !loadingFailed) {
         showErrorFallback('Loading is taking longer than expected');
       }
-    }, 10000); // 10 second timeout
+    }, 10000);
   </script>
 </body>
 </html>

@@ -1,4 +1,9 @@
-/* ===== Base Styles ===== */
+/* styles.css (full file) */
+
+/* Fonts: prefer <link rel="preconnect"> + <link href=...> in HTML for best perf. */
+@import url('https://fonts.googleapis.com/css2?family=Pathway+Gothic+One&family=Noto+Sans+Egyptian+Hieroglyphs&family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;500;700&display=swap');
+
+/* ===== Base Variables ===== */
 :root {
   --cosmic-dark: #0a0e17;
   --quantum-blue: #00f7ff;
@@ -15,6 +20,7 @@
   --cosmic-fog: rgba(10, 14, 23, 0.95);
 }
 
+/* ===== Reset ===== */
 * {
   margin: 0;
   padding: 0;
@@ -40,6 +46,635 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+/* =======================================================================
+   STAR WARS CRAWL - IKEVERSE EDITION
+   ======================================================================= */
+
+.starwars-crawl {
+  /* Local theme overrides for the crawl */
+  --sw-quantum-blue: #4fc3f7;
+  --sw-quantum-blue-dark: #3a9bc7;
+  --sw-ancestral-gold: #ffd700;
+  --sw-ancestral-gold-dark: #c5a600;
+  --sw-kemet-purple: #9c27b0;
+  --sw-hawaiian-yellow: #e8c547;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  z-index: 10;
+  perspective: 350px;
+  color: #FFE81F;
+  font-family: 'Pathway Gothic One', sans-serif;
+
+  background: radial-gradient(ellipse at center,
+    rgba(0,0,0,0) 0%,
+    rgba(10,14,23,0.95) 100%);
+
+  isolation: isolate;
+  contain: layout paint;
+}
+
+/* Optional: lightweight starfield hook (best used when you add a tiny JS class on start)
+   - If you add `.is-running` to `.starwars-crawl` in JS, these will only animate after intro. */
+.starwars-crawl::before,
+.starwars-crawl::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  animation-play-state: paused;
+
+  /* small repeated SVG tile with stars */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg fill='white' fill-opacity='.9'%3E%3Ccircle cx='12' cy='18' r='1'/%3E%3Ccircle cx='46' cy='60' r='1'/%3E%3Ccircle cx='88' cy='22' r='1.2'/%3E%3Ccircle cx='128' cy='90' r='1'/%3E%3Ccircle cx='176' cy='40' r='1'/%3E%3Ccircle cx='210' cy='120' r='1.1'/%3E%3Ccircle cx='34' cy='140' r='1.1'/%3E%3Ccircle cx='92' cy='168' r='1'/%3E%3Ccircle cx='150' cy='156' r='1.2'/%3E%3Ccircle cx='196' cy='190' r='1'/%3E%3Ccircle cx='20' cy='210' r='1'/%3E%3Ccircle cx='110' cy='210' r='1.1'/%3E%3Ccircle cx='210' cy='18' r='1'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  transform: translateZ(0);
+  will-change: background-position, opacity;
+}
+
+.starwars-crawl::after {
+  opacity: 0;
+  filter: blur(0.5px);
+  transform: translateZ(0) scale(1.15);
+}
+
+@keyframes starScrollA {
+  from { background-position: 0 0; }
+  to { background-position: 0 900px; }
+}
+@keyframes starScrollB {
+  from { background-position: 0 0; }
+  to { background-position: 0 1400px; }
+}
+
+/* Turn on lightweight starfield only when container is-running (optional JS hook) */
+.starwars-crawl.is-running::before {
+  opacity: 0.28;
+  animation: starScrollA 18s linear infinite;
+  animation-play-state: running;
+}
+.starwars-crawl.is-running::after {
+  opacity: 0.18;
+  animation: starScrollB 28s linear infinite;
+  animation-play-state: running;
+}
+
+.starwars-crawl-content {
+  position: absolute;
+  top: 0;
+  left: 50%;
+
+  width: min(2400px, 95vw);
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotateX(25deg) translateY(100%);
+
+  animation: crawl 45s linear forwards;
+  animation-play-state: paused;
+
+  transition: opacity 1s ease-out;
+  opacity: 0;
+
+  z-index: 2;
+  will-change: transform, opacity;
+
+  /* expensive on mobile; we tone down in mobile query below */
+  filter: drop-shadow(0 0 10px rgba(255,232,31,0.3));
+}
+
+/* INTRO SEQUENCE */
+.crawl-intro {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.8rem;
+  text-transform: uppercase;
+  opacity: 0;
+  color: var(--sw-quantum-blue);
+  text-shadow: 0 0 10px var(--sw-quantum-blue);
+  font-style: italic;
+  white-space: nowrap;
+  width: 90%;
+  text-align: center;
+  pointer-events: none;
+  display: none;
+  z-index: 3;
+  will-change: opacity, transform;
+}
+
+@keyframes introFade {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+  20%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  70%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+}
+
+/* IMPORTANT:
+   - Base state is hidden.
+   - JS adds `.is-running` on `.starwars-crawl-content` to trigger the fade-ins exactly when crawl starts. */
+.crawl-title,
+.crawl-text,
+.crawl-mission,
+.cultural-divider {
+  opacity: 0;
+}
+
+/* Crawl text styling */
+.crawl-title {
+  font-size: 6rem;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+  text-shadow: 0 0 20px #FFE81F;
+
+  background: linear-gradient(to right,
+    var(--sw-ancestral-gold),
+    var(--sw-quantum-blue),
+    var(--sw-ancestral-gold));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  letter-spacing: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.crawl-text {
+  font-size: 2.4rem;
+  line-height: 1.6;
+  letter-spacing: 2px;
+  text-align: justify;
+
+  margin: 0 auto 3rem;
+  width: 100%;
+
+  text-shadow: 0 0 5px rgba(255,232,31,0.7);
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.crawl-mission {
+  font-size: 2.6rem;
+  margin-top: 5rem;
+  text-align: center;
+  color: var(--sw-quantum-blue);
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* CULTURAL DIVIDERS */
+.cultural-divider {
+  font-size: 4.5rem;
+  margin: 3rem 0;
+  text-align: center;
+  color: var(--sw-ancestral-gold);
+  text-shadow: 0 0 10px var(--sw-ancestral-gold-dark);
+}
+
+/* Fade-in triggers ONLY when crawl starts */
+.starwars-crawl-content.is-running .crawl-title {
+  animation: fadeIn 0.12s ease-out 0s forwards;
+}
+
+.starwars-crawl-content.is-running .crawl-text {
+  animation: fadeIn 0.5s ease-out 0.12s forwards;
+}
+
+.starwars-crawl-content.is-running .crawl-mission {
+  animation: fadeIn 0.5s ease-out 0.2s forwards;
+}
+
+.starwars-crawl-content.is-running .cultural-divider {
+  animation: fadeIn 0.5s ease-out 0.12s forwards;
+}
+
+/* ANIMATIONS */
+@keyframes crawl {
+  0%   { transform: translateX(-50%) rotateX(25deg) translate3d(0, 100%, 0); }
+  100% { transform: translateX(-50%) rotateX(25deg) translate3d(0, -100%, 0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* STAR PARTICLES (DOM) */
+.star-particle {
+  position: absolute;
+  background: #FFE81F;
+  border-radius: 50%;
+
+  /* JS sets animation; keep CSS from overriding */
+  animation: none;
+
+  /* Hide until crawl starts so particles + title start simultaneously */
+  visibility: hidden;
+
+  /* reduce GPU-heavy blur on mobile below */
+  filter: blur(1px);
+
+  z-index: 1;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* When crawl starts, reveal particles (they animate because JS switches play-state) */
+.starwars-crawl-content.is-running ~ .star-particle {
+  visibility: visible;
+}
+
+/* Also supports optional JS hook: crawlContainer.classList.add('is-running') */
+.starwars-crawl.is-running .star-particle {
+  visibility: visible;
+}
+
+/* BUTTON STYLES */
+.crawl-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.7);
+  color: #FFE81F;
+  border: 2px solid #FFE81F;
+  border-radius: 50px;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-family: 'Pathway Gothic One', sans-serif;
+  text-transform: uppercase;
+  cursor: pointer;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+}
+
+.crawl-play-btn:hover {
+  background: rgba(255, 232, 31, 0.2);
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.crawl-play-btn i {
+  font-size: 1.5rem;
+}
+
+/* CRAWL CONTROLS */
+.crawl-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+
+.crawl-control-btn {
+  background: rgba(0,0,0,0.5);
+  color: #FFE81F;
+  border: 1px solid #FFE81F;
+  border-radius: 4px;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-family: 'Pathway Gothic One', sans-serif;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.crawl-control-btn:hover {
+  opacity: 1;
+  background: rgba(79, 195, 247, 0.2);
+}
+
+/* ENDING SEQUENCE */
+.crawl-ending-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  z-index: 20;
+  background: radial-gradient(ellipse at center,
+    rgba(0,0,0,0.8) 0%,
+    rgba(10,14,23,0.95) 100%);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.crawl-ending-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 90px 20px 40px;
+  position: relative;
+}
+
+.crawl-ending {
+  text-align: center;
+  width: 100%;
+  max-width: 900px;
+  padding: 2rem;
+  margin: 2rem auto;
+  background: rgba(10, 14, 23, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(79, 195, 247, 0.3);
+  border: 1px solid var(--ancestral-gold);
+  transform-origin: center;
+  animation: scaleIn 1.5s ease-out forwards;
+}
+
+@keyframes scaleIn {
+  0%   { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Close button (single definition) */
+.close-ending-btn {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: #FFE81F;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 30;
+}
+
+.close-ending-btn:hover {
+  color: var(--sw-quantum-blue);
+  transform: rotate(90deg);
+}
+
+/* Cultural Symbols */
+.cultural-symbols {
+  display: flex;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 3rem);
+  margin: 1rem 0 2rem;
+  flex-wrap: wrap;
+}
+
+.cultural-symbols span {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  animation: floatSpin 6s infinite ease-in-out;
+  will-change: transform;
+}
+
+@keyframes floatSpin {
+  0%, 100% { transform: translateY(0) rotateY(0); }
+  50%      { transform: translateY(-15px) rotateY(180deg); }
+}
+
+.hawaiian-symbol {
+  color: var(--sw-hawaiian-yellow);
+  animation-delay: 0.1s;
+  text-shadow: 0 0 15px var(--sw-hawaiian-yellow);
+}
+
+.kemet-symbol {
+  font-family: 'Noto Sans Egyptian Hieroglyphs', sans-serif;
+  color: var(--sw-ancestral-gold);
+  animation-delay: 0.3s;
+  text-shadow: 0 0 15px var(--sw-ancestral-gold-dark);
+  line-height: 1;
+}
+
+.quantum-symbol {
+  color: var(--sw-quantum-blue);
+  animation-delay: 0.5s;
+  text-shadow: 0 0 15px var(--sw-quantum-blue);
+}
+
+/* Language Styling */
+.dual-language-block {
+  text-align: center;
+  width: 100%;
+}
+
+.language-group {
+  margin: 1.5rem 0;
+}
+
+.language-line {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0.8rem 0;
+}
+
+.hawaiian, .kemet, .quantum {
+  font-weight: bold;
+  line-height: 1.4;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+}
+
+.hawaiian { color: var(--sw-hawaiian-yellow); }
+
+.kemet {
+  font-family: 'Noto Sans Egyptian Hieroglyphs', sans-serif;
+  color: var(--sw-ancestral-gold);
+  line-height: 1.2;
+}
+
+.quantum { color: var(--sw-quantum-blue); }
+
+.english {
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  color: rgba(255,232,31,0.8);
+  font-style: italic;
+  line-height: 1.3;
+}
+
+/* Content Sections */
+.sacred-message {
+  background: rgba(10,14,23,0.7);
+  border-left: 3px solid var(--ancestral-gold);
+  border-right: 3px solid var(--quantum-blue);
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-radius: 5px;
+}
+
+.proverb-block {
+  border-top: 1px dashed var(--ancestral-gold);
+  border-bottom: 1px dashed var(--quantum-blue);
+  padding: 1rem 0;
+  margin: 2rem 0;
+}
+
+/* Ending CTA (avoid .quantum-btn collision) */
+.ending-cta {
+  background: linear-gradient(45deg, var(--sw-hawaiian-yellow), var(--sw-ancestral-gold), var(--sw-quantum-blue));
+  border: none;
+  padding: 1rem 2rem;
+  margin: 1.5rem auto 0;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  clip-path: polygon(10% 0%, 100% 0, 90% 100%, 0% 100%);
+  transition: all 0.4s ease;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: white;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  will-change: transform;
+  pointer-events: auto;
+}
+
+.ending-cta:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 5px 15px rgba(232, 197, 71, 0.6),
+    0 5px 25px rgba(79, 195, 247, 0.4);
+}
+
+/* ===== Responsive Adjustments (Crawl) ===== */
+@media (max-width: 1024px) {
+  .starwars-crawl-content { width: 95vw; }
+  .crawl-title { font-size: 4.5rem; }
+  .crawl-text { font-size: 2rem; }
+  .crawl-intro { font-size: 2.4rem; }
+}
+
+@media (max-width: 768px) {
+  .starwars-crawl { perspective: 250px; }
+
+  /* BIG mobile perf win: remove expensive filter/shadows where possible */
+  .starwars-crawl-content { filter: none; }
+  .crawl-title { text-shadow: 0 0 10px rgba(255,232,31,0.55); }
+  .crawl-text { text-shadow: 0 0 3px rgba(255,232,31,0.45); }
+  .star-particle { filter: none; }
+
+  .crawl-title { font-size: 3rem; margin-bottom: 2rem; }
+  .crawl-text { font-size: 1.6rem; line-height: 1.5; }
+  .crawl-mission { font-size: 1.8rem; margin-top: 3rem; }
+  .cultural-divider { font-size: 3.5rem; }
+
+  .crawl-controls { bottom: 10px; right: 10px; }
+  .crawl-control-btn { padding: 6px 12px; font-size: 0.8rem; }
+  .crawl-play-btn { padding: 12px 24px; font-size: 1rem; }
+
+  .crawl-ending { padding: 1.5rem; margin: 1rem auto; }
+  .crawl-ending-wrapper { padding: 20px; }
+
+  /* MOBILE TEXT ADJUSTMENTS (kept from your file) */
+  .crawl-text {
+    font-size: clamp(2rem, 5.5vw, 2.4rem) !important;
+    width: 98% !important;
+    padding: 0 1% !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.3px !important;
+  }
+
+  .starwars-crawl-content { width: 100% !important; }
+}
+
+@media (max-width: 480px) {
+  .crawl-text {
+    font-size: clamp(2.2rem, 6vw, 2.6rem) !important;
+    line-height: 2 !important;
+  }
+}
+
+@media (max-height: 700px) {
+  .crawl-title { font-size: 2.5rem; }
+  .crawl-text { font-size: 1.4rem; }
+  .crawl-ending-container { justify-content: flex-start; }
+  .crawl-ending-wrapper { padding-top: 1rem; justify-content: flex-start; }
+}
+
+/* Additional Content Styles (kept) */
+.sacred-principle {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.principle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin: 1.5rem 0;
+  font-size: 2rem;
+}
+
+.principle-title {
+  font-size: 2.2rem;
+  color: var(--ancestral-gold);
+  margin-bottom: 2rem;
+}
+
+.technology-bridge {
+  background: rgba(79, 195, 247, 0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.bridge-pair {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+  padding: 0.8rem;
+  border-bottom: 1px dashed var(--ancestral-gold);
+}
+
+.ancient { color: var(--sw-hawaiian-yellow); font-style: italic; }
+.modern { color: var(--sw-quantum-blue); font-weight: bold; }
+
+.call-to-action {
+  margin-top: 3rem;
+  font-size: 2.2rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.call-to-action p { margin: 1rem 0; }
+
+@media (max-width: 768px) {
+  .principle {
+    flex-direction: column;
+    text-align: center;
+    font-size: 1.6rem;
+  }
+
+  .bridge-pair {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .call-to-action { font-size: 1.8rem; }
+}
+
+/* =======================================================================
+   SITE STYLES (kept from your file, lightly cleaned where needed)
+   ======================================================================= */
 
 /* ===== Layout Components ===== */
 .container {
@@ -245,10 +880,7 @@ body.loaded .preloader {
   transition: all 0.3s ease;
 }
 
-.nav-link .link-text {
-  position: relative;
-  transition: all 0.3s ease;
-}
+.nav-link .link-text { position: relative; transition: all 0.3s ease; }
 
 .nav-link .link-pulse {
   position: absolute;
@@ -278,9 +910,7 @@ body.loaded .preloader {
   transform-origin: left;
 }
 
-.nav-link.active {
-  color: var(--ancestral-gold);
-}
+.nav-link.active { color: var(--ancestral-gold); }
 
 .nav-link.active .link-icon {
   color: var(--ancestral-gold);
@@ -421,10 +1051,7 @@ body.loaded .preloader {
 }
 
 @keyframes ripple {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
+  to { transform: scale(4); opacity: 0; }
 }
 
 /* ===== Hero Section ===== */
@@ -458,6 +1085,7 @@ body.loaded .preloader {
   font-weight: 300;
 }
 
+/* Global quantum button (site) */
 .quantum-btn {
   position: relative;
   background: transparent;
@@ -473,18 +1101,14 @@ body.loaded .preloader {
   z-index: 1;
 }
 
-.quantum-btn.pulse {
-  animation: btnPulse 2s infinite;
-}
+.quantum-btn.pulse { animation: btnPulse 2s infinite; }
 
 @keyframes btnPulse {
   0%, 100% { box-shadow: 0 0 5px var(--quantum-blue); }
   50% { box-shadow: 0 0 20px var(--quantum-blue); }
 }
 
-.quantum-btn:hover {
-  background: rgba(0, 247, 255, 0.1);
-}
+.quantum-btn:hover { background: rgba(0, 247, 255, 0.1); }
 
 .btn-glow {
   position: absolute;
@@ -498,6 +1122,7 @@ body.loaded .preloader {
   z-index: -1;
 }
 
+/* ===== Visual Glyphs ===== */
 .hero-visual {
   position: relative;
   flex: 1;
@@ -515,26 +1140,15 @@ body.loaded .preloader {
 .floating-glyphs span {
   font-size: 3rem;
   animation: float 6s ease-in-out infinite;
-  text-shadow: 
+  text-shadow:
     0 0 10px currentColor,
     0 0 20px rgba(255,255,255,0.3);
   transition: all 0.3s ease;
 }
 
-.floating-glyphs span:nth-child(1) {
-  color: var(--kemet-purple);
-  animation-delay: 0s;
-}
-
-.floating-glyphs span:nth-child(2) {
-  color: var(--quantum-blue);
-  animation-delay: 1s;
-}
-
-.floating-glyphs span:nth-child(3) {
-  color: var(--ancestral-gold);
-  animation-delay: 2s;
-}
+.floating-glyphs span:nth-child(1) { color: var(--kemet-purple); animation-delay: 0s; }
+.floating-glyphs span:nth-child(2) { color: var(--quantum-blue); animation-delay: 1s; }
+.floating-glyphs span:nth-child(3) { color: var(--ancestral-gold); animation-delay: 2s; }
 
 .floating-glyphs span:hover {
   transform: scale(1.2);
@@ -542,12 +1156,10 @@ body.loaded .preloader {
 }
 
 @keyframes float {
-  0%, 100% { 
-    transform: translateY(0) rotate(0deg); 
-  }
-  50% { 
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% {
     transform: translateY(-20px) rotate(5deg);
-    text-shadow: 
+    text-shadow:
       0 0 15px currentColor,
       0 0 30px rgba(255,255,255,0.5);
   }
@@ -592,15 +1204,13 @@ body.loaded .preloader {
   background: linear-gradient(90deg, var(--quantum-blue), transparent);
 }
 
-.deco-glyph {
-  font-size: 1.5rem;
-  color: var(--ancestral-gold);
-}
+.deco-glyph { font-size: 1.5rem; color: var(--ancestral-gold); }
 
 .galaxy-container {
   position: relative;
   width: 100%;
   height: 70vh;
+  min-height: 500px;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(0, 247, 255, 0.2);
@@ -619,6 +1229,8 @@ body.loaded .preloader {
   display: block;
   width: 100%;
   height: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .error-fallback {
@@ -635,6 +1247,7 @@ body.loaded .preloader {
   color: white;
   text-align: center;
   padding: 2rem;
+  z-index: 1000;
 }
 
 .error-fallback button {
@@ -646,13 +1259,6 @@ body.loaded .preloader {
   border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
-}
-
-.galaxy-container {
-  position: relative;
-  width: 100%;
-  height: 70vh;
-  min-height: 500px;
 }
 
 .galaxy-ui {
@@ -710,10 +1316,7 @@ body.loaded .preloader {
   transition: transform 0.3s ease;
 }
 
-.info-panel h3 {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
+.info-panel h3 { font-size: 1rem; margin-bottom: 0.5rem; }
 
 .info-panel p {
   font-size: 0.9rem;
@@ -739,15 +1342,8 @@ body.loaded .preloader {
   backdrop-filter: blur(2px);
 }
 
-.node-icon {
-  margin-right: 8px;
-  font-size: 1.2em;
-}
-
-.node-name {
-  font-size: 0.9em;
-  white-space: nowrap;
-}
+.node-icon { margin-right: 8px; font-size: 1.2em; }
+.node-name { font-size: 0.9em; white-space: nowrap; }
 
 /* Fallback Styles */
 .galaxy-fallback {
@@ -759,6 +1355,7 @@ body.loaded .preloader {
   align-items: center;
   justify-content: center;
   background-color: var(--cosmic-dark);
+  z-index: 1;
 }
 
 .fallback-image {
@@ -774,16 +1371,6 @@ body.loaded .preloader {
   font-family: 'Orbitron', sans-serif;
   text-align: center;
   font-size: 1.2rem;
-}
-
-/* Ensure canvas and fallback don't overlap */
-#galaxy-viewport canvas {
-  position: relative;
-  z-index: 2;
-}
-
-.galaxy-fallback {
-  z-index: 1;
 }
 
 /* ===== Cultural Nodes Section ===== */
@@ -836,11 +1423,9 @@ body.loaded .preloader {
 .node-card[data-culture="kemet"] .node-glow {
   background: radial-gradient(circle, rgba(157, 0, 255, 0.1), transparent 70%);
 }
-
 .node-card[data-culture="olmec"] .node-glow {
   background: radial-gradient(circle, rgba(0, 180, 138, 0.1), transparent 70%);
 }
-
 .node-card[data-culture="kumulipo"] .node-glow {
   background: radial-gradient(circle, rgba(0, 247, 255, 0.1), transparent 70%);
 }
@@ -851,17 +1436,9 @@ body.loaded .preloader {
   margin-bottom: 1rem;
 }
 
-.node-card[data-culture="kemet"] h3 {
-  color: var(--kemet-purple);
-}
-
-.node-card[data-culture="olmec"] h3 {
-  color: var(--olmec-jade);
-}
-
-.node-card[data-culture="kumulipo"] h3 {
-  color: var(--quantum-blue);
-}
+.node-card[data-culture="kemet"] h3 { color: var(--kemet-purple); }
+.node-card[data-culture="olmec"] h3 { color: var(--olmec-jade); }
+.node-card[data-culture="kumulipo"] h3 { color: var(--quantum-blue); }
 
 .node-card p {
   margin-bottom: 1.5rem;
@@ -881,9 +1458,7 @@ body.loaded .preloader {
   transition: all 0.3s ease;
 }
 
-.node-card:hover .node-connections span {
-  opacity: 1;
-}
+.node-card:hover .node-connections span { opacity: 1; }
 
 /* ===== Footer ===== */
 .quantum-footer {
@@ -925,7 +1500,6 @@ body.loaded .preloader {
   position: relative;
   font-size: 1.5rem;
   color: var(--star-white);
-  text-decoration: none;
   width: 50px;
   height: 50px;
   display: flex;
@@ -971,269 +1545,124 @@ body.loaded .preloader {
   opacity: 0.3;
 }
 
-/* ===== Error States ===== */
-.error-fallback {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: var(--cosmic-dark);
-padding: 2rem;
-text-align: center;
-z-index: 1000;
-}
-
-.error-fallback h3 {
-color: var(--quantum-blue);
-margin-bottom: 1rem;
-font-size: 1.5rem;
-}
-
-.error-fallback p {
-margin-bottom: 1.5rem;
-color: rgba(255, 255, 255, 0.8);
-}
-
-.error-fallback button {
-background: var(--quantum-blue);
-color: var(--cosmic-dark);
-border: none;
-padding: 0.75rem 1.5rem;
-border-radius: 4px;
-font-family: 'Orbitron', sans-serif;
-font-weight: 700;
-cursor: pointer;
-transition: all 0.3s ease;
-}
-
-.error-fallback button:hover {
-transform: translateY(-2px);
-box-shadow: 0 5px 15px rgba(0, 247, 255, 0.3);
-}
-
 /* ===== Responsive Adjustments ===== */
 @media (max-width: 1024px) {
-.galaxy-ui {
-flex-direction: column;
-align-items: flex-end;
-}
-
-.info-panel {
-max-width: 250px;
-}
-
-.nodes-section {
-grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
+  .galaxy-ui { flex-direction: column; align-items: flex-end; }
+  .info-panel { max-width: 250px; }
+  .nodes-section { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
 }
 
 @media (max-width: 768px) {
-.galaxy-container {
-height: 60vh;
-}
-
-.galaxy-ui {
-bottom: 10px;
-right: 10px;
-}
-
-.control-btn {
-width: 36px;
-height: 36px;
-}
-
-.info-panel {
-padding: 0.75rem;
-max-width: 200px;
-}
-
-.node-card {
-padding: 1.5rem;
-}
-
-.footer-grid {
-grid-template-columns: 1fr;
-gap: 1.5rem;
-}
-
-.footer-links {
-justify-content: center;
-}
+  .galaxy-container { height: 60vh; }
+  .galaxy-ui { bottom: 10px; right: 10px; }
+  .control-btn { width: 36px; height: 36px; }
+  .info-panel { padding: 0.75rem; max-width: 200px; }
+  .node-card { padding: 1.5rem; }
+  .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .footer-links { justify-content: center; }
 }
 
 @media (max-width: 480px) {
-.galaxy-container {
-height: 50vh;
-}
-
-.ui-controls {
-flex-direction: row;
-}
-
-.info-panel {
-display: none;
-}
-
-.node-card h3 {
-font-size: 1.25rem;
-}
-
-.node-connections span {
-font-size: 0.8rem;
-}
-
-.quantum-footer {
-padding: 2rem 1rem;
-}
-
-.footer-about h4 {
-font-size: 1.25rem;
-}
-
-.social-link {
-width: 40px;
-height: 40px;
-font-size: 1.25rem;
-}
+  .galaxy-container { height: 50vh; }
+  .ui-controls { flex-direction: row; }
+  .info-panel { display: none; }
+  .node-card h3 { font-size: 1.25rem; }
+  .node-connections span { font-size: 0.8rem; }
+  .quantum-footer { padding: 2rem 1rem; }
+  .footer-about h4 { font-size: 1.25rem; }
+  .social-link { width: 40px; height: 40px; font-size: 1.25rem; }
 }
 
 /* ===== Animation Enhancements ===== */
 @keyframes pulse-glow {
-0%, 100% {
-box-shadow: 0 0 5px var(--quantum-blue);
-}
-50% {
-box-shadow: 0 0 20px var(--quantum-blue);
-}
+  0%, 100% { box-shadow: 0 0 5px var(--quantum-blue); }
+  50%      { box-shadow: 0 0 20px var(--quantum-blue); }
 }
 
 @keyframes float-up {
-0%, 100% {
-transform: translateY(0);
-}
-50% {
-transform: translateY(-10px);
-}
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
 }
 
 /* ===== Utility Classes ===== */
 .text-gradient {
-background: linear-gradient(90deg, var(--ancestral-gold), var(--quantum-blue));
--webkit-background-clip: text;
-background-clip: text;
--webkit-text-fill-color: transparent;
+  background: linear-gradient(90deg, var(--ancestral-gold), var(--quantum-blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.glow-effect {
-text-shadow: 0 0 10px currentColor;
-}
+.glow-effect { text-shadow: 0 0 10px currentColor; }
 
-.hover-grow {
-transition: transform 0.3s ease;
-}
-
-.hover-grow:hover {
-transform: scale(1.05);
-}
+.hover-grow { transition: transform 0.3s ease; }
+.hover-grow:hover { transform: scale(1.05); }
 
 /* ===== Print Styles ===== */
 @media print {
-.quantum-nav,
-.video-background,
-.galaxy-ui,
-.quantum-footer {
-display: none;
-}
+  .quantum-nav,
+  .video-background,
+  .galaxy-ui,
+  .quantum-footer {
+    display: none;
+  }
 
-body {
-background: white;
-color: black;
-}
+  body { background: white; color: black; }
 
-.hero-section {
-min-height: auto;
-padding: 2rem 0;
-}
+  .hero-section { min-height: auto; padding: 2rem 0; }
 
-.hero-title {
-background: none;
--webkit-text-fill-color: black;
-color: black;
-}
+  .hero-title {
+    background: none;
+    -webkit-text-fill-color: black;
+    color: black;
+  }
+
+  .no-print { display: none !important; }
 }
 
 /* ===== Accessibility Improvements ===== */
 @media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 
-{
-animation: none !important;
-transition: none !important;
-}
+  .star-particle { display: none !important; }
+  .starwars-crawl::before,
+  .starwars-crawl::after {
+    display: none !important;
+  }
 }
 
 .sr-only {
-position: absolute;
-width: 1px;
-height: 1px;
-padding: 0;
-margin: -1px;
-overflow: hidden;
-clip: rect(0, 0, 0, 0);
-white-space: nowrap;
-border-width: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 
 /* ===== Dark/Light Mode Toggle ===== */
 @media (prefers-color-scheme: light) {
-body {
-background-color: #f0f0f0;
-color: #333;
-}
-
-.quantum-nav {
-background: rgba(255, 255, 255, 0.9);
-color: #333;
-}
-
-.nav-link {
-color: #333;
-}
+  body { background-color: #f0f0f0; color: #333; }
+  .quantum-nav { background: rgba(255, 255, 255, 0.9); color: #333; }
+  .nav-link { color: #333; }
 }
 
 /* ===== Custom Scrollbar ===== */
-::-webkit-scrollbar {
-width: 8px;
-}
-
-::-webkit-scrollbar-track {
-background: var(--cosmic-dark);
-}
-
-::-webkit-scrollbar-thumb {
-background: var(--quantum-blue);
-border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-background: var(--quantum-blue-dark);
-}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--cosmic-dark); }
+::-webkit-scrollbar-thumb { background: var(--quantum-blue); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--quantum-blue-dark); }
 
 /* ===== Focus Styles ===== */
 :focus-visible {
-outline: 2px solid var(--ancestral-gold);
-outline-offset: 2px;
-}
-
-/* ===== Print Styles ===== */
-@media print {
-.no-print {
-display: none !important;
-}
+  outline: 2px solid var(--ancestral-gold);
+  outline-offset: 2px;
 }
 
 /* ===== END OF STYLES ===== */
