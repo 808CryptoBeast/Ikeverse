@@ -178,6 +178,20 @@
     return `${abs.toFixed(2)}°${dir}`;
   }
 
+
+
+  function globeFacingOpacity(lon, lat) {
+    const lambda = (lon + GLOBE.rotate[0]) * Math.PI / 180;
+    const phi = lat * Math.PI / 180;
+    const phi0 = (-GLOBE.rotate[1]) * Math.PI / 180;
+
+    const dot =
+      Math.sin(phi0) * Math.sin(phi) +
+      Math.cos(phi0) * Math.cos(phi) * Math.cos(lambda);
+
+    if (dot <= 0) return 0;
+    return clamp(0.14 + Math.pow(dot, 1.15) * 0.86, 0, 1);
+  }
   function textBlob(c) {
     return [
       c.name,
@@ -1131,13 +1145,13 @@
     if (GLOBE.inited) {
       GLOBE.pathSel?.attr("d", "").attr("opacity", 0);
       GLOBE.lensSel?.attr("d", "").attr("opacity", 0);
-      for (const cfg of LAYER_THREAD_CONFIGS) GLOBE.threadSelByKey.get(cfg.key)?.attr("d", "").attr("opacity", 0);
+      for (const cfg of LAYER_THREAD_CONFIGS) GLOBE.threadLayerByKey.get(cfg.key)?.selectAll("path.cw-thread-link").remove();
       GLOBE.pulseSel?.style("display", "none");
     }
     if (MAP.inited) {
       MAP.pathSel?.attr("d", "").attr("opacity", 0);
       MAP.lensSel?.attr("d", "").attr("opacity", 0);
-      for (const cfg of LAYER_THREAD_CONFIGS) MAP.threadSelByKey.get(cfg.key)?.attr("d", "").attr("opacity", 0);
+      for (const cfg of LAYER_THREAD_CONFIGS) MAP.threadLayerByKey.get(cfg.key)?.selectAll("path.cw-thread-link").remove();
     }
   }
 
@@ -1203,6 +1217,74 @@
   }
 
   // ---------- Ranking peers for layer threads ----------
+
+
+  const LAYER_THEME_MAP = {
+    food: new Set(["Food", "Agriculture", "Exchange", "Stewardship"]),
+    water: new Set(["Water", "Ecology", "Stewardship"]),
+    navigation: new Set(["Navigation", "Seafaring", "Voyaging", "Maritime", "Exchange"]),
+    trade: new Set(["Trade", "Exchange", "Networks"]),
+    stewardship: new Set(["Stewardship", "Ecology", "Water", "Land"]),
+    governance: new Set(["Governance", "Law", "Institutions", "Administration"]),
+  };
+
+  function layerLinkMatch(link, cfg) {
+    const allow = LAYER_THEME_MAP[cfg.key];
+    if (!allow) return false;
+    return (link.themes || []).some((t) => allow.has(String(t)));
+  }
+
+  function buildLayerLinkData(cfg, limit = 10) {
+    const sel = getSelectedCulture();
+    if (!sel) return [];
+
+    const peers = layerPeers(cfg, limit);
+    return peers.map((peer) => {
+      const official = allLinks().find((l) => {
+        const samePair =
+          (l.source.id === sel.id && l.target.id === peer.id) ||
+          (l.source.id === peer.id && l.target.id === sel.id);
+        return samePair && layerLinkMatch(l, cfg);
+      });
+
+      return {
+        source: sel,
+        target: peer,
+        label: official?.label || `${cfg.label}: ${sel.name} ↔ ${peer.name}`,
+        themes: official?.themes || [cfg.label],
+        description:
+          official?.story ||
+          official?.description ||
+          `${cfg.label} connection surfaced from the currently selected culture and matching layer signals.`,
+        certainty: official?.certainty || "inferred"
+      };
+    });
+  }
+
+  function showLinkTooltip(event, link) {
+    if (!el.tooltip) return;
+    el.tooltip.style.display = "block";
+    el.tooltip.innerHTML = `
+      <div class="tooltip-title">${escapeHtml(link.source.symbol)} ${escapeHtml(link.source.name)} ↔ ${escapeHtml(link.target.symbol)} ${escapeHtml(link.target.name)}</div>
+      <div class="tooltip-sub"><strong>${escapeHtml(link.label || "Connection")}</strong></div>
+      <div class="tooltip-sub" style="margin-top:4px">${escapeHtml(link.description || "")}</div>
+      ${(link.themes || []).length ? `<div class="tooltip-sub" style="margin-top:6px">Themes: ${escapeHtml(link.themes.join(" • "))}</div>` : ""}
+      ${link.certainty ? `<div class="tooltip-sub" style="margin-top:4px">Certainty: ${escapeHtml(link.certainty)}</div>` : ""}
+    `;
+    moveTooltip(event);
+  }
+
+  function wireHoverablePathSelection(sel) {
+    sel
+      .attr("pointer-events", "stroke")
+      .on("pointerenter", (event, d) => showLinkTooltip(event, d))
+      .on("pointermove", (event) => moveTooltip(event))
+      .on("pointerleave", () => hideTooltip())
+      .on("click", (event, d) => {
+        event.stopPropagation();
+        selectCulture(d.target.id, true);
+      });
+  }
   function layerPeers(cfg, limit) {
     const sel = getSelectedCulture();
     if (!sel) return [];
@@ -1288,7 +1370,7 @@
 
     pathSel: null, // weave path
     lensSel: null, // lens highlight
-    threadSelByKey: new Map(),
+    threadLayerByKey: new Map(),
 
     linksSel: null,
     pulseSel: null,
@@ -1349,14 +1431,10 @@
     GLOBE.pathSel = GLOBE.layers.overlays.append("path").attr("class", "cw-weave-path").attr("pointer-events", "none").attr("opacity", 0);
 
     for (const cfg of LAYER_THREAD_CONFIGS) {
-      const p = GLOBE.layers.overlays
-        .append("path")
-        .attr("class", `cw-thread cw-thread--${cfg.key}`)
-        .attr("stroke", cfg.stroke)
-        .attr("stroke-dasharray", cfg.dash || null)
-        .attr("pointer-events", "none")
-        .attr("opacity", 0);
-      GLOBE.threadSelByKey.set(cfg.key, p);
+      const g = GLOBE.layers.overlays
+        .append("g")
+        .attr("class", `cw-thread-layer cw-thread-layer--${cfg.key}`);
+      GLOBE.threadLayerByKey.set(cfg.key, g);
     }
 
     updateGlobeLinksData();
@@ -1593,23 +1671,35 @@
 
     // Layer threads (selected -> peers)
     for (const cfg of LAYER_THREAD_CONFIGS) {
-      const pathSel = GLOBE.threadSelByKey.get(cfg.key);
-      if (!pathSel) continue;
+      const layer = GLOBE.threadLayerByKey.get(cfg.key);
+      if (!layer) continue;
 
       const on = Boolean(STATE.layers[cfg.key]);
-      if (!on || !sel || !geoVisible(sel.lon, sel.lat)) {
-        pathSel.attr("d", "").attr("opacity", 0);
-        continue;
-      }
+      const data =
+        on && sel && geoVisible(sel.lon, sel.lat)
+          ? buildLayerLinkData(cfg, 10).filter((d) => geoVisible(d.target.lon, d.target.lat))
+          : [];
 
-      const peers = layerPeers(cfg, 10).filter((c) => geoVisible(c.lon, c.lat));
-      if (!peers.length) {
-        pathSel.attr("d", "").attr("opacity", 0);
-        continue;
-      }
+      const paths = layer
+        .selectAll("path.cw-thread-link")
+        .data(data, (d) => `${cfg.key}__${d.source.id}__${d.target.id}`);
 
-      const pairs = peers.map((p) => [sel, p]);
-      pathSel.attr("d", multiArcPath(GLOBE.projection, pairs)).attr("opacity", 0.85);
+      const merged = paths.join(
+        (enter) =>
+          enter
+            .append("path")
+            .attr("class", `cw-thread cw-thread-link cw-thread--${cfg.key}`)
+            .attr("stroke", cfg.stroke)
+            .attr("stroke-dasharray", cfg.dash || null),
+        (update) => update,
+        (exit) => exit.remove(),
+      );
+
+      merged
+        .attr("d", (d) => arcPath(GLOBE.projection, d.source, d.target))
+        .attr("opacity", 0.85);
+
+      wireHoverablePathSelection(merged);
     }
 
     // Nodes
@@ -1619,8 +1709,12 @@
       .attr("opacity", (d) => {
         const v = geoVisible(d.lon, d.lat);
         if (!v) return 0;
-        if (lens !== "all" && !cultureMatchesLens(d) && d.id !== STATE.selectedId && d.id !== STATE.hoverId) return 0.28;
-        return 1;
+
+        const face = globeFacingOpacity(d.lon, d.lat);
+        if (lens !== "all" && !cultureMatchesLens(d) && d.id !== STATE.selectedId && d.id !== STATE.hoverId) {
+          return Math.max(0.16, face * 0.34);
+        }
+        return face;
       })
       .classed("is-selected", (d) => d.id === STATE.selectedId);
 
@@ -1635,9 +1729,22 @@
       .attr("opacity", (d) => {
         const v = geoVisible(d.lon, d.lat);
         if (!v) return 0;
-        if (!STATE.showLabels) return allow.has(d.id) ? 1 : 0;
-        if (lens !== "all" && !cultureMatchesLens(d) && !allow.has(d.id)) return 0.22;
-        return 1;
+
+        const face = globeFacingOpacity(d.lon, d.lat);
+
+        if (!STATE.showLabels) {
+          return allow.has(d.id) ? Math.max(0.8, face) : 0;
+        }
+
+        if (allow.has(d.id)) {
+          return Math.max(0.9, face);
+        }
+
+        if (lens !== "all" && !cultureMatchesLens(d)) {
+          return Math.max(0.08, face * 0.26);
+        }
+
+        return face;
       });
 
     if (STATE.showLabels) declutterLabels(GLOBE.labelsSel, GLOBE.width / 2, GLOBE.height / 2);
@@ -1683,7 +1790,7 @@
 
     pathSel: null,
     lensSel: null,
-    threadSelByKey: new Map(),
+    threadLayerByKey: new Map(),
 
     linksSel: null,
   };
@@ -1726,14 +1833,10 @@
     MAP.pathSel = MAP.layers.overlays.append("path").attr("class", "cw-weave-path").attr("pointer-events", "none").attr("opacity", 0);
 
     for (const cfg of LAYER_THREAD_CONFIGS) {
-      const p = MAP.layers.overlays
-        .append("path")
-        .attr("class", `cw-thread cw-thread--${cfg.key}`)
-        .attr("stroke", cfg.stroke)
-        .attr("stroke-dasharray", cfg.dash || null)
-        .attr("pointer-events", "none")
-        .attr("opacity", 0);
-      MAP.threadSelByKey.set(cfg.key, p);
+      const g = MAP.layers.overlays
+        .append("g")
+        .attr("class", `cw-thread-layer cw-thread-layer--${cfg.key}`);
+      MAP.threadLayerByKey.set(cfg.key, g);
     }
 
     updateMapLinksData();
@@ -1872,23 +1975,32 @@
 
     // Layer threads
     for (const cfg of LAYER_THREAD_CONFIGS) {
-      const pathSel = MAP.threadSelByKey.get(cfg.key);
-      if (!pathSel) continue;
+      const layer = MAP.threadLayerByKey.get(cfg.key);
+      if (!layer) continue;
 
       const on = Boolean(STATE.layers[cfg.key]);
-      if (!on || !sel) {
-        pathSel.attr("d", "").attr("opacity", 0);
-        continue;
-      }
+      const data = on && sel ? buildLayerLinkData(cfg, 10) : [];
 
-      const peers = layerPeers(cfg, 10);
-      if (!peers.length) {
-        pathSel.attr("d", "").attr("opacity", 0);
-        continue;
-      }
+      const paths = layer
+        .selectAll("path.cw-thread-link")
+        .data(data, (d) => `${cfg.key}__${d.source.id}__${d.target.id}`);
 
-      const pairs = peers.map((p) => [sel, p]);
-      pathSel.attr("d", mapMultiArc(pairs)).attr("opacity", 0.75);
+      const merged = paths.join(
+        (enter) =>
+          enter
+            .append("path")
+            .attr("class", `cw-thread cw-thread-link cw-thread--${cfg.key}`)
+            .attr("stroke", cfg.stroke)
+            .attr("stroke-dasharray", cfg.dash || null),
+        (update) => update,
+        (exit) => exit.remove(),
+      );
+
+      merged
+        .attr("d", (d) => mapArcPath(d.source, d.target))
+        .attr("opacity", 0.75);
+
+      wireHoverablePathSelection(merged);
     }
 
     MAP.nodesSel
@@ -1984,8 +2096,8 @@
             if (GLOBE.inited) GLOBE.pathSel?.attr("d", "").attr("opacity", 0);
             if (MAP.inited) MAP.pathSel?.attr("d", "").attr("opacity", 0);
           } else {
-            if (GLOBE.inited) GLOBE.threadSelByKey.get(k)?.attr("d", "").attr("opacity", 0);
-            if (MAP.inited) MAP.threadSelByKey.get(k)?.attr("d", "").attr("opacity", 0);
+            if (GLOBE.inited) GLOBE.threadLayerByKey.get(k)?.selectAll("path.cw-thread-link").remove();
+            if (MAP.inited) MAP.threadLayerByKey.get(k)?.selectAll("path.cw-thread-link").remove();
           }
         }
 

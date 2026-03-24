@@ -1,0 +1,2620 @@
+{
+  "version": 2,
+  "cultures": [
+    {
+      "id": "san",
+      "shortLabel": "SAN",
+      "priorityLabel": false,
+      "mobileSummary": "Southern African forager traditions known for deep ecological literacy, tracking intelligence, oral transmission, and cosmologies in which landscape, kinship, and survival knowledge are inseparable.",
+      "namedConcepts": [
+        {
+          "name": "Tracking as cognition",
+          "kind": "key term",
+          "desc": "Tracking as cognition is a recurring concept associated with San / ǃKung / Ju|’hoansi (Southern African Forager Traditions)."
+        },
+        {
+          "name": "Ecological literacy",
+          "kind": "key term",
+          "desc": "Ecological literacy is a recurring concept associated with San / ǃKung / Ju|’hoansi (Southern African Forager Traditions)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with San / ǃKung / Ju|’hoansi (Southern African Forager Traditions)."
+        },
+        {
+          "name": "Oral Tradition",
+          "kind": "key term",
+          "desc": "Oral Tradition is a recurring concept associated with San / ǃKung / Ju|’hoansi (Southern African Forager Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kanaka_kumulipo",
+          "cultureName": "Kanaka Maoli (Kumulipo Lineage)",
+          "concept": "Landscape Reading ↔ Multi-signal Intelligence",
+          "relation": "Both traditions emphasize high-resolution reading of environment, pattern, and relation rather than single-instrument certainty."
+        },
+        {
+          "cultureId": "maori",
+          "cultureName": "Māori (Aotearoa)",
+          "concept": "Ancestral Ecology ↔ Genealogical Ecology",
+          "relation": "Both can be read through relational ecological intelligence, though each tradition frames it through distinct language, ritual, and kinship structures."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "khoekhoe",
+      "shortLabel": "KHOEKHOE",
+      "priorityLabel": false,
+      "mobileSummary": "Pastoral southern African traditions in which herding, mobility, social relationship, and ecological timing form a linked system of survival, exchange, and continuity.",
+      "namedConcepts": [
+        {
+          "name": "Pastoral movement as infrastructure",
+          "kind": "key term",
+          "desc": "Pastoral movement as infrastructure is a recurring concept associated with Khoekhoe / Khoikhoi (Pastoral Southern African Traditions)."
+        },
+        {
+          "name": "Water and grazing knowledge",
+          "kind": "key term",
+          "desc": "Water and grazing knowledge is a recurring concept associated with Khoekhoe / Khoikhoi (Pastoral Southern African Traditions)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Khoekhoe / Khoikhoi (Pastoral Southern African Traditions)."
+        },
+        {
+          "name": "Pastoralism",
+          "kind": "key term",
+          "desc": "Pastoralism is a recurring concept associated with Khoekhoe / Khoikhoi (Pastoral Southern African Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "samoa",
+          "cultureName": "Sāmoa (Fa'a Sāmoa)",
+          "concept": "Mobility and Stewardship",
+          "relation": "Both pair movement with responsibility, treating access to life-supporting systems as socially regulated."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "great_zimbabwe",
+      "shortLabel": "ZIMBABWE",
+      "priorityLabel": true,
+      "mobileSummary": "A southern African stone-built urban and political center associated with Shona-speaking traditions, long-distance trade, cattle wealth, and the coordination of authority, landscape, and exchange.",
+      "namedConcepts": [
+        {
+          "name": "Stone architecture as legitimacy",
+          "kind": "key term",
+          "desc": "Stone architecture as legitimacy is a recurring concept associated with Great Zimbabwe / Shona State Traditions."
+        },
+        {
+          "name": "Trade and cattle as infrastructure",
+          "kind": "key term",
+          "desc": "Trade and cattle as infrastructure is a recurring concept associated with Great Zimbabwe / Shona State Traditions."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Great Zimbabwe / Shona State Traditions."
+        },
+        {
+          "name": "Architecture",
+          "kind": "key term",
+          "desc": "Architecture is a recurring concept associated with Great Zimbabwe / Shona State Traditions."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kush",
+          "cultureName": "Kush / Nubian Kingdoms (Kerma → Napata → Meroë)",
+          "concept": "Corridor Governance and Monumental Legitimacy",
+          "relation": "Both traditions link political legitimacy, architecture, and trade corridors into durable regional systems."
+        },
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "Stone, Order, and Authority",
+          "relation": "A comparative bridge through monumental construction, political authority, and the relationship between built form and legitimacy."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "tswana",
+      "shortLabel": "TSWANA",
+      "priorityLabel": false,
+      "mobileSummary": "Tswana traditions emphasizing town organization, cattle, household production, chieftaincy, and long-duration regional political formation across southern Africa.",
+      "namedConcepts": [
+        {
+          "name": "Town and chiefdom organization",
+          "kind": "key term",
+          "desc": "Town and chiefdom organization is a recurring concept associated with Tswana (Southern African Tswana Polity Traditions)."
+        },
+        {
+          "name": "Cattle-centered systems",
+          "kind": "key term",
+          "desc": "Cattle-centered systems is a recurring concept associated with Tswana (Southern African Tswana Polity Traditions)."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Tswana (Southern African Tswana Polity Traditions)."
+        },
+        {
+          "name": "Oral Tradition",
+          "kind": "key term",
+          "desc": "Oral Tradition is a recurring concept associated with Tswana (Southern African Tswana Polity Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "xhosa",
+          "cultureName": "Xhosa (Southern Nguni Traditions)",
+          "concept": "Southern African Governance and Cattle Worlds",
+          "relation": "Both traditions tie cattle, kinship, and community authority into durable regional structures."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "xhosa",
+      "shortLabel": "XHOSA",
+      "priorityLabel": false,
+      "mobileSummary": "Southern Nguni traditions shaped by kinship, speech, cattle, agriculture, ceremony, and layered political organization across the Eastern Cape and surrounding regions.",
+      "namedConcepts": [
+        {
+          "name": "Kinship and clan continuity",
+          "kind": "key term",
+          "desc": "Kinship and clan continuity is a recurring concept associated with Xhosa (Southern Nguni Traditions)."
+        },
+        {
+          "name": "Speech and customary process",
+          "kind": "key term",
+          "desc": "Speech and customary process is a recurring concept associated with Xhosa (Southern Nguni Traditions)."
+        },
+        {
+          "name": "Oral Tradition",
+          "kind": "key term",
+          "desc": "Oral Tradition is a recurring concept associated with Xhosa (Southern Nguni Traditions)."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Xhosa (Southern Nguni Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "tswana",
+          "cultureName": "Tswana (Southern African Tswana Polity Traditions)",
+          "concept": "Southern African Governance and Cattle Worlds",
+          "relation": "Both traditions tie cattle, kinship, and community authority into durable regional structures."
+        },
+        {
+          "cultureId": "zulu",
+          "cultureName": "Zulu (Zulu Kingdom and Nguni Continuities)",
+          "concept": "Nguni Continuities",
+          "relation": "Both belong to southern Nguni worlds where speech, lineage, cattle, conflict, and ceremony are tightly interwoven."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "zulu",
+      "shortLabel": "ZULU",
+      "priorityLabel": false,
+      "mobileSummary": "Nguni traditions including the Zulu kingdom, where military organization, age-grade and regimental systems, cattle, speech, and kingship became tightly integrated forms of political and social structure.",
+      "namedConcepts": [
+        {
+          "name": "Regimental organization",
+          "kind": "key term",
+          "desc": "Regimental organization is a recurring concept associated with Zulu (Zulu Kingdom and Nguni Continuities)."
+        },
+        {
+          "name": "Kingship and cattle",
+          "kind": "key term",
+          "desc": "Kingship and cattle is a recurring concept associated with Zulu (Zulu Kingdom and Nguni Continuities)."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Zulu (Zulu Kingdom and Nguni Continuities)."
+        },
+        {
+          "name": "Martial Arts",
+          "kind": "key term",
+          "desc": "Martial Arts is a recurring concept associated with Zulu (Zulu Kingdom and Nguni Continuities)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "xhosa",
+          "cultureName": "Xhosa (Southern Nguni Traditions)",
+          "concept": "Nguni Continuities",
+          "relation": "Both belong to southern Nguni worlds where speech, lineage, cattle, conflict, and ceremony are tightly interwoven."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "mesopotamia",
+      "shortLabel": "MESOPOTAMIA",
+      "priorityLabel": true,
+      "mobileSummary": "A river-corridor world where cities, writing, administration, irrigation, and temple-palace institutions developed in relation to the Tigris and Euphrates. Knowledge and power were carried together through records, canals, labor, and ritual order.",
+      "namedConcepts": [
+        {
+          "name": "Water control as statecraft",
+          "kind": "key term",
+          "desc": "Water control as statecraft is a recurring concept associated with Mesopotamia (River-Corridor Civilizations)."
+        },
+        {
+          "name": "Writing as administrative memory",
+          "kind": "key term",
+          "desc": "Writing as administrative memory is a recurring concept associated with Mesopotamia (River-Corridor Civilizations)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Mesopotamia (River-Corridor Civilizations)."
+        },
+        {
+          "name": "Cosmology",
+          "kind": "key term",
+          "desc": "Cosmology is a recurring concept associated with Mesopotamia (River-Corridor Civilizations)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "River Civilizations",
+          "relation": "Both are major river-corridor civilizations in which hydrology, administration, and symbolic systems become infrastructure."
+        },
+        {
+          "cultureId": "kanaka_kumulipo",
+          "cultureName": "Kanaka Maoli (Kumulipo Lineage)",
+          "concept": "Creation as Structured Worldmaking",
+          "relation": "Not equivalents, but both can be read as traditions in which emergence, order, and human responsibility are inseparable."
+        },
+        {
+          "cultureId": "mali",
+          "cultureName": "Mali Empire (Scholarly West Africa)",
+          "concept": "Manuscript and scribal cultures",
+          "relation": "Both treat written knowledge as civic infrastructure requiring institutional support — scribal schools and manuscript centers as governance mechanisms."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "sumer",
+      "shortLabel": "SUMER",
+      "priorityLabel": false,
+      "mobileSummary": "Southern Mesopotamian city-state traditions associated with early cuneiform, temple institutions, irrigation agriculture, and civic organization at scale.",
+      "namedConcepts": [
+        {
+          "name": "Temple coordination",
+          "kind": "key term",
+          "desc": "Temple coordination is a recurring concept associated with Sumer (Southern Mesopotamian City-State Traditions)."
+        },
+        {
+          "name": "Writing and accounting",
+          "kind": "key term",
+          "desc": "Writing and accounting is a recurring concept associated with Sumer (Southern Mesopotamian City-State Traditions)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Sumer (Southern Mesopotamian City-State Traditions)."
+        },
+        {
+          "name": "Writing",
+          "kind": "key term",
+          "desc": "Writing is a recurring concept associated with Sumer (Southern Mesopotamian City-State Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "Writing, Measurement, and Civic Order",
+          "relation": "A comparative bridge through early writing, recordkeeping, civic organization, and measurement cultures."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "akkad",
+      "shortLabel": "AKKAD",
+      "priorityLabel": false,
+      "mobileSummary": "A Semitic imperial formation centered on Akkad/Agade, associated with the political unification of Mesopotamian city-states under Sargon and his successors, extending administrative and military coordination across a wider imperial frame.",
+      "namedConcepts": [
+        {
+          "name": "Imperial integration",
+          "kind": "key term",
+          "desc": "Imperial integration is a recurring concept associated with Akkad / Akkadian Empire."
+        },
+        {
+          "name": "Administrative scaling",
+          "kind": "key term",
+          "desc": "Administrative scaling is a recurring concept associated with Akkad / Akkadian Empire."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Akkad / Akkadian Empire."
+        },
+        {
+          "name": "Writing",
+          "kind": "key term",
+          "desc": "Writing is a recurring concept associated with Akkad / Akkadian Empire."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "assyria",
+          "cultureName": "Assyria",
+          "concept": "Imperial Scale and Corridor Control",
+          "relation": "Both show how written command, military organization, and corridor control scale political power."
+        },
+        {
+          "cultureId": "babylonia",
+          "cultureName": "Babylonia",
+          "concept": "Imperial and Scribal Continuities",
+          "relation": "Both participate in long Mesopotamian continuities of writing, administration, literature, and political order."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "babylonia",
+      "shortLabel": "BABYLONIA",
+      "priorityLabel": true,
+      "mobileSummary": "A Mesopotamian political and intellectual center associated with royal law, scribal continuity, temple life, and long-duration urban culture. Babylonia combined legal, ritual, and astronomical traditions with river-corridor governance.",
+      "namedConcepts": [
+        {
+          "name": "Royal law and civic order",
+          "kind": "key term",
+          "desc": "Royal law and civic order is a recurring concept associated with Babylonia."
+        },
+        {
+          "name": "Scribal continuity",
+          "kind": "key term",
+          "desc": "Scribal continuity is a recurring concept associated with Babylonia."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Babylonia."
+        },
+        {
+          "name": "Writing",
+          "kind": "key term",
+          "desc": "Writing is a recurring concept associated with Babylonia."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "akkad",
+          "cultureName": "Akkad / Akkadian Empire",
+          "concept": "Imperial and Scribal Continuities",
+          "relation": "Both participate in long Mesopotamian continuities of writing, administration, literature, and political order."
+        },
+        {
+          "cultureId": "maya",
+          "cultureName": "Maya Civilization",
+          "concept": "Cosmology, Writing, and Time",
+          "relation": "A comparative bridge through literate cosmology, calendrical or astronomical learning, and civic ritual order."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "assyria",
+      "shortLabel": "ASSYRIA",
+      "priorityLabel": false,
+      "mobileSummary": "Northern Mesopotamian traditions associated with long-duration urban centers, imperial administration, military organization, archive-building, and corridor control linking northern and southern Mesopotamia with wider western Asian networks.",
+      "namedConcepts": [
+        {
+          "name": "Imperial governance through archives",
+          "kind": "key term",
+          "desc": "Imperial governance through archives is a recurring concept associated with Assyria."
+        },
+        {
+          "name": "Military organization as infrastructure",
+          "kind": "key term",
+          "desc": "Military organization as infrastructure is a recurring concept associated with Assyria."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Assyria."
+        },
+        {
+          "name": "Empire",
+          "kind": "key term",
+          "desc": "Empire is a recurring concept associated with Assyria."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "akkad",
+          "cultureName": "Akkad / Akkadian Empire",
+          "concept": "Imperial Scale and Corridor Control",
+          "relation": "Both show how written command, military organization, and corridor control scale political power."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "san",
+      "shortLabel": "SAN",
+      "priorityLabel": false,
+      "mobileSummary": "Southern African forager traditions known for deep ecological literacy, tracking intelligence, oral transmission, and cosmologies in which landscape, kinship, and survival knowledge are inseparable.",
+      "namedConcepts": [
+        {
+          "name": "Tracking as cognition",
+          "kind": "key term",
+          "desc": "Tracking as cognition is a recurring concept associated with San / ǃKung / Ju|'hoansi (Southern African Forager Traditions)."
+        },
+        {
+          "name": "Ecological literacy",
+          "kind": "key term",
+          "desc": "Ecological literacy is a recurring concept associated with San / ǃKung / Ju|'hoansi (Southern African Forager Traditions)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with San / ǃKung / Ju|'hoansi (Southern African Forager Traditions)."
+        },
+        {
+          "name": "Oral Tradition",
+          "kind": "key term",
+          "desc": "Oral Tradition is a recurring concept associated with San / ǃKung / Ju|'hoansi (Southern African Forager Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kanaka_kumulipo",
+          "cultureName": "Kanaka Maoli (Kumulipo Lineage)",
+          "concept": "Landscape Reading ↔ Multi-signal Intelligence",
+          "relation": "Both traditions emphasize high-resolution reading of environment, pattern, and relation rather than single-instrument certainty."
+        },
+        {
+          "cultureId": "maori",
+          "cultureName": "Māori (Aotearoa)",
+          "concept": "Ancestral Ecology ↔ Genealogical Ecology",
+          "relation": "Both can be read through relational ecological intelligence, though each tradition frames it through distinct language, ritual, and kinship structures."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "khoekhoe",
+      "shortLabel": "KHOEKHOE",
+      "priorityLabel": false,
+      "mobileSummary": "Pastoral southern African traditions in which herding, mobility, social relationship, and ecological timing form a linked system of survival, exchange, and continuity.",
+      "namedConcepts": [
+        {
+          "name": "Pastoral movement as infrastructure",
+          "kind": "key term",
+          "desc": "Pastoral movement as infrastructure is a recurring concept associated with Khoekhoe / Khoikhoi (Pastoral Southern African Traditions)."
+        },
+        {
+          "name": "Water and grazing knowledge",
+          "kind": "key term",
+          "desc": "Water and grazing knowledge is a recurring concept associated with Khoekhoe / Khoikhoi (Pastoral Southern African Traditions)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Khoekhoe / Khoikhoi (Pastoral Southern African Traditions)."
+        },
+        {
+          "name": "Pastoralism",
+          "kind": "key term",
+          "desc": "Pastoralism is a recurring concept associated with Khoekhoe / Khoikhoi (Pastoral Southern African Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "samoa",
+          "cultureName": "Sāmoa (Fa'a Sāmoa)",
+          "concept": "Mobility and Stewardship",
+          "relation": "Both pair movement with responsibility, treating access to life-supporting systems as socially regulated."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "great_zimbabwe",
+      "shortLabel": "ZIMBABWE",
+      "priorityLabel": true,
+      "mobileSummary": "A southern African stone-built urban and political center associated with Shona-speaking traditions, long-distance trade, cattle wealth, and the coordination of authority, landscape, and exchange.",
+      "namedConcepts": [
+        {
+          "name": "Stone architecture as legitimacy",
+          "kind": "key term",
+          "desc": "Stone architecture as legitimacy is a recurring concept associated with Great Zimbabwe / Shona State Traditions."
+        },
+        {
+          "name": "Trade and cattle as infrastructure",
+          "kind": "key term",
+          "desc": "Trade and cattle as infrastructure is a recurring concept associated with Great Zimbabwe / Shona State Traditions."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Great Zimbabwe / Shona State Traditions."
+        },
+        {
+          "name": "Architecture",
+          "kind": "key term",
+          "desc": "Architecture is a recurring concept associated with Great Zimbabwe / Shona State Traditions."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kush",
+          "cultureName": "Kush / Nubian Kingdoms (Kerma → Napata → Meroë)",
+          "concept": "Corridor Governance and Monumental Legitimacy",
+          "relation": "Both traditions link political legitimacy, architecture, and trade corridors into durable regional systems."
+        },
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "Stone, Order, and Authority",
+          "relation": "A comparative bridge through monumental construction, political authority, and the relationship between built form and legitimacy."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "tswana",
+      "shortLabel": "TSWANA",
+      "priorityLabel": false,
+      "mobileSummary": "Tswana traditions emphasizing town organization, cattle, household production, chieftaincy, and long-duration regional political formation across southern Africa.",
+      "namedConcepts": [
+        {
+          "name": "Town and chiefdom organization",
+          "kind": "key term",
+          "desc": "Town and chiefdom organization is a recurring concept associated with Tswana (Southern African Tswana Polity Traditions)."
+        },
+        {
+          "name": "Cattle-centered systems",
+          "kind": "key term",
+          "desc": "Cattle-centered systems is a recurring concept associated with Tswana (Southern African Tswana Polity Traditions)."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Tswana (Southern African Tswana Polity Traditions)."
+        },
+        {
+          "name": "Oral Tradition",
+          "kind": "key term",
+          "desc": "Oral Tradition is a recurring concept associated with Tswana (Southern African Tswana Polity Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "xhosa",
+          "cultureName": "Xhosa (Southern Nguni Traditions)",
+          "concept": "Southern African Governance and Cattle Worlds",
+          "relation": "Both traditions tie cattle, kinship, and community authority into durable regional structures."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "xhosa",
+      "shortLabel": "XHOSA",
+      "priorityLabel": false,
+      "mobileSummary": "Southern Nguni traditions shaped by kinship, speech, cattle, agriculture, ceremony, and layered political organization across the Eastern Cape and surrounding regions.",
+      "namedConcepts": [
+        {
+          "name": "Kinship and clan continuity",
+          "kind": "key term",
+          "desc": "Kinship and clan continuity is a recurring concept associated with Xhosa (Southern Nguni Traditions)."
+        },
+        {
+          "name": "Speech and customary process",
+          "kind": "key term",
+          "desc": "Speech and customary process is a recurring concept associated with Xhosa (Southern Nguni Traditions)."
+        },
+        {
+          "name": "Oral Tradition",
+          "kind": "key term",
+          "desc": "Oral Tradition is a recurring concept associated with Xhosa (Southern Nguni Traditions)."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Xhosa (Southern Nguni Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "tswana",
+          "cultureName": "Tswana (Southern African Tswana Polity Traditions)",
+          "concept": "Southern African Governance and Cattle Worlds",
+          "relation": "Both traditions tie cattle, kinship, and community authority into durable regional structures."
+        },
+        {
+          "cultureId": "zulu",
+          "cultureName": "Zulu (Zulu Kingdom and Nguni Continuities)",
+          "concept": "Nguni Continuities",
+          "relation": "Both belong to southern Nguni worlds where speech, lineage, cattle, conflict, and ceremony are tightly interwoven."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "zulu",
+      "shortLabel": "ZULU",
+      "priorityLabel": false,
+      "mobileSummary": "Nguni traditions including the Zulu kingdom, where military organization, age-grade and regimental systems, cattle, speech, and kingship became tightly integrated forms of political and social structure.",
+      "namedConcepts": [
+        {
+          "name": "Regimental organization",
+          "kind": "key term",
+          "desc": "Regimental organization is a recurring concept associated with Zulu (Zulu Kingdom and Nguni Continuities)."
+        },
+        {
+          "name": "Kingship and cattle",
+          "kind": "key term",
+          "desc": "Kingship and cattle is a recurring concept associated with Zulu (Zulu Kingdom and Nguni Continuities)."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Zulu (Zulu Kingdom and Nguni Continuities)."
+        },
+        {
+          "name": "Martial Arts",
+          "kind": "key term",
+          "desc": "Martial Arts is a recurring concept associated with Zulu (Zulu Kingdom and Nguni Continuities)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "xhosa",
+          "cultureName": "Xhosa (Southern Nguni Traditions)",
+          "concept": "Nguni Continuities",
+          "relation": "Both belong to southern Nguni worlds where speech, lineage, cattle, conflict, and ceremony are tightly interwoven."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "mesopotamia",
+      "shortLabel": "MESOPOTAMIA",
+      "priorityLabel": true,
+      "mobileSummary": "A river-corridor world where cities, writing, administration, irrigation, and temple-palace institutions developed in relation to the Tigris and Euphrates. Knowledge and power were carried together through records, canals, labor, and ritual order.",
+      "namedConcepts": [
+        {
+          "name": "Water control as statecraft",
+          "kind": "key term",
+          "desc": "Water control as statecraft is a recurring concept associated with Mesopotamia (River-Corridor Civilizations)."
+        },
+        {
+          "name": "Writing as administrative memory",
+          "kind": "key term",
+          "desc": "Writing as administrative memory is a recurring concept associated with Mesopotamia (River-Corridor Civilizations)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Mesopotamia (River-Corridor Civilizations)."
+        },
+        {
+          "name": "Cosmology",
+          "kind": "key term",
+          "desc": "Cosmology is a recurring concept associated with Mesopotamia (River-Corridor Civilizations)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "River Civilizations",
+          "relation": "Both are major river-corridor civilizations in which hydrology, administration, and symbolic systems become infrastructure."
+        },
+        {
+          "cultureId": "kanaka_kumulipo",
+          "cultureName": "Kanaka Maoli (Kumulipo Lineage)",
+          "concept": "Creation as Structured Worldmaking",
+          "relation": "Not equivalents, but both can be read as traditions in which emergence, order, and human responsibility are inseparable."
+        },
+        {
+          "cultureId": "mali",
+          "cultureName": "Mali Empire (Scholarly West Africa)",
+          "concept": "Manuscript and scribal cultures",
+          "relation": "Both treat written knowledge as civic infrastructure requiring institutional support — scribal schools and manuscript centers as governance mechanisms."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "sumer",
+      "shortLabel": "SUMER",
+      "priorityLabel": false,
+      "mobileSummary": "Southern Mesopotamian city-state traditions associated with early cuneiform, temple institutions, irrigation agriculture, and civic organization at scale.",
+      "namedConcepts": [
+        {
+          "name": "Temple coordination",
+          "kind": "key term",
+          "desc": "Temple coordination is a recurring concept associated with Sumer (Southern Mesopotamian City-State Traditions)."
+        },
+        {
+          "name": "Writing and accounting",
+          "kind": "key term",
+          "desc": "Writing and accounting is a recurring concept associated with Sumer (Southern Mesopotamian City-State Traditions)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Sumer (Southern Mesopotamian City-State Traditions)."
+        },
+        {
+          "name": "Writing",
+          "kind": "key term",
+          "desc": "Writing is a recurring concept associated with Sumer (Southern Mesopotamian City-State Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "Writing, Measurement, and Civic Order",
+          "relation": "A comparative bridge through early writing, recordkeeping, civic organization, and measurement cultures."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "akkad",
+      "shortLabel": "AKKAD",
+      "priorityLabel": false,
+      "mobileSummary": "A Semitic imperial formation centered on Akkad/Agade, associated with the political unification of Mesopotamian city-states under Sargon and his successors, extending administrative and military coordination across a wider imperial frame.",
+      "namedConcepts": [
+        {
+          "name": "Imperial integration",
+          "kind": "key term",
+          "desc": "Imperial integration is a recurring concept associated with Akkad / Akkadian Empire."
+        },
+        {
+          "name": "Administrative scaling",
+          "kind": "key term",
+          "desc": "Administrative scaling is a recurring concept associated with Akkad / Akkadian Empire."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Akkad / Akkadian Empire."
+        },
+        {
+          "name": "Writing",
+          "kind": "key term",
+          "desc": "Writing is a recurring concept associated with Akkad / Akkadian Empire."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "assyria",
+          "cultureName": "Assyria",
+          "concept": "Imperial Scale and Corridor Control",
+          "relation": "Both show how written command, military organization, and corridor control scale political power."
+        },
+        {
+          "cultureId": "babylonia",
+          "cultureName": "Babylonia",
+          "concept": "Imperial and Scribal Continuities",
+          "relation": "Both participate in long Mesopotamian continuities of writing, administration, literature, and political order."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "babylonia",
+      "shortLabel": "BABYLONIA",
+      "priorityLabel": true,
+      "mobileSummary": "A Mesopotamian political and intellectual center associated with royal law, scribal continuity, temple life, and long-duration urban culture. Babylonia combined legal, ritual, and astronomical traditions with river-corridor governance.",
+      "namedConcepts": [
+        {
+          "name": "Royal law and civic order",
+          "kind": "key term",
+          "desc": "Royal law and civic order is a recurring concept associated with Babylonia."
+        },
+        {
+          "name": "Scribal continuity",
+          "kind": "key term",
+          "desc": "Scribal continuity is a recurring concept associated with Babylonia."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Babylonia."
+        },
+        {
+          "name": "Writing",
+          "kind": "key term",
+          "desc": "Writing is a recurring concept associated with Babylonia."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "akkad",
+          "cultureName": "Akkad / Akkadian Empire",
+          "concept": "Imperial and Scribal Continuities",
+          "relation": "Both participate in long Mesopotamian continuities of writing, administration, literature, and political order."
+        },
+        {
+          "cultureId": "maya",
+          "cultureName": "Maya Civilization",
+          "concept": "Cosmology, Writing, and Time",
+          "relation": "A comparative bridge through literate cosmology, calendrical or astronomical learning, and civic ritual order."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "assyria",
+      "shortLabel": "ASSYRIA",
+      "priorityLabel": false,
+      "mobileSummary": "Northern Mesopotamian traditions associated with long-duration urban centers, imperial administration, military organization, archive-building, and corridor control linking northern and southern Mesopotamia with wider western Asian networks.",
+      "namedConcepts": [
+        {
+          "name": "Imperial governance through archives",
+          "kind": "key term",
+          "desc": "Imperial governance through archives is a recurring concept associated with Assyria."
+        },
+        {
+          "name": "Military organization as infrastructure",
+          "kind": "key term",
+          "desc": "Military organization as infrastructure is a recurring concept associated with Assyria."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Assyria."
+        },
+        {
+          "name": "Empire",
+          "kind": "key term",
+          "desc": "Empire is a recurring concept associated with Assyria."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "akkad",
+          "cultureName": "Akkad / Akkadian Empire",
+          "concept": "Imperial Scale and Corridor Control",
+          "relation": "Both show how written command, military organization, and corridor control scale political power."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "kemet",
+      "shortLabel": "KEMET",
+      "priorityLabel": true,
+      "mobileSummary": "A Nile-centered system where Ma’at, Heka, creation, governance, and cosmic order work together. Strong parallels can be drawn with Hawaiian relational balance and emergence, but without collapsing either tradition into the other.",
+      "namedConcepts": [
+        {
+          "name": "Ma’at",
+          "kind": "cosmic-ethical order",
+          "desc": "Truth, justice, balance, right relationship, and ordered life."
+        },
+        {
+          "name": "Heka",
+          "kind": "intentional power",
+          "desc": "Intentional alignment through word, attention, and ritual efficacy."
+        },
+        {
+          "name": "Nun",
+          "kind": "cosmogony",
+          "desc": "Primordial undifferentiated potential from which ordered existence emerges."
+        },
+        {
+          "name": "Atum",
+          "kind": "creator principle",
+          "desc": "Self-arising creator associated with ordered differentiation into world structure."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kanaka_kumulipo",
+          "cultureName": "Kanaka Maoli (Kumulipo Lineage)",
+          "concept": "Aloha / Pono",
+          "relation": "Ma’at can be compared with the balance, righteousness, and right-relationship dimensions within the broader Aloha framework."
+        },
+        {
+          "cultureId": "kanaka_kumulipo",
+          "cultureName": "Kanaka Maoli (Kumulipo Lineage)",
+          "concept": "Pō / Kumulipo",
+          "relation": "Creation from primordial depth can be placed in dialogue with emergence from Pō into Ao."
+        },
+        {
+          "cultureId": "maori",
+          "cultureName": "Māori (Aotearoa)",
+          "concept": "Tikanga",
+          "relation": "Comparable as a framework of correct practice, order, and maintained relationship."
+        },
+        {
+          "cultureId": "taino",
+          "cultureName": "Taíno (Borikén / Puerto Rico)",
+          "concept": "Atabey / Yúcahu",
+          "relation": "A cautious comparison around generative order, fertility, sustenance, and sacred life structure."
+        }
+      ],
+      "readingLinks": [
+        {
+          "title": "Creation myths and forms of the gods in ancient Egypt",
+          "url": "https://smarthistory.org/creation-myths-and-forms-of-the-gods-in-ancient-egypt/",
+          "kind": "Essay",
+          "desc": "Overview of major Egyptian cosmogonies."
+        },
+        {
+          "title": "Atum",
+          "url": "https://en.wikipedia.org/wiki/Atum",
+          "kind": "Reference",
+          "desc": "Primer on Atum and related traditions."
+        },
+        {
+          "title": "Ma’at overview",
+          "url": "https://www.britannica.com/topic/Maat-Egyptian-goddess",
+          "kind": "Reference",
+          "desc": "Concise overview of Ma’at as truth, justice, and cosmic order."
+        }
+      ]
+    },
+    {
+      "id": "kush",
+      "shortLabel": "KUSH / NUBIAN KINGDOMS",
+      "priorityLabel": false,
+      "mobileSummary": "Upper Nile polities with long-duration state formation, corridor trade, and distinctive sacred and civic architectures. Nubian systems operated the Nile as a logistics spine—linking ecological planning, governance, and exchange across Africa and the Red Sea world.",
+      "namedConcepts": [
+        {
+          "name": "Nile corridor governance",
+          "kind": "key term",
+          "desc": "Nile corridor governance is a recurring concept associated with Kush / Nubian Kingdoms (Kerma → Napata → Meroë)."
+        },
+        {
+          "name": "Trade as strategy",
+          "kind": "key term",
+          "desc": "Trade as strategy is a recurring concept associated with Kush / Nubian Kingdoms (Kerma → Napata → Meroë)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Kush / Nubian Kingdoms (Kerma → Napata → Meroë)."
+        },
+        {
+          "name": "Cosmology",
+          "kind": "key term",
+          "desc": "Cosmology is a recurring concept associated with Kush / Nubian Kingdoms (Kerma → Napata → Meroë)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "great_zimbabwe",
+          "cultureName": "Great Zimbabwe / Shona State Traditions",
+          "concept": "Corridor Governance and Monumental Legitimacy",
+          "relation": "Both traditions link political legitimacy, architecture, and trade corridors into durable regional systems."
+        },
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "Nile corridor governance",
+          "relation": "Both operate the Nile as logistics spine: movement, provisioning, legitimacy, and corridor intelligence shaping long-duration institutions."
+        },
+        {
+          "cultureId": "punt",
+          "cultureName": "Land of Punt (Red Sea / Horn of Africa Exchange Sphere)",
+          "concept": "Upper Nile ↔ Red Sea interface",
+          "relation": "Interior corridor governance links to littoral exchange: routes, goods, and alliance networks bridging ecological zones."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "punt",
+      "shortLabel": "LAND OF PUNT",
+      "priorityLabel": false,
+      "mobileSummary": "A historically referenced exchange sphere associated with Red Sea trade networks connecting Northeast Africa with the Horn and broader littoral corridors. Best understood as a node/region in maritime exchange rather than a single unified state.",
+      "namedConcepts": [
+        {
+          "name": "Corridor intelligence",
+          "kind": "key term",
+          "desc": "Corridor intelligence is a recurring concept associated with Land of Punt (Red Sea / Horn of Africa Exchange Sphere)."
+        },
+        {
+          "name": "Trade as knowledge flow",
+          "kind": "key term",
+          "desc": "Trade as knowledge flow is a recurring concept associated with Land of Punt (Red Sea / Horn of Africa Exchange Sphere)."
+        },
+        {
+          "name": "Trade",
+          "kind": "key term",
+          "desc": "Trade is a recurring concept associated with Land of Punt (Red Sea / Horn of Africa Exchange Sphere)."
+        },
+        {
+          "name": "Networks",
+          "kind": "key term",
+          "desc": "Networks is a recurring concept associated with Land of Punt (Red Sea / Horn of Africa Exchange Sphere)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "Red Sea exchange corridors",
+          "relation": "Riverine and littoral systems connect through Red Sea routes: ports, winds, seasonal windows, and relationship-based trade infrastructure."
+        },
+        {
+          "cultureId": "kush",
+          "cultureName": "Kush / Nubian Kingdoms (Kerma → Napata → Meroë)",
+          "concept": "Upper Nile ↔ Red Sea interface",
+          "relation": "Interior corridor governance links to littoral exchange: routes, goods, and alliance networks bridging ecological zones."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "kanaka_kumulipo",
+      "shortLabel": "KUMULIPO",
+      "priorityLabel": true,
+      "mobileSummary": "A genealogical cosmology in which life unfolds from Pō into Ao through relationship, sequence, and responsibility. Aloha remains its own Hawaiian framework and is compared to other traditions through resonance, not sameness.",
+      "namedConcepts": [
+        {
+          "name": "Aloha",
+          "kind": "ethical-relational framework",
+          "desc": "A lived way of being rooted in relationship, spirit, responsibility, reverence, and practice."
+        },
+        {
+          "name": "Pō",
+          "kind": "cosmology",
+          "desc": "Generative darkness, fertile depth, and ancestral source from which emergence unfolds."
+        },
+        {
+          "name": "Ao",
+          "kind": "cosmology",
+          "desc": "Manifest light, becoming, and the revealed world emerging in ordered sequence."
+        },
+        {
+          "name": "Kumulipo",
+          "kind": "creation chant",
+          "desc": "A genealogical chant of creation in which life unfolds through sequence, kinship, and relationship."
+        },
+        {
+          "name": "Moʻokūʻauhau",
+          "kind": "genealogy",
+          "desc": "Genealogical continuity linking people, ancestors, place, and responsibility."
+        },
+        {
+          "name": "Pono",
+          "kind": "ethics",
+          "desc": "Righteousness, balance, integrity, and right action."
+        },
+        {
+          "name": "Mālama",
+          "kind": "stewardship",
+          "desc": "Care, protection, and responsibility toward people, place, and purpose."
+        },
+        {
+          "name": "ʻIke Pō",
+          "kind": "deep knowledge",
+          "desc": "Insight arising from ancestral depth, the unseen, and the darkness of creation."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "Ma’at",
+          "relation": "Can be compared with parts of the broader Aloha framework, especially Pono, Mālama, Lōkahi, and ʻOiaʻiʻo, while remaining distinct from Aloha itself."
+        },
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "Nun",
+          "relation": "Resonates with emergence from primordial generative depth, though Kumulipo remains distinctly genealogical and Hawaiian."
+        },
+        {
+          "cultureId": "maori",
+          "cultureName": "Māori (Aotearoa)",
+          "concept": "Whakapapa",
+          "relation": "A strong comparative bridge to genealogy as the base layer of identity, relationship, and obligation."
+        },
+        {
+          "cultureId": "maori",
+          "cultureName": "Māori (Aotearoa)",
+          "concept": "Kaitiakitanga",
+          "relation": "Resonates with Mālama and mālama ʻāina through guardianship and reciprocal care."
+        },
+        {
+          "cultureId": "samoa",
+          "cultureName": "Sāmoa (Fa‘a Sāmoa)",
+          "concept": "Fa‘a Sāmoa",
+          "relation": "Comparable in the sense of lived protocol, relationship, duty, and communal responsibility."
+        },
+        {
+          "cultureId": "taino",
+          "cultureName": "Taíno (Borikén / Puerto Rico)",
+          "concept": "zemí",
+          "relation": "Resonates with ancestral-spiritual continuity and sacred presence carried through relationship."
+        }
+      ],
+      "readingLinks": [
+        {
+          "title": "The Kumulipo: a Hawaiian Creation Chant (Beckwith, Ulukau edition)",
+          "url": "https://ulukau.org/ulukau-books/?a=d&d=EBOOK-BECKWIT2.1.2",
+          "kind": "Primary Text",
+          "desc": "Full text and Beckwith commentary."
+        },
+        {
+          "title": "Kumulipo (Text and Translation) PDF",
+          "url": "https://blogs.ksbe.edu/adakina/files/2008/02/kumulipo-text.pdf",
+          "kind": "Primary Text",
+          "desc": "Hawaiian and English translation."
+        },
+        {
+          "title": "Kumulipo (Bishop Museum featured article)",
+          "url": "https://www.bishopmuseum.org/japanese-featured-article-4/",
+          "kind": "Museum",
+          "desc": "Museum context for the Kumulipo."
+        }
+      ]
+    },
+    {
+      "id": "polynesia",
+      "shortLabel": "POLYNESIA",
+      "priorityLabel": true,
+      "mobileSummary": "Wayfinding traditions integrating stars, swells, winds, clouds, birds, and memory into navigation systems spanning vast ocean distances and inter-island networks.",
+      "namedConcepts": [
+        {
+          "name": "Multi-signal inference",
+          "kind": "key term",
+          "desc": "Multi-signal inference is a recurring concept associated with Polynesian Navigators (Pan-Polynesian Wayfinding)."
+        },
+        {
+          "name": "Route memory",
+          "kind": "key term",
+          "desc": "Route memory is a recurring concept associated with Polynesian Navigators (Pan-Polynesian Wayfinding)."
+        },
+        {
+          "name": "Stewardship as governance",
+          "kind": "key term",
+          "desc": "Stewardship as governance is a recurring concept associated with Polynesian Navigators (Pan-Polynesian Wayfinding)."
+        },
+        {
+          "name": "Navigation",
+          "kind": "key term",
+          "desc": "Navigation is a recurring concept associated with Polynesian Navigators (Pan-Polynesian Wayfinding)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "norse",
+          "cultureName": "Norse / Vikings (North Atlantic Voyagers)",
+          "concept": "Seasonal ocean routing intelligence",
+          "relation": "Different oceans, same principle: travel depends on reading winds/currents and seasonal windows, with route memory carried through practice."
+        },
+        {
+          "cultureId": "philippines",
+          "cultureName": "Philippines (Austronesian Archipelago Traditions)",
+          "concept": "Archipelago corridor thinking",
+          "relation": "Both operate islands as nodes connected by routes—knowledge preserved as corridor intelligence (timing, winds, hazards, social exchange)."
+        },
+        {
+          "cultureId": "taino",
+          "cultureName": "Taíno (Borikén / Puerto Rico)",
+          "concept": "Island networks as social infrastructure",
+          "relation": "Archipelago mobility becomes knowledge infrastructure: routes, weather reading, and social exchange preserve identity across sea spaces."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "maori",
+      "shortLabel": "MĀORI",
+      "priorityLabel": true,
+      "mobileSummary": "A living knowledge system where whakapapa, kaitiakitanga, and tikanga bind people to land, sea, and responsibility. It forms one of the strongest comparative bridges to Hawaiian genealogy and stewardship.",
+      "namedConcepts": [
+        {
+          "name": "Whakapapa",
+          "kind": "genealogy",
+          "desc": "Genealogy as the base layer of identity, relationship, and responsibility."
+        },
+        {
+          "name": "Kaitiakitanga",
+          "kind": "guardianship",
+          "desc": "Guardianship and ecological responsibility."
+        },
+        {
+          "name": "Tikanga",
+          "kind": "correct practice",
+          "desc": "Living law, proper conduct, and right process."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kanaka_kumulipo",
+          "cultureName": "Kanaka Maoli (Kumulipo Lineage)",
+          "concept": "Moʻokūʻauhau",
+          "relation": "Strong resonance with genealogy as living structure."
+        },
+        {
+          "cultureId": "kanaka_kumulipo",
+          "cultureName": "Kanaka Maoli (Kumulipo Lineage)",
+          "concept": "Mālama",
+          "relation": "Strong resonance with guardianship, stewardship, and care for land and community."
+        },
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "Ma’at",
+          "relation": "Can be placed in dialogue around order, balance, and correct relationship."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "samoa",
+      "shortLabel": "SĀMOA",
+      "priorityLabel": false,
+      "mobileSummary": "A living cultural system centered on Fa‘a Sāmoa, where kinship, protocol, ceremony, and communal responsibility hold knowledge and governance together across generations.",
+      "namedConcepts": [
+        {
+          "name": "Fa‘a Sāmoa",
+          "kind": "living protocol",
+          "desc": "A way of life rooted in kinship, duty, ceremony, communal responsibility, and chiefly order."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kanaka_kumulipo",
+          "cultureName": "Kanaka Maoli (Kumulipo Lineage)",
+          "concept": "Aloha",
+          "relation": "Comparable in lived protocol, responsibility, and communal ethics, while remaining culturally distinct."
+        },
+        {
+          "cultureId": "maori",
+          "cultureName": "Māori (Aotearoa)",
+          "concept": "Tikanga",
+          "relation": "Comparable through correct practice, social responsibility, and relationship-governed order."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "tonga",
+      "shortLabel": "TONGA",
+      "priorityLabel": false,
+      "mobileSummary": "A maritime polity historically known for regional influence and network-building across Polynesia. Governance, ceremony, and voyaging tradition interlock—treating legitimacy, relationship, and exchange as one system.",
+      "namedConcepts": [
+        {
+          "name": "Network governance",
+          "kind": "key term",
+          "desc": "Network governance is a recurring concept associated with Tonga (Tu'i Tonga Sphere)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Tonga (Tu'i Tonga Sphere)."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Tonga (Tu'i Tonga Sphere)."
+        },
+        {
+          "name": "Navigation",
+          "kind": "key term",
+          "desc": "Navigation is a recurring concept associated with Tonga (Tu'i Tonga Sphere)."
+        }
+      ],
+      "comparativeParallels": [],
+      "readingLinks": []
+    },
+    {
+      "id": "marquesas",
+      "shortLabel": "MARQUESAS",
+      "priorityLabel": false,
+      "mobileSummary": "Eastern Polynesian traditions known for ceremonial arts, body knowledge, and island ecology—carried through oral transmission and community protocol, historically connected via voyaging networks.",
+      "namedConcepts": [
+        {
+          "name": "Art as memory",
+          "kind": "key term",
+          "desc": "Art as memory is a recurring concept associated with Marquesas (Te Henua Enana)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Marquesas (Te Henua Enana)."
+        },
+        {
+          "name": "Navigation",
+          "kind": "key term",
+          "desc": "Navigation is a recurring concept associated with Marquesas (Te Henua Enana)."
+        },
+        {
+          "name": "Art",
+          "kind": "key term",
+          "desc": "Art is a recurring concept associated with Marquesas (Te Henua Enana)."
+        }
+      ],
+      "comparativeParallels": [],
+      "readingLinks": []
+    },
+    {
+      "id": "palau",
+      "shortLabel": "PALAU",
+      "priorityLabel": false,
+      "mobileSummary": "Island knowledge traditions emphasizing reef/lagoon ecology, community governance, and stewardship practices that treat marine systems as living infrastructure requiring protocol and restraint.",
+      "namedConcepts": [
+        {
+          "name": "Role",
+          "kind": "key term",
+          "desc": "Role is a recurring concept associated with Palau (Belau)."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Palau (Belau)."
+        },
+        {
+          "name": "Stewardship",
+          "kind": "key term",
+          "desc": "Stewardship is a recurring concept associated with Palau (Belau)."
+        },
+        {
+          "name": "Navigation",
+          "kind": "key term",
+          "desc": "Navigation is a recurring concept associated with Palau (Belau)."
+        }
+      ],
+      "comparativeParallels": [],
+      "readingLinks": []
+    },
+    {
+      "id": "papua_new_guinea",
+      "shortLabel": "PAPUA NEW GUINEA",
+      "priorityLabel": false,
+      "mobileSummary": "Highly diverse knowledge systems across highlands and coasts, with deep ecological expertise, ceremonial governance, and agricultural ingenuity adapted to complex terrain and microclimates.",
+      "namedConcepts": [
+        {
+          "name": "Place",
+          "kind": "key term",
+          "desc": "Place is a recurring concept associated with Papua New Guinea (Many Nations / Highlands–Coast)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Papua New Guinea (Many Nations / Highlands–Coast)."
+        },
+        {
+          "name": "Ecology",
+          "kind": "key term",
+          "desc": "Ecology is a recurring concept associated with Papua New Guinea (Many Nations / Highlands–Coast)."
+        },
+        {
+          "name": "Agriculture",
+          "kind": "key term",
+          "desc": "Agriculture is a recurring concept associated with Papua New Guinea (Many Nations / Highlands–Coast)."
+        }
+      ],
+      "comparativeParallels": [],
+      "readingLinks": []
+    },
+    {
+      "id": "philippines",
+      "shortLabel": "PHILIPPINES",
+      "priorityLabel": false,
+      "mobileSummary": "Archipelago knowledge systems shaped by maritime routes, trade corridors, and complex local ecologies—expressed in boat technology, oral histories, community governance, and widely recognized martial traditions.",
+      "namedConcepts": [
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Philippines (Austronesian Archipelago Traditions)."
+        },
+        {
+          "name": "Navigation",
+          "kind": "key term",
+          "desc": "Navigation is a recurring concept associated with Philippines (Austronesian Archipelago Traditions)."
+        },
+        {
+          "name": "Martial Arts",
+          "kind": "key term",
+          "desc": "Martial Arts is a recurring concept associated with Philippines (Austronesian Archipelago Traditions)."
+        },
+        {
+          "name": "Oral Tradition",
+          "kind": "key term",
+          "desc": "Oral Tradition is a recurring concept associated with Philippines (Austronesian Archipelago Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "polynesia",
+          "cultureName": "Polynesian Navigators (Pan-Polynesian Wayfinding)",
+          "concept": "Archipelago corridor thinking",
+          "relation": "Both operate islands as nodes connected by routes—knowledge preserved as corridor intelligence (timing, winds, hazards, social exchange)."
+        },
+        {
+          "cultureId": "indonesia",
+          "cultureName": "Indonesia (Maritime Archipelago Networks)",
+          "concept": "Austronesian sea corridors",
+          "relation": "Inter-island corridors transmit language, craft, and strategy; route memory becomes cultural infrastructure."
+        },
+        {
+          "cultureId": "majapahit",
+          "cultureName": "Majapahit (Javanese Maritime Empire)",
+          "concept": "Maritime exchange sphere",
+          "relation": "Sea-lane exchange connects islands through port networks where goods travel with techniques, languages, and alliances."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "indonesia",
+      "shortLabel": "INDONESIA",
+      "priorityLabel": false,
+      "mobileSummary": "An archipelago world where sea corridors connect islands into trade, language, and cultural networks. Knowledge is carried through craft lineages, oral tradition, and maritime intelligence.",
+      "namedConcepts": [
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Indonesia (Maritime Archipelago Networks)."
+        },
+        {
+          "name": "Navigation",
+          "kind": "key term",
+          "desc": "Navigation is a recurring concept associated with Indonesia (Maritime Archipelago Networks)."
+        },
+        {
+          "name": "Trade",
+          "kind": "key term",
+          "desc": "Trade is a recurring concept associated with Indonesia (Maritime Archipelago Networks)."
+        },
+        {
+          "name": "Networks",
+          "kind": "key term",
+          "desc": "Networks is a recurring concept associated with Indonesia (Maritime Archipelago Networks)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "philippines",
+          "cultureName": "Philippines (Austronesian Archipelago Traditions)",
+          "concept": "Austronesian sea corridors",
+          "relation": "Inter-island corridors transmit language, craft, and strategy; route memory becomes cultural infrastructure."
+        },
+        {
+          "cultureId": "majapahit",
+          "cultureName": "Majapahit (Javanese Maritime Empire)",
+          "concept": "Ports, straits, and corridor governance",
+          "relation": "Maritime governance focuses on corridors: controlling straits, stabilizing alliances, and maintaining route intelligence through administration and diplomacy."
+        },
+        {
+          "cultureId": "majapahit",
+          "cultureName": "Majapahit (Javanese Maritime Empire)",
+          "concept": "Strait governance and port networks",
+          "relation": "Maritime power concentrates on corridors: controlling straits, stabilizing alliances, and maintaining route intelligence through administration and diplomacy."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "majapahit",
+      "shortLabel": "MAJAPAHIT",
+      "priorityLabel": false,
+      "mobileSummary": "A historic maritime polity centered in Java, strongly associated with corridor governance across straits and port networks. Best understood as a hub in a wider oceanic trade and alliance system where administration, diplomacy, and route control stabilized influence.",
+      "namedConcepts": [
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Majapahit (Javanese Maritime Empire)."
+        },
+        {
+          "name": "Trade",
+          "kind": "key term",
+          "desc": "Trade is a recurring concept associated with Majapahit (Javanese Maritime Empire)."
+        },
+        {
+          "name": "Networks",
+          "kind": "key term",
+          "desc": "Networks is a recurring concept associated with Majapahit (Javanese Maritime Empire)."
+        },
+        {
+          "name": "Navigation",
+          "kind": "key term",
+          "desc": "Navigation is a recurring concept associated with Majapahit (Javanese Maritime Empire)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "indonesia",
+          "cultureName": "Indonesia (Maritime Archipelago Networks)",
+          "concept": "Ports, straits, and corridor governance",
+          "relation": "Maritime governance focuses on corridors: controlling straits, stabilizing alliances, and maintaining route intelligence through administration and diplomacy."
+        },
+        {
+          "cultureId": "philippines",
+          "cultureName": "Philippines (Austronesian Archipelago Traditions)",
+          "concept": "Maritime exchange sphere",
+          "relation": "Sea-lane exchange connects islands through port networks where goods travel with techniques, languages, and alliances."
+        },
+        {
+          "cultureId": "indonesia",
+          "cultureName": "Indonesia (Maritime Archipelago Networks)",
+          "concept": "Strait governance and port networks",
+          "relation": "Maritime power concentrates on corridors: controlling straits, stabilizing alliances, and maintaining route intelligence through administration and diplomacy."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "thailand",
+      "shortLabel": "THAILAND",
+      "priorityLabel": false,
+      "mobileSummary": "A river-and-city corridor civilization where agriculture, trade, and governance integrate with ceremonial cosmology. Muay Thai evolved as disciplined embodied practice tied to training, identity, and state history.",
+      "namedConcepts": [
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Thailand (Siam) — River Kingdom Networks."
+        },
+        {
+          "name": "Cosmology",
+          "kind": "key term",
+          "desc": "Cosmology is a recurring concept associated with Thailand (Siam) — River Kingdom Networks."
+        },
+        {
+          "name": "Martial Arts",
+          "kind": "key term",
+          "desc": "Martial Arts is a recurring concept associated with Thailand (Siam) — River Kingdom Networks."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Thailand (Siam) — River Kingdom Networks."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "khmer",
+          "cultureName": "Khmer / Angkor (Temple–Hydrology Civilization)",
+          "concept": "Temple-city + river governance",
+          "relation": "Both integrate hydrology, agriculture, and ceremonial legitimacy—treating water management as statecraft and civic coordination."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "vietnam",
+      "shortLabel": "VIETNAM",
+      "priorityLabel": false,
+      "mobileSummary": "A river-and-delta corridor civilization where water management, agriculture, and statecraft interact with coastal exchange. Identity and continuity are sustained through lineage, records, and community practice shaped by monsoon timing and river systems.",
+      "namedConcepts": [
+        {
+          "name": "Corridor governance",
+          "kind": "key term",
+          "desc": "Corridor governance is a recurring concept associated with Vietnam (Red River–Coastal Corridor Traditions)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Vietnam (Red River–Coastal Corridor Traditions)."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Vietnam (Red River–Coastal Corridor Traditions)."
+        },
+        {
+          "name": "Trade",
+          "kind": "key term",
+          "desc": "Trade is a recurring concept associated with Vietnam (Red River–Coastal Corridor Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "china",
+          "cultureName": "China (Classical Civilizational Networks)",
+          "concept": "Records + corridor governance",
+          "relation": "Both emphasize institutional continuity through records and education, coordinating river/delta systems with corridor trade and administration."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "khmer",
+      "shortLabel": "KHMER / ANGKOR",
+      "priorityLabel": false,
+      "mobileSummary": "A temple-city tradition strongly associated with large-scale water management and monumental architecture. Civic order, cosmology, and hydrology integrate into a single system where land, water, and legitimacy are co-engineered.",
+      "namedConcepts": [
+        {
+          "name": "Water as statecraft",
+          "kind": "key term",
+          "desc": "Water as statecraft is a recurring concept associated with Khmer / Angkor (Temple–Hydrology Civilization)."
+        },
+        {
+          "name": "Sacred geography",
+          "kind": "key term",
+          "desc": "Sacred geography is a recurring concept associated with Khmer / Angkor (Temple–Hydrology Civilization)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Khmer / Angkor (Temple–Hydrology Civilization)."
+        },
+        {
+          "name": "Cosmology",
+          "kind": "key term",
+          "desc": "Cosmology is a recurring concept associated with Khmer / Angkor (Temple–Hydrology Civilization)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "thailand",
+          "cultureName": "Thailand (Siam) — River Kingdom Networks",
+          "concept": "Temple-city + river governance",
+          "relation": "Both integrate hydrology, agriculture, and ceremonial legitimacy—treating water management as statecraft and civic coordination."
+        },
+        {
+          "cultureId": "inca",
+          "cultureName": "Inca Civilization",
+          "concept": "Temple–hydrology statecraft",
+          "relation": "Both treat water and seasonal timing as governance: infrastructure and legitimacy are co-managed through institutional coordination."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "korea",
+      "shortLabel": "KOREA",
+      "priorityLabel": false,
+      "mobileSummary": "Peninsula corridor traditions shaped by coastal and inland routes, institutional education, and state administration. Knowledge continuity is sustained through records, schools, and lineages, alongside strong embodied training cultures.",
+      "namedConcepts": [
+        {
+          "name": "Corridor intelligence",
+          "kind": "key term",
+          "desc": "Corridor intelligence is a recurring concept associated with Korea (Peninsula Lineage States & Scholar-Administrations)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Korea (Peninsula Lineage States & Scholar-Administrations)."
+        },
+        {
+          "name": "Institutions",
+          "kind": "key term",
+          "desc": "Institutions is a recurring concept associated with Korea (Peninsula Lineage States & Scholar-Administrations)."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Korea (Peninsula Lineage States & Scholar-Administrations)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "china",
+          "cultureName": "China (Classical Civilizational Networks)",
+          "concept": "Institutional education lineages",
+          "relation": "Shared emphasis on schooling and records as continuity technology; different contexts, similar function: stabilizing governance through learning and protocol."
+        },
+        {
+          "cultureId": "japan",
+          "cultureName": "Japan (Shinto–Buddhist Synthesis and Budo Lineages)",
+          "concept": "Embodied discipline lineages",
+          "relation": "Lineage training preserves embodied strategy, ethics, and identity; practice operates as a living archive across generations."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "china",
+      "shortLabel": "CHINA",
+      "priorityLabel": false,
+      "mobileSummary": "A long-duration civilizational network where writing, institutions, and philosophy stabilized governance across vast territories. Knowledge systems integrated cosmology, medicine, engineering, and moral order through schools, statecraft, and lineage transmission.",
+      "namedConcepts": [
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with China (Classical Civilizational Networks)."
+        },
+        {
+          "name": "Cosmology",
+          "kind": "key term",
+          "desc": "Cosmology is a recurring concept associated with China (Classical Civilizational Networks)."
+        },
+        {
+          "name": "Institutions",
+          "kind": "key term",
+          "desc": "Institutions is a recurring concept associated with China (Classical Civilizational Networks)."
+        },
+        {
+          "name": "Writing",
+          "kind": "key term",
+          "desc": "Writing is a recurring concept associated with China (Classical Civilizational Networks)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "vietnam",
+          "cultureName": "Vietnam (Red River–Coastal Corridor Traditions)",
+          "concept": "Records + corridor governance",
+          "relation": "Both emphasize institutional continuity through records and education, coordinating river/delta systems with corridor trade and administration."
+        },
+        {
+          "cultureId": "korea",
+          "cultureName": "Korea (Peninsula Lineage States & Scholar-Administrations)",
+          "concept": "Institutional education lineages",
+          "relation": "Shared emphasis on schooling and records as continuity technology; different contexts, similar function: stabilizing governance through learning and protocol."
+        },
+        {
+          "cultureId": "vedic",
+          "cultureName": "Vedic / Classical Indian Knowledge Traditions",
+          "concept": "Systematic knowledge traditions",
+          "relation": "Independent development of systematic mathematics, cosmology, and institutional knowledge transmission — comparable achievements through different cultural logics."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "japan",
+      "shortLabel": "JAPAN",
+      "priorityLabel": false,
+      "mobileSummary": "A culture shaped by island ecology, strong lineage traditions, and synthesis between indigenous ritual and imported philosophies. Budo lineages preserve embodied ethics, discipline, and strategy as living archives.",
+      "namedConcepts": [
+        {
+          "name": "Ritual and place reverence",
+          "kind": "key term",
+          "desc": "Ritual and place reverence is a recurring concept associated with Japan (Shinto–Buddhist Synthesis and Budo Lineages)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Japan (Shinto–Buddhist Synthesis and Budo Lineages)."
+        },
+        {
+          "name": "Cosmology",
+          "kind": "key term",
+          "desc": "Cosmology is a recurring concept associated with Japan (Shinto–Buddhist Synthesis and Budo Lineages)."
+        },
+        {
+          "name": "Oral Tradition",
+          "kind": "key term",
+          "desc": "Oral Tradition is a recurring concept associated with Japan (Shinto–Buddhist Synthesis and Budo Lineages)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "korea",
+          "cultureName": "Korea (Peninsula Lineage States & Scholar-Administrations)",
+          "concept": "Embodied discipline lineages",
+          "relation": "Lineage training preserves embodied strategy, ethics, and identity; practice operates as a living archive across generations."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "vedic",
+      "shortLabel": "VEDIC / CLASSICAL INDIAN",
+      "priorityLabel": false,
+      "mobileSummary": "A deep philosophical and scientific tradition where cosmology, mathematics, medicine, and ethics co-evolved. Concepts like dharma and cosmic order frame both individual practice and social responsibility.",
+      "namedConcepts": [
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Vedic / Classical Indian Knowledge Traditions."
+        },
+        {
+          "name": "Cosmology",
+          "kind": "key term",
+          "desc": "Cosmology is a recurring concept associated with Vedic / Classical Indian Knowledge Traditions."
+        },
+        {
+          "name": "Mathematics",
+          "kind": "key term",
+          "desc": "Mathematics is a recurring concept associated with Vedic / Classical Indian Knowledge Traditions."
+        },
+        {
+          "name": "Medicine",
+          "kind": "key term",
+          "desc": "Medicine is a recurring concept associated with Vedic / Classical Indian Knowledge Traditions."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "china",
+          "cultureName": "China (Classical Civilizational Networks)",
+          "concept": "Systematic knowledge traditions",
+          "relation": "Independent development of systematic mathematics, cosmology, and institutional knowledge transmission — comparable achievements through different cultural logics."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "mali",
+      "shortLabel": "MALI EMPIRE",
+      "priorityLabel": false,
+      "mobileSummary": "Scholarly centers and exchange corridors where manuscripts, teaching lineages, and long-distance trade sustained knowledge ecosystems across the Sahel—treating learning as cultural continuity and civic infrastructure.",
+      "namedConcepts": [
+        {
+          "name": "Text + teacher lineages",
+          "kind": "key term",
+          "desc": "Text + teacher lineages is a recurring concept associated with Mali Empire (Scholarly West Africa)."
+        },
+        {
+          "name": "Education",
+          "kind": "key term",
+          "desc": "Education is a recurring concept associated with Mali Empire (Scholarly West Africa)."
+        },
+        {
+          "name": "Manuscripts",
+          "kind": "key term",
+          "desc": "Manuscripts is a recurring concept associated with Mali Empire (Scholarly West Africa)."
+        },
+        {
+          "name": "Trade",
+          "kind": "key term",
+          "desc": "Trade is a recurring concept associated with Mali Empire (Scholarly West Africa)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "mesopotamia",
+          "cultureName": "Mesopotamia (River-Corridor Civilizations)",
+          "concept": "Manuscript and scribal cultures",
+          "relation": "Both treat written knowledge as civic infrastructure requiring institutional support — scribal schools and manuscript centers as governance mechanisms."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "taino",
+      "shortLabel": "TAÍNO",
+      "priorityLabel": true,
+      "mobileSummary": "Caribbean island traditions where ancestral presence, cultivation, ceremony, seafaring, and exchange are inseparable from the life of land and waters.",
+      "namedConcepts": [
+        {
+          "name": "Atabey",
+          "kind": "generative maternal source",
+          "desc": "Associated with waters, fertility, and life-giving generative power."
+        },
+        {
+          "name": "Yúcahu",
+          "kind": "sustenance",
+          "desc": "Associated with cassava, nourishment, and sustaining life."
+        },
+        {
+          "name": "zemí",
+          "kind": "ancestral-spiritual force",
+          "desc": "Sacred ancestral or divine presence carried through beings, forms, and relation."
+        },
+        {
+          "name": "conuco",
+          "kind": "stewardship/agriculture",
+          "desc": "Agricultural knowledge tied to resilience, cultivation, and environmental relationship."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kanaka_kumulipo",
+          "cultureName": "Kanaka Maoli (Kumulipo Lineage)",
+          "concept": "Mālama",
+          "relation": "Comparable through stewardship, care for land, and life-supporting relationship."
+        },
+        {
+          "cultureId": "kanaka_kumulipo",
+          "cultureName": "Kanaka Maoli (Kumulipo Lineage)",
+          "concept": "ʻIke Pō",
+          "relation": "zemí can be placed in dialogue with ancestral-spiritual continuity and deep unseen knowing, without collapsing the two into one."
+        },
+        {
+          "cultureId": "polynesia",
+          "cultureName": "Polynesian Navigators (Pan-Polynesian Wayfinding)",
+          "concept": "Island networks / route memory",
+          "relation": "Comparable through archipelago mobility, navigation, exchange, and sea-based knowledge systems."
+        },
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "Ma’at",
+          "relation": "A cautious bridge through ordered life, sustenance, and sacred relationship."
+        }
+      ],
+      "readingLinks": [
+        {
+          "title": "Taíno Society",
+          "url": "https://www.floridamuseum.ufl.edu/histarch/research/haiti/en-bas-saline/taino-society/",
+          "kind": "Reference",
+          "desc": "Overview of Taíno economy, agriculture, and social life."
+        },
+        {
+          "title": "Conucos / agroforestry note",
+          "url": "https://projects.sare.org/sare_project/gs23-287/",
+          "kind": "Reference",
+          "desc": "Short note on conuco practice and agroforestry."
+        }
+      ]
+    },
+    {
+      "id": "olmec",
+      "shortLabel": "OLMEC",
+      "priorityLabel": false,
+      "mobileSummary": "An early Mesoamerican civilization known for strong ceremonial centers, far-reaching exchange, and art that shaped later cultural vocabularies. Best understood as a foundational node in a wider regional network of ideas and techniques.",
+      "namedConcepts": [
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Olmec (Early Mesoamerican Civilization)."
+        },
+        {
+          "name": "Cosmology",
+          "kind": "key term",
+          "desc": "Cosmology is a recurring concept associated with Olmec (Early Mesoamerican Civilization)."
+        },
+        {
+          "name": "Art",
+          "kind": "key term",
+          "desc": "Art is a recurring concept associated with Olmec (Early Mesoamerican Civilization)."
+        },
+        {
+          "name": "Institutions",
+          "kind": "key term",
+          "desc": "Institutions is a recurring concept associated with Olmec (Early Mesoamerican Civilization)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "maya",
+          "cultureName": "Maya Civilization",
+          "concept": "Foundational symbolic systems",
+          "relation": "Early ceremonial centers and symbolic vocabularies influence later civic-ritual architectures and identity systems across regions."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "maya",
+      "shortLabel": "MAYA CIVILIZATION",
+      "priorityLabel": false,
+      "mobileSummary": "City-states with calendrical and astronomical traditions embedded in architecture, ceremony, and written records—sustaining complex knowledge across centuries.",
+      "namedConcepts": [
+        {
+          "name": "Writing as high-resolution memory",
+          "kind": "key term",
+          "desc": "Writing as high-resolution memory is a recurring concept associated with Maya Civilization."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Maya Civilization."
+        },
+        {
+          "name": "Astronomy",
+          "kind": "key term",
+          "desc": "Astronomy is a recurring concept associated with Maya Civilization."
+        },
+        {
+          "name": "Calendar",
+          "kind": "key term",
+          "desc": "Calendar is a recurring concept associated with Maya Civilization."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "babylonia",
+          "cultureName": "Babylonia",
+          "concept": "Cosmology, Writing, and Time",
+          "relation": "A comparative bridge through literate cosmology, calendrical or astronomical learning, and civic ritual order."
+        },
+        {
+          "cultureId": "olmec",
+          "cultureName": "Olmec (Early Mesoamerican Civilization)",
+          "concept": "Foundational symbolic systems",
+          "relation": "Early ceremonial centers and symbolic vocabularies influence later civic-ritual architectures and identity systems across regions."
+        },
+        {
+          "cultureId": "aztec",
+          "cultureName": "Mexica (Aztec) Traditions",
+          "concept": "Calendrics and civic ritual time",
+          "relation": "Both coordinate civic life through ritual calendars and ceremonial cycles embedded in the urban fabric."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "aztec",
+      "shortLabel": "MEXICA",
+      "priorityLabel": false,
+      "mobileSummary": "Urban tradition centered on lake-city engineering, trade networks, and ritual calendars coordinating civic life across the Basin of Mexico and beyond.",
+      "namedConcepts": [
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Mexica (Aztec) Traditions."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Mexica (Aztec) Traditions."
+        },
+        {
+          "name": "Urbanism",
+          "kind": "key term",
+          "desc": "Urbanism is a recurring concept associated with Mexica (Aztec) Traditions."
+        },
+        {
+          "name": "Engineering",
+          "kind": "key term",
+          "desc": "Engineering is a recurring concept associated with Mexica (Aztec) Traditions."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "maya",
+          "cultureName": "Maya Civilization",
+          "concept": "Calendrics and civic ritual time",
+          "relation": "Both coordinate civic life through ritual calendars and ceremonial cycles embedded in the urban fabric."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "moche",
+      "shortLabel": "MOCHE",
+      "priorityLabel": false,
+      "mobileSummary": "A coastal-river-valley civilization where irrigation, valley planning, and material culture formed a strong civic-ritual system. Knowledge is expressed through water management, craft specialization, and ceremonial institutions that coordinate labor and identity.",
+      "namedConcepts": [
+        {
+          "name": "Engineering",
+          "kind": "key term",
+          "desc": "Engineering is a recurring concept associated with Moche (North Coast Andean Civilization)."
+        },
+        {
+          "name": "Water",
+          "kind": "key term",
+          "desc": "Water is a recurring concept associated with Moche (North Coast Andean Civilization)."
+        },
+        {
+          "name": "Agriculture",
+          "kind": "key term",
+          "desc": "Agriculture is a recurring concept associated with Moche (North Coast Andean Civilization)."
+        },
+        {
+          "name": "Art",
+          "kind": "key term",
+          "desc": "Art is a recurring concept associated with Moche (North Coast Andean Civilization)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "inca",
+          "cultureName": "Inca Civilization",
+          "concept": "Water systems as civic power",
+          "relation": "Both emphasize irrigation, scheduling, and coordinated labor as the backbone of stability—turning water management into governance."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "tiwanaku",
+      "shortLabel": "TIWANAKU",
+      "priorityLabel": false,
+      "mobileSummary": "A high-altitude tradition associated with landscape engineering, agricultural innovation in difficult ecologies, and institutions linking sacred order to resource coordination. Best seen as a system that turns altitude constraints into planning advantages.",
+      "namedConcepts": [
+        {
+          "name": "Altitude intelligence",
+          "kind": "key term",
+          "desc": "Altitude intelligence is a recurring concept associated with Tiwanaku (High Andes State Tradition)."
+        },
+        {
+          "name": "Engineering",
+          "kind": "key term",
+          "desc": "Engineering is a recurring concept associated with Tiwanaku (High Andes State Tradition)."
+        },
+        {
+          "name": "Agriculture",
+          "kind": "key term",
+          "desc": "Agriculture is a recurring concept associated with Tiwanaku (High Andes State Tradition)."
+        },
+        {
+          "name": "Water",
+          "kind": "key term",
+          "desc": "Water is a recurring concept associated with Tiwanaku (High Andes State Tradition)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "inca",
+          "cultureName": "Inca Civilization",
+          "concept": "Altitude planning and landscape governance",
+          "relation": "High-altitude systems treat microclimates and water as governance tools—planning across elevation and seasonal variability."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "inca",
+      "shortLabel": "INCA CIVILIZATION",
+      "priorityLabel": false,
+      "mobileSummary": "Mountain empire synthesizing terracing, water systems, road logistics, and coordinated administration across extreme terrain and ecological gradients.",
+      "namedConcepts": [
+        {
+          "name": "Stewardship",
+          "kind": "key term",
+          "desc": "Stewardship is a recurring concept associated with Inca Civilization."
+        },
+        {
+          "name": "Engineering",
+          "kind": "key term",
+          "desc": "Engineering is a recurring concept associated with Inca Civilization."
+        },
+        {
+          "name": "Roads",
+          "kind": "key term",
+          "desc": "Roads is a recurring concept associated with Inca Civilization."
+        },
+        {
+          "name": "Administration",
+          "kind": "key term",
+          "desc": "Administration is a recurring concept associated with Inca Civilization."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "tiwanaku",
+          "cultureName": "Tiwanaku (High Andes State Tradition)",
+          "concept": "Altitude planning and landscape governance",
+          "relation": "High-altitude systems treat microclimates and water as governance tools—planning across elevation and seasonal variability."
+        },
+        {
+          "cultureId": "moche",
+          "cultureName": "Moche (North Coast Andean Civilization)",
+          "concept": "Water systems as civic power",
+          "relation": "Both emphasize irrigation, scheduling, and coordinated labor as the backbone of stability—turning water management into governance."
+        },
+        {
+          "cultureId": "khmer",
+          "cultureName": "Khmer / Angkor (Temple–Hydrology Civilization)",
+          "concept": "Temple–hydrology statecraft",
+          "relation": "Both treat water and seasonal timing as governance: infrastructure and legitimacy are co-managed through institutional coordination."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "celtic",
+      "shortLabel": "INSULAR CELTIC TRADITION",
+      "priorityLabel": false,
+      "mobileSummary": "Traditions where poetry, story, craft, and seasonal knowledge act as memory technologies and identity anchors across Atlantic Europe.",
+      "namedConcepts": [
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Insular Celtic Traditions (Ireland/Scotland/Wales)."
+        },
+        {
+          "name": "Oral Tradition",
+          "kind": "key term",
+          "desc": "Oral Tradition is a recurring concept associated with Insular Celtic Traditions (Ireland/Scotland/Wales)."
+        },
+        {
+          "name": "Poetry",
+          "kind": "key term",
+          "desc": "Poetry is a recurring concept associated with Insular Celtic Traditions (Ireland/Scotland/Wales)."
+        },
+        {
+          "name": "Nature Lore",
+          "kind": "key term",
+          "desc": "Nature Lore is a recurring concept associated with Insular Celtic Traditions (Ireland/Scotland/Wales)."
+        }
+      ],
+      "comparativeParallels": [],
+      "readingLinks": []
+    },
+    {
+      "id": "norse",
+      "shortLabel": "NORSE / VIKINGS",
+      "priorityLabel": false,
+      "mobileSummary": "Seafaring societies expanding across the North Atlantic through navigation, shipbuilding, trade networks, and settlement, operating through seasonal routing windows.",
+      "namedConcepts": [
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Norse / Vikings (North Atlantic Voyagers)."
+        },
+        {
+          "name": "Navigation",
+          "kind": "key term",
+          "desc": "Navigation is a recurring concept associated with Norse / Vikings (North Atlantic Voyagers)."
+        },
+        {
+          "name": "Seafaring",
+          "kind": "key term",
+          "desc": "Seafaring is a recurring concept associated with Norse / Vikings (North Atlantic Voyagers)."
+        },
+        {
+          "name": "Trade",
+          "kind": "key term",
+          "desc": "Trade is a recurring concept associated with Norse / Vikings (North Atlantic Voyagers)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "polynesia",
+          "cultureName": "Polynesian Navigators (Pan-Polynesian Wayfinding)",
+          "concept": "Seasonal ocean routing intelligence",
+          "relation": "Different oceans, same principle: travel depends on reading winds/currents and seasonal windows, with route memory carried through practice."
+        },
+        {
+          "cultureId": "chukchi",
+          "cultureName": "Chukchi (Chukotka Coastal–Tundra Traditions)",
+          "concept": "Cold-region seasonality windows",
+          "relation": "Different toolkits, similar constraint: seasonal windows determine routes, provisioning, and survival planning."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "haudenosaunee",
+      "shortLabel": "HAUDENOSAUNEE",
+      "priorityLabel": false,
+      "mobileSummary": "A confederacy governance tradition emphasizing consensus, relational accountability, and long-horizon thinking. Oral law and ceremony act as living infrastructure—maintaining decision systems and identity through responsibility and protocol.",
+      "namedConcepts": [
+        {
+          "name": "Long-horizon thinking",
+          "kind": "key term",
+          "desc": "Long-horizon thinking is a recurring concept associated with Haudenosaunee (Great Law of Peace)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Haudenosaunee (Great Law of Peace)."
+        },
+        {
+          "name": "Governance",
+          "kind": "key term",
+          "desc": "Governance is a recurring concept associated with Haudenosaunee (Great Law of Peace)."
+        },
+        {
+          "name": "Oral Tradition",
+          "kind": "key term",
+          "desc": "Oral Tradition is a recurring concept associated with Haudenosaunee (Great Law of Peace)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "dine",
+          "cultureName": "Diné (Navajo) — Hózhó Framework",
+          "concept": "Long-horizon governance ethics",
+          "relation": "Both encode future-oriented responsibility into governance: seven-generation thinking and hózhó as frameworks for decisions that maintain balance across time."
+        },
+        {
+          "cultureId": "maori",
+          "cultureName": "Māori (Aotearoa)",
+          "concept": "Genealogy as governance",
+          "relation": "Both treat genealogical relationship — to people, land, and future generations — as the foundation of legitimate authority and ethical obligation."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "inuit",
+      "shortLabel": "INUIT",
+      "priorityLabel": false,
+      "mobileSummary": "Arctic knowledge traditions integrating sea-ice navigation, hunting ecology, weather reading, and community stewardship to thrive in extreme environments.",
+      "namedConcepts": [
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Inuit (Arctic Knowledge Traditions)."
+        },
+        {
+          "name": "Stewardship",
+          "kind": "key term",
+          "desc": "Stewardship is a recurring concept associated with Inuit (Arctic Knowledge Traditions)."
+        },
+        {
+          "name": "Ecology",
+          "kind": "key term",
+          "desc": "Ecology is a recurring concept associated with Inuit (Arctic Knowledge Traditions)."
+        },
+        {
+          "name": "Navigation",
+          "kind": "key term",
+          "desc": "Navigation is a recurring concept associated with Inuit (Arctic Knowledge Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "nenets",
+          "cultureName": "Nenets (Arctic Reindeer-Herding Traditions)",
+          "concept": "Arctic risk-aware mobility",
+          "relation": "Both build survival intelligence from weather/ice reading, route memory, and community coordination under extreme seasonality."
+        },
+        {
+          "cultureId": "chukchi",
+          "cultureName": "Chukchi (Chukotka Coastal–Tundra Traditions)",
+          "concept": "Sea-ice knowledge systems",
+          "relation": "Shared need for dynamic hazard assessment across ice and storms—navigation as living risk management."
+        },
+        {
+          "cultureId": "evenki",
+          "cultureName": "Evenki (Taiga Corridor Traditions)",
+          "concept": "Environmental inference under volatility",
+          "relation": "Distinct environments, shared method: reading weak signals (weather, terrain/ice) to make risk-aware mobility decisions."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "nenets",
+      "shortLabel": "NENETS",
+      "priorityLabel": false,
+      "mobileSummary": "Arctic tundra traditions where seasonal movement, weather reading, and herd stewardship form a coherent survival and ethical system. Knowledge lives in route memory, snow/ice intelligence, and responsibility frameworks tied to intergenerational continuity.",
+      "namedConcepts": [
+        {
+          "name": "Route memory and risk",
+          "kind": "key term",
+          "desc": "Route memory and risk is a recurring concept associated with Nenets (Arctic Reindeer-Herding Traditions)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Nenets (Arctic Reindeer-Herding Traditions)."
+        },
+        {
+          "name": "Stewardship",
+          "kind": "key term",
+          "desc": "Stewardship is a recurring concept associated with Nenets (Arctic Reindeer-Herding Traditions)."
+        },
+        {
+          "name": "Ecology",
+          "kind": "key term",
+          "desc": "Ecology is a recurring concept associated with Nenets (Arctic Reindeer-Herding Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "inuit",
+          "cultureName": "Inuit (Arctic Knowledge Traditions)",
+          "concept": "Arctic risk-aware mobility",
+          "relation": "Both build survival intelligence from weather/ice reading, route memory, and community coordination under extreme seasonality."
+        },
+        {
+          "cultureId": "sami",
+          "cultureName": "Sámi (Sápmi — Arctic/Subarctic Traditions)",
+          "concept": "Seasonal land intelligence",
+          "relation": "Seasonal route memory and ecological inference support continuity and resilience in highly variable northern environments."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "chukchi",
+      "shortLabel": "CHUKCHI",
+      "priorityLabel": false,
+      "mobileSummary": "Far northeast Eurasian traditions shaped by extreme seasonality, sea/ice dynamics, and risk-aware mobility. Knowledge systems coordinate hunting, weather reading, and community survival through oral memory and disciplined practice.",
+      "namedConcepts": [
+        {
+          "name": "Risk",
+          "kind": "key term",
+          "desc": "Risk is a recurring concept associated with Chukchi (Chukotka Coastal–Tundra Traditions)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Chukchi (Chukotka Coastal–Tundra Traditions)."
+        },
+        {
+          "name": "Stewardship",
+          "kind": "key term",
+          "desc": "Stewardship is a recurring concept associated with Chukchi (Chukotka Coastal–Tundra Traditions)."
+        },
+        {
+          "name": "Ecology",
+          "kind": "key term",
+          "desc": "Ecology is a recurring concept associated with Chukchi (Chukotka Coastal–Tundra Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "inuit",
+          "cultureName": "Inuit (Arctic Knowledge Traditions)",
+          "concept": "Sea-ice knowledge systems",
+          "relation": "Shared need for dynamic hazard assessment across ice and storms—navigation as living risk management."
+        },
+        {
+          "cultureId": "norse",
+          "cultureName": "Norse / Vikings (North Atlantic Voyagers)",
+          "concept": "Cold-region seasonality windows",
+          "relation": "Different toolkits, similar constraint: seasonal windows determine routes, provisioning, and survival planning."
+        },
+        {
+          "cultureId": "sakha",
+          "cultureName": "Sakha / Yakut (Lena Basin Traditions)",
+          "concept": "Extreme seasonality planning",
+          "relation": "Different ecologies (river basin vs coastal/ice), similar constraint: seasonality governs routes, provisioning, and risk management."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "dine",
+      "shortLabel": "DINÉ",
+      "priorityLabel": false,
+      "mobileSummary": "A living tradition where Hózhó (balance/beauty/right relationship) guides ethics, healing, and daily life. Cosmology, land, and ceremony form a practical framework for resilience and stewardship.",
+      "namedConcepts": [
+        {
+          "name": "Hózhó",
+          "kind": "key term",
+          "desc": "Hózhó is a recurring concept associated with Diné (Navajo) — Hózhó Framework."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Diné (Navajo) — Hózhó Framework."
+        },
+        {
+          "name": "Cosmology",
+          "kind": "key term",
+          "desc": "Cosmology is a recurring concept associated with Diné (Navajo) — Hózhó Framework."
+        },
+        {
+          "name": "Stewardship",
+          "kind": "key term",
+          "desc": "Stewardship is a recurring concept associated with Diné (Navajo) — Hózhó Framework."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "kemet",
+          "cultureName": "Kemet (Ancient Egypt)",
+          "concept": "Balance frameworks: Hózhó ↔ Ma'at",
+          "relation": "Both frame reality as a practice of balance—ethical, ecological, and communal—maintained through correct relationship rather than assumed."
+        },
+        {
+          "cultureId": "haudenosaunee",
+          "cultureName": "Haudenosaunee (Great Law of Peace)",
+          "concept": "Long-horizon governance ethics",
+          "relation": "Both encode future-oriented responsibility into governance: seven-generation thinking and hózhó as frameworks for decisions that maintain balance across time."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "sami",
+      "shortLabel": "SÁMI",
+      "priorityLabel": false,
+      "mobileSummary": "Arctic and subarctic traditions grounded in seasonal land intelligence, route memory, and stewardship practices that sustain community continuity in highly variable environments. Knowledge is held through place-based practice, oral transmission, and responsibility frameworks.",
+      "namedConcepts": [
+        {
+          "name": "Route memory and risk",
+          "kind": "key term",
+          "desc": "Route memory and risk is a recurring concept associated with Sámi (Sápmi — Arctic/Subarctic Traditions)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Sámi (Sápmi — Arctic/Subarctic Traditions)."
+        },
+        {
+          "name": "Stewardship",
+          "kind": "key term",
+          "desc": "Stewardship is a recurring concept associated with Sámi (Sápmi — Arctic/Subarctic Traditions)."
+        },
+        {
+          "name": "Ecology",
+          "kind": "key term",
+          "desc": "Ecology is a recurring concept associated with Sámi (Sápmi — Arctic/Subarctic Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "nenets",
+          "cultureName": "Nenets (Arctic Reindeer-Herding Traditions)",
+          "concept": "Seasonal land intelligence",
+          "relation": "Seasonal route memory and ecological inference support continuity and resilience in highly variable northern environments."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "evenki",
+      "shortLabel": "EVENKI",
+      "priorityLabel": false,
+      "mobileSummary": "Taiga traditions emphasizing route memory, seasonal timing, and ecological inference across vast forest corridors. Knowledge systems coordinate mobility, safety, and community continuity through oral instruction and practice-based expertise.",
+      "namedConcepts": [
+        {
+          "name": "Forest corridor navigation",
+          "kind": "key term",
+          "desc": "Forest corridor navigation is a recurring concept associated with Evenki (Taiga Corridor Traditions)."
+        },
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Evenki (Taiga Corridor Traditions)."
+        },
+        {
+          "name": "Stewardship",
+          "kind": "key term",
+          "desc": "Stewardship is a recurring concept associated with Evenki (Taiga Corridor Traditions)."
+        },
+        {
+          "name": "Ecology",
+          "kind": "key term",
+          "desc": "Ecology is a recurring concept associated with Evenki (Taiga Corridor Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "sakha",
+          "cultureName": "Sakha / Yakut (Lena Basin Traditions)",
+          "concept": "River–taiga corridor networks",
+          "relation": "Forest and river corridors act as infrastructure: travel windows, hazard inference, and community coordination stabilize mobility and knowledge."
+        },
+        {
+          "cultureId": "inuit",
+          "cultureName": "Inuit (Arctic Knowledge Traditions)",
+          "concept": "Environmental inference under volatility",
+          "relation": "Distinct environments, shared method: reading weak signals (weather, terrain/ice) to make risk-aware mobility decisions."
+        }
+      ],
+      "readingLinks": []
+    },
+    {
+      "id": "sakha",
+      "shortLabel": "SAKHA / YAKUT",
+      "priorityLabel": false,
+      "mobileSummary": "Cold-region river-basin traditions where extreme seasonality, river corridors, and community responsibility shape knowledge systems. Practice integrates route memory, resource timing, and ethical frameworks sustaining continuity.",
+      "namedConcepts": [
+        {
+          "name": "Creation",
+          "kind": "key term",
+          "desc": "Creation is a recurring concept associated with Sakha / Yakut (Lena Basin Traditions)."
+        },
+        {
+          "name": "Stewardship",
+          "kind": "key term",
+          "desc": "Stewardship is a recurring concept associated with Sakha / Yakut (Lena Basin Traditions)."
+        },
+        {
+          "name": "Ecology",
+          "kind": "key term",
+          "desc": "Ecology is a recurring concept associated with Sakha / Yakut (Lena Basin Traditions)."
+        },
+        {
+          "name": "Adaptation",
+          "kind": "key term",
+          "desc": "Adaptation is a recurring concept associated with Sakha / Yakut (Lena Basin Traditions)."
+        }
+      ],
+      "comparativeParallels": [
+        {
+          "cultureId": "evenki",
+          "cultureName": "Evenki (Taiga Corridor Traditions)",
+          "concept": "River–taiga corridor networks",
+          "relation": "Forest and river corridors act as infrastructure: travel windows, hazard inference, and community coordination stabilize mobility and knowledge."
+        },
+        {
+          "cultureId": "chukchi",
+          "cultureName": "Chukchi (Chukotka Coastal–Tundra Traditions)",
+          "concept": "Extreme seasonality planning",
+          "relation": "Different ecologies (river basin vs coastal/ice), similar constraint: seasonality governs routes, provisioning, and risk management."
+        }
+      ],
+      "readingLinks": []
+    }
+  ]
+}
