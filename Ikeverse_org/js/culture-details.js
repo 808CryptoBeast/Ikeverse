@@ -1,13 +1,13 @@
 /* =========================================================
    culture-details.js
    Loads ./docs/cultures.json + ./docs/culture-comparisons.json
-   Renders a fully styled desktop details panel + mobile sheet
-   Syncs with globe / node selection
+   Renders desktop details panel + mobile bottom sheet
+   Syncs with globe selection
    ========================================================= */
 
 (() => {
   const BASE_DATA_URL = "./docs/cultures.json";
-  const OVERLAY_DATA_URL = "./docs/culture-comparisons.json";
+  const OVERLAY_DATA_URL = "./docs/culture-comparison.json";
   const MOBILE_BP = 900;
 
   const state = {
@@ -50,7 +50,6 @@
     };
 
     if (map[culture.id]) return map[culture.id];
-
     return String(culture.name || culture.id || "")
       .split("(")[0]
       .replace(/—.*$/u, "")
@@ -92,7 +91,7 @@
     panel.innerHTML = `
       <div class="culture-details-empty">
         <h3>Cultural Details</h3>
-        <p>Select a culture from the globe or a card to explore its creation story, principles, knowledge systems, and comparative bridges.</p>
+        <p>Select a culture from the globe or a card to explore its creation story, principles, named concepts, and comparative bridges.</p>
       </div>
     `;
 
@@ -124,16 +123,6 @@
     return panel;
   }
 
-  function formatCoords(coords) {
-    if (!Array.isArray(coords) || coords.length < 2) return "";
-    const [lon, lat] = coords;
-    if (typeof lon !== "number" || typeof lat !== "number") return "";
-
-    const latTxt = `${Math.abs(lat).toFixed(2)}°${lat >= 0 ? "N" : "S"}`;
-    const lonTxt = `${Math.abs(lon).toFixed(2)}°${lon >= 0 ? "E" : "W"}`;
-    return `${latTxt}, ${lonTxt}`;
-  }
-
   function renderList(items, className = "") {
     const arr = asArray(items);
     if (!arr.length) return "";
@@ -144,54 +133,17 @@
     `;
   }
 
-  function renderSection(title, items, icon = "✦") {
-    const arr = asArray(items);
-    if (!arr.length) return "";
-
-    return `
-      <section class="culture-block">
-        <div class="culture-block__head">
-          <span class="culture-block__icon">${esc(icon)}</span>
-          <h4>${esc(title)}</h4>
-        </div>
-        <div class="culture-block__body">
-          ${renderList(arr, "culture-bullet-list")}
-        </div>
-      </section>
-    `;
-  }
-
-  function renderKeyTerms(items) {
-    const arr = asArray(items);
-    if (!arr.length) return "";
-
-    return `
-      <section class="culture-block culture-block--chips">
-        <div class="culture-block__head">
-          <span class="culture-block__icon">✧</span>
-          <h4>Key Terms</h4>
-        </div>
-        <div class="culture-chip-row">
-          ${arr.map(item => `<span class="culture-chip">${esc(item)}</span>`).join("")}
-        </div>
-      </section>
-    `;
-  }
-
   function renderNamedConcepts(items) {
     const arr = asArray(items);
     if (!arr.length) return "";
 
     return `
-      <section class="culture-block">
-        <div class="culture-block__head">
-          <span class="culture-block__icon">◈</span>
-          <h4>Named Concepts</h4>
-        </div>
-        <div class="culture-card-grid">
+      <section class="culture-section">
+        <h4>Named Concepts</h4>
+        <div class="culture-concepts-grid">
           ${arr.map(item => `
-            <article class="culture-info-card">
-              <div class="culture-info-card__head">
+            <article class="culture-concept-card">
+              <div class="culture-concept-card__head">
                 <h5>${esc(item.name)}</h5>
                 ${item.kind ? `<span class="culture-chip">${esc(item.kind)}</span>` : ""}
               </div>
@@ -208,15 +160,12 @@
     if (!arr.length) return "";
 
     return `
-      <section class="culture-block">
-        <div class="culture-block__head">
-          <span class="culture-block__icon">⇄</span>
-          <h4>Comparative Parallels</h4>
-        </div>
-        <div class="culture-card-grid">
+      <section class="culture-section">
+        <h4>Comparative Parallels</h4>
+        <div class="culture-parallel-grid">
           ${arr.map(item => `
-            <article class="culture-info-card">
-              <div class="culture-info-card__head">
+            <article class="culture-parallel-card">
+              <div class="culture-parallel-card__head">
                 <h5>${esc(item.concept)}</h5>
                 <span class="culture-chip">${esc(item.cultureName)}</span>
               </div>
@@ -233,19 +182,13 @@
     if (!arr.length) return "";
 
     return `
-      <section class="culture-block">
-        <div class="culture-block__head">
-          <span class="culture-block__icon">⤴</">
-          <span class="culture-block__icon">⤴</span>
-          <h4>Reading Links</h4>
-        </div>
-        <div class="culture-card-grid">
+      <section class="culture-section">
+        <h4>Reading Links</h4>
+        <div class="culture-links">
           ${arr.map(item => `
-            <a class="culture-info-card culture-info-card--link" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">
-              <div class="culture-info-card__head">
-                <h5>${esc(item.title)}</h5>
-                ${item.kind ? `<span class="culture-chip">${esc(item.kind)}</span>` : ""}
-              </div>
+            <a class="culture-link-card" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">
+              <strong>${esc(item.title)}</strong>
+              ${item.kind ? `<span class="culture-chip">${esc(item.kind)}</span>` : ""}
               ${item.desc ? `<p>${esc(item.desc)}</p>` : ""}
             </a>
           `).join("")}
@@ -254,22 +197,31 @@
     `;
   }
 
-  function renderFacts(culture) {
-    const facts = [
-      culture.region || "",
-      culture.era || "",
-      formatCoords(culture.coords)
-    ].filter(Boolean);
 
-    if (!facts.length) return "";
 
+  function renderSection(title, items) {
+    const arr = asArray(items);
+    if (!arr.length) return "";
     return `
-      <div class="culture-fact-row">
-        ${facts.map(item => `<span class="culture-fact-pill">${esc(item)}</span>`).join("")}
-      </div>
+      <section class="culture-section">
+        <h4>${esc(title)}</h4>
+        ${renderList(arr, "culture-bullet-list")}
+      </section>
     `;
   }
 
+  function renderKeyTerms(items) {
+    const arr = asArray(items);
+    if (!arr.length) return "";
+    return `
+      <section class="culture-section">
+        <h4>Key Terms</h4>
+        <div class="culture-chip-row">
+          ${arr.map(item => `<span class="culture-chip">${esc(item)}</span>`).join("")}
+        </div>
+      </section>
+    `;
+  }
   function renderCulture(culture) {
     if (!culture) return;
 
@@ -277,43 +229,40 @@
     const mobile = getMobilePanel();
 
     const html = `
-      <div class="culture-details-shell">
-        <header class="culture-hero">
-          <div class="culture-hero__symbol">${esc(culture.symbol || "✦")}</div>
-
-          <div class="culture-hero__main">
-            <p class="culture-kicker">${esc(culture.shortLabel || deriveShortLabel(culture))}</p>
-            <h3 class="culture-title">${esc(culture.name)}</h3>
-            <p class="culture-subline">${esc(culture.location || "")}</p>
-            ${renderFacts(culture)}
+      <div class="culture-details-panel__inner">
+        <header class="culture-header">
+          <div class="culture-header__symbol">${esc(culture.symbol || "✦")}</div>
+          <div class="culture-header__meta">
+            <h3>${esc(culture.name)}</h3>
+            <p class="culture-subline">
+              <span>${esc(culture.location || "")}</span>
+              ${culture.era ? `<span>• ${esc(culture.era)}</span>` : ""}
+            </p>
           </div>
         </header>
 
-        <section class="culture-overview-card">
-          <div class="culture-block__head">
-            <span class="culture-block__icon">☼</span>
-            <h4>Overview</h4>
-          </div>
-          <p class="culture-overview-copy">${esc(culture.desc || culture.mobileSummary || "")}</p>
+        <section class="culture-section">
+          <h4>Overview</h4>
+          <p>${esc(culture.desc || culture.mobileSummary || "")}</p>
         </section>
 
         ${renderKeyTerms(culture.keyTerms)}
-        ${renderSection("Creation Stories & Cosmology", culture.creationStories, "✶")}
-        ${renderSection("Core Principles", culture.corePrinciples, "◆")}
-        ${renderSection("Agriculture & Food Systems", culture.agricultureSystems, "❖")}
-        ${renderSection("Travel, Migration & Exchange", culture.movement, "➜")}
-        ${renderSection("Martial Arts & Warrior Traditions", culture.martialArts, "⚔")}
-        ${renderSection("Highlights", culture.highlights, "✹")}
-        ${renderSection("Knowledge Systems", culture.knowledgeSystems, "⌘")}
-        ${renderSection("Notable Sites / Texts", culture.notableSitesOrTexts, "▣")}
-        ${renderSection("Modern Legacy", culture.modernLegacy, "◎")}
-        ${renderSection("Recommended Readings", culture.recommendedReadings, "☍")}
-        ${renderSection("Modern Connections", culture.modernConnections, "⟡")}
+        ${renderSection("Creation Stories", culture.creationStories)}
+        ${renderSection("Core Principles", culture.corePrinciples)}
+        ${renderSection("Agriculture & Food Systems", culture.agricultureSystems)}
+        ${renderSection("Movement & Exchange", culture.movement)}
+        ${renderSection("Martial Arts & Warrior Traditions", culture.martialArts)}
+        ${renderSection("Highlights", culture.highlights)}
+        ${renderSection("Knowledge Systems", culture.knowledgeSystems)}
+        ${renderSection("Notable Sites / Texts", culture.notableSitesOrTexts)}
+        ${renderSection("Modern Legacy", culture.modernLegacy)}
+        ${renderSection("Recommended Readings", culture.recommendedReadings)}
+        ${renderSection("Modern Connections", culture.modernConnections)}
 
         ${renderNamedConcepts(culture.namedConcepts)}
         ${renderParallels(culture.comparativeParallels)}
         ${renderReadingLinks(culture.readingLinks)}
-        ${renderSection("Guiding Questions", culture.guidingQuestions, "？")}
+        ${renderSection("Guiding Questions", culture.guidingQuestions)}
       </div>
     `;
 
