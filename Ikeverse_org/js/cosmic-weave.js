@@ -11,7 +11,9 @@
  *   - Leg-by-leg explanations shown in the panel
  * - Clean toggling: turning layers off clears paths immediately (no stuck lines)
  * - Deselect: click background / press Esc / click selected node again
- * - Globe auto-rotation pauses when a culture is selected; resumes on deselect
+ * - Globe auto-rotation stops on node select (cancelAnimationFrame); resumes on deselect
+ * - Mobile: larger touch targets, labels always visible on coarse-pointer devices,
+ *   declutter skipped on mobile so names are readable on small screens
  */
 
 (() => {
@@ -25,8 +27,9 @@
   const prefersReducedMotion =
     window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
 
-  const isCoarsePointer = () =>
-    window.matchMedia?.("(pointer: coarse)")?.matches ?? false;
+  // Cached once at load — coarse pointer = touch/mobile device
+  const IS_COARSE = window.matchMedia?.("(pointer: coarse)")?.matches ?? false;
+  const isCoarsePointer = () => IS_COARSE;
 
   const el = {
     container: document.getElementById("globe-container"),
@@ -104,7 +107,7 @@
     linksSuggested: [],
     showSuggested: false,
 
-    lensLinksCache: new Map(), // lens -> links[] (official + maybe suggested)
+    lensLinksCache: new Map(),
 
     mode: "globe",
     lens: "all",
@@ -129,7 +132,7 @@
     },
 
     weave: {
-      presets: new Map(), // key -> {key,name,lens,desc,stops[]}
+      presets: new Map(),
       order: [],
       key: null,
       idx: 0,
@@ -179,8 +182,6 @@
     return `${abs.toFixed(2)}°${dir}`;
   }
 
-
-
   function globeFacingOpacity(lon, lat) {
     const lambda = (lon + GLOBE.rotate[0]) * Math.PI / 180;
     const phi = lat * Math.PI / 180;
@@ -193,25 +194,16 @@
     if (dot <= 0) return 0;
     return clamp(0.14 + Math.pow(dot, 1.15) * 0.86, 0, 1);
   }
+
   function textBlob(c) {
     return [
-      c.name,
-      c.location,
-      c.region,
-      c.era,
-      ...(c.tags || []),
-      ...(c.keyTerms || []),
-      ...(c.highlights || []),
-      ...(c.knowledgeSystems || []),
-      ...(c.corePrinciples || []),
-      ...(c.movement || []),
-      ...(c.creationStories || []),
-      ...(c.notableSitesOrTexts || []),
-      ...(c.modernLegacy || []),
+      c.name, c.location, c.region, c.era,
+      ...(c.tags || []), ...(c.keyTerms || []), ...(c.highlights || []),
+      ...(c.knowledgeSystems || []), ...(c.corePrinciples || []),
+      ...(c.movement || []), ...(c.creationStories || []),
+      ...(c.notableSitesOrTexts || []), ...(c.modernLegacy || []),
       ...(c.agricultureSystems || []),
-    ]
-      .join(" ")
-      .toLowerCase();
+    ].join(" ").toLowerCase();
   }
 
   function hasKeyword(c, keywords) {
@@ -292,7 +284,7 @@
     { key: "governance", label: "Governance", stroke: "rgba(255,255,255,.35)", dash: "9 6", swatch: "linear-gradient(90deg, rgba(255,255,255,.35), rgba(0,247,255,.25))", desc: "Selected → cultures with law/council/state/admin protocol signals.", fn: hasGovernanceSignal },
   ];
 
-  // ---------- Lens matching (REAL connections) ----------
+  // ---------- Lens matching ----------
   const LENS_THEME_ALIASES = {
     "Creation": new Set(["Creation", "Cosmology", "Consciousness", "Origins", "Genealogy"]),
     "Navigation": new Set(["Navigation", "Seafaring", "Voyaging", "Wayfinding", "Maritime"]),
@@ -363,9 +355,7 @@
       id,
       name: String(c.name || "").trim() || "Unknown",
       symbol: String(c.symbol || "🌐"),
-      lon,
-      lat,
-      coordsOk,
+      lon, lat, coordsOk,
       region: String(c.region || "Other"),
       location: String(c.location || ""),
       era: String(c.era || ""),
@@ -407,8 +397,7 @@
     const b = STATE.byId.get(String(l.target || ""));
     if (!a || !b) return null;
     return {
-      source: a,
-      target: b,
+      source: a, target: b,
       label: String(l.label || ""),
       themes: Array.isArray(l.themes) ? l.themes.map(String) : [],
       description: String(l.description || ""),
@@ -471,8 +460,7 @@
         if (score < 0.34) continue;
 
         out.push({
-          source: a,
-          target: b,
+          source: a, target: b,
           label: "Suggested similarity",
           themes: sharedTerms(a, b).slice(0, 8),
           description: `Auto-suggested via shared tags/terms (score ${score.toFixed(2)})`,
@@ -765,7 +753,7 @@
     }
   }
 
-  // ---------- Guide panel (merged explanations + real connections) ----------
+  // ---------- Guide panel ----------
   const LENS_EXPLAIN = {
     all: "All view: no single lens. Use a lens to highlight a meaning-network built from your real links.",
     "Creation": "Creation lens highlights origin/cosmology links (ex: Kumulipo ↔ Nun).",
@@ -856,10 +844,10 @@
     else el.layerLegend.setAttribute("hidden", "");
   }
 
-  // ---------- Weave Paths (built from real links by lens) ----------
+  // ---------- Weave Paths ----------
   function buildLensGraph(lens) {
     const links = getLensLinks(lens);
-    const adj = new Map(); // id -> [{otherId, link}]
+    const adj = new Map();
     const deg = new Map();
 
     const add = (a, b, link) => {
@@ -880,10 +868,7 @@
     let best = null;
     let bestD = -1;
     for (const [id, d] of deg.entries()) {
-      if (d > bestD) {
-        bestD = d;
-        best = id;
-      }
+      if (d > bestD) { bestD = d; best = id; }
     }
     return best;
   }
@@ -922,26 +907,19 @@
 
       const key = `weave:${lens.toLowerCase().replace(/\s+/g, "_")}`;
       STATE.weave.presets.set(key, {
-        key,
-        name: `${lens} — Weave Path`,
-        lens,
-        desc: LENS_EXPLAIN[lens] || "",
-        stops,
+        key, name: `${lens} — Weave Path`, lens,
+        desc: LENS_EXPLAIN[lens] || "", stops,
       });
       STATE.weave.order.push(key);
     }
 
-    // Fallback: Creation should always include Kemet ↔ Kanaka Maoli if present (real link exists in your data)
     if (!STATE.weave.order.some((k) => (STATE.weave.presets.get(k)?.lens === "Creation"))) {
       const fallback = ["kanaka_kumulipo", "kemet", "vedic", "maya"].filter((id) => STATE.byId.has(id));
       if (fallback.length >= 2) {
         const key = "weave:creation_fallback";
         STATE.weave.presets.set(key, {
-          key,
-          name: "Creation — Weave Path",
-          lens: "Creation",
-          desc: LENS_EXPLAIN["Creation"] || "",
-          stops: fallback,
+          key, name: "Creation — Weave Path", lens: "Creation",
+          desc: LENS_EXPLAIN["Creation"] || "", stops: fallback,
         });
         STATE.weave.order.unshift(key);
       }
@@ -1051,13 +1029,8 @@
     if (focus) selectCulture(stops[i].id, true);
   }
 
-  function weavePrev() {
-    goWeaveIndex(STATE.weave.idx - 1, true);
-  }
-
-  function weaveNext() {
-    goWeaveIndex(STATE.weave.idx + 1, true);
-  }
+  function weavePrev() { goWeaveIndex(STATE.weave.idx - 1, true); }
+  function weaveNext() { goWeaveIndex(STATE.weave.idx + 1, true); }
 
   function weaveShuffle() {
     if (!STATE.weave.order.length) return;
@@ -1072,10 +1045,7 @@
       el.weaveAuto.classList.toggle("active", on);
     }
 
-    if (STATE.weave.timer) {
-      clearInterval(STATE.weave.timer);
-      STATE.weave.timer = null;
-    }
+    if (STATE.weave.timer) { clearInterval(STATE.weave.timer); STATE.weave.timer = null; }
 
     if (on) {
       STATE.weave.timer = setInterval(() => {
@@ -1115,6 +1085,7 @@
     hideTooltip();
     setDetailsDefault();
     clearAllOverlayPaths();
+    startGlobeTick(); // ← resume rotation
     scheduleGlobeRender();
     mapRender();
     renderGuide();
@@ -1129,6 +1100,8 @@
 
     const c = STATE.byId.get(id);
     if (!c) return;
+
+    stopGlobeTick(); // ← halt rotation immediately, before anything else
 
     STATE.selectedId = c.id;
     updateCultureInfo(c);
@@ -1176,6 +1149,7 @@
       GLOBE.rotate[1] = start[1] + (end[1] - start[1]) * t;
       scheduleGlobeRender();
       if (t < 1) requestAnimationFrame(step);
+      // tick already stopped — globe stays put after animation ends
     };
     step();
 
@@ -1199,12 +1173,10 @@
 
     const mx = (pa[0] + pb[0]) / 2;
     const my = (pa[1] + pb[1]) / 2;
-
     const dx = pb[0] - pa[0];
     const dy = pb[1] - pa[1];
     const dist = Math.hypot(dx, dy);
     const lift = clamp(dist * 0.25, 18, 120);
-
     const nx = -dy / (dist || 1);
     const ny = dx / (dist || 1);
     const cx = mx + nx * lift;
@@ -1217,9 +1189,7 @@
     return pairs.map(([a, b]) => arcPath(proj, a, b)).filter(Boolean).join(" ");
   }
 
-  // ---------- Ranking peers for layer threads ----------
-
-
+  // ---------- Layer threads ----------
   const LAYER_THEME_MAP = {
     food: new Set(["Food", "Agriculture", "Exchange", "Stewardship"]),
     water: new Set(["Water", "Ecology", "Stewardship"]),
@@ -1286,6 +1256,7 @@
         selectCulture(d.target.id, true);
       });
   }
+
   function layerPeers(cfg, limit) {
     const sel = getSelectedCulture();
     if (!sel) return [];
@@ -1321,7 +1292,6 @@
       b.classList.toggle("active", k === lens);
     });
 
-    // If a lens is chosen, swap to that lens's weave path automatically
     if (lens !== "all") {
       const targetKey = STATE.weave.order.find((k) => STATE.weave.presets.get(k)?.lens === lens);
       if (targetKey) setWeavePreset(targetKey, false);
@@ -1353,7 +1323,13 @@
       .forEach((b) => b.classList.toggle("active", STATE.showSuggested));
   }
 
-  // ---------- Globe ----------
+  // ==========================================================================
+  // Globe — rotation control
+  // stopGlobeTick sets autoRotate=false AND cancels the rAF.
+  // tick() checks autoRotate as its FIRST action before rescheduling, so even
+  // a stale callback that fires after cancelAnimationFrame exits without
+  // restarting the loop.
+  // ==========================================================================
   const GLOBE = {
     inited: false,
     svg: null,
@@ -1369,8 +1345,8 @@
     nodesSel: null,
     labelsSel: null,
 
-    pathSel: null, // weave path
-    lensSel: null, // lens highlight
+    pathSel: null,
+    lensSel: null,
     threadLayerByKey: new Map(),
 
     linksSel: null,
@@ -1380,10 +1356,43 @@
     pointerId: null,
     last: null,
 
+    autoRotate: false, // ← master flag; tick checks this FIRST
     tickRaf: null,
     raf: null,
     renderQueued: false,
   };
+
+  function stopGlobeTick() {
+    GLOBE.autoRotate = false;
+    if (GLOBE.tickRaf !== null) {
+      cancelAnimationFrame(GLOBE.tickRaf);
+      GLOBE.tickRaf = null;
+    }
+  }
+
+  function startGlobeTick() {
+    if (GLOBE.autoRotate) return;     // already running
+    if (prefersReducedMotion) return;
+    if (STATE.selectedId) return;     // never start while a node is selected
+
+    GLOBE.autoRotate = true;
+
+    function tick() {
+      // Exit WITHOUT rescheduling if stopped — handles the cancel race condition
+      if (!GLOBE.autoRotate) {
+        GLOBE.tickRaf = null;
+        return;
+      }
+      if (!STATE.paused && !GLOBE.dragging &&
+          (STATE.mode === "globe" || STATE.mode === "split")) {
+        GLOBE.rotate[0] += 0.06;
+        scheduleGlobeRender();
+      }
+      GLOBE.tickRaf = requestAnimationFrame(tick);
+    }
+
+    GLOBE.tickRaf = requestAnimationFrame(tick);
+  }
 
   function ensureGlobeInit() {
     if (GLOBE.inited) return;
@@ -1440,13 +1449,16 @@
 
     updateGlobeLinksData();
 
+    // Node radius: larger on mobile for easier tapping
+    const nodeR = IS_COARSE ? 9 : 6;
+
     GLOBE.nodesSel = GLOBE.layers.nodes
       .selectAll("circle.node")
       .data(STATE.cultures, (d) => d.id)
       .enter()
       .append("circle")
       .attr("class", "node")
-      .attr("r", 6)
+      .attr("r", nodeR)
       .attr("fill", (d) => nodeColor(d))
       .on("pointerenter", (event, d) => {
         if (isCoarsePointer()) return;
@@ -1469,7 +1481,7 @@
         selectCulture(d.id, true);
       });
 
-    GLOBE.pulseSel = GLOBE.layers.nodes.append("circle").attr("class", "node-pulse").attr("r", 10).style("display", "none");
+    GLOBE.pulseSel = GLOBE.layers.nodes.append("circle").attr("class", "node-pulse").attr("r", IS_COARSE ? 14 : 10).style("display", "none");
 
     GLOBE.labelsSel = GLOBE.layers.labels
       .selectAll("text.node-label")
@@ -1500,7 +1512,7 @@
     el.globeSvg.addEventListener("pointercancel", onGlobePointerUp, { passive: true });
     el.globeSvg.addEventListener("lostpointercapture", onGlobePointerUp, { passive: true });
 
-    if (!prefersReducedMotion) startGlobeTick();
+    startGlobeTick();
     scheduleGlobeRender();
   }
 
@@ -1523,20 +1535,6 @@
       GLOBE.projection.translate([GLOBE.width / 2, GLOBE.height / 2]).scale(GLOBE.scale);
       GLOBE.layers.sphere.attr("cx", GLOBE.width / 2).attr("cy", GLOBE.height / 2).attr("r", GLOBE.scale);
     }
-  }
-
-  function startGlobeTick() {
-    if (GLOBE.tickRaf) return;
-    const tick = () => {
-      // FIX: pause auto-rotation while a culture is selected
-      if (!STATE.paused && !GLOBE.dragging && !STATE.selectedId &&
-          (STATE.mode === "globe" || STATE.mode === "split")) {
-        GLOBE.rotate[0] += 0.06;
-        scheduleGlobeRender();
-      }
-      GLOBE.tickRaf = requestAnimationFrame(tick);
-    };
-    GLOBE.tickRaf = requestAnimationFrame(tick);
   }
 
   function onGlobePointerDown(e) {
@@ -1588,7 +1586,10 @@
     return p && Number.isFinite(p[0]) && Number.isFinite(p[1]);
   }
 
+  // Desktop-only label declutter — skip entirely on mobile so all names show
   function declutterLabels(selection, centerX, centerY) {
+    if (IS_COARSE) return; // ← mobile: never hide labels
+
     const items = [];
     selection.each(function (d) {
       const node = this;
@@ -1651,7 +1652,7 @@
     const sel = getSelectedCulture();
     const lens = STATE.lens;
 
-    // Lens highlight arcs (global, real links)
+    // Lens highlight arcs
     if (lens !== "all") {
       const lensLinks = getLensLinks(lens).filter((l) => geoVisible(l.source.lon, l.source.lat) && geoVisible(l.target.lon, l.target.lat));
       const pairs = lensLinks.slice(0, 40).map((l) => [l.source, l.target]);
@@ -1672,7 +1673,7 @@
       GLOBE.pathSel.attr("d", "").attr("opacity", 0);
     }
 
-    // Layer threads (selected -> peers)
+    // Layer threads
     for (const cfg of LAYER_THREAD_CONFIGS) {
       const layer = GLOBE.threadLayerByKey.get(cfg.key);
       if (!layer) continue;
@@ -1727,7 +1728,7 @@
     if (STATE.hoverId) allow.add(STATE.hoverId);
 
     GLOBE.labelsSel
-      .attr("x", (d) => (GLOBE.projection([d.lon, d.lat]) || [NaN, NaN])[0] + 9)
+      .attr("x", (d) => (GLOBE.projection([d.lon, d.lat]) || [NaN, NaN])[0] + (IS_COARSE ? 11 : 9))
       .attr("y", (d) => (GLOBE.projection([d.lon, d.lat]) || [NaN, NaN])[1] + 4)
       .attr("opacity", (d) => {
         const v = geoVisible(d.lon, d.lat);
@@ -1735,6 +1736,10 @@
 
         const face = globeFacingOpacity(d.lon, d.lat);
 
+        // Mobile: always show labels at full face opacity (no hiding)
+        if (IS_COARSE) return face;
+
+        // Desktop behaviour
         if (!STATE.showLabels) {
           return allow.has(d.id) ? Math.max(0.8, face) : 0;
         }
@@ -1750,9 +1755,12 @@
         return face;
       });
 
-    if (STATE.showLabels) declutterLabels(GLOBE.labelsSel, GLOBE.width / 2, GLOBE.height / 2);
+    // Declutter desktop only; mobile skips (handled inside the function)
+    if (STATE.showLabels || IS_COARSE) {
+      declutterLabels(GLOBE.labelsSel, GLOBE.width / 2, GLOBE.height / 2);
+    }
 
-    // Connections lines
+    // Connection lines
     const showLinks = STATE.showConnections && (STATE.mode === "globe" || STATE.mode === "split");
     GLOBE.linksSel
       .attr("d", (l) => arcPath(GLOBE.projection, l.source, l.target))
@@ -1844,13 +1852,16 @@
 
     updateMapLinksData();
 
+    // Larger tap targets on mobile
+    const mapNodeR = IS_COARSE ? 8 : 5;
+
     MAP.nodesSel = MAP.layers.nodes
       .selectAll("circle.node")
       .data(STATE.cultures, (d) => d.id)
       .enter()
       .append("circle")
       .attr("class", "node")
-      .attr("r", 5)
+      .attr("r", mapNodeR)
       .attr("fill", (d) => nodeColor(d))
       .on("click", (event, d) => {
         event.stopPropagation();
@@ -2020,15 +2031,21 @@
     if (STATE.hoverId) allow.add(STATE.hoverId);
 
     MAP.labelsSel
-      .attr("x", (d) => (MAP.projection([d.lon, d.lat]) || [NaN, NaN])[0] + 8)
+      .attr("x", (d) => (MAP.projection([d.lon, d.lat]) || [NaN, NaN])[0] + (IS_COARSE ? 10 : 8))
       .attr("y", (d) => (MAP.projection([d.lon, d.lat]) || [NaN, NaN])[1] + 3)
       .attr("opacity", (d) => {
+        // Mobile: always show labels
+        if (IS_COARSE) {
+          if (lens !== "all" && !cultureMatchesLens(d) && d.id !== STATE.selectedId) return 0.35;
+          return 1;
+        }
+        // Desktop
         if (!STATE.showLabels) return allow.has(d.id) ? 1 : 0;
         if (lens !== "all" && !cultureMatchesLens(d) && !allow.has(d.id)) return 0.22;
         return 1;
       });
 
-    // Base connections (optional)
+    // Base connections
     const showLinks = STATE.showMapConnections && (STATE.mode === "map" || STATE.mode === "split");
     MAP.linksSel
       .attr("d", (l) => mapArcPath(l.source, l.target))
