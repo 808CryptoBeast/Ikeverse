@@ -11,6 +11,7 @@
  *   - Leg-by-leg explanations shown in the panel
  * - Clean toggling: turning layers off clears paths immediately (no stuck lines)
  * - Deselect: click background / press Esc / click selected node again
+ * - Globe auto-rotation pauses when a culture is selected; resumes on deselect
  */
 
 (() => {
@@ -545,13 +546,13 @@
     p.push(`In ${place}, across ${era}, ${c.name} is a living system—where meaning, survival, and legitimacy are produced by coordination. The landscape is not background; it is the first teacher. (${coords})`);
 
     if (origins.length) {
-      p.push(`Origins begin the map: ${origins.join(" • ")}. These aren’t “just myths”—they’re compressed instructions for relationship, obligation, and what counts as real.`);
+      p.push(`Origins begin the map: ${origins.join(" • ")}. These aren't "just myths"—they're compressed instructions for relationship, obligation, and what counts as real.`);
     } else {
-      p.push(`The origin chapter is not yet recorded here. When added, it should explain how beings and duties emerge together (not only “what happened first”).`);
+      p.push(`The origin chapter is not yet recorded here. When added, it should explain how beings and duties emerge together (not only "what happened first").`);
     }
 
     if (agri.length) {
-      p.push(`Food and sustainability are treated as technology: ${agri.join(" • ")}. The design goal isn’t extraction—it's maintaining flow (water, labor, seasons, and rights) without collapsing the ecosystem.`);
+      p.push(`Food and sustainability are treated as technology: ${agri.join(" • ")}. The design goal isn't extraction—it's maintaining flow (water, labor, seasons, and rights) without collapsing the ecosystem.`);
     } else {
       p.push(`Food/land systems are not yet recorded. Add crops, water flow, labor organization, seasonal timing, and how stewardship is enforced.`);
     }
@@ -565,7 +566,7 @@
     }
 
     if (knowledge.length) {
-      p.push(`Knowledge is carried through practice: ${knowledge.join(" • ")}. You don’t just learn it—you become the instrument that can reproduce it.`);
+      p.push(`Knowledge is carried through practice: ${knowledge.join(" • ")}. You don't just learn it—you become the instrument that can reproduce it.`);
     }
 
     if (legacy.length) {
@@ -1527,7 +1528,9 @@
   function startGlobeTick() {
     if (GLOBE.tickRaf) return;
     const tick = () => {
-      if (!STATE.paused && !GLOBE.dragging && (STATE.mode === "globe" || STATE.mode === "split")) {
+      // FIX: pause auto-rotation while a culture is selected
+      if (!STATE.paused && !GLOBE.dragging && !STATE.selectedId &&
+          (STATE.mode === "globe" || STATE.mode === "split")) {
         GLOBE.rotate[0] += 0.06;
         scheduleGlobeRender();
       }
