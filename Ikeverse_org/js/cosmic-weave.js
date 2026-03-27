@@ -372,6 +372,8 @@
       movement: arr(c.movement),
       modernLegacy: arr(c.modernLegacy),
       agricultureSystems: arr(c.agricultureSystems),
+      story: Array.isArray(c.story) ? c.story.map(String) : [],
+      readingLinks: Array.isArray(c.readingLinks) ? c.readingLinks : [],
     };
   }
 
@@ -520,6 +522,10 @@
   }
 
   function storyParagraphs(c) {
+    // If the culture has hand-authored story paragraphs, use them directly.
+    if (Array.isArray(c.story) && c.story.length) return c.story;
+
+    // ── Fallback: generate from structured data fields ────────────────────
     const place = `${c.location || "Unknown place"}${c.region ? ` • ${c.region}` : ""}`;
     const era = c.era || "Unknown era";
     const coords = Number.isFinite(c.lat) && Number.isFinite(c.lon) ? `${formatCoord(c.lat, true)}, ${formatCoord(c.lon, false)}` : "Unknown coordinates";
@@ -567,6 +573,19 @@
 
   function renderStoryCard(c) {
     const paragraphs = storyParagraphs(c);
+    const links = Array.isArray(c.readingLinks) && c.readingLinks.length ? c.readingLinks : [];
+    const linksHtml = links.length ? `
+      <div class="cw-story-reading" style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)">
+        <div style="font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:.06em;color:rgba(0,247,255,.72);margin-bottom:8px">FURTHER READING</div>
+        ${links.map((l) => `
+          <a href="${escapeAttr(l.url)}" target="_blank" rel="noopener noreferrer"
+             style="display:block;margin-bottom:8px;color:rgba(212,178,255,.88);font-size:.82rem;line-height:1.45;text-decoration:none;border-bottom:1px dashed rgba(157,0,255,.25);padding-bottom:6px">
+            <span style="color:rgba(255,215,0,.82);font-size:.72rem;font-family:'Orbitron',sans-serif;margin-right:6px">${escapeHtml(l.kind || "")}</span>${escapeHtml(l.title)}
+            ${l.desc ? `<span style="display:block;margin-top:2px;color:rgba(180,200,230,.6);font-size:.78rem">${escapeHtml(l.desc)}</span>` : ""}
+          </a>
+        `).join("")}
+      </div>` : "";
+
     return `
       <section class="culture-card culture-extra-card cw-story-card" data-expanded="false">
         <header class="culture-card-header">
@@ -575,6 +594,7 @@
 
         <div class="cw-story-scroll cw-scroll" style="display:none" aria-label="Story mode scroll area">
           ${paragraphs.map((t) => `<p>${escapeHtml(t)}</p>`).join("")}
+          ${linksHtml}
         </div>
 
         <button class="culture-card-more" type="button" data-action="toggle-story">
