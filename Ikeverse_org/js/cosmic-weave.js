@@ -2459,17 +2459,40 @@
   // ---------- Wiring ----------
   function wireNavToggle() {
     const toggle = document.getElementById("mobile-menu-toggle");
-    const links = document.getElementById("nav-links");
+    const links  = document.getElementById("nav-links");
+    const nav    = toggle?.closest("nav");
     if (!toggle || !links) return;
 
-    toggle.addEventListener("click", () => {
-      const open = links.classList.toggle("is-open");
-      toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      toggle.innerHTML = open ? '<i class="fas fa-xmark"></i>' : '<i class="fas fa-bars"></i>';
+    function closeMenu() {
+      links.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+
+    function openMenu() {
+      links.classList.add("is-open");
+      toggle.setAttribute("aria-expanded", "true");
+      toggle.innerHTML = '<i class="fas fa-xmark"></i>';
+    }
+
+    toggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      links.classList.contains("is-open") ? closeMenu() : openMenu();
     });
 
+    // Close when any nav link is tapped
     links.querySelectorAll("a.nav-link").forEach((a) => {
-      a.addEventListener("click", () => links.classList.remove("is-open"));
+      a.addEventListener("click", () => closeMenu());
+    });
+
+    // Close when tapping outside the nav
+    document.addEventListener("click", (e) => {
+      if (nav && !nav.contains(e.target)) closeMenu();
+    });
+
+    // Close on Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeMenu();
     });
   }
 

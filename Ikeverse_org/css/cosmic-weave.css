@@ -63,114 +63,314 @@ body{
   padding: 0 0 48px;
 }
 
-/* -----------------------------
-   NAV (missing previously)
------------------------------- */
+/* ═══════════════════════════════════════════════════════════
+   NAV
+   ═══════════════════════════════════════════════════════════ */
+
+/* The nav itself must be position:relative so the dropdown
+   child positions relative to it (not the viewport), ensuring
+   the menu always drops DOWN, never up. */
 .quantum-nav.cosmic-nav{
   position: sticky;
   top: 0;
-  z-index: 999;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 14px;
-  padding: 10px 14px;
-  background: rgba(10,14,23,.62);
-  border-bottom: 1px solid rgba(255,255,255,.10);
-  backdrop-filter: blur(10px);
+  z-index: 9999; /* high enough to sit above hero, globe, everything */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 20px;
+  background: rgba(8,12,22,.88);
+  border-bottom: 1px solid rgba(0,247,255,.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  /* Decorative scanline overlay defined below */
 }
-.nav-portal{
-  width: 54px;
-  height: 54px;
-  position:relative;
-  display:grid;
-  place-items:center;
-  border-radius: 999px;
-  border: 1px solid rgba(0,247,255,.16);
-  background: rgba(0,247,255,.06);
-  box-shadow: 0 18px 40px rgba(0,247,255,.06);
-}
-.portal-ring{
-  position:absolute;
-  inset:-6px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.10);
-  opacity:.65;
-}
-.portal-ring.middle{ inset:-2px; opacity:.8; border-color: rgba(0,247,255,.14); }
-.portal-ring.inner{ inset:6px; opacity:.7; border-color: rgba(255,215,0,.14); }
-.portal-center{ font-size:1.2rem; color: rgba(255,255,255,.92); }
 
+/* Scanline shimmer */
+.nav-scanline{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,247,255,.012) 3px,
+    rgba(0,247,255,.012) 4px
+  );
+  border-radius: inherit;
+}
+
+/* Hologram glow strip along bottom edge */
+.nav-hologram{
+  position: absolute;
+  bottom: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0,247,255,.55),
+    rgba(157,0,255,.45),
+    rgba(0,247,255,.55),
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* ── Portal logo ── */
+.nav-portal{
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(0,247,255,.20);
+  background: radial-gradient(circle at 40% 35%, rgba(0,247,255,.12), rgba(157,0,255,.08));
+  box-shadow:
+    0 0 18px rgba(0,247,255,.10),
+    0 0 36px rgba(157,0,255,.06);
+  transition: box-shadow .3s ease;
+}
+.nav-portal:hover{
+  box-shadow:
+    0 0 22px rgba(0,247,255,.22),
+    0 0 44px rgba(157,0,255,.12);
+}
+
+.portal-ring{
+  position: absolute;
+  inset: -7px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.08);
+  animation: portalSpin 18s linear infinite;
+}
+.portal-ring.middle{
+  inset: -3px;
+  border-color: rgba(0,247,255,.12);
+  animation-duration: 12s;
+  animation-direction: reverse;
+}
+.portal-ring.inner{
+  inset: 5px;
+  border-color: rgba(255,215,0,.12);
+  animation-duration: 8s;
+}
+@keyframes portalSpin{
+  to{ transform: rotate(360deg); }
+}
+.portal-center{ font-size: 1.15rem; position: relative; z-index: 1; }
+
+/* ── Desktop links ── */
 .nav-links-container{ flex: 1 1 auto; }
 .nav-links{
-  list-style:none;
-  display:flex;
-  gap:.35rem;
-  align-items:center;
-  justify-content:flex-end;
-  margin:0;
-  padding:0;
+  list-style: none;
+  display: flex;
+  gap: .4rem;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
 }
+.nav-item{ display: flex; }
+
 .nav-link{
-  display:inline-flex;
-  align-items:center;
-  gap: 10px;
-  padding: .65rem .85rem;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.92);
-  text-decoration:none;
-  position:relative;
-  overflow:hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: .55rem .9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.09);
+  background: rgba(255,255,255,.05);
+  color: rgba(255,255,255,.88);
+  text-decoration: none;
+  font-size: .88rem;
+  font-weight: 500;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease,
+    transform .18s ease,
+    color .2s ease;
 }
+/* Subtle inner shimmer on hover */
+.nav-link::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,247,255,.06), transparent 60%);
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.nav-link:hover::before{ opacity: 1; }
 .nav-link:hover{
-  border-color: rgba(0,247,255,.25);
-  box-shadow: 0 14px 25px rgba(0,247,255,.06);
+  border-color: rgba(0,247,255,.30);
+  background: rgba(0,247,255,.08);
+  color: rgba(255,255,255,.98);
+  box-shadow: 0 8px 20px rgba(0,247,255,.10);
   transform: translateY(-1px);
 }
 .nav-link.active{
-  border-color: rgba(0,247,255,.55);
+  border-color: rgba(0,247,255,.50);
   background: rgba(0,247,255,.12);
+  color: rgba(0,247,255,.98);
+  box-shadow:
+    0 8px 20px rgba(0,247,255,.10),
+    inset 0 0 0 1px rgba(0,247,255,.08);
 }
 .nav-link.cta{
-  border-color: rgba(255,215,0,.18);
+  border-color: rgba(255,215,0,.22);
   background: rgba(255,215,0,.08);
+  color: rgba(255,215,0,.94);
 }
 .nav-link.cta:hover{
-  border-color: rgba(255,215,0,.35);
-  box-shadow: 0 14px 25px rgba(255,215,0,.06);
+  border-color: rgba(255,215,0,.45);
+  background: rgba(255,215,0,.14);
+  box-shadow: 0 8px 20px rgba(255,215,0,.10);
+  color: rgba(255,215,0,1);
 }
-.link-text{ font-size:.92rem; }
-.link-icon{ opacity:.9; }
 
+.link-icon{ opacity: .85; font-size: .9rem; }
+.link-text{ font-size: .88rem; }
+/* link-pulse: decorative element in HTML, hide by default */
+.link-pulse{ display: none; }
+
+/* ── Hamburger toggle — hidden on desktop ── */
 .mobile-menu-toggle{
-  display:none;
-  width: 42px;
-  height: 42px;
+  display: none;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.14);
   background: rgba(255,255,255,.06);
   color: rgba(255,255,255,.92);
+  font-size: 1rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: border-color .2s ease, background .2s ease;
+}
+.mobile-menu-toggle:hover{
+  border-color: rgba(0,247,255,.35);
+  background: rgba(0,247,255,.10);
 }
 
-@media (max-width:900px){
-  .mobile-menu-toggle{ display:inline-grid; place-items:center; }
-  .nav-links-container{ display:none; }
-  .nav-links-container.is-open{
-    display:block;
-    position:absolute;
-    top:72px;
-    left:12px;
-    right:12px;
-    padding:12px;
-    border-radius:16px;
-    background: rgba(10,14,23,.86);
-    border:1px solid rgba(255,255,255,.10);
-    backdrop-filter: blur(10px);
+/* ═══════════════════════════════════════════════════════════
+   MOBILE NAV  ≤ 860 px
+   Dropdown always opens DOWNWARD from the nav bar.
+   The key is: nav has position:sticky (a containing block),
+   and the dropdown uses position:absolute + top: 100%.
+   ═══════════════════════════════════════════════════════════ */
+@media (max-width: 860px){
+
+  .quantum-nav.cosmic-nav{
+    padding: 10px 14px;
+    /* Must remain position:sticky (not static) so the
+       absolute-positioned dropdown offsets from the nav bar */
   }
-  .nav-links{ flex-direction:column; align-items:stretch; }
-  .nav-link{ justify-content:space-between; }
+
+  /* Show hamburger */
+  .mobile-menu-toggle{
+    display: inline-flex;
+  }
+
+  /* Hide the link container by default — use visibility+opacity
+     so it can animate instead of hard display:none/block jump */
+  .nav-links-container{
+    /* Hidden state */
+    display: block;           /* keep in layout flow for transition */
+    position: absolute;
+    /* DROP DOWN: top:100% places the panel immediately below the nav bar */
+    top: calc(100% + 4px);
+    left: 12px;
+    right: 12px;
+    /* Hidden by default */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition:
+      opacity .22s ease,
+      transform .22s ease;
+    /* Styling */
+    padding: 10px;
+    border-radius: 16px;
+    background: rgba(8,12,22,.96);
+    border: 1px solid rgba(0,247,255,.14);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow:
+      0 20px 50px rgba(0,0,0,.55),
+      0 0 0 1px rgba(0,247,255,.06) inset;
+    z-index: 9998;
+  }
+
+  /* Open state — slides down and fades in */
+  .nav-links-container.is-open{
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  /* Stack links vertically */
+  .nav-links{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .nav-item{ display: flex; }
+
+  .nav-link{
+    justify-content: flex-start;
+    gap: 12px;
+    padding: .72rem 1rem;
+    border-radius: 12px;
+    font-size: .92rem;
+  }
+  /* Show a right-arrow hint on mobile */
+  .nav-link::after{
+    content: "›";
+    margin-left: auto;
+    opacity: .35;
+    font-size: 1.1rem;
+    transition: opacity .18s ease, transform .18s ease;
+  }
+  .nav-link:hover::after,
+  .nav-link.active::after{
+    opacity: .75;
+    transform: translateX(2px);
+  }
+
+  /* Divider before the CTA */
+  .nav-item:last-child{
+    margin-top: 4px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+}
+
+/* ── Extra-small phones (≤ 480 px) ── */
+@media (max-width: 480px){
+  .quantum-nav.cosmic-nav{ padding: 8px 12px; }
+  .nav-portal{ width: 40px; height: 40px; }
+  .portal-center{ font-size: 1rem; }
+  .mobile-menu-toggle{ width: 42px; height: 42px; }
+  .nav-links-container{
+    left: 8px;
+    right: 8px;
+    top: calc(100% + 2px);
+    border-radius: 14px;
+    padding: 8px;
+  }
+  .nav-link{
+    padding: .68rem .9rem;
+    font-size: .88rem;
+  }
 }
 
 /* -----------------------------
