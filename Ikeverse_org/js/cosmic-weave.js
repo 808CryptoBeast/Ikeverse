@@ -141,6 +141,7 @@
     },
 
     paused: false,
+    visitedIds: [],   // history trail — ordered list of visited culture IDs
   };
 
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
@@ -1086,6 +1087,12 @@
     setDetailsDefault();
     clearAllOverlayPaths();
     startGlobeTick(); // ← resume rotation
+    zoomGlobeOut();   // ← animate back to base scale
+    // Also reset map zoom out smoothly
+    if (MAP.inited && MAP.svg && MAP.zoom) {
+      MAP.svg.transition().duration(prefersReducedMotion ? 0 : 500).call(MAP.zoom.transform, d3.zoomIdentity);
+      MAP.transform = d3.zoomIdentity;
+    }
     scheduleGlobeRender();
     mapRender();
     renderGuide();
@@ -1104,6 +1111,12 @@
     stopGlobeTick(); // ← halt rotation immediately, before anything else
 
     STATE.selectedId = c.id;
+
+    // Track visit history (max 20, no duplicates adjacent)
+    if (STATE.visitedIds[STATE.visitedIds.length - 1] !== c.id) {
+      STATE.visitedIds.push(c.id);
+      if (STATE.visitedIds.length > 20) STATE.visitedIds.shift();
+    }
     updateCultureInfo(c);
     focusOnCulture(c);
 
@@ -1129,40 +1142,111 @@
     }
   }
 
-  // ---------- Focus (globe rotate) ----------
+  // ---------- Focus (globe rotate + zoom in) ----------
+
+  // Cancel any in-progress zoom animation
+  function cancelZoomAnim() {
+    if (GLOBE.zoomAnimRaf !== null) {
+      cancelAnimationFrame(GLOBE.zoomAnimRaf);
+      GLOBE.zoomAnimRaf = null;
+    }
+  }
+
+  // Smooth easing
+  function easeInOut(t) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  }
+
+  function animateGlobeScale(fromScale, toScale, duration, onDone) {
+    cancelZoomAnim();
+    if (prefersReducedMotion || duration === 0) {
+      GLOBE.scale = toScale;
+      scheduleGlobeRender();
+      onDone?.();
+      return;
+    }
+    const t0 = now();
+    const step = () => {
+      const raw = clamp((now() - t0) / duration, 0, 1);
+      const t = easeInOut(raw);
+      GLOBE.scale = fromScale + (toScale - fromScale) * t;
+      scheduleGlobeRender();
+      if (raw < 1) {
+        GLOBE.zoomAnimRaf = requestAnimationFrame(step);
+      } else {
+        GLOBE.zoomAnimRaf = null;
+        GLOBE.scale = toScale;
+        scheduleGlobeRender();
+        onDone?.();
+      }
+    };
+    GLOBE.zoomAnimRaf = requestAnimationFrame(step);
+  }
+
   function focusOnCulture(c) {
     if (!c) return;
 
     ensureGlobeInit();
-    const targetLon = -c.lon;
-    const targetLat = -c.lat;
 
-    const start = [...GLOBE.rotate];
-    const end = [targetLon, targetLat, 0];
+    // --- Globe: rotate + zoom in to ~2.2× base scale ---
+    const startRotate = [...GLOBE.rotate];
+    const endRotate = [-c.lon, -c.lat, 0];
+    const startScale = GLOBE.scale;
+    const targetScale = clamp(GLOBE.baseScale * 2.2, GLOBE.baseScale * 0.72, GLOBE.baseScale * 3.0);
 
-    const dur = prefersReducedMotion ? 0 : 650;
+    const dur = prefersReducedMotion ? 0 : 750;
     const t0 = now();
 
-    const step = () => {
-      const t = dur ? clamp((now() - t0) / dur, 0, 1) : 1;
-      GLOBE.rotate[0] = start[0] + (end[0] - start[0]) * t;
-      GLOBE.rotate[1] = start[1] + (end[1] - start[1]) * t;
-      scheduleGlobeRender();
-      if (t < 1) requestAnimationFrame(step);
-      // tick already stopped — globe stays put after animation ends
-    };
-    step();
+    cancelZoomAnim(); // cancel any previous zoom
 
+    const step = () => {
+      const raw = clamp((now() - t0) / (dur || 1), 0, 1);
+      const t = easeInOut(raw);
+      GLOBE.rotate[0] = startRotate[0] + (endRotate[0] - startRotate[0]) * t;
+      GLOBE.rotate[1] = startRotate[1] + (endRotate[1] - startRotate[1]) * t;
+      GLOBE.scale = startScale + (targetScale - startScale) * t;
+      // Keep projection + sphere in sync (globeRender will also do this, but
+      // doing it here avoids a one-frame lag on sphere radius)
+      if (GLOBE.projection) {
+        GLOBE.projection.translate([GLOBE.width / 2, GLOBE.height / 2]).scale(GLOBE.scale);
+        GLOBE.layers.sphere?.attr("r", GLOBE.scale);
+      }
+      scheduleGlobeRender();
+      if (raw < 1) {
+        GLOBE.zoomAnimRaf = requestAnimationFrame(step);
+      } else {
+        GLOBE.zoomAnimRaf = null;
+      }
+    };
+    GLOBE.zoomAnimRaf = requestAnimationFrame(step);
+
+    // --- Map: zoom in tightly on the culture's location ---
     if (MAP.inited) {
       const p = MAP.projection([c.lon, c.lat]);
       if (p && MAP.svg && MAP.zoom) {
-        const k = clamp(MAP.transform.k, 1.2, 3.2);
+        // Use a zoom level that shows regional detail — 4× for most, 5× for
+        // island/small-territory cultures so you can see the archipelago shape.
+        const isIsland = hasKeyword(c, ["island", "archipelago", "pacific", "polynesia", "hawaii", "caribbean", "maui", "oahu"]);
+        const k = isIsland ? 5 : 4;
         const tx = MAP.width / 2 - p[0] * k;
         const ty = MAP.height / 2 - p[1] * k;
         const tr = d3.zoomIdentity.translate(tx, ty).scale(k);
-        MAP.svg.transition().duration(520).call(MAP.zoom.transform, tr);
+        MAP.svg.transition().duration(prefersReducedMotion ? 0 : 650).call(MAP.zoom.transform, tr);
       }
     }
+  }
+
+  // Zoom the globe back out to base scale (called from clearSelection)
+  function zoomGlobeOut() {
+    if (!GLOBE.inited) return;
+    const fromScale = GLOBE.scale;
+    const toScale = GLOBE.baseScale;
+    if (Math.abs(fromScale - toScale) < 2) return; // already at base
+    animateGlobeScale(fromScale, toScale, prefersReducedMotion ? 0 : 500, () => {
+      // Make sure globeResize clamps are respected
+      GLOBE.scale = clamp(GLOBE.scale, GLOBE.baseScale * 0.72, GLOBE.baseScale * 1.6);
+      scheduleGlobeRender();
+    });
   }
 
   // ---------- Drawing geometry ----------
@@ -1358,6 +1442,21 @@
 
     autoRotate: false, // ← master flag; tick checks this FIRST
     tickRaf: null,
+    zoomAnimRaf: null, // for zoom-in/out animation
+
+    // New feature refs
+    starCanvas: null,  // star field canvas element
+    starCtx: null,
+    stars: [],         // [{x,y,z,r,opacity}] in 3D unit-sphere coords
+    starRaf: null,
+
+    nightSel: null,    // day/night terminator overlay
+    historyLayer: null,// visit history trail group
+    glowLayer: null,   // region-colored glow ring group
+
+    // Pinch-to-zoom state
+    pointers: new Map(), // pointerId -> {x,y}
+    pinchDist: null,     // last pinch distance
     raf: null,
     renderQueued: false,
   };
@@ -1394,6 +1493,126 @@
     GLOBE.tickRaf = requestAnimationFrame(tick);
   }
 
+  // ==========================================================================
+  // Star field — canvas behind globe SVG, stars parallax with rotation
+  // ==========================================================================
+  function initStarField() {
+    if (prefersReducedMotion) return;
+
+    const canvas = document.createElement("canvas");
+    canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;border-radius:14px;";
+    // Insert before the SVG element
+    el.globeSvg.parentElement?.insertBefore(canvas, el.globeSvg);
+    el.globeSvg.style.position = "relative";
+    el.globeSvg.style.zIndex = "1";
+
+    GLOBE.starCanvas = canvas;
+    GLOBE.starCtx = canvas.getContext("2d");
+
+    // Generate stars as 3D unit-sphere points (for parallax)
+    const N = IS_COARSE ? 180 : 320;
+    GLOBE.stars = Array.from({ length: N }, () => {
+      // Random point on unit sphere
+      const theta = Math.random() * 2 * Math.PI;
+      const phi = Math.acos(2 * Math.random() - 1);
+      return {
+        x: Math.sin(phi) * Math.cos(theta),
+        y: Math.sin(phi) * Math.sin(theta),
+        z: Math.cos(phi),
+        r: Math.random() * 1.2 + 0.3,
+        opacity: Math.random() * 0.55 + 0.25,
+      };
+    });
+
+    drawStars();
+  }
+
+  function drawStars() {
+    const canvas = GLOBE.starCanvas;
+    const ctx = GLOBE.starCtx;
+    if (!canvas || !ctx) return;
+
+    // Size canvas to match SVG
+    const w = GLOBE.width, h = GLOBE.height;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w; canvas.height = h;
+    }
+    ctx.clearRect(0, 0, w, h);
+
+    // Rotation angles for parallax (use a fraction of globe rotation so stars
+    // move subtly — not 1:1)
+    const rx = (GLOBE.rotate[0] * Math.PI / 180) * 0.18;
+    const ry = (GLOBE.rotate[1] * Math.PI / 180) * 0.18;
+    const cosX = Math.cos(-ry), sinX = Math.sin(-ry);
+    const cosY = Math.cos(rx), sinY = Math.sin(rx);
+
+    const cx = w / 2, cy = h / 2;
+    const spread = Math.min(w, h) * 0.62;
+
+    for (const s of GLOBE.stars) {
+      // Rotate 3D point
+      let { x, y, z } = s;
+      // Rotate around Y axis
+      let x2 = x * cosY + z * sinY;
+      const z2 = -x * sinY + z * cosY;
+      x = x2;
+      z = z2;
+      // Rotate around X axis
+      const y2 = y * cosX - z * sinX;
+      const z3 = y * sinX + z * cosX;
+
+      // Project to screen (simple orthographic)
+      const sx = cx + x * spread;
+      const sy = cy + y2 * spread;
+
+      // Fade stars behind the globe (z3 < 0 means behind)
+      const depthFade = z3 < -0.1 ? 0 : (z3 < 0.1 ? (z3 + 0.1) / 0.2 : 1);
+      const op = s.opacity * depthFade;
+      if (op < 0.04) continue;
+
+      ctx.beginPath();
+      ctx.arc(sx, sy, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200,220,255,${op.toFixed(2)})`;
+      ctx.fill();
+    }
+  }
+
+  // ==========================================================================
+  // Day/night terminator
+  // ==========================================================================
+  function getSunPosition() {
+    const now = new Date();
+    const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+    // Solar declination (degrees)
+    const decl = -23.45 * Math.cos((2 * Math.PI / 365) * (dayOfYear + 10));
+    // Solar noon at 0° lon at UTC — approximate hour angle
+    const utcHour = now.getUTCHours() + now.getUTCMinutes() / 60;
+    const lon = -(utcHour - 12) * 15; // degrees west of noon
+    return [lon, decl]; // [lon, lat] of sub-solar point
+  }
+
+  function renderNightOverlay() {
+    if (!GLOBE.nightSel || !GLOBE.path) return;
+    try {
+      const [sunLon, sunLat] = getSunPosition();
+      // Night side: great circle 90° from the anti-solar point
+      const nightCircle = d3.geoCircle().center([sunLon + 180, -sunLat]).radius(90)();
+      GLOBE.nightSel.attr("d", GLOBE.path(nightCircle)).attr("opacity", 1);
+    } catch { GLOBE.nightSel.attr("opacity", 0); }
+  }
+
+  // ==========================================================================
+  // Discover — random culture jump
+  // ==========================================================================
+  function discoverRandom() {
+    const cultures = STATE.cultures;
+    if (!cultures.length) return;
+    const candidates = cultures.filter((c) => c.id !== STATE.selectedId);
+    if (!candidates.length) return;
+    const pick = candidates[Math.floor(Math.random() * candidates.length)];
+    selectCulture(pick.id, true);
+  }
+
   function ensureGlobeInit() {
     if (GLOBE.inited) return;
     GLOBE.inited = true;
@@ -1410,21 +1629,49 @@
     const filt = defs.append("filter").attr("id", "sphereShadow").attr("x", "-30%").attr("y", "-30%").attr("width", "160%").attr("height", "160%");
     filt.append("feDropShadow").attr("dx", 0).attr("dy", 10).attr("stdDeviation", 10).attr("flood-color", "rgba(0,0,0,0.35)");
 
+    // Clip night overlay to the sphere circle
+    const clip = defs.append("clipPath").attr("id", "sphereClip");
+    GLOBE._nightClipCircle = clip.append("circle")
+      .attr("cx", GLOBE.width / 2).attr("cy", GLOBE.height / 2).attr("r", GLOBE.scale);
+
     GLOBE.projection = d3.geoOrthographic().clipAngle(90).translate([GLOBE.width / 2, GLOBE.height / 2]).scale(GLOBE.scale).rotate(GLOBE.rotate);
     GLOBE.path = d3.geoPath(GLOBE.projection);
 
     GLOBE.layers.sphere = GLOBE.svg.append("circle").attr("class", "sphere");
+
+    // ── Star field canvas (behind everything, parallax with rotation) ──────
+    initStarField();
+
     GLOBE.layers.land = GLOBE.svg.append("path").attr("class", "land").attr("pointer-events", "none");
     GLOBE.layers.countries = GLOBE.svg.append("g").attr("class", "countries");
+
+    // ── Day/night hemisphere overlay ──────────────────────────────────────
+    GLOBE.nightSel = GLOBE.svg.append("path")
+      .attr("class", "cw-night-overlay")
+      .attr("pointer-events", "none")
+      .attr("fill", "rgba(5,10,25,0.38)")
+      .attr("opacity", 0);
+
     GLOBE.layers.overlays = GLOBE.svg.append("g").attr("class", "cw-overlays");
     GLOBE.layers.links = GLOBE.svg.append("g").attr("class", "links");
+
+    // ── Visit history trail ───────────────────────────────────────────────
+    GLOBE.historyLayer = GLOBE.svg.append("g").attr("class", "cw-history-layer").attr("pointer-events", "none");
+
     GLOBE.layers.nodes = GLOBE.svg.append("g").attr("class", "nodes");
     GLOBE.layers.labels = GLOBE.svg.append("g").attr("class", "labels");
+
+    // ── Region-colored glow ring (above everything) ───────────────────────
+    GLOBE.glowLayer = GLOBE.svg.append("g").attr("class", "cw-glow-layer").attr("pointer-events", "none");
 
     GLOBE.svg.append("style").text(`
       .cw-weave-path{fill:none;stroke:rgba(255,215,0,.48);stroke-width:2.4;stroke-linecap:round;filter:drop-shadow(0 0 10px rgba(255,215,0,.12))}
       .cw-lens-arcs{fill:none;stroke:rgba(0,247,255,.22);stroke-width:2;stroke-linecap:round;stroke-dasharray:6 6;filter:drop-shadow(0 0 10px rgba(0,247,255,.06))}
       .cw-thread{fill:none;stroke-linecap:round;stroke-width:3;opacity:.85;filter:drop-shadow(0 0 10px rgba(0,0,0,.12))}
+      .node-pulse{fill:none;stroke-width:2.2;animation:cw-pulse 2s ease-out infinite}
+      @keyframes cw-pulse{0%{r:10;opacity:.9}70%{r:22;opacity:0}100%{r:10;opacity:0}}
+      .cw-trail{transition:opacity .4s}
+      .cw-night-overlay{clip-path:url(#sphereClip)}
     `);
 
     GLOBE.layers.land.datum(STATE.world.land);
@@ -1481,7 +1728,12 @@
         selectCulture(d.id, true);
       });
 
-    GLOBE.pulseSel = GLOBE.layers.nodes.append("circle").attr("class", "node-pulse").attr("r", IS_COARSE ? 14 : 10).style("display", "none");
+    GLOBE.pulseSel = GLOBE.glowLayer.append("circle")
+      .attr("class", "node-pulse")
+      .attr("r", IS_COARSE ? 14 : 10)
+      .attr("fill", "none")
+      .attr("stroke-width", "2.2")
+      .style("display", "none");
 
     GLOBE.labelsSel = GLOBE.layers.labels
       .selectAll("text.node-label")
@@ -1492,7 +1744,7 @@
       .attr("pointer-events", "auto")
       // Explicit SVG attributes — iOS Safari ignores CSS classes on SVG elements,
       // so everything needed to make text visible must be set here directly.
-      .attr("fill", "#ffffff")
+      .attr("fill", IS_COARSE ? "rgba(0,247,255,.95)" : "rgba(0,247,255,.88)")
       .attr("font-size", IS_COARSE ? "12" : "10")
       .attr("font-family", "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif")
       .attr("font-weight", IS_COARSE ? "600" : "400")
@@ -1545,18 +1797,68 @@
       GLOBE.projection.translate([GLOBE.width / 2, GLOBE.height / 2]).scale(GLOBE.scale);
       GLOBE.layers.sphere.attr("cx", GLOBE.width / 2).attr("cy", GLOBE.height / 2).attr("r", GLOBE.scale);
     }
+
+    // Resize star canvas to match
+    if (GLOBE.starCanvas) {
+      GLOBE.starCanvas.width = GLOBE.width;
+      GLOBE.starCanvas.height = GLOBE.height;
+      drawStars();
+    }
+
+    // Keep night overlay clip circle in sync
+    if (GLOBE._nightClipCircle) {
+      GLOBE._nightClipCircle
+        .attr("cx", GLOBE.width / 2).attr("cy", GLOBE.height / 2).attr("r", GLOBE.scale);
+    }
   }
 
   function onGlobePointerDown(e) {
     const t = e.target;
     if (t instanceof Element && (t.closest("circle.node") || t.closest("text.node-label"))) return;
-    GLOBE.dragging = true;
-    GLOBE.pointerId = e.pointerId;
-    GLOBE.last = { x: e.clientX, y: e.clientY };
+    GLOBE.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     el.globeSvg.setPointerCapture?.(e.pointerId);
+
+    if (GLOBE.pointers.size === 1) {
+      // Single touch — standard drag
+      GLOBE.dragging = true;
+      GLOBE.pointerId = e.pointerId;
+      GLOBE.last = { x: e.clientX, y: e.clientY };
+    } else if (GLOBE.pointers.size === 2) {
+      // Two-finger pinch begins — compute initial distance
+      GLOBE.dragging = false;
+      const pts = [...GLOBE.pointers.values()];
+      GLOBE.pinchDist = Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y);
+    }
   }
 
   function onGlobePointerMove(e) {
+    if (!GLOBE.pointers.has(e.pointerId)) return;
+    GLOBE.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (GLOBE.pointers.size === 2) {
+      // Pinch — adjust zoom
+      const pts = [...GLOBE.pointers.values()];
+      const dist = Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y);
+      if (GLOBE.pinchDist !== null && dist > 0) {
+        const factor = dist / GLOBE.pinchDist;
+        GLOBE.scale = clamp(GLOBE.scale * factor, GLOBE.baseScale * 0.72, GLOBE.baseScale * 3.0);
+        if (GLOBE.projection) GLOBE.projection.scale(GLOBE.scale);
+        GLOBE.layers.sphere?.attr("r", GLOBE.scale);
+      }
+      GLOBE.pinchDist = dist;
+
+      // Also rotate via midpoint delta
+      const mid = { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 };
+      if (GLOBE.last) {
+        GLOBE.rotate[0] += (mid.x - GLOBE.last.x) * 0.14;
+        GLOBE.rotate[1] -= (mid.y - GLOBE.last.y) * 0.14;
+        GLOBE.rotate[1] = clamp(GLOBE.rotate[1], -89, 89);
+      }
+      GLOBE.last = mid;
+      scheduleGlobeRender();
+      return;
+    }
+
     if (!GLOBE.dragging || GLOBE.pointerId !== e.pointerId || !GLOBE.last) return;
     const dx = e.clientX - GLOBE.last.x;
     const dy = e.clientY - GLOBE.last.y;
@@ -1568,10 +1870,19 @@
   }
 
   function onGlobePointerUp(e) {
-    if (GLOBE.pointerId !== e.pointerId) return;
-    GLOBE.dragging = false;
-    GLOBE.pointerId = null;
-    GLOBE.last = null;
+    GLOBE.pointers.delete(e.pointerId);
+    if (GLOBE.pointers.size < 2) GLOBE.pinchDist = null;
+    if (GLOBE.pointers.size === 0) {
+      GLOBE.dragging = false;
+      GLOBE.pointerId = null;
+      GLOBE.last = null;
+    } else if (GLOBE.pointers.size === 1) {
+      // Back to single touch — re-init drag from remaining pointer
+      const [id, pos] = [...GLOBE.pointers.entries()][0];
+      GLOBE.dragging = true;
+      GLOBE.pointerId = id;
+      GLOBE.last = pos;
+    }
   }
 
   function scheduleGlobeRender() {
@@ -1659,8 +1970,15 @@
     GLOBE.layers.land.attr("d", GLOBE.path);
     GLOBE.layers.countries.selectAll("path.country").attr("d", GLOBE.path);
 
+    // ── Star field parallax redraw ─────────────────────────────────────────
+    drawStars();
+
+    // ── Day/night overlay ─────────────────────────────────────────────────
+    renderNightOverlay();
+
     const sel = getSelectedCulture();
     const lens = STATE.lens;
+    const zoomRatio = GLOBE.scale / (GLOBE.baseScale || 1);
 
     // Lens highlight arcs
     if (lens !== "all") {
@@ -1672,100 +1990,127 @@
       GLOBE.lensSel.attr("d", "").attr("opacity", 0);
     }
 
-    // Weave Path overlay
+    // Weave Path overlay — with animated draw on path change
     if (STATE.layers.paths) {
       const stops = getWeaveStops().filter((c) => geoVisible(c.lon, c.lat));
       const pairs = [];
       for (let i = 0; i < stops.length - 1; i++) pairs.push([stops[i], stops[i + 1]]);
       const d = multiArcPath(GLOBE.projection, pairs);
+      const prevD = GLOBE.pathSel.attr("d");
       GLOBE.pathSel.attr("d", d).attr("opacity", pairs.length ? 1 : 0);
+      if (d && d !== prevD && !prefersReducedMotion) {
+        try {
+          const len = GLOBE.pathSel.node()?.getTotalLength?.() || 0;
+          if (len > 0) {
+            GLOBE.pathSel
+              .attr("stroke-dasharray", len)
+              .attr("stroke-dashoffset", len)
+              .transition().duration(900).ease(d3.easeQuadOut)
+              .attr("stroke-dashoffset", 0)
+              .on("end", () => GLOBE.pathSel.attr("stroke-dasharray", null).attr("stroke-dashoffset", null));
+          }
+        } catch {}
+      }
     } else {
       GLOBE.pathSel.attr("d", "").attr("opacity", 0);
     }
 
-    // Layer threads
+    // Layer threads — fade in on enter, fade out on exit
     for (const cfg of LAYER_THREAD_CONFIGS) {
       const layer = GLOBE.threadLayerByKey.get(cfg.key);
       if (!layer) continue;
 
       const on = Boolean(STATE.layers[cfg.key]);
-      const data =
-        on && sel && geoVisible(sel.lon, sel.lat)
-          ? buildLayerLinkData(cfg, 10).filter((d) => geoVisible(d.target.lon, d.target.lat))
-          : [];
+      const data = on && sel && geoVisible(sel.lon, sel.lat)
+        ? buildLayerLinkData(cfg, 10).filter((d) => geoVisible(d.target.lon, d.target.lat))
+        : [];
 
-      const paths = layer
-        .selectAll("path.cw-thread-link")
-        .data(data, (d) => `${cfg.key}__${d.source.id}__${d.target.id}`);
-
-      const merged = paths.join(
-        (enter) =>
-          enter
-            .append("path")
+      const merged = layer.selectAll("path.cw-thread-link")
+        .data(data, (d) => `${cfg.key}__${d.source.id}__${d.target.id}`)
+        .join(
+          (enter) => enter.append("path")
             .attr("class", `cw-thread cw-thread-link cw-thread--${cfg.key}`)
-            .attr("stroke", cfg.stroke)
-            .attr("stroke-dasharray", cfg.dash || null),
-        (update) => update,
-        (exit) => exit.remove(),
-      );
+            .attr("stroke", cfg.stroke).attr("stroke-dasharray", cfg.dash || null)
+            .attr("opacity", 0).call((s) => s.transition().duration(400).attr("opacity", 0.85)),
+          (update) => update,
+          (exit) => exit.transition().duration(250).attr("opacity", 0).remove(),
+        );
 
-      merged
-        .attr("d", (d) => arcPath(GLOBE.projection, d.source, d.target))
-        .attr("opacity", 0.85);
-
+      merged.attr("d", (d) => arcPath(GLOBE.projection, d.source, d.target)).attr("opacity", 0.85);
       wireHoverablePathSelection(merged);
     }
 
-    // Nodes
+    // ── Visit history trail ───────────────────────────────────────────────
+    if (GLOBE.historyLayer) {
+      const total = STATE.visitedIds.length;
+      const histData = STATE.visitedIds
+        .map((id, i) => ({ c: STATE.byId.get(id), age: i }))
+        .filter(({ c }) => c && geoVisible(c.lon, c.lat) && c.id !== STATE.selectedId);
+
+      GLOBE.historyLayer.selectAll("circle.cw-trail")
+        .data(histData, ({ c }) => c.id)
+        .join(
+          (enter) => enter.append("circle").attr("class", "cw-trail").attr("pointer-events", "none"),
+          (update) => update, (exit) => exit.remove(),
+        )
+        .attr("cx", ({ c }) => (GLOBE.projection([c.lon, c.lat]) || [NaN, NaN])[0])
+        .attr("cy", ({ c }) => (GLOBE.projection([c.lon, c.lat]) || [NaN, NaN])[1])
+        .attr("r", 3.5)
+        .attr("fill", ({ c }) => nodeColor(c))
+        .attr("opacity", ({ age }) => clamp(0.08 + (age / Math.max(total, 1)) * 0.38, 0.08, 0.45))
+        .attr("stroke", "rgba(255,255,255,.18)").attr("stroke-width", "0.8");
+    }
+
+    // Nodes — cull back-hemisphere with visibility:hidden to skip paint
     GLOBE.nodesSel
       .attr("cx", (d) => (GLOBE.projection([d.lon, d.lat]) || [NaN, NaN])[0])
       .attr("cy", (d) => (GLOBE.projection([d.lon, d.lat]) || [NaN, NaN])[1])
+      .attr("visibility", (d) => globeFacingOpacity(d.lon, d.lat) <= 0 ? "hidden" : null)
       .attr("opacity", (d) => {
-        const v = geoVisible(d.lon, d.lat);
-        if (!v) return 0;
-
+        if (!geoVisible(d.lon, d.lat)) return 0;
         const face = globeFacingOpacity(d.lon, d.lat);
-        if (lens !== "all" && !cultureMatchesLens(d) && d.id !== STATE.selectedId && d.id !== STATE.hoverId) {
+        if (lens !== "all" && !cultureMatchesLens(d) && d.id !== STATE.selectedId && d.id !== STATE.hoverId)
           return Math.max(0.16, face * 0.34);
-        }
         return face;
       })
       .classed("is-selected", (d) => d.id === STATE.selectedId);
 
-    // Labels
+    // Labels — LOD: show all when zoomed in ≥1.35×, size scales with zoom
     const allow = new Set();
     if (STATE.selectedId) allow.add(STATE.selectedId);
     if (STATE.hoverId) allow.add(STATE.hoverId);
 
+    const lodShowAll = IS_COARSE || zoomRatio >= 1.35;
+    const labelSize = IS_COARSE ? 12 : clamp(Math.round(10 * Math.min(zoomRatio, 2.0)), 10, 14);
+
     GLOBE.labelsSel
       .attr("x", (d) => (GLOBE.projection([d.lon, d.lat]) || [NaN, NaN])[0] + (IS_COARSE ? 11 : 9))
       .attr("y", (d) => (GLOBE.projection([d.lon, d.lat]) || [NaN, NaN])[1] + 4)
+      .attr("font-size", labelSize)
+      .attr("fill", (d) => {
+        if (d.id === STATE.selectedId) return "rgba(255,215,0,.98)";
+        if (d.id === STATE.hoverId)    return "rgba(255,255,255,.98)";
+        return IS_COARSE ? "rgba(0,247,255,.95)" : "rgba(0,247,255,.88)";
+      })
+      .attr("font-weight", (d) => {
+        if (d.id === STATE.selectedId) return IS_COARSE ? "700" : "600";
+        return IS_COARSE ? "600" : "400";
+      })
+      .attr("visibility", (d) => globeFacingOpacity(d.lon, d.lat) <= 0 ? "hidden" : null)
       .attr("opacity", (d) => {
-        const v = geoVisible(d.lon, d.lat);
-        if (!v) return 0;
-
+        if (!geoVisible(d.lon, d.lat)) return 0;
         const face = globeFacingOpacity(d.lon, d.lat);
-
-        // Mobile: always show labels at full face opacity (no hiding)
-        if (IS_COARSE) return face;
-
-        // Desktop behaviour
-        if (!STATE.showLabels) {
-          return allow.has(d.id) ? Math.max(0.8, face) : 0;
+        if (lodShowAll) {
+          if (lens !== "all" && !cultureMatchesLens(d) && d.id !== STATE.selectedId && d.id !== STATE.hoverId)
+            return Math.max(0.08, face * 0.3);
+          return face;
         }
-
-        if (allow.has(d.id)) {
-          return Math.max(0.9, face);
-        }
-
-        if (lens !== "all" && !cultureMatchesLens(d)) {
-          return Math.max(0.08, face * 0.26);
-        }
-
+        if (!STATE.showLabels) return allow.has(d.id) ? Math.max(0.8, face) : 0;
+        if (allow.has(d.id)) return Math.max(0.9, face);
+        if (lens !== "all" && !cultureMatchesLens(d)) return Math.max(0.08, face * 0.26);
         return face;
       });
 
-    // Declutter desktop only; mobile skips (handled inside the function)
     if (STATE.showLabels || IS_COARSE) {
       declutterLabels(GLOBE.labelsSel, GLOBE.width / 2, GLOBE.height / 2);
     }
@@ -1784,10 +2129,15 @@
         return l._kind === "suggested" ? 0.06 : 0.18;
       });
 
-    // Pulse
+    // ── Region-colored glow ring ──────────────────────────────────────────
     if (sel && geoVisible(sel.lon, sel.lat)) {
       const p = GLOBE.projection([sel.lon, sel.lat]);
-      GLOBE.pulseSel.style("display", null).attr("cx", p[0]).attr("cy", p[1]);
+      const regionColor = nodeColor(sel);
+      GLOBE.pulseSel
+        .style("display", null)
+        .attr("cx", p[0]).attr("cy", p[1])
+        .attr("stroke", regionColor)
+        .attr("filter", `drop-shadow(0 0 8px ${regionColor})`);
     } else {
       GLOBE.pulseSel.style("display", "none");
     }
@@ -1886,7 +2236,7 @@
       .attr("class", "node-label")
       .attr("pointer-events", "auto")
       // Explicit SVG attributes — iOS Safari ignores CSS classes on SVG elements
-      .attr("fill", "#ffffff")
+      .attr("fill", IS_COARSE ? "rgba(0,247,255,.95)" : "rgba(0,247,255,.88)")
       .attr("font-size", IS_COARSE ? "12" : "10")
       .attr("font-family", "-apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif")
       .attr("font-weight", IS_COARSE ? "600" : "400")
@@ -2052,6 +2402,13 @@
     MAP.labelsSel
       .attr("x", (d) => (MAP.projection([d.lon, d.lat]) || [NaN, NaN])[0] + (IS_COARSE ? 10 : 8))
       .attr("y", (d) => (MAP.projection([d.lon, d.lat]) || [NaN, NaN])[1] + 3)
+      // Color: gold for selected, bright white for hovered, cyan for rest
+      .attr("fill", (d) => {
+        if (d.id === STATE.selectedId) return "rgba(255,215,0,.98)";
+        if (d.id === STATE.hoverId)    return "rgba(255,255,255,.98)";
+        return IS_COARSE ? "rgba(0,247,255,.95)" : "rgba(0,247,255,.88)";
+      })
+      .attr("font-weight", (d) => d.id === STATE.selectedId ? (IS_COARSE ? "700" : "600") : (IS_COARSE ? "600" : "400"))
       .attr("opacity", (d) => {
         // Mobile: always show labels
         if (IS_COARSE) {
@@ -2215,6 +2572,21 @@
         clearSelection();
       }
     });
+
+    // Discover button — inject into toolbar if not in HTML, then wire
+    let btnDiscover = document.getElementById("btnDiscover");
+    if (!btnDiscover) {
+      btnDiscover = document.createElement("button");
+      btnDiscover.id = "btnDiscover";
+      btnDiscover.type = "button";
+      btnDiscover.className = "globe-control";
+      btnDiscover.title = "Discover a random culture";
+      btnDiscover.innerHTML = '<i class="fas fa-dice"></i>';
+      btnDiscover.style.cssText = "background:rgba(157,0,255,.12);border-color:rgba(157,0,255,.35);";
+      // Insert next to resetView
+      el.resetView?.insertAdjacentElement("afterend", btnDiscover);
+    }
+    btnDiscover.addEventListener("click", () => discoverRandom());
   }
 
   function wireWeavePaths() {
