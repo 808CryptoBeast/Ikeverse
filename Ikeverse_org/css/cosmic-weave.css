@@ -455,6 +455,9 @@ body{
   overflow:hidden;
   border: 1px solid rgba(255,255,255,.08);
   background: rgba(0,0,0,.15);
+  /* Required so the star-field canvas (position:absolute;inset:0)
+     positions relative to this container, not a distant ancestor. */
+  position: relative;
 }
 #globe{ width:100%; height: 560px; display:block; }
 #map{ width:100%; height: 560px; }
@@ -717,13 +720,16 @@ body{
 }
 .node{ stroke:rgba(255,255,255,.85); }
 .node.is-selected{ filter:drop-shadow(0 0 8px rgba(0,247,255,.55)); }
+
+/* node-label — base styles only; fill/font/stroke are set directly in JS
+   so iOS Safari cannot override them. Do NOT set display:none here at any
+   breakpoint — the JS controls visibility via the opacity attribute. */
 .node-label{
-  fill:rgba(0,247,255,.85);
-  paint-order:stroke;
-  stroke:rgba(0,0,0,.6);
-  stroke-width:3px;
-  font-size: 12px;
+  paint-order: stroke fill;
+  pointer-events: auto;
+  cursor: pointer;
 }
+
 .node-pulse{
   pointer-events:none;
   fill:none;
@@ -1886,8 +1892,123 @@ body{
   .cw-path-buttons{ justify-content:flex-start; }
   .cw-path-grid{ grid-template-columns: 1fr; }
 }
+
+/* ── iPhone / small Android (≤ 480 px wide) ────────────────────────────────
+   6.3-inch iPhone 16 / 16 Pro : 393 × 852 CSS px in portrait
+   These rules tighten everything so the globe + panel both fit on screen.
+   ───────────────────────────────────────────────────────────────────────── */
+@media (max-width: 480px){
+
+  /* Globe + map height: give more room to the detail panel below */
+  #globe, #map{ height: 400px; }
+  .viz-mode-split #globe,
+  .viz-mode-split #map{ height: 400px; }
+
+  /* Remove horizontal padding on the outer container so globe fills width */
+  #globe-container{ padding: 10px 8px; }
+
+  /* Tighter viz-stage rounding on small screens */
+  .viz-stage{ border-radius: 10px; margin-top: 10px; }
+
+  /* Toolbar: collapse into a compact column */
+  .cw-world-toolbar{
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cw-toolbar-left,
+  .cw-toolbar-right{
+    width: 100%;
+    justify-content: space-between;
+  }
+  .cw-toolbar-center{
+    width: 100%;
+    flex: unset;
+    padding: 8px;
+  }
+
+  /* Lens + layer buttons: smaller, scroll horizontally instead of wrapping */
+  .cw-toolbar-row{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    justify-content: flex-start;
+    scrollbar-width: none;
+  }
+  .cw-toolbar-row::-webkit-scrollbar{ display: none; }
+
+  .cw-lens, .cw-layer-btn{
+    font-size: .76rem;
+    padding: .38rem .58rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Globe control buttons: ensure 44 × 44 minimum tap target */
+  .globe-control{
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  /* Details panel: tighter padding */
+  .cw-panel-header,
+  .cw-panel-body{ padding: 10px 12px; }
+
+  /* Culture header: smaller icon, tighter layout */
+  .culture-icon{
+    width: 48px;
+    height: 48px;
+    font-size: 1.35rem;
+    border-radius: 14px;
+  }
+  .culture-name{ font-size: clamp(.95rem, 4vw, 1.2rem); }
+  .culture-location,
+  .culture-era{ font-size: .82rem; }
+  .culture-desc{ font-size: .88rem; }
+
+  /* Tags: slightly smaller chips */
+  .culture-tag{
+    font-size: .7rem;
+    padding: .3rem .55rem;
+  }
+
+  /* Extra cards grid: single column, tighter */
+  .culture-extra-grid{
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .culture-card{ padding: 10px 12px; }
+  :root{ --cw-card-height: 260px; }
+
+  /* Connections panel */
+  .connection-card{ padding: 10px 12px; }
+  .connection-name{ font-size: .82rem; }
+  .connection-desc{ font-size: .78rem; }
+
+  /* Globe section outer padding */
+  .globe-section{ padding: 0 0 32px; }
+
+  /* Prevent any stray horizontal scroll */
+  #globe-container,
+  .viz-stage,
+  .cw-world-toolbar{
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+/* Landscape on small phones: make globe shorter so UI isn't cut off */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 500px){
+  #globe, #map{ height: 320px; }
+  .viz-mode-split #globe,
+  .viz-mode-split #map{ height: 320px; }
+}
+
 @media (max-width: 768px){
-  .node-label{ display:none; }
+  /* NOTE: .node-label display:none was intentionally removed.
+     Label visibility is controlled entirely by the JS opacity attribute
+     so iOS Safari and all mobile browsers render them correctly. */
   :root{ --cw-card-height: 290px; }
 }
 @media (prefers-reduced-motion: reduce){
@@ -1943,19 +2064,9 @@ body{
   filter: drop-shadow(0 0 12px rgba(255, 215, 0, .28));
 }
 
-.node-label{
-  fill: rgba(0, 247, 255, .88);
-  paint-order: stroke;
-  stroke: rgba(0, 0, 0, .60);
-  stroke-width: 3px;
-  font-size: 12px;
-  transition: opacity .16s linear, fill .16s ease;
-}
-
 .connection-chip,
 .culture-tag {
   border: 1px solid rgba(0, 247, 255, .18);
   background: rgba(0, 247, 255, .08);
   color: rgba(255, 255, 255, .92);
 }
-
