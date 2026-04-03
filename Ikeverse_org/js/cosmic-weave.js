@@ -1717,7 +1717,7 @@
     updateGlobeLinksData();
 
     // Node radius: larger on mobile for easier tapping
-    const nodeR = IS_COARSE ? 9 : 6;
+    const nodeR = IS_COARSE ? 11 : 6;
 
     GLOBE.nodesSel = GLOBE.layers.nodes
       .selectAll("circle.node")
@@ -2101,7 +2101,7 @@
     if (STATE.hoverId) allow.add(STATE.hoverId);
 
     const lodShowAll = IS_COARSE || zoomRatio >= 1.35;
-    const labelSize = IS_COARSE ? 12 : clamp(Math.round(10 * Math.min(zoomRatio, 2.0)), 10, 14);
+    const labelSize = IS_COARSE ? 13 : clamp(Math.round(10 * Math.min(zoomRatio, 2.0)), 10, 14);
 
     GLOBE.labelsSel
       .attr("x", (d) => (GLOBE.projection([d.lon, d.lat]) || [NaN, NaN])[0] + (IS_COARSE ? 11 : 9))
@@ -2120,6 +2120,8 @@
       .attr("opacity", (d) => {
         if (!geoVisible(d.lon, d.lat)) return 0;
         const face = globeFacingOpacity(d.lon, d.lat);
+        // On mobile always show all labels that are facing the viewer
+        if (IS_COARSE) return Math.max(face <= 0 ? 0 : 0.75, face);
         if (lodShowAll) {
           if (lens !== "all" && !cultureMatchesLens(d) && d.id !== STATE.selectedId && d.id !== STATE.hoverId)
             return Math.max(0.08, face * 0.3);
@@ -2690,5 +2692,28 @@
     renderWeavePanel();
   }
 
-  init().catch((err) => console.error("[Cosmic Weave] init failed:", err));
+  // ── Lazy-load: defer heavy init until the globe section enters the viewport ──
+  // On mobile this saves significant parse + render time on initial page load.
+  var _initStarted = false;
+  function safeInit() {
+    if (_initStarted) return;
+    _initStarted = true;
+    init().catch(function(err) { console.error("[Cosmic Weave] init failed:", err); });
+  }
+
+  if (typeof IntersectionObserver !== 'undefined') {
+    var _globeContainer = document.querySelector('.viz-container') || document.querySelector('.cosmic-weave-app') || document.body;
+    var _observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          _observer.disconnect();
+          safeInit();
+        }
+      });
+    }, { rootMargin: '200px' }); // start loading 200px before it appears
+    _observer.observe(_globeContainer);
+  } else {
+    // Fallback: init immediately if IntersectionObserver not available
+    safeInit();
+  }
 })();
