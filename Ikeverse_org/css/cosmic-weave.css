@@ -2270,3 +2270,26 @@ body{
   background: rgba(0, 247, 255, .08);
   color: rgba(255, 255, 255, .92);
 }
+
+
+/* ─── Mobile node labels — always visible ─── */
+@media (max-width: 768px) {
+  /* SVG text labels — force visibility on mobile */
+  text.node-label {
+    opacity: 1 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    fill: rgba(0,247,255,.92) !important;
+    stroke: rgba(5,10,18,0.88) !important;
+    stroke-width: 3px !important;
+    paint-order: stroke fill !important;
+    pointer-events: auto !important;
+  }
+
+  /* Selected label gets gold */
+  text.node-label[data-selected="true"],
+  .nodes .node.is-selected ~ .labels text.node-label {
+    fill: rgba(255,215,0,.98) !important;
+    font-weight: 700 !important;
+  }
+}

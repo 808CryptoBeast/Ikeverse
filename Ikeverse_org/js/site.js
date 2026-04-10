@@ -1,131 +1,199 @@
-// js/site.js
-document.addEventListener('DOMContentLoaded', () => {
-  if (document.documentElement.dataset.siteInit === '1') return;
-  document.documentElement.dataset.siteInit = '1';
+// js/site.js — Ikeverse site animations + interactions (optimized)
+(function() {
+  'use strict';
 
-  initNav();
-  initModeToggle();
-  initDownloadTracking();
-});
+  const IS_MOBILE    = window.innerWidth < 768;
+  const IS_IOS       = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const REDUCED_MOTION = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
 
-function initNav() {
-  const nav = document.querySelector('.quantum-nav');
-  if (!nav) return;
-
-  const navLinksContainer =
-    document.getElementById('nav-links') || nav.querySelector('.nav-links-container');
-
-  if (!navLinksContainer) return;
-
-  // Use existing toggle if present; otherwise create one (some pages do not have it)
-  let toggle =
-    document.getElementById('mobile-menu-toggle') ||
-    nav.querySelector('.mobile-menu-toggle') ||
-    nav.querySelector('.nav-toggle');
-
-  if (!toggle) {
-    toggle = document.createElement('button');
-    toggle.type = 'button';
-    toggle.className = 'nav-toggle';
-    toggle.innerHTML = '<i class="fas fa-bars"></i>';
-    nav.appendChild(toggle);
-  }
-
-  if (toggle.dataset.bound === '1') return;
-  toggle.dataset.bound = '1';
-
-  // Ensure container has an id for aria-controls
-  if (!navLinksContainer.id) navLinksContainer.id = 'nav-links';
-
-  toggle.setAttribute('aria-controls', navLinksContainer.id);
-  toggle.setAttribute('aria-expanded', 'false');
-  toggle.setAttribute('aria-label', 'Toggle navigation menu');
-
-  const setOpen = (open) => {
-    navLinksContainer.classList.toggle('active', open);
-    toggle.classList.toggle('active', open);
-    toggle.setAttribute('aria-expanded', String(open));
-    document.body.classList.toggle('nav-open', open);
-
-    // icon swap (bars <-> times)
-    const iconHtml = open
-      ? '<i class="fas fa-times"></i>'
-      : '<i class="fas fa-bars"></i>';
-    toggle.innerHTML = iconHtml;
-  };
-
-  const isOpen = () => navLinksContainer.classList.contains('active');
-
-  toggle.addEventListener('click', () => setOpen(!isOpen()));
-
-  // Close on nav link click
-  document.querySelectorAll('.nav-link').forEach((link) => {
-    link.addEventListener('click', () => setOpen(false));
+  document.addEventListener('DOMContentLoaded', function() {
+    initParticleField();
+    initAccordion();
+    initSmoothScroll();
+    initScrollAnimations();
   });
 
-  // Close on outside click
-  document.addEventListener('click', (e) => {
-    if (!isOpen()) return;
-    const t = e.target;
-    if (!(t instanceof Element)) return;
+  /* ─────────────────────────────────────────────────────────────
+     PARTICLE FIELD
+  ───────────────────────────────────────────────────────────── */
+  function initParticleField() {
+    const field = document.getElementById('particle-field');
+    if (!field) return;
+    if (REDUCED_MOTION) return;
 
-    if (
-      t.closest(`#${navLinksContainer.id}`) ||
-      t.closest('#mobile-menu-toggle') ||
-      t.closest('.nav-toggle') ||
-      t.closest('.mobile-menu-toggle')
-    ) {
-      return;
+    // Fewer particles on mobile for perf
+    const count = IS_MOBILE ? 20 : 50;
+    const frag  = document.createDocumentFragment();
+
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'quantum-particle';
+
+      const size = Math.random() * 4 + 1;
+      const dur  = Math.random() * 20 + 10;
+      const del  = Math.random() * 20;
+      const op   = Math.random() * 0.5 + 0.3;
+      const left = Math.random() * 100;
+      const top  = Math.random() * 100;
+
+      // Use CSS custom properties for animation — avoids inline animation conflicts
+      p.style.cssText = [
+        'width:'  + size + 'px',
+        'height:' + size + 'px',
+        'left:'   + left + '%',
+        'top:'    + top  + '%',
+        'opacity:' + op,
+        'animation-duration:'  + dur + 's',
+        'animation-delay:' + del + 's',
+        // GPU-accelerated — hint the compositor
+        'will-change: transform, opacity',
+        'transform: translateZ(0)',
+      ].join(';');
+
+      frag.appendChild(p);
     }
 
-    setOpen(false);
-  });
+    field.appendChild(frag);
 
-  // Close on Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') setOpen(false);
-  });
-
-  // Portal hover (class-based, no inline style churn)
-  const portal = document.getElementById('nav-portal') || nav.querySelector('.nav-portal');
-  if (portal) {
-    portal.addEventListener('mouseenter', () => portal.classList.add('portal-spinning'));
-    portal.addEventListener('mouseleave', () => portal.classList.remove('portal-spinning'));
+    // Pause particles when tab is hidden (saves battery)
+    document.addEventListener('visibilitychange', function() {
+      const state = document.hidden ? 'paused' : 'running';
+      field.querySelectorAll('.quantum-particle').forEach(function(p) {
+        p.style.animationPlayState = state;
+      });
+    });
   }
-}
 
-function initModeToggle() {
-  const options = document.querySelectorAll('.mode-option');
-  if (!options.length) return;
+  /* ─────────────────────────────────────────────────────────────
+     ACCORDION
+  ───────────────────────────────────────────────────────────── */
+  function initAccordion() {
+    const headers = document.querySelectorAll('.accordion-header');
+    if (!headers.length) return;
 
-  // Use <html data-mode="..."> as source of truth
-  const root = document.documentElement;
+    headers.forEach(function(header) {
+      // Use touchend on iOS for instant response (avoids 300ms delay)
+      const ev = IS_IOS ? 'touchend' : 'click';
 
-  const saved = localStorage.getItem('ikeverse-mode');
-  const initial = saved || root.dataset.mode || 'quantum';
-  applyMode(initial);
+      header.addEventListener(ev, function(e) {
+        if (IS_IOS) e.preventDefault();
 
-  options.forEach((opt) => {
-    opt.addEventListener('click', () => applyMode(opt.dataset.mode || 'quantum'));
-  });
+        const item     = header.parentElement;
+        const isActive = item.classList.contains('active');
+        const content  = item.querySelector('.accordion-content');
 
-  function applyMode(mode) {
-    root.dataset.mode = mode;
-    document.body.dataset.mode = mode; // optional: keeps legacy CSS working
-    localStorage.setItem('ikeverse-mode', mode);
+        // Close all — animate height to 0
+        document.querySelectorAll('.accordion-item').forEach(function(el) {
+          if (el === item) return;
+          const c = el.querySelector('.accordion-content');
+          if (c) {
+            c.style.maxHeight = c.scrollHeight + 'px'; // force reflow with current height
+            requestAnimationFrame(function() { c.style.maxHeight = '0'; });
+          }
+          el.classList.remove('active');
+        });
 
-    options.forEach((opt) => opt.classList.toggle('active', opt.dataset.mode === mode));
+        // Toggle current
+        if (!isActive) {
+          item.classList.add('active');
+          if (content) {
+            content.style.maxHeight = content.scrollHeight + 'px';
+            // Remove fixed height after transition so dynamic content works
+            content.addEventListener('transitionend', function onEnd() {
+              content.removeEventListener('transitionend', onEnd);
+              if (item.classList.contains('active')) {
+                content.style.maxHeight = 'none';
+              }
+            });
+          }
+        } else {
+          item.classList.remove('active');
+          if (content) {
+            content.style.maxHeight = content.scrollHeight + 'px';
+            requestAnimationFrame(function() { content.style.maxHeight = '0'; });
+          }
+        }
+      });
+    });
   }
-}
 
-function initDownloadTracking() {
-  const btn = document.getElementById('download-whitepaper');
-  if (!btn) return;
+  /* ─────────────────────────────────────────────────────────────
+     SMOOTH SCROLL — anchor links
+     iOS polyfill: scrollTo({behavior:'smooth'}) is unreliable on older iOS
+  ───────────────────────────────────────────────────────────── */
+  function initSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        const targetId = anchor.getAttribute('href');
+        if (!targetId || targetId === '#') return;
 
-  if (btn.dataset.bound === '1') return;
-  btn.dataset.bound = '1';
+        const target = document.querySelector(targetId);
+        if (!target) return;
 
-  btn.addEventListener('click', () => {
-    console.log('[ikeverse] Download initiated');
-  });
-}
+        e.preventDefault();
+
+        const headerOffset = 100;
+        const targetY = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+
+        if (IS_IOS && !CSS.supports('scroll-behavior', 'smooth')) {
+          // Manual smooth scroll for older iOS
+          smoothScrollTo(targetY, 600);
+        } else {
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+      });
+    });
+  }
+
+  function smoothScrollTo(targetY, durationMs) {
+    const startY = window.pageYOffset;
+    const diff   = targetY - startY;
+    let start    = null;
+
+    function step(timestamp) {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+      const progress = Math.min(elapsed / durationMs, 1);
+      // Ease in-out cubic
+      const ease = progress < 0.5
+        ? 4 * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+      window.scrollTo(0, startY + diff * ease);
+
+      if (elapsed < durationMs) requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     SCROLL ANIMATIONS — fade/slide elements into view
+  ───────────────────────────────────────────────────────────── */
+  function initScrollAnimations() {
+    if (REDUCED_MOTION) return;
+
+    const targets = document.querySelectorAll('[data-animate], .node-card, .hero-content');
+    if (!targets.length) return;
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -60px 0px', threshold: 0.1 });
+
+      targets.forEach(function(el) {
+        el.classList.add('animate-ready');
+        observer.observe(el);
+      });
+    } else {
+      // Fallback: show all immediately
+      targets.forEach(function(el) { el.classList.add('is-visible'); });
+    }
+  }
+
+})();
