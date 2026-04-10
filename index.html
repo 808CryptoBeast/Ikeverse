@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="Ikeverse_org/css/starwars.css">
   <link rel="stylesheet" href="Ikeverse_org/css/starwars.patch.css">
   <link rel="stylesheet" href="Ikeverse_org/css/knowledge-matrix.css">
+  <link rel="stylesheet" href="Ikeverse_org/css/ikeverse-enhanced.css">
 
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -33,68 +34,85 @@
   </div>
 
   <!-- Navigation -->
- <!-- Navigation -->
-<nav class="quantum-nav">
-  <div class="nav-portal">
-    <div class="portal-ring outer"></div>
-    <div class="portal-ring middle"></div>
-    <div class="portal-ring inner"></div>
-    <div class="portal-center">
-      <span class="logo-icon">⚛</span>
-    </div>
-  </div>
-
-  <div class="nav-links-container">
-    <ul class="nav-links">
-      <li class="nav-item">
-        <a href="/index.html" class="nav-link active">
-          <span class="link-icon"><i class="fas fa-home"></i></span>
-          <span class="link-text">Home</span>
-          <span class="link-pulse"></span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a href="https://808cryptobeast.github.io/pikoverse/" class="nav-link">
-          <span class="link-icon"><i class="fas fa-globe"></i></span>
-          <span class="link-text">Pikoverse</span>
-          <span class="link-pulse"></span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a href="Ikeverse_org/cosmic-weave.html" class="nav-link">
-          <span class="link-icon"><i class="fas fa-atom"></i></span>
-          <span class="link-text">Cosmic Weave</span>
-          <span class="link-pulse"></span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a href="Ikeverse_org/roadmap.html" class="nav-link">
-          <span class="link-icon"><i class="fas fa-timeline"></i></span>
-          <span class="link-text">Timeline</span>
-          <span class="link-pulse"></span>
-        </a>
-      </li>
-    </ul>
-
-    <div class="nav-controls">
-      <div class="nav-mode-toggle">
-        <span class="mode-option active" data-mode="quantum">Q</span>
-        <span class="mode-option" data-mode="ancestral">A</span>
+  <nav class="quantum-nav">
+    <div class="nav-portal">
+      <div class="portal-ring outer"></div>
+      <div class="portal-ring middle"></div>
+      <div class="portal-ring inner"></div>
+      <div class="portal-center">
+        <span class="logo-icon">⚛</span>
       </div>
     </div>
+
+    <div class="nav-links-container">
+      <ul class="nav-links">
+        <li class="nav-item">
+          <a href="/index.html" class="nav-link active">
+            <span class="link-icon"><i class="fas fa-home"></i></span>
+            <span class="link-text">Home</span>
+            <span class="link-pulse"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="https://pikoverse.xyz/" class="nav-link">
+            <span class="link-icon"><i class="fas fa-globe"></i></span>
+            <span class="link-text">Pikoverse</span>
+            <span class="link-pulse"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="Ikeverse_org/cosmic-weave.html" class="nav-link">
+            <span class="link-icon"><i class="fas fa-atom"></i></span>
+            <span class="link-text">Cosmic Weave</span>
+            <span class="link-pulse"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="Ikeverse_org/roadmap.html" class="nav-link">
+            <span class="link-icon"><i class="fas fa-timeline"></i></span>
+            <span class="link-text">Timeline</span>
+            <span class="link-pulse"></span>
+          </a>
+        </li>
+      </ul>
+      <div class="nav-controls">
+        <div class="nav-mode-toggle">
+          <span class="mode-option active" data-mode="quantum">Q</span>
+          <span class="mode-option" data-mode="ancestral">A</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button class="nav-mobile-toggle" id="ikeNavToggle" aria-label="Open menu" aria-expanded="false">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="nav-scanline"></div>
+    <div class="nav-hologram"></div>
+  </nav>
+
+  <!-- Mobile drawer -->
+  <div class="nav-mobile-drawer" id="ikeNavDrawer" aria-hidden="true">
+    <a href="/index.html" class="nav-drawer-link">
+      <i class="fas fa-home"></i> Home
+    </a>
+    <a href="https://pikoverse.xyz/" class="nav-drawer-link">
+      <i class="fas fa-globe"></i> Pikoverse Hub
+    </a>
+    <a href="Ikeverse_org/cosmic-weave.html" class="nav-drawer-link">
+      <i class="fas fa-atom"></i> Cosmic Weave
+    </a>
+    <a href="Ikeverse_org/roadmap.html" class="nav-drawer-link">
+      <i class="fas fa-timeline"></i> Timeline
+    </a>
   </div>
 
-  <div class="nav-scanline"></div>
-  <div class="nav-hologram"></div>
-</nav>
   <!-- Main Content -->
   <main class="quantum-grid">
     <!-- Hero Section -->
     <section class="hero-section">
-      <div class="hero-content">
+      <div class="hero-content" data-animate="fade-up">
         <h1 class="hero-title">
           <span class="title-line">WEAVING THE</span>
           <span class="title-line">QUANTUM-ANCESTRAL</span>
@@ -128,87 +146,62 @@
       </div>
       
       <div class="galaxy-container">
-        <!-- Main Play Button -->
         <button class="crawl-play-btn" id="startCrawl">
           <i class="fas fa-play"></i> BEGIN KNOWLEDGE FLOW
         </button>
-        
-        <!-- Crawl Intro Element -->
         <div class="crawl-intro">
           <div class="intro-content">
             <h2>A LONG TIME AGO...</h2>
             <p>In an Ancestral Memory...</p>
           </div>
         </div>
-        
-        <!-- Star Wars Crawl Container -->
         <div class="starwars-crawl" id="ikeverseCrawl">
           <div class="starwars-bg"></div>
           <div class="starwars-crawl-content">
             <div class="crawl-title">THE IKEVERSE</div>
-            
             <div class="crawl-text">
-              <p>Across millennia, our ancestors encoded <span class="highlight">profound Knowledge</span> into sacred chants that mapped celestial movements, geometric symbols revealing universal patterns, temple architectures aligned with cosmic energies, and oral traditions preserving advanced understanding through mnemonic technologies. These were sophisticated systems of epistemology—the Dogon's Sirius star knowledge preserved through ritual dance, Vedic mantras encoding mathematical constants, and Mayan calendrics predicting astronomical events with precision surpassing European instruments until the Renaissance. Modern academia has often fragmented these holistic systems into disconnected disciplines, dismissing as primitive superstition what were actually refined methodologies for transmitting complex information across generations.</p>
-              
+              <p>Across millennia, our ancestors encoded <span class="highlight">profound Knowledge</span> into sacred chants that mapped celestial movements, geometric symbols revealing universal patterns, temple architectures aligned with cosmic energies, and oral traditions preserving advanced understanding through mnemonic technologies.</p>
               <div class="cultural-divider">
                 <span class="hieroglyph">𓃭</span>
                 <span class="quantum-symbol">⚛</span>
                 <span class="hieroglyph">𓃗</span>
               </div>
-              
-              <p>The <span class="highlight sacred-term">Kumulipo</span> creation chant of Hawaii contains layered genealogical data that modern researchers recognize as a sophisticated taxonomy of ecological relationships. The hymns of <span class="highlight sacred-term">Kemet</span> (Ancient Egypt) describe neuroanatomy and light perception in terms now being validated by quantum biology. From Aboriginal songlines functioning as geospatial algorithms to Yoruba divination systems anticipating binary code, these traditions reveal a unified understanding of reality where consciousness, mathematics, and nature interweave—a perspective only now re-emerging in cutting-edge physics and systems theory.</p>
-              
-              <p>This Platform serves as a sanctuary for reconnection, where the <span class="highlight">quantum theory</span> of non-locality converses with the Maya concept of "k'ex" (cosmic entanglement), where <span class="highlight">blockchain</span> technology manifests the African principle of Sankofa (retrieving wisdom from the past), and where <span class="highlight">cryptography</span> meets the symbolic encoding of Dogon astronomical knowledge. Here we honor both the electron microscope and the Ifá divination tray as complementary instruments for revealing nature's patterns—where machine learning algorithms and elder storytelling traditions collaborate to solve complex problems.</p>
+              <p>The <span class="highlight sacred-term">Kumulipo</span> creation chant of Hawaii contains layered genealogical data that modern researchers recognize as a sophisticated taxonomy of ecological relationships. The hymns of <span class="highlight sacred-term">Kemet</span> describe neuroanatomy and light perception in terms now being validated by quantum biology.</p>
+              <p>This Platform serves as a sanctuary for reconnection, where <span class="highlight">quantum theory</span> converses with the Maya concept of cosmic entanglement, where <span class="highlight">blockchain</span> manifests the African principle of Sankofa, and where <span class="highlight">cryptography</span> meets the symbolic encoding of Dogon astronomical knowledge.</p>
             </div>
-            
             <div class="crawl-mission">
-              <p>To awaken <span class="highlight">collective memory</span> by bridging the precision of ancient epistemologies with the potential of modern innovation. We stand at the unique historical moment where spectroscopic analysis can verify the mineral compositions described in Ayurvedic texts, where satellite imagery confirms indigenous land management practices, and where quantum computing begins to model the consciousness principles articulated in Vedanta thousands of years ago.</p>
-              
-              <p>We are building a decentralized learning ecosystem that: 
-                <span class="mission-point">• Preserves endangered wisdom traditions through blockchain-secured oral histories</span>
-                <span class="mission-point">• Maps connections between ancient knowledge systems and emerging sciences</span>
-                <span class="mission-point">• Develops tools for pattern recognition across millennia of human inquiry</span>
-              </p>
-              
-              <p>Through this work, we cultivate:
-                <span class="archetype">The <span class="highlight">Neural Alchemist</span>—who trains AI on both scientific datasets and elder wisdom traditions</span>
-                <span class="archetype">The <span class="highlight">Land Steward</span>—applying indigenous permaculture principles to climate solutions</span>
-                <span class="archetype">The <span class="highlight">Time Binder</span>—fluent in both quantum physics and ancient creation myths</span>
-                <span class="archetype">The <span class="highlight">Pattern Seer</span>—who discerns hidden connections across disciplines and epochs</span>
-              </p>
+              <p>To awaken <span class="highlight">collective memory</span> by bridging the precision of ancient epistemologies with the potential of modern innovation.</p>
             </div>
           </div>
         </div>
-        
-        <!-- Galaxy Viewport Background -->
         <div id="galaxy-viewport" class="stars-background"></div>
       </div>
     </section>
 
     <!-- Cultural Nodes -->
     <section class="nodes-section">
-      <div class="node-card" data-culture="kemet">
+      <div class="node-card" data-culture="kemet" data-animate="fade-up">
         <div class="node-glow"></div>
         <h3>KEMET</h3>
-        <p>Sacred geometry encoding quantum spin ratios</p>
+        <p>Sacred geometry encoding quantum spin ratios — the ancient science of light, consciousness, and divine proportion.</p>
         <div class="node-connections">
           <span>↔ Fractal Algorithms</span>
           <span>↔ Crystallography</span>
         </div>
       </div>
-      <div class="node-card" data-culture="olmec">
+      <div class="node-card" data-culture="olmec" data-animate="fade-up">
         <div class="node-glow"></div>
         <h3>OLMEC</h3>
-        <p>Serpent DNA and fluid dynamics</p>
+        <p>Serpent wisdom and fluid dynamics — the original knowledge keepers of the Americas and their cosmic calendrics.</p>
         <div class="node-connections">
           <span>↔ Topology</span>
           <span>↔ Astrophysics</span>
         </div>
       </div>
-      <div class="node-card" data-culture="kumulipo">
+      <div class="node-card" data-culture="kumulipo" data-animate="fade-up">
         <div class="node-glow"></div>
         <h3>KUMULIPO</h3>
-        <p>Chanted quantum entanglement</p>
+        <p>The Hawaiian creation chant — chanted quantum entanglement mapping the genealogy of all life across dimensions.</p>
         <div class="node-connections">
           <span>↔ String Theory</span>
           <span>↔ Holography</span>
@@ -222,7 +215,7 @@
     <div class="footer-grid">
       <div class="footer-about">
         <h4>IKEVERSE</h4>
-        <p>Decolonizing knowledge through quantum-indigenous synthesis</p>
+        <p>Decolonizing knowledge through quantum-indigenous synthesis — built from Hawaiʻi with respect and future vision.</p>
       </div>
       <div class="footer-links">
         <a href="#" class="social-link" data-tooltip="Join Our DAO">𓃭</a>
@@ -233,47 +226,26 @@
     <div class="footer-pulse"></div>
   </footer>
 
-  <!-- Three.js Core -->
+  <!-- Three.js -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
-
-  <!-- CSS2DRenderer with guaranteed initialization -->
   <script>
     function loadCSS2DRenderer() {
       return new Promise((resolve) => {
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/renderers/CSS2DRenderer.js';
-        
         script.onload = function() {
-          if (typeof CSS2DRenderer !== 'undefined') {
-            window.CSS2DRenderer = CSS2DRenderer;
-            return resolve();
+          if (typeof CSS2DRenderer !== 'undefined') { window.CSS2DRenderer = CSS2DRenderer; }
+          else if (typeof THREE !== 'undefined' && THREE.CSS2DRenderer) { window.CSS2DRenderer = THREE.CSS2DRenderer; }
+          else {
+            window.CSS2DRenderer = function() {
+              this.domElement = document.createElement('div');
+              this.setSize = function() {};
+              this.render = function() {};
+            };
           }
-          
-          if (typeof THREE !== 'undefined' && THREE.CSS2DRenderer) {
-            window.CSS2DRenderer = THREE.CSS2DRenderer;
-            return resolve();
-          }
-          
-          const renderer = window.CSS2DRenderer || 
-                         (window.THREE && window.THREE.CSS2DRenderer) ||
-                         (window.CSS2DRenderer && window.CSS2DRenderer.default);
-          
-          if (renderer) {
-            window.CSS2DRenderer = renderer;
-            return resolve();
-          }
-          
-          console.warn('Creating fallback CSS2DRenderer');
-          window.CSS2DRenderer = function() {
-            this.domElement = document.createElement('div');
-            this.setSize = function() {};
-            this.render = function() {};
-          };
           resolve();
         };
-        
         script.onerror = function() {
-          console.warn('Failed to load CSS2DRenderer, using fallback');
           window.CSS2DRenderer = function() {
             this.domElement = document.createElement('div');
             this.setSize = function() {};
@@ -281,66 +253,66 @@
           };
           resolve();
         };
-        
         document.head.appendChild(script);
       });
     }
   </script>
-
-  <!-- Other dependencies -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
 
   <script>
     let loadingFailed = false;
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      const navExpand = document.getElementById('nav-expand');
-      const navLinks = document.querySelector('.nav-links');
-      
-      if (navExpand && navLinks) {
-        navExpand.addEventListener('click', function() {
-          navLinks.classList.toggle('expanded');
-          this.querySelector('i').classList.toggle('fa-chevron-right');
-          this.querySelector('i').classList.toggle('fa-chevron-left');
-        });
+
+    /* ── Mobile nav toggle ── */
+    (function() {
+      var toggle = document.getElementById('ikeNavToggle');
+      var drawer = document.getElementById('ikeNavDrawer');
+      if (!toggle || !drawer) return;
+
+      function openDrawer() {
+        drawer.classList.add('is-open');
+        drawer.setAttribute('aria-hidden', 'false');
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.querySelector('i').className = 'fas fa-times';
       }
-      
-      const modeOptions = document.querySelectorAll('.mode-option');
-      modeOptions.forEach(option => {
+      function closeDrawer() {
+        drawer.classList.remove('is-open');
+        drawer.setAttribute('aria-hidden', 'true');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.querySelector('i').className = 'fas fa-bars';
+      }
+
+      toggle.addEventListener('click', function() {
+        drawer.classList.contains('is-open') ? closeDrawer() : openDrawer();
+      });
+      drawer.querySelectorAll('.nav-drawer-link').forEach(function(a) {
+        a.addEventListener('click', closeDrawer);
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeDrawer();
+      });
+    })();
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mode toggle
+      document.querySelectorAll('.mode-option').forEach(function(option) {
         option.addEventListener('click', function() {
-          modeOptions.forEach(opt => opt.classList.remove('active'));
+          document.querySelectorAll('.mode-option').forEach(function(o) { o.classList.remove('active'); });
           this.classList.add('active');
-          
-          const mode = this.dataset.mode;
-          document.body.setAttribute('data-mode', mode);
-          
-          const pulse = document.createElement('div');
+          document.body.setAttribute('data-mode', this.dataset.mode);
+          var pulse = document.createElement('div');
           pulse.className = 'mode-pulse';
-          pulse.style.backgroundColor = mode === 'quantum' ? 
-            'var(--quantum-blue)' : 'var(--ancestral-gold)';
+          pulse.style.backgroundColor = this.dataset.mode === 'quantum' ? 'var(--quantum-blue)' : 'var(--ancestral-gold)';
           document.body.appendChild(pulse);
-          
-          setTimeout(() => {
-            pulse.remove();
-          }, 1000);
+          setTimeout(function() { pulse.remove(); }, 1000);
         });
       });
-      
-      const enterBtn = document.getElementById('enterMatrix');
+
+      // Enter matrix scroll
+      var enterBtn = document.getElementById('enterMatrix');
       if (enterBtn) {
         enterBtn.addEventListener('click', function() {
-          const ripple = document.createElement('span');
-          ripple.className = 'btn-ripple';
-          this.appendChild(ripple);
-          
-          setTimeout(() => {
-            ripple.remove();
-          }, 1000);
-          
-          document.getElementById('galaxy').scrollIntoView({
-            behavior: 'smooth'
-          });
+          document.getElementById('galaxy').scrollIntoView({ behavior: 'smooth' });
         });
       }
     });
@@ -348,101 +320,43 @@
     async function initializeApp() {
       try {
         await loadCSS2DRenderer();
-        
-        if (!window.THREE) {
-          throw new Error('Three.js failed to load');
-        }
-        
+        if (!window.THREE) throw new Error('Three.js failed to load');
         await loadScript('Ikeverse_org/js/galaxy.js');
-        
         completeLoading();
-        
       } catch (error) {
-        console.error('Initialization error:', error);
         loadingFailed = true;
         showErrorFallback(error.message);
       }
     }
-    
+
     function loadScript(src) {
       return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.onload = resolve;
-        script.onerror = () => reject(new Error(`Failed to load ${src}`));
-        document.head.appendChild(script);
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = () => reject(new Error('Failed to load ' + src));
+        document.head.appendChild(s);
       });
     }
-    
+
     function completeLoading() {
-      setTimeout(() => {
+      setTimeout(function() {
         document.body.classList.remove('loading');
         document.body.classList.add('loaded');
       }, 500);
     }
-    
-    function showErrorFallback(message) {
-      const errorDiv = document.createElement('div');
-      errorDiv.id = 'error-fallback';
-      errorDiv.innerHTML = `
-        <div class="error-content">
-          <h2>Loading Error</h2>
-          <p>${message}</p>
-          <button id="reload-button">Reload Page</button>
-          <p class="small">If the problem persists, try another browser</p>
-        </div>
-      `;
-      
-      const style = document.createElement('style');
-      style.textContent = `
-        #error-fallback {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(10, 14, 23, 0.95);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 9999;
-          color: white;
-          text-align: center;
-        }
-        #error-fallback .error-content {
-          max-width: 500px;
-          padding: 2rem;
-          background: rgba(0,0,0,0.5);
-          border-radius: 8px;
-        }
-        #error-fallback button {
-          padding: 0.75rem 1.5rem;
-          background: #00f7ff;
-          color: #0a0e17;
-          border: none;
-          border-radius: 4px;
-          font-weight: bold;
-          cursor: pointer;
-          margin-top: 1rem;
-        }
-        #error-fallback .small {
-          font-size: 0.8rem;
-          margin-top: 1.5rem;
-          opacity: 0.8;
-        }
-      `;
-      
-      document.head.appendChild(style);
-      document.body.appendChild(errorDiv);
-      
-      document.getElementById('reload-button').addEventListener('click', () => {
-        window.location.reload();
-      });
+
+    function showErrorFallback(msg) {
+      var div = document.createElement('div');
+      div.id = 'error-fallback';
+      div.innerHTML = '<div class="error-content"><h2>Loading Error</h2><p>' + msg + '</p><button id="reload-button">Reload</button></div>';
+      document.body.appendChild(div);
+      document.getElementById('reload-button').addEventListener('click', function() { location.reload(); });
     }
-    
+
     initializeApp();
-    
-    setTimeout(() => {
+
+    setTimeout(function() {
       if (document.body.classList.contains('loading') && !loadingFailed) {
         showErrorFallback('Loading is taking longer than expected');
       }
