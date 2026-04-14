@@ -17,9 +17,9 @@ const topojson = window.topojson;
 const THREE    = window.THREE;
 if (!d3 || !topojson) { console.error('[CW] D3 or Topojson missing'); return; }
 
-/* ══════════════════════════════════════════════════════════
-   CONSTANTS
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// CONSTANTS
+// ══════════════════════════════════════════════════════════
 const CULTURES_URL = 'docs/cultures.json';
 const WORLD_URL    = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 const IS_COARSE    = window.matchMedia?.('(pointer: coarse)').matches ?? false;
@@ -29,9 +29,9 @@ const GLOBE_R      = 1.0;  /* sphere radius in Three.js units */
 /* ── Performance caches ── */
 let _sunCache = null, _sunTime = 0, _lastDeclutter = 0;
 
-/* ══════════════════════════════════════════════════════════
-   MATH / GEO HELPERS
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// MATH / GEO HELPERS
+// ══════════════════════════════════════════════════════════
 const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
 
 function latLon3D(lat, lon, r = GLOBE_R) {
@@ -62,9 +62,9 @@ function parseEra(eraStr) {
   return { start: -9999, end: 2100 };
 }
 
-/* ══════════════════════════════════════════════════════════
-   DATA HELPERS  (same as original cosmic-weave.js)
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// DATA HELPERS  (same as original cosmic-weave.js)
+// ══════════════════════════════════════════════════════════
 function uniq(arr) {
   const out=[], seen=new Set();
   for(const x of arr||[]){const k=String(x);if(!seen.has(k)){seen.add(k);out.push(k);}}
@@ -172,11 +172,11 @@ async function loadAll() {
   return {world,cultures,byId,linksOfficial,lensCache};
 }
 
-/* ══════════════════════════════════════════════════════════
-   EARTH CANVAS TEXTURE
-   Renders D3 equirectangular map onto a canvas used as
-   THREE.CanvasTexture — wraps perfectly onto SphereGeometry
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// EARTH CANVAS TEXTURE
+// Renders D3 equirectangular map onto a canvas used as
+// THREE.CanvasTexture — wraps perfectly onto SphereGeometry
+// ══════════════════════════════════════════════════════════
 function buildEarthTexture(world) {
   const W=2048,H=1024;
   const canvas=document.createElement('canvas');
@@ -217,10 +217,10 @@ function buildEarthTexture(world) {
   return new THREE.CanvasTexture(canvas);
 }
 
-/* ══════════════════════════════════════════════════════════
-   GEODESIC ARC POINTS
-   Returns CatmullRomCurve3 that arcs over the sphere surface
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// GEODESIC ARC POINTS
+// Returns CatmullRomCurve3 that arcs over the sphere surface
+// ══════════════════════════════════════════════════════════
 function geodesicCurve(c1, c2, segs=80) {
   const v1=latLon3D(c1.lat,c1.lon);
   const v2=latLon3D(c2.lat,c2.lon);
@@ -240,9 +240,1412 @@ function geodesicCurve(c1, c2, segs=80) {
   return new THREE.CatmullRomCurve3(pts);
 }
 
-/* ══════════════════════════════════════════════════════════
-   THREE.JS GLOBE CLASS
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// THREE.JS GLOBE CLASS
+//
+// ══════════════════════════════════════════════════════════
+// CULTURE ART — SVG LANDMARK ILLUSTRATIONS
+// Culturally accurate, mobile-friendly SVG art for each tradition.
+// ══════════════════════════════════════════════════════════
+
+// ── SVG Cultural Art Library ──────────────────────────────
+const CULTURE_SVG_ART = {
+
+// ── Hawaiian Islands & Hōkūleʻa ──────────────────────────
+kanaka_kumulipo:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="hk-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#010818"/><stop offset="55%" stop-color="#061a3a"/><stop offset="100%" stop-color="#0e2f1a"/></linearGradient>
+  <linearGradient id="hk-mtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a1a08"/><stop offset="100%" stop-color="#1a0f05"/></linearGradient>
+  <linearGradient id="hk-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#082845"/><stop offset="100%" stop-color="#020d1e"/></linearGradient>
+  <radialGradient id="hk-star" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ffd70000"/></radialGradient>
+  <filter id="hk-glow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<!-- Sky -->
+<rect width="560" height="220" fill="url(#hk-sky)"/>
+<!-- Stars scattered -->
+<g opacity=".9">
+  <circle cx="42" cy="18" r="1.2" fill="#e8d8ff"/><circle cx="105" cy="28" r="1.8" fill="#ffd700"/><circle cx="185" cy="12" r="1.1" fill="#c8e0ff"/>
+  <circle cx="248" cy="35" r="1.4" fill="#fff"/><circle cx="305" cy="14" r="1.0" fill="#e0f0ff"/><circle cx="370" cy="28" r="1.6" fill="#ffd700"/>
+  <circle cx="415" cy="10" r="1.2" fill="#ffe0a0"/><circle cx="460" cy="22" r="1.0" fill="#c0d8ff"/><circle cx="518" cy="8" r="1.4" fill="#fff"/>
+  <circle cx="78" cy="55" r="0.9" fill="#d0e8ff"/><circle cx="148" cy="48" r="0.8" fill="#fff"/><circle cx="210" cy="65" r="0.9" fill="#ffe8a0"/>
+  <circle cx="340" cy="52" r="0.8" fill="#e0f0ff"/><circle cx="495" cy="45" r="1.0" fill="#ffd700" opacity=".7"/>
+</g>
+<!-- Hōkūleʻa (Arcturus) — gold zenith star with glow -->
+<g filter="url(#hk-glow)">
+  <circle cx="280" cy="30" r="5" fill="#ffd700" opacity=".95"/>
+  <line x1="280" y1="16" x2="280" y2="44" stroke="#ffd700" stroke-width="1.2" opacity=".5"/>
+  <line x1="266" y1="30" x2="294" y2="30" stroke="#ffd700" stroke-width="1.2" opacity=".5"/>
+  <line x1="270" y1="20" x2="290" y2="40" stroke="#ffd700" stroke-width=".8" opacity=".35"/>
+  <line x1="290" y1="20" x2="270" y2="40" stroke="#ffd700" stroke-width=".8" opacity=".35"/>
+</g>
+<!-- Constellation lines -->
+<g stroke="#ffd700" stroke-width=".7" opacity=".3" stroke-dasharray="3 4">
+  <line x1="280" y1="30" x2="215" y2="55"/><line x1="215" y1="55" x2="168" y2="70"/>
+  <line x1="280" y1="30" x2="370" y2="28"/><line x1="105" y1="28" x2="215" y2="55"/>
+</g>
+<!-- Mauna Kea + Big Island silhouette -->
+<path d="M 60,155 L 140,82 L 195,118 L 240,155" fill="url(#hk-mtn)"/>
+<!-- Snow cap -->
+<path d="M 130,86 L 140,82 L 150,86 L 147,98 L 133,98 Z" fill="#ddeeff" opacity=".85"/>
+<!-- Green island base -->
+<ellipse cx="155" cy="158" rx="100" ry="12" fill="#1a3a10"/>
+<!-- Smaller islands -->
+<ellipse cx="295" cy="160" rx="38" ry="9" fill="#1a3a10"/><ellipse cx="310" cy="158" rx="22" ry="6" fill="#152d0d"/>
+<ellipse cx="380" cy="162" rx="28" ry="7" fill="#1a3a10"/>
+<ellipse cx="435" cy="165" rx="18" ry="5" fill="#1a3a10"/>
+<!-- Ocean -->
+<rect x="0" y="170" width="560" height="50" fill="url(#hk-sea)"/>
+<!-- Wave lines -->
+<g stroke="#0af" stroke-width=".7" opacity=".18" fill="none">
+  <path d="M 0,178 Q 70,172 140,178 Q 210,184 280,178 Q 350,172 420,178 Q 490,184 560,178"/>
+  <path d="M 0,188 Q 70,182 140,188 Q 210,194 280,188 Q 350,182 420,188 Q 490,194 560,188"/>
+</g>
+<!-- Hōkūleʻa canoe silhouette -->
+<g transform="translate(200,175)">
+  <path d="M 0,0 Q 60,-10 120,0 Q 100,6 60,7 Q 20,6 0,0 Z" fill="#3d1e08"/>
+  <!-- Twin hulls -->
+  <rect x="0" y="2" width="120" height="5" rx="2.5" fill="#2a1505"/>
+  <!-- Mast + crab-claw sail -->
+  <line x1="60" y1="-10" x2="60" y2="-55" stroke="#5a3010" stroke-width="2"/>
+  <path d="M 60,-55 L 20,-22 L 60,-8 Z" fill="#d4aa70" opacity=".75"/>
+  <path d="M 60,-55 L 100,-22 L 60,-8 Z" fill="#c49a60" opacity=".7"/>
+  <!-- Connecting beam -->
+  <rect x="25" y="-5" width="70" height="2" rx="1" fill="#4a2808"/>
+</g>
+<!-- Hibiscus accent (bottom right) -->
+<g transform="translate(488,182)" opacity=".7">
+  <circle cx="0" cy="0" r="10" fill="none" stroke="#ff3355" stroke-width="2"/>
+  <path d="M 0,-10 Q 6,-4 0,0 Q -6,-4 0,-10" fill="#ff3355" opacity=".8"/>
+  <path d="M 10,0 Q 4,6 0,0 Q 4,-6 10,0" fill="#ff4466" opacity=".8"/>
+  <path d="M 0,10 Q -6,4 0,0 Q 6,4 0,10" fill="#ff3355" opacity=".8"/>
+  <path d="M -10,0 Q -4,-6 0,0 Q -4,6 -10,0" fill="#ff4466" opacity=".8"/>
+  <circle cx="0" cy="0" r="3.5" fill="#ffd700"/>
+</g>
+<!-- Title -->
+<text x="18" y="210" font-family="'Orbitron',monospace" font-size="8" fill="#ffd700" opacity=".6" letter-spacing=".1em">HAWAI'I · KUMULIPO · HŌKŪLE'A</text>
+</svg>`,
+
+// ── Kemet — Giza & the Nile ────────────────────────────────
+kemet:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="eg-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#050815"/><stop offset="45%" stop-color="#1a0e28"/><stop offset="100%" stop-color="#4a1e06"/></linearGradient>
+  <linearGradient id="eg-sand" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c4892a"/><stop offset="100%" stop-color="#8a5e1a"/></linearGradient>
+  <radialGradient id="eg-sun" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffd700"/><stop offset="40%" stop-color="#ff8800"/><stop offset="100%" stop-color="#ff880000"/></radialGradient>
+  <filter id="eg-glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<!-- Sky -->
+<rect width="560" height="220" fill="url(#eg-sky)"/>
+<!-- Sun disk / Ra -->
+<g filter="url(#eg-glow)">
+  <circle cx="480" cy="55" r="28" fill="url(#eg-sun)" opacity=".9"/>
+  <circle cx="480" cy="55" r="18" fill="#ffd700" opacity=".95"/>
+  <!-- Sun rays -->
+  <g stroke="#ffd700" stroke-width="1.5" opacity=".4">
+    <line x1="480" y1="19" x2="480" y2="7"/><line x1="480" y1="91" x2="480" y2="103"/>
+    <line x1="444" y1="55" x2="432" y2="55"/><line x1="516" y1="55" x2="528" y2="55"/>
+    <line x1="455" y1="30" x2="446" y2="21"/><line x1="505" y1="80" x2="514" y2="89"/>
+    <line x1="505" y1="30" x2="514" y2="21"/><line x1="455" y1="80" x2="446" y2="89"/>
+  </g>
+</g>
+<!-- Stars (night side) -->
+<g opacity=".7"><circle cx="30" cy="20" r="1.2" fill="#e0e8ff"/><circle cx="80" cy="12" r="1.0" fill="#fff"/><circle cx="135" cy="30" r="1.4" fill="#ffe8b0"/><circle cx="195" cy="18" r="0.9" fill="#e0e8ff"/></g>
+<!-- Nile river -->
+<rect x="8" y="145" width="30" height="75" fill="#1a4a6a" opacity=".85"/>
+<!-- Delta vegetation -->
+<rect x="6" y="142" width="35" height="8" rx="2" fill="#1a4a14" opacity=".7"/>
+<!-- Desert ground -->
+<rect x="38" y="155" width="522" height="65" fill="url(#eg-sand)"/>
+<!-- Great Pyramid (Khufu) — largest, leftmost -->
+<path d="M 85,155 L 195,68 L 305,155 Z" fill="#c4892a"/>
+<path d="M 95,155 L 195,68 L 295,155 Z" fill="#b07820"/><path d="M 195,68 L 305,155 L 285,155 L 195,78 Z" fill="#9a6615"/>
+<!-- Casing stones lines -->
+<g stroke="#d4a030" stroke-width=".5" opacity=".3">
+  <line x1="130" y1="135" x2="260" y2="135"/><line x1="115" y1="148" x2="275" y2="148"/>
+  <line x1="145" y1="122" x2="245" y2="122"/><line x1="165" y1="108" x2="225" y2="108"/>
+</g>
+<!-- Capstone glint -->
+<path d="M 190,68 L 195,62 L 200,68 Z" fill="#ffd700" opacity=".9"/>
+<!-- Khafre (middle) -->
+<path d="M 310,155 L 388,90 L 466,155 Z" fill="#b8801e"/>
+<path d="M 318,155 L 388,90 L 458,155 Z" fill="#a87018"/>
+<!-- Menkaure (small) -->
+<path d="M 470,155 L 510,118 L 550,155 Z" fill="#a87018"/>
+<!-- Sphinx silhouette -->
+<g transform="translate(55,145)">
+  <ellipse cx="28" cy="10" rx="28" ry="10" fill="#b07820"/>
+  <path d="M 8,10 Q 8,-2 20,-5 Q 30,-8 38,0 Q 46,-4 48,6" fill="#c4892a"/>
+  <ellipse cx="38" cy="4" rx="12" ry="10" fill="#b07820"/>
+  <!-- Head shape -->
+  <path d="M 26,-5 Q 38,-14 48,0 Q 50,8 38,10 Q 26,10 26,-5 Z" fill="#c4892a"/>
+  <!-- Headdress -->
+  <path d="M 28,-14 Q 38,-20 48,-12 L 52,5 L 38,-4 Z" fill="#d4a030" opacity=".8"/>
+</g>
+<!-- Hieroglyph border strip -->
+<g opacity=".5">
+  <rect x="0" y="205" width="560" height="15" fill="rgba(0,0,0,.3)"/>
+  <text x="15" y="216" font-family="serif" font-size="10" fill="#ffd700" letter-spacing="6">𓃭 𓇋 𓂋 𓀁 𓆣 𓏏 𓂤</text>
+</g>
+<!-- Title -->
+<text x="18" y="200" font-family="'Orbitron',monospace" font-size="8" fill="#ffd700" opacity=".6" letter-spacing=".1em">KEMET · GIZA · MA'AT</text>
+</svg>`,
+
+// ── Angkor Wat / Khmer ─────────────────────────────────────
+khmer:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="aw-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#020810"/><stop offset="50%" stop-color="#0a1828"/><stop offset="100%" stop-color="#c4611a"/></linearGradient>
+  <linearGradient id="aw-stone" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8a7060"/><stop offset="100%" stop-color="#6a5040"/></linearGradient>
+  <linearGradient id="aw-moat" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#102838"/><stop offset="100%" stop-color="#08181e"/></linearGradient>
+  <filter id="aw-glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="560" height="220" fill="url(#aw-sky)"/>
+<!-- Sunrise glow -->
+<ellipse cx="280" cy="145" rx="120" ry="40" fill="#ff8800" opacity=".12"/>
+<ellipse cx="280" cy="148" rx="60" ry="20" fill="#ffbb33" opacity=".18"/>
+<!-- Stars fading -->
+<g opacity=".4"><circle cx="60" cy="20" r="1.2" fill="#c0d8ff"/><circle cx="120" cy="12" r="1" fill="#fff"/><circle cx="480" cy="18" r="1" fill="#c0d8ff"/><circle cx="530" cy="28" r="1.2" fill="#ffe8b0"/></g>
+<!-- Jungle silhouette -->
+<path d="M 0,148 Q 30,130 60,148 Q 80,135 110,148 Q 130,132 155,148 L 0,148 Z" fill="#0a2008"/>
+<path d="M 405,148 Q 435,130 465,148 Q 485,132 520,148 Q 540,135 560,145 L 560,148 Z" fill="#0a2008"/>
+<!-- Moat/reflection water -->
+<rect x="80" y="148" width="400" height="22" fill="url(#aw-moat)"/>
+<!-- Temple reflection (mirrored, inverted, blurred) -->
+<g opacity=".35" transform="translate(0,296) scale(1,-1)">
+  <rect x="220" y="148" width="120" height="30" fill="#6a5040"/>
+  <polygon points="280,118 220,148 340,148" fill="#7a6050"/>
+</g>
+<!-- Base terrace levels -->
+<rect x="120" y="130" width="320" height="18" fill="url(#aw-stone)" rx="2"/>
+<rect x="150" y="115" width="260" height="15" fill="#8a7060" rx="1"/>
+<rect x="185" y="102" width="190" height="13" fill="#7a6050" rx="1"/>
+<!-- Galleries -->
+<rect x="125" y="125" width="310" height="5" fill="#6a5040"/>
+<!-- Five towers (lotus-bud tops) — central tallest -->
+<!-- Outer left -->
+<rect x="135" y="95" width="28" height="35" fill="#7a6050"/>
+<path d="M 135,95 Q 149,78 163,95 Z" fill="#8a7060"/>
+<path d="M 139,79 Q 149,68 159,79 L 156,86 L 142,86 Z" fill="#9a8070"/>
+<circle cx="149" cy="67" r="5" fill="#8a7060"/>
+<!-- Left center -->
+<rect x="190" y="85" width="28" height="45" fill="#7a6050"/>
+<path d="M 190,85 Q 204,64 218,85 Z" fill="#8a7060"/>
+<path d="M 194,66 Q 204,52 214,66 L 211,74 L 197,74 Z" fill="#9a8070"/>
+<circle cx="204" cy="51" r="5.5" fill="#8a7060"/>
+<!-- Central/tallest -->
+<rect x="242" y="70" width="36" height="60" fill="#8a7060"/>
+<path d="M 242,70 Q 260,42 278,70 Z" fill="#9a8070"/>
+<path d="M 246,44 Q 260,26 274,44 L 270,56 L 250,56 Z" fill="#aa9080"/>
+<circle cx="260" cy="24" r="7" fill="#9a8070"/>
+<!-- Right center -->
+<rect x="342" y="85" width="28" height="45" fill="#7a6050"/>
+<path d="M 342,85 Q 356,64 370,85 Z" fill="#8a7060"/>
+<path d="M 346,66 Q 356,52 366,66 L 363,74 L 349,74 Z" fill="#9a8070"/>
+<circle cx="356" cy="51" r="5.5" fill="#8a7060"/>
+<!-- Outer right -->
+<rect x="397" y="95" width="28" height="35" fill="#7a6050"/>
+<path d="M 397,95 Q 411,78 425,95 Z" fill="#8a7060"/>
+<path d="M 401,79 Q 411,68 421,79 L 418,86 L 404,86 Z" fill="#9a8070"/>
+<circle cx="411" cy="67" r="5" fill="#8a7060"/>
+<!-- Title -->
+<text x="18" y="212" font-family="'Orbitron',monospace" font-size="8" fill="#ffd700" opacity=".6" letter-spacing=".1em">ANGKOR WAT · KHMER · WATER AS STATECRAFT</text>
+</svg>`,
+
+// ── Norse Longship & Aurora ────────────────────────────────
+norse:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="no-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#020510"/><stop offset="100%" stop-color="#040e20"/></linearGradient>
+  <linearGradient id="no-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#061428"/><stop offset="100%" stop-color="#020810"/></linearGradient>
+  <filter id="no-aur"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="no-glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="560" height="220" fill="url(#no-sky)"/>
+<!-- Aurora borealis -->
+<g filter="url(#no-aur)" opacity=".6">
+  <path d="M 0,40 Q 140,20 280,60 Q 420,100 560,30" fill="none" stroke="#00ff88" stroke-width="25" opacity=".3"/>
+  <path d="M 0,70 Q 140,50 280,80 Q 420,110 560,55" fill="none" stroke="#00ddaa" stroke-width="18" opacity=".25"/>
+  <path d="M 0,30 Q 140,60 280,40 Q 420,20 560,50" fill="none" stroke="#8800ff" stroke-width="15" opacity=".2"/>
+  <path d="M 0,90 Q 150,60 300,90 Q 430,115 560,75" fill="none" stroke="#00ff88" stroke-width="10" opacity=".2"/>
+</g>
+<!-- Stars -->
+<g opacity=".85"><circle cx="25" cy="15" r="1.5" fill="#e8f0ff"/><circle cx="75" cy="8" r="1.2" fill="#fff"/><circle cx="140" cy="22" r="1.8" fill="#ffe8b0"/><circle cx="220" cy="10" r="1" fill="#e8f0ff"/><circle cx="320" cy="18" r="1.4" fill="#fff"/><circle cx="410" cy="8" r="1" fill="#c8e0ff"/><circle cx="490" cy="20" r="1.5" fill="#ffe8b0"/><circle cx="540" cy="10" r="1.2" fill="#fff"/></g>
+<!-- Polaris -->
+<g filter="url(#no-glow)"><circle cx="280" cy="22" r="3" fill="#e8f0ff"/></g>
+<!-- Sea -->
+<rect x="0" y="158" width="560" height="62" fill="url(#no-sea)"/>
+<!-- Ice horizon -->
+<path d="M 0,158 Q 70,150 140,158 Q 210,166 280,155 Q 350,144 420,158 Q 490,166 560,155" fill="#061428" opacity=".8"/>
+<!-- Wave texture -->
+<g stroke="#0af" stroke-width=".6" opacity=".12" fill="none">
+  <path d="M 0,168 Q 70,162 140,168 Q 210,174 280,168 Q 350,162 420,168 Q 490,174 560,168"/>
+  <path d="M 0,180 Q 70,174 140,180 Q 210,186 280,180 Q 350,174 420,180 Q 490,186 560,180"/>
+</g>
+<!-- Viking longship -->
+<g transform="translate(80,130)">
+  <!-- Hull — clinker-built shape -->
+  <path d="M 10,30 Q 0,22 2,18 Q 5,14 20,12 L 360,12 Q 385,12 398,20 Q 408,26 400,30 Q 370,38 200,40 Q 60,40 10,30 Z" fill="#3d1e08"/>
+  <path d="M 15,28 Q 5,22 8,18 L 380,18 Q 395,20 395,26 Q 370,34 200,36 Q 70,36 15,28 Z" fill="#4a2808"/>
+  <!-- Strakes (clinker lines) -->
+  <g stroke="#5a3010" stroke-width=".8" opacity=".5">
+    <path d="M 20,22 Q 200,20 380,22"/><path d="M 18,26 Q 200,24 382,26"/>
+  </g>
+  <!-- Dragon prow -->
+  <path d="M 2,18 Q -12,10 -25,5 Q -18,8 -10,14 Q -20,5 -30,-2 Q -20,4 -8,12 Q -20,0 -28,-8 Q -15,2 -4,10 Z" fill="#5a3010"/>
+  <path d="M -28,-8 Q -35,-15 -28,-10 Q -22,-5 -15,2" fill="#4a2808"/>
+  <!-- Stern sweep -->
+  <path d="M 400,26 Q 415,20 420,12 Q 416,18 410,24" fill="#3d1e08"/>
+  <!-- Mast -->
+  <line x1="200" y1="12" x2="200" y2="-75" stroke="#5a3010" stroke-width="4"/>
+  <!-- Square sail — striped red/tan -->
+  <rect x="130" y="-70" width="140" height="75" fill="#c42a14" opacity=".8" rx="2"/>
+  <g stroke="#a02010" stroke-width="4" opacity=".6"><line x1="162" y1="-70" x2="162" y2="5"/><line x1="200" y1="-70" x2="200" y2="5"/><line x1="238" y1="-70" x2="238" y2="5"/></g>
+  <rect x="130" y="-70" width="140" height="75" fill="none" stroke="#3d1e08" stroke-width="2" rx="2"/>
+  <!-- Yard arm -->
+  <line x1="128" y1="-68" x2="272" y2="-68" stroke="#5a3010" stroke-width="3"/>
+  <!-- Oar ports -->
+  <g fill="#2a1005">
+    <circle cx="60" cy="25" r="4"/><circle cx="100" cy="24" r="4"/><circle cx="140" cy="24" r="4"/>
+    <circle cx="260" cy="24" r="4"/><circle cx="300" cy="24" r="4"/><circle cx="340" cy="25" r="4"/>
+  </g>
+  <!-- Shield row -->
+  <g fill="none" stroke="#8a4410" stroke-width="1.5">
+    <circle cx="55" cy="18" r="6"/><circle cx="90" cy="17" r="6"/><circle cx="125" cy="17" r="6"/>
+    <circle cx="270" cy="17" r="6"/><circle cx="305" cy="17" r="6"/><circle cx="340" cy="18" r="6"/>
+  </g>
+</g>
+<!-- Runic border -->
+<g opacity=".35">
+  <rect x="0" y="208" width="560" height="12" fill="rgba(0,30,10,.6)"/>
+  <text x="15" y="218" font-family="serif" font-size="10" fill="#00ff88" letter-spacing="5">ᛟ ᚦ ᚢ ᚱ ᛋ ᚲ ᛁ ᚷ ᛚ ᚠ ᚾ ᛏ ᛒ ᛖ ᛗ</text>
+</g>
+<text x="18" y="204" font-family="'Orbitron',monospace" font-size="8" fill="#00ff88" opacity=".6" letter-spacing=".1em">NORSE LONGSHIP · NORTH ATLANTIC · YGGDRASIL</text>
+</svg>`,
+
+// ── El Castillo, Chichén Itzá — Maya ──────────────────────
+maya:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="my-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#030a05"/><stop offset="45%" stop-color="#0a1a10"/><stop offset="100%" stop-color="#3a2800"/></linearGradient>
+  <linearGradient id="my-stone" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8a8870"/><stop offset="100%" stop-color="#6a6852"/></linearGradient>
+  <radialGradient id="my-venus" cx="50%" cy="50%"><stop offset="0%" stop-color="#e8f0ff"/><stop offset="100%" stop-color="#e8f0ff00"/></radialGradient>
+  <filter id="my-glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="560" height="220" fill="url(#my-sky)"/>
+<!-- Stars/Venus -->
+<g opacity=".8"><circle cx="45" cy="18" r="1.2" fill="#e0f0ff"/><circle cx="110" cy="10" r="1" fill="#fff"/><circle cx="200" cy="22" r="1.4" fill="#ffe8b0"/><circle cx="380" cy="14" r="1.2" fill="#e0f0ff"/><circle cx="470" cy="8" r="1.6" fill="#c8e0ff"/><circle cx="525" cy="22" r="1" fill="#fff"/></g>
+<!-- Venus (heliacal) — bright -->
+<g filter="url(#my-glow)"><circle cx="440" cy="35" r="5" fill="#e8f8ff" opacity=".9"/></g>
+<!-- Jungle silhouette -->
+<path d="M 0,175 Q 30,155 60,175 Q 85,158 115,175 Q 135,160 160,175 L 0,175 Z" fill="#061208"/>
+<path d="M 400,175 Q 430,158 460,175 Q 480,160 510,175 Q 530,162 560,172 L 560,175 Z" fill="#061208"/>
+<!-- Ground -->
+<rect x="0" y="178" width="560" height="42" fill="#2a2010"/>
+<!-- Platform base -->
+<rect x="120" y="165" width="320" height="13" fill="#6a6852" rx="1"/>
+<!-- El Castillo — 9-tiered pyramid -->
+<!-- Each tier step -->
+<rect x="135" y="152" width="290" height="13" fill="url(#my-stone)" rx="1"/>
+<rect x="155" y="140" width="250" height="12" fill="#8a8870" rx="1"/>
+<rect x="175" y="129" width="210" height="11" fill="#7a7860" rx="1"/>
+<rect x="195" y="119" width="170" height="10" fill="#8a8870" rx="1"/>
+<rect x="212" y="110" width="136" height="9" fill="#7a7860" rx="1"/>
+<rect x="228" y="102" width="104" height="8" fill="#8a8870" rx="1"/>
+<rect x="242" y="95" width="76" height="7" fill="#7a7860" rx="1"/>
+<rect x="254" y="89" width="52" height="6" fill="#8a8870" rx="1"/>
+<rect x="264" y="84" width="32" height="5" fill="#7a7860" rx="1"/>
+<!-- Temple on top -->
+<rect x="256" y="65" width="48" height="19" fill="#8a8870"/>
+<rect x="253" y="62" width="54" height="3" fill="#9a9880"/>
+<!-- Temple roof comb -->
+<path d="M 254,62 Q 280,50 306,62 Z" fill="#7a7860"/>
+<!-- Serpent shadow at base (equinox effect) -->
+<g opacity=".7">
+  <path d="M 135,165 Q 155,158 140,152 Q 155,148 138,143" fill="none" stroke="#4a3810" stroke-width="6"/>
+  <ellipse cx="132" cy="168" rx="8" ry="5" fill="#3a2808"/><!-- Serpent head -->
+  <path d="M 128,167 Q 125,172 130,174 Q 135,173 138,168 Z" fill="#4a3810"/>
+</g>
+<!-- Central stairway -->
+<rect x="277" y="65" width="6" height="100" fill="#5a5840" opacity=".6"/>
+<!-- Glyph panels (decorative) -->
+<g opacity=".4" fill="#9a9880">
+  <rect x="148" y="144" width="12" height="8" rx="1"/><rect x="400" y="144" width="12" height="8" rx="1"/>
+  <rect x="170" y="133" width="10" height="7" rx="1"/><rect x="380" y="133" width="10" height="7" rx="1"/>
+</g>
+<!-- Venus glyph -->
+<g transform="translate(500,40)" opacity=".5" fill="#e8f8ff">
+  <circle cx="0" cy="0" r="8" fill="none" stroke="#e8f8ff" stroke-width="1.5"/>
+  <line x1="0" y1="-8" x2="0" y2="-14"/><line x1="0" y1="8" x2="0" y2="14"/>
+  <line x1="-8" y1="0" x2="-14" y2="0"/><line x1="8" y1="0" x2="14" y2="0"/>
+</g>
+<!-- Long Count glyph band -->
+<g opacity=".3" transform="translate(15,202)">
+  <text font-family="serif" font-size="9" fill="#88cc44" letter-spacing="4">𓆣 ⚫ ─── BAKTUN · KATUN · TUN · UINAL · KIN ─── ⚫ 𓆣</text>
+</g>
+<text x="18" y="198" font-family="'Orbitron',monospace" font-size="8" fill="#88cc44" opacity=".6" letter-spacing=".1em">EL CASTILLO · CHICHÉN ITZÁ · LONG COUNT</text>
+</svg>`,
+
+// ── Machu Picchu / Inca ────────────────────────────────────
+inca:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="ic-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#060814"/><stop offset="40%" stop-color="#10203a"/><stop offset="100%" stop-color="#283848"/></linearGradient>
+  <linearGradient id="ic-mtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#384855"/><stop offset="100%" stop-color="#1e2830"/></linearGradient>
+  <linearGradient id="ic-sun" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ff8800"/></linearGradient>
+  <filter id="ic-mist"><feGaussianBlur stdDeviation="6"/></filter>
+  <filter id="ic-glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="560" height="220" fill="url(#ic-sky)"/>
+<!-- Stars -->
+<g opacity=".7"><circle cx="30" cy="15" r="1.2" fill="#c8e0ff"/><circle cx="90" cy="8" r="1" fill="#fff"/><circle cx="160" cy="20" r="1.4" fill="#ffe8b0"/><circle cx="470" cy="12" r="1.2" fill="#e8f0ff"/><circle cx="520" cy="25" r="1" fill="#fff"/></g>
+<!-- Inti sun disc -->
+<g filter="url(#ic-glow)" transform="translate(420,45)">
+  <circle cx="0" cy="0" r="22" fill="url(#ic-sun)" opacity=".85"/>
+  <circle cx="0" cy="0" r="14" fill="#ffd700"/>
+  <!-- Rays -->
+  <g stroke="#ffd700" stroke-width="2" opacity=".5">
+    <line x1="0" y1="-22" x2="0" y2="-32"/><line x1="0" y1="22" x2="0" y2="32"/>
+    <line x1="-22" y1="0" x2="-32" y2="0"/><line x1="22" y1="0" x2="32" y2="0"/>
+    <line x1="-16" y1="-16" x2="-22" y2="-22"/><line x1="16" y1="16" x2="22" y2="22"/>
+    <line x1="16" y1="-16" x2="22" y2="-22"/><line x1="-16" y1="16" x2="-22" y2="22"/>
+    <line x1="-8" y1="-21" x2="-10" y2="-30"/><line x1="8" y1="-21" x2="10" y2="-30"/>
+    <line x1="-8" y1="21" x2="-10" y2="30"/><line x1="8" y1="21" x2="10" y2="30"/>
+  </g>
+  <!-- Face -->
+  <circle cx="-5" cy="-4" r="2.5" fill="#c48000"/><circle cx="5" cy="-4" r="2.5" fill="#c48000"/>
+  <path d="M -5,4 Q 0,9 5,4" fill="none" stroke="#c48000" stroke-width="1.5"/>
+</g>
+<!-- Huayna Picchu (steep peak behind) -->
+<path d="M 350,95 L 395,30 L 440,95" fill="url(#ic-mtn)"/>
+<path d="M 360,95 L 395,32 L 430,95" fill="#303a45"/>
+<!-- Mountain ridgeline -->
+<path d="M 0,140 Q 80,110 160,128 Q 240,145 320,128 Q 400,112 480,130 Q 520,140 560,125 L 560,220 L 0,220 Z" fill="#1e2830"/>
+<!-- Mist layers -->
+<ellipse cx="280" cy="135" rx="200" ry="25" fill="#283848" opacity=".4" filter="url(#ic-mist)"/>
+<ellipse cx="200" cy="145" rx="120" ry="15" fill="#30404e" opacity=".3" filter="url(#ic-mist)"/>
+<!-- Machu Picchu ridge -->
+<rect x="80" y="128" width="360" height="8" rx="3" fill="#384850"/>
+<!-- Terrace layers (andenes) — stacked horizontal -->
+<g fill="none">
+  <g fill="#2a3830"><rect x="85" y="136" width="350" height="6" rx="1"/></g>
+  <g fill="#243228"><rect x="90" y="142" width="340" height="6" rx="1"/></g>
+  <g fill="#1e2c24"><rect x="95" y="148" width="330" height="6" rx="1"/></g>
+  <g fill="#182618"><rect x="100" y="154" width="320" height="6" rx="1"/></g>
+  <g fill="#122014"><rect x="105" y="160" width="310" height="6" rx="1"/></g>
+  <g fill="#0c1a0e"><rect x="110" y="166" width="300" height="6" rx="1"/></g>
+</g>
+<!-- Inca stone buildings on ridge -->
+<g fill="#384850">
+  <rect x="105" y="120" width="22" height="8" rx="1"/><rect x="132" y="118" width="18" height="10" rx="1"/>
+  <rect x="155" y="120" width="25" height="8" rx="1"/><rect x="185" y="117" width="20" height="11" rx="1"/>
+  <rect x="210" y="119" width="30" height="9" rx="1"/><rect x="245" y="116" width="18" height="12" rx="1"/>
+  <rect x="268" y="119" width="22" height="9" rx="1"/><rect x="295" y="118" width="25" height="10" rx="1"/>
+  <rect x="325" y="120" width="18" height="8" rx="1"/><rect x="348" y="119" width="22" height="9" rx="1"/>
+  <rect x="375" y="121" width="18" height="7" rx="1"/>
+</g>
+<!-- Intihuatana stone (hitching post of the sun) -->
+<g transform="translate(260,112)" fill="#4a5860">
+  <rect x="-8" y="-6" width="16" height="6" rx="1"/>
+  <rect x="-4" y="-14" width="8" height="8" rx="1"/>
+  <rect x="-2" y="-18" width="4" height="4" rx="1"/>
+</g>
+<!-- Condor silhouette -->
+<g transform="translate(70,90)" fill="#1a2830" opacity=".6">
+  <path d="M 0,0 Q -20,-8 -35,-2 Q -20,-4 0,0 Q 20,-4 35,-2 Q 20,-8 0,0 Z"/>
+  <path d="M 0,0 Q -5,5 -8,10 Q -3,6 0,4 Q 3,6 8,10 Q 5,5 0,0 Z"/>
+</g>
+<!-- Quipu knots accent -->
+<g transform="translate(500,130)" opacity=".5" stroke="#c49a50" stroke-width="1.5" fill="none">
+  <line x1="0" y1="0" x2="0" y2="40"/>
+  <line x1="-8" y1="5" x2="-8" y2="30"/><line x1="8" y1="8" x2="8" y2="28"/>
+  <line x1="-15" y1="10" x2="-15" y2="25"/>
+  <circle cx="-8" cy="18" r="3" fill="#c49a50"/><circle cx="8" cy="20" r="2" fill="#c49a50"/>
+  <circle cx="-8" cy="12" r="2" fill="#c49a50"/><circle cx="-15" cy="17" r="2" fill="#c49a50"/>
+</g>
+<text x="18" y="212" font-family="'Orbitron',monospace" font-size="8" fill="#ffd700" opacity=".6" letter-spacing=".1em">MACHU PICCHU · TAWANTINSUYU · QHAPAQ ÑAN</text>
+</svg>`,
+
+// ── Ziggurat of Ur / Mesopotamia ──────────────────────────
+mesopotamia:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="ur-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#030510"/><stop offset="50%" stop-color="#0c0820"/><stop offset="100%" stop-color="#381808"/></linearGradient>
+  <linearGradient id="ur-brick" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b06030"/><stop offset="100%" stop-color="#803818"/></linearGradient>
+  <filter id="ur-glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="560" height="220" fill="url(#ur-sky)"/>
+<!-- Stars -->
+<g opacity=".8"><circle cx="35" cy="12" r="1.5" fill="#e8d8ff"/><circle cx="90" cy="22" r="1.2" fill="#fff"/><circle cx="155" cy="10" r="1.0" fill="#ffe8b0"/><circle cx="355" cy="16" r="1.4" fill="#e8d8ff"/><circle cx="430" cy="8" r="1.0" fill="#fff"/><circle cx="510" cy="20" r="1.6" fill="#ffe8b0"/></g>
+<!-- Crescent moon -->
+<g filter="url(ur-glow)">
+  <path d="M 470,30 Q 490,20 500,35 Q 490,25 475,38 Q 462,42 468,30 Z" fill="#ffeebb" opacity=".9"/>
+</g>
+<!-- Stars — Orion and Pleiades visible -->
+<g opacity=".6" fill="#e0e8ff">
+  <circle cx="320" cy="25" r="1.2"/><circle cx="335" cy="20" r="1.4"/><circle cx="350" cy="22" r="1.2"/><!-- Belt -->
+  <circle cx="340" cy="10" r="1"/><circle cx="328" cy="35" r="0.8"/><!-- Orion body -->
+</g>
+<!-- Desert ground -->
+<rect x="0" y="168" width="560" height="52" fill="#5a3010"/>
+<!-- Tigris River glimpse -->
+<rect x="470" y="168" width="90" height="52" fill="#1a3a5a" opacity=".7"/>
+<!-- River ripples -->
+<g stroke="#2a5a8a" stroke-width=".6" opacity=".3" fill="none">
+  <path d="M 470,178 Q 510,172 560,178"/><path d="M 470,190 Q 510,184 560,190"/>
+</g>
+<!-- Palm trees (right) -->
+<g transform="translate(440,148)" fill="#2a4810" opacity=".8">
+  <rect x="-2" y="0" width="4" height="22" fill="#5a3010"/>
+  <path d="M 0,0 Q -18,-8 -20,-4 Q -12,-6 0,0 Z"/>
+  <path d="M 0,0 Q 18,-8 20,-4 Q 12,-6 0,0 Z"/>
+  <path d="M 0,0 Q -10,-12 -8,-10 Q -6,-8 0,0 Z"/>
+  <path d="M 0,0 Q 10,-12 8,-10 Q 6,-8 0,0 Z"/>
+  <path d="M 0,0 Q 0,-14 2,-12 Q 1,-8 0,0 Z"/>
+</g>
+<g transform="translate(400,155)" fill="#2a4810" opacity=".7">
+  <rect x="-1.5" y="0" width="3" height="15" fill="#4a2808"/>
+  <path d="M 0,0 Q -12,-6 -14,-3 Q -8,-4 0,0 Z"/><path d="M 0,0 Q 12,-6 14,-3 Q 8,-4 0,0 Z"/>
+  <path d="M 0,0 Q 0,-10 2,-8 Q 1,-5 0,0 Z"/>
+</g>
+<!-- Ziggurat of Ur — rectangular tiered temple -->
+<!-- Base (Level 1) -->
+<rect x="80" y="145" width="340" height="23" fill="url(#ur-brick)" rx="2"/>
+<!-- Brick pattern on base -->
+<g stroke="#903818" stroke-width=".5" opacity=".4">
+  <line x1="80" y1="153" x2="420" y2="153"/><line x1="80" y1="159" x2="420" y2="159"/>
+  <line x1="100" y1="145" x2="100" y2="168"/><line x1="130" y1="145" x2="130" y2="168"/>
+  <line x1="160" y1="145" x2="160" y2="168"/><line x1="190" y1="145" x2="190" y2="168"/>
+  <line x1="220" y1="145" x2="220" y2="168"/><line x1="250" y1="145" x2="250" y2="168"/>
+  <line x1="280" y1="145" x2="280" y2="168"/><line x1="310" y1="145" x2="310" y2="168"/>
+  <line x1="340" y1="145" x2="340" y2="168"/><line x1="370" y1="145" x2="370" y2="168"/>
+  <line x1="400" y1="145" x2="400" y2="168"/>
+</g>
+<!-- Level 2 -->
+<rect x="115" y="118" width="270" height="27" fill="#a05028" rx="1"/>
+<g stroke="#904020" stroke-width=".5" opacity=".35">
+  <line x1="115" y1="126" x2="385" y2="126"/><line x1="115" y1="135" x2="385" y2="135"/>
+  <line x1="145" y1="118" x2="145" y2="145"/><line x1="180" y1="118" x2="180" y2="145"/>
+  <line x1="215" y1="118" x2="215" y2="145"/><line x1="250" y1="118" x2="250" y2="145"/>
+  <line x1="285" y1="118" x2="285" y2="145"/><line x1="320" y1="118" x2="320" y2="145"/>
+  <line x1="355" y1="118" x2="355" y2="145"/>
+</g>
+<!-- Level 3 -->
+<rect x="155" y="95" width="190" height="23" fill="#903818" rx="1"/>
+<g stroke="#803010" stroke-width=".5" opacity=".3">
+  <line x1="155" y1="104" x2="345" y2="104"/><line x1="155" y1="112" x2="345" y2="112"/>
+  <line x1="185" y1="95" x2="185" y2="118"/><line x1="220" y1="95" x2="220" y2="118"/>
+  <line x1="255" y1="95" x2="255" y2="118"/><line x1="290" y1="95" x2="290" y2="118"/>
+  <line x1="325" y1="95" x2="325" y2="118"/>
+</g>
+<!-- Temple shrine on top -->
+<rect x="210" y="72" width="80" height="23" fill="#c04820"/>
+<rect x="205" y="68" width="90" height="4" rx="1" fill="#d05828"/>
+<!-- Roof temple -->
+<rect x="220" y="58" width="60" height="14" fill="#b04018"/>
+<!-- Sacred fire -->
+<g filter="url(#ur-glow)" transform="translate(250,56)">
+  <path d="M 0,0 Q -5,-8 0,-16 Q 5,-8 0,0 Z" fill="#ff8800" opacity=".9"/>
+  <path d="M 0,0 Q -3,-5 0,-10 Q 3,-5 0,0 Z" fill="#ffd700"/>
+</g>
+<!-- Grand stairway -->
+<polygon points="195,145 200,118 260,118 265,145" fill="#7a2808"/>
+<polygon points="295,145 300,118 360,118 365,145" fill="#7a2808"/>
+<!-- Cuneiform inscription border -->
+<g opacity=".4">
+  <rect x="0" y="208" width="560" height="12" fill="rgba(0,0,0,.4)"/>
+  <text x="12" y="218" font-family="serif" font-size="10" fill="#c06030" letter-spacing="4">𒀭 𒂍 𒀀 𒆳 𒌓 𒈗 𒀭 𒂗 𒍪 𒈗 𒀭</text>
+</g>
+<text x="18" y="203" font-family="'Orbitron',monospace" font-size="8" fill="#c06030" opacity=".6" letter-spacing=".1em">ZIGGURAT OF UR · SUMER · CUNEIFORM</text>
+</svg>`,
+
+// ── Polynesian Voyaging Canoe ──────────────────────────────
+polynesia:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="pv-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#010a20"/><stop offset="100%" stop-color="#061828"/></linearGradient>
+  <linearGradient id="pv-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#082040"/><stop offset="100%" stop-color="#030e20"/></linearGradient>
+  <radialGradient id="pv-star-hk" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ffd70000"/></radialGradient>
+  <filter id="pv-glow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="560" height="220" fill="url(#pv-sky)"/>
+<!-- Stars -->
+<g opacity=".85">
+  <circle cx="40" cy="18" r="1.2" fill="#e8d8ff"/><circle cx="88" cy="8" r="1.5" fill="#fff"/><circle cx="142" cy="28" r="1.1" fill="#c8e0ff"/>
+  <circle cx="210" cy="14" r="1.0" fill="#ffe8b0"/><circle cx="310" cy="20" r="1.3" fill="#fff"/><circle cx="390" cy="10" r="1.0" fill="#e0f0ff"/>
+  <circle cx="455" cy="25" r="1.4" fill="#ffe8b0"/><circle cx="510" cy="12" r="1.2" fill="#c8e0ff"/><circle cx="545" cy="28" r="0.9" fill="#fff"/>
+  <circle cx="65" cy="45" r="0.8" fill="#e0f0ff"/><circle cx="155" cy="52" r="0.9" fill="#fff"/><circle cx="345" cy="38" r="0.8" fill="#ffe8b0"/>
+</g>
+<!-- Star compass rose (centre-top) -->
+<g transform="translate(280,40)" filter="url(#pv-glow)">
+  <!-- Hōkūleʻa / Arcturus — zenith star -->
+  <circle cx="0" cy="0" r="7" fill="url(#pv-star-hk)" opacity=".9"/>
+  <circle cx="0" cy="0" r="4" fill="#ffd700"/>
+  <g stroke="#ffd700" stroke-width=".8" opacity=".5">
+    <line x1="0" y1="-7" x2="0" y2="-12"/><line x1="0" y1="7" x2="0" y2="12"/>
+    <line x1="-7" y1="0" x2="-12" y2="0"/><line x1="7" y1="0" x2="12" y2="0"/>
+    <line x1="-5" y1="-5" x2="-8" y2="-8"/><line x1="5" y1="5" x2="8" y2="8"/>
+    <line x1="5" y1="-5" x2="8" y2="-8"/><line x1="-5" y1="5" x2="-8" y2="8"/>
+  </g>
+  <!-- Compass ring -->
+  <circle cx="0" cy="0" r="38" fill="none" stroke="#ffd700" stroke-width=".5" opacity=".2" stroke-dasharray="2 4"/>
+  <!-- N, S, E, W stars on ring -->
+  <circle cx="0" cy="-38" r="2.5" fill="#e8f0ff" opacity=".8"/><!-- Polaris -->
+  <circle cx="38" cy="0" r="2" fill="#c8e0ff" opacity=".7"/>
+  <circle cx="0" cy="38" r="2" fill="#c8e0ff" opacity=".7"/>
+  <circle cx="-38" cy="0" r="2" fill="#c8e0ff" opacity=".7"/>
+  <!-- Diagonal stars -->
+  <circle cx="27" cy="-27" r="1.5" fill="#ffe8a0" opacity=".6"/>
+  <circle cx="-27" cy="-27" r="1.5" fill="#ffe8a0" opacity=".6"/>
+  <circle cx="27" cy="27" r="1.5" fill="#ffe8a0" opacity=".6"/>
+  <circle cx="-27" cy="27" r="1.5" fill="#ffe8a0" opacity=".6"/>
+</g>
+<!-- Constellation lines from Hōkūleʻa -->
+<g stroke="#ffd700" stroke-width=".6" opacity=".2" stroke-dasharray="3 5">
+  <line x1="280" y1="40" x2="510" y2="12"/><line x1="280" y1="40" x2="88" y2="8"/>
+  <line x1="280" y1="40" x2="280" y2="2"/>
+</g>
+<!-- Ocean swells -->
+<path d="M 0,165 Q 140,150 280,165 Q 420,180 560,165 L 560,220 L 0,220 Z" fill="url(#pv-sea)"/>
+<!-- Swell lines -->
+<g stroke="#0af" stroke-width=".8" opacity=".15" fill="none">
+  <path d="M 0,168 Q 140,155 280,168 Q 420,181 560,168"/>
+  <path d="M 0,180 Q 140,167 280,180 Q 420,193 560,180"/>
+  <path d="M 0,192 Q 140,179 280,192 Q 420,205 560,192"/>
+</g>
+<!-- Double-hulled voyaging canoe (Hōkūleʻa) -->
+<g transform="translate(60,148)">
+  <!-- Hull 1 (main) -->
+  <path d="M 8,18 Q 0,14 2,10 Q 5,6 22,4 L 378,4 Q 400,4 418,10 Q 428,16 420,18 Q 390,26 220,28 Q 80,28 8,18 Z" fill="#3d1e08"/>
+  <path d="M 12,16 Q 4,13 6,10 L 400,10 Q 415,12 415,16 Q 385,22 220,24 Q 90,24 12,16 Z" fill="#4a2808"/>
+  <!-- Hull 2 (outrigger) -->
+  <path d="M 20,40 Q 12,36 14,32 Q 17,28 34,26 L 386,26 Q 408,26 420,32 Q 426,36 418,40 Q 388,46 220,48 Q 90,48 20,40 Z" fill="#3d1e08"/>
+  <!-- Connecting spars -->
+  <rect x="80" y="4" width="8" height="28" rx="2" fill="#5a3010"/>
+  <rect x="160" y="4" width="8" height="28" rx="2" fill="#5a3010"/>
+  <rect x="250" y="4" width="8" height="28" rx="2" fill="#5a3010"/>
+  <rect x="340" y="4" width="8" height="28" rx="2" fill="#5a3010"/>
+  <!-- Platform deck -->
+  <rect x="78" y="8" width="276" height="6" fill="#6a3818" opacity=".6" rx="1"/>
+  <!-- Mast -->
+  <line x1="214" y1="4" x2="214" y2="-90" stroke="#5a3010" stroke-width="4"/>
+  <!-- Crab-claw sail (lateen) — distinctive Polynesian form -->
+  <path d="M 214,-90 L 80,-30 L 214,4 Z" fill="#d4aa70" opacity=".78"/>
+  <path d="M 214,-90 L 348,-30 L 214,4 Z" fill="#c4a060" opacity=".73"/>
+  <!-- Boom -->
+  <line x1="214" y1="4" x2="80" y2="-28" stroke="#5a3010" stroke-width="2.5" opacity=".7"/>
+  <line x1="214" y1="4" x2="348" y2="-28" stroke="#4a2808" stroke-width="2.5" opacity=".7"/>
+  <!-- Yard arm -->
+  <line x1="80" y1="-30" x2="348" y2="-30" stroke="#3d1e08" stroke-width="2"/>
+</g>
+<text x="18" y="212" font-family="'Orbitron',monospace" font-size="8" fill="#ffd700" opacity=".6" letter-spacing=".1em">HŌKŪLE'A · POLYNESIAN WAYFINDING · STAR COMPASS</text>
+</svg>`,
+
+// ── Yoruba — Sacred Ife & Orishas ─────────────────────────
+yoruba:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="yr-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0c0a05"/><stop offset="50%" stop-color="#1a1205"/><stop offset="100%" stop-color="#2e1a08"/></linearGradient>
+  <linearGradient id="yr-bronze" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#b88030"/><stop offset="100%" stop-color="#7a5010"/></linearGradient>
+  <radialGradient id="yr-orun" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ffd70000"/></radialGradient>
+  <filter id="yr-glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="560" height="220" fill="url(#yr-sky)"/>
+<!-- Sacred forest / grove background -->
+<g opacity=".4">
+  <rect x="0" y="80" width="25" height="140" fill="#0a1a05"/><rect x="20" y="70" width="20" height="150" fill="#0e2008"/>
+  <rect x="38" y="90" width="18" height="130" fill="#0a1a05"/>
+  <rect x="480" y="75" width="22" height="145" fill="#0a1a05"/><rect x="500" y="65" width="20" height="155" fill="#0e2008"/>
+  <rect x="518" y="85" width="22" height="135" fill="#0a1a05"/>
+  <!-- Canopy -->
+  <ellipse cx="28" cy="75" rx="40" ry="18" fill="#0e2808"/><ellipse cx="490" cy="68" rx="40" ry="18" fill="#0e2808"/>
+</g>
+<!-- Ground -->
+<rect x="0" y="175" width="560" height="45" fill="#1e0e05"/>
+<!-- Odu Ifa — geometric 16-point binary pattern (centre) -->
+<g transform="translate(420,80)" opacity=".6">
+  <circle cx="0" cy="0" r="50" fill="none" stroke="#ffd700" stroke-width=".8" opacity=".3"/>
+  <!-- 16 Odu positions on ring -->
+  <g fill="#ffd700" opacity=".7">
+    <g transform="rotate(0)"><circle cx="0" cy="-50" r="3"/><text x="-2" y="-55" font-size="6" fill="#ffd700">I</text></g>
+    <g transform="rotate(22.5)"><circle cx="0" cy="-50" r="2.5"/></g>
+    <g transform="rotate(45)"><circle cx="0" cy="-50" r="2.5"/></g>
+    <g transform="rotate(67.5)"><circle cx="0" cy="-50" r="2.5"/></g>
+    <g transform="rotate(90)"><circle cx="0" cy="-50" r="3"/></g>
+    <g transform="rotate(112.5)"><circle cx="0" cy="-50" r="2.5"/></g>
+    <g transform="rotate(135)"><circle cx="0" cy="-50" r="2.5"/></g>
+    <g transform="rotate(157.5)"><circle cx="0" cy="-50" r="2.5"/></g>
+    <g transform="rotate(180)"><circle cx="0" cy="-50" r="3"/></g>
+    <g transform="rotate(202.5)"><circle cx="0" cy="-50" r="2.5"/></g>
+    <g transform="rotate(225)"><circle cx="0" cy="-50" r="2.5"/></g>
+    <g transform="rotate(247.5)"><circle cx="0" cy="-50" r="2.5"/></g>
+    <g transform="rotate(270)"><circle cx="0" cy="-50" r="3"/></g>
+    <g transform="rotate(292.5)"><circle cx="0" cy="-50" r="2.5"/></g>
+    <g transform="rotate(315)"><circle cx="0" cy="-50" r="2.5"/></g>
+    <g transform="rotate(337.5)"><circle cx="0" cy="-50" r="2.5"/></g>
+  </g>
+  <!-- Opele divination chain -->
+  <path d="M -50,0 Q -25,-10 0,0 Q 25,-10 50,0" fill="none" stroke="#ffd700" stroke-width="1.2" opacity=".5"/>
+  <circle cx="-50" cy="0" r="5" fill="#8a5010" opacity=".8"/><circle cx="50" cy="0" r="5" fill="#8a5010" opacity=".8"/>
+</g>
+<!-- Ashe symbol / Ori glow (top left) -->
+<g filter="url(#yr-glow)" transform="translate(80,40)">
+  <circle cx="0" cy="0" r="20" fill="url(#yr-orun)" opacity=".6"/>
+  <circle cx="0" cy="0" r="10" fill="#ffd700" opacity=".8"/>
+</g>
+<!-- Ife Bronze head — main centerpiece -->
+<g transform="translate(200,60)">
+  <!-- Neck/torso base -->
+  <rect x="-18" y="95" width="36" height="25" fill="url(#yr-bronze)" rx="2"/>
+  <rect x="-25" y="115" width="50" height="8" fill="#8a6020" rx="2"/>
+  <!-- Head -->
+  <ellipse cx="0" cy="70" rx="38" ry="45" fill="url(#yr-bronze)"/>
+  <!-- Crown/beaded cap -->
+  <ellipse cx="0" cy="28" rx="32" ry="12" fill="#9a7030"/>
+  <rect x="-32" y="25" width="64" height="8" rx="2" fill="#aa8040"/>
+  <!-- Vertical line scarifications (face) -->
+  <g stroke="#8a5010" stroke-width="1.2" opacity=".6">
+    <line x1="-15" y1="55" x2="-15" y2="95"/><line x1="-8" y1="50" x2="-8" y2="96"/>
+    <line x1="0" y1="48" x2="0" y2="96"/><line x1="8" y1="50" x2="8" y2="96"/>
+    <line x1="15" y1="55" x2="15" y2="95"/>
+  </g>
+  <!-- Eyes (almonds) -->
+  <ellipse cx="-14" cy="68" rx="9" ry="4.5" fill="#6a3808"/><circle cx="-14" cy="68" r="3" fill="#1a0a00"/>
+  <ellipse cx="14" cy="68" rx="9" ry="4.5" fill="#6a3808"/><circle cx="14" cy="68" r="3" fill="#1a0a00"/>
+  <!-- Nose -->
+  <path d="M -5,78 Q 0,85 5,78" fill="none" stroke="#8a5010" stroke-width="1.5"/>
+  <!-- Lips -->
+  <path d="M -12,90 Q 0,97 12,90" fill="none" stroke="#7a4010" stroke-width="2"/>
+  <path d="M -10,90 Q 0,88 10,90" fill="#7a4010" opacity=".5"/>
+  <!-- Beaded collar -->
+  <g transform="translate(0,115)">
+    <path d="M -25,0 Q 0,-8 25,0" fill="none" stroke="#ffd700" stroke-width="3" opacity=".7"/>
+    <g fill="#ffd700" opacity=".7">
+      <circle cx="-20" cy="-1" r="2"/><circle cx="-13" cy="-4" r="2"/><circle cx="-6" cy="-6" r="2"/>
+      <circle cx="0" cy="-7" r="2.5"/><circle cx="6" cy="-6" r="2"/><circle cx="13" cy="-4" r="2"/><circle cx="20" cy="-1" r="2"/>
+    </g>
+  </g>
+  <!-- Crown vertical striations -->
+  <g stroke="#7a5020" stroke-width=".8" opacity=".5">
+    <line x1="-28" y1="25" x2="-28" y2="35"/><line x1="-20" y1="22" x2="-20" y2="33"/>
+    <line x1="-12" y1="20" x2="-12" y2="33"/><line x1="0" y1="18" x2="0" y2="32"/>
+    <line x1="12" y1="20" x2="12" y2="33"/><line x1="20" y1="22" x2="20" y2="33"/>
+    <line x1="28" y1="25" x2="28" y2="35"/>
+  </g>
+</g>
+<!-- Adinkra/Ifa symbols border -->
+<g opacity=".35">
+  <rect x="0" y="205" width="560" height="15" fill="rgba(0,0,0,.4)"/>
+  <text x="15" y="216" font-family="serif" font-size="10" fill="#ffd700" letter-spacing="6">⚡ ◈ ◉ ⊕ ◈ ⚡ ◈ ◉ ⊕ ◈ ⚡</text>
+</g>
+<!-- Indigo dye pattern border (top) -->
+<rect x="0" y="0" width="560" height="4" fill="#1a0a5a" opacity=".6"/>
+<rect x="0" y="4" width="560" height="2" fill="#ffd700" opacity=".2"/>
+<text x="18" y="200" font-family="'Orbitron',monospace" font-size="8" fill="#ffd700" opacity=".6" letter-spacing=".1em">IFÁ DIVINATION · ILÉ-IFÈ · YORUBA · ORISHA</text>
+</svg>`,
+
+// ── Sangam Tamil — Gopuram Temple ────────────────────────
+dravidian_sangam:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="tm-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#08050f"/><stop offset="45%" stop-color="#150828"/><stop offset="100%" stop-color="#3a1808"/></linearGradient>
+  <linearGradient id="tm-stone" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c86020"/><stop offset="100%" stop-color="#8a3810"/></linearGradient>
+  <radialGradient id="tm-sun" cx="50%" cy="50%"><stop offset="0%" stop-color="#ffee22"/><stop offset="100%" stop-color="#ff880000"/></radialGradient>
+  <filter id="tm-glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="560" height="220" fill="url(#tm-sky)"/>
+<!-- Stars -->
+<g opacity=".7"><circle cx="30" cy="15" r="1.2" fill="#e0d8ff"/><circle cx="90" cy="8" r="1" fill="#fff"/><circle cx="170" cy="22" r="1.4" fill="#ffe0a0"/><circle cx="440" cy="12" r="1" fill="#e0d8ff"/><circle cx="510" cy="20" r="1.3" fill="#fff"/></g>
+<!-- Venus / Murukan star -->
+<g filter="url(#tm-glow)"><circle cx="450" cy="32" r="5" fill="url(#tm-sun)" opacity=".8"/><circle cx="450" cy="32" r="3" fill="#ffee22"/></g>
+<!-- Lotus pond (base) -->
+<ellipse cx="280" cy="195" rx="200" ry="20" fill="#0a2230" opacity=".7"/>
+<g fill="#1a4a20" opacity=".5">
+  <ellipse cx="200" cy="193" rx="18" ry="6"/><ellipse cx="260" cy="196" rx="15" ry="5"/>
+  <ellipse cx="310" cy="194" rx="20" ry="6"/><ellipse cx="355" cy="197" rx="14" ry="5"/>
+</g>
+<!-- Lotus flowers -->
+<g fill="#ff6688" opacity=".7">
+  <circle cx="215" cy="190" r="5"/><circle cx="210" cy="190" r="3"/><circle cx="220" cy="190" r="3"/>
+  <circle cx="305" cy="188" r="6"/><circle cx="299" cy="189" r="3.5"/><circle cx="311" cy="189" r="3.5"/>
+</g>
+<!-- Temple base platform -->
+<rect x="80" y="168" width="400" height="18" fill="#7a3810" rx="2"/>
+<rect x="85" y="162" width="390" height="6" rx="1" fill="#8a4820"/>
+<!-- Gopuram tower — characteristic South Indian form with many tiers -->
+<!-- Base entrance gateway arch -->
+<rect x="220" y="148" width="120" height="20" fill="#9a4820"/>
+<path d="M 220,148 Q 280,135 340,148 Z" fill="#8a3810"/>
+<!-- Tier 1 -->
+<rect x="195" y="128" width="170" height="20" fill="url(#tm-stone)" rx="1"/>
+<!-- Tier 2 -->
+<rect x="210" y="110" width="140" height="18" fill="#b85820" rx="1"/>
+<!-- Tier 3 -->
+<rect x="225" y="94" width="110" height="16" fill="#a84818" rx="1"/>
+<!-- Tier 4 -->
+<rect x="238" y="80" width="84" height="14" fill="#b85820" rx="1"/>
+<!-- Tier 5 -->
+<rect x="250" y="68" width="60" height="12" fill="#a84818" rx="1"/>
+<!-- Tier 6 -->
+<rect x="260" y="57" width="40" height="11" fill="#b85820" rx="1"/>
+<!-- Tier 7 -->
+<rect x="268" y="48" width="24" height="9" fill="#a84818" rx="1"/>
+<!-- Kalasha (finial pot) -->
+<ellipse cx="280" cy="44" rx="10" ry="6" fill="#c86020"/>
+<ellipse cx="280" cy="38" rx="6" ry="4" fill="#d87030"/>
+<circle cx="280" cy="33" r="5" fill="#e88040"/>
+<!-- Kalasha flame/tip -->
+<path d="M 280,28 Q 283,22 280,16 Q 277,22 280,28 Z" fill="#ffee22" opacity=".8"/>
+<!-- Carved figure rows (decorative horizontal bands) -->
+<g opacity=".4" fill="#d07030">
+  <!-- Tier 1 figures -->
+  <g transform="translate(200,132)">
+    <g><path d="M 8,0 Q 8,-10 12,-12 Q 16,-10 16,0 Z" fill="#e08040"/><rect x="9" y="-12" width="6" height="3" fill="#c07030"/></g>
+    <g transform="translate(25,0)"><path d="M 8,0 Q 8,-10 12,-12 Q 16,-10 16,0 Z" fill="#e08040"/></g>
+    <g transform="translate(50,0)"><path d="M 8,0 Q 8,-10 12,-12 Q 16,-10 16,0 Z" fill="#e08040"/></g>
+    <g transform="translate(75,0)"><path d="M 8,0 Q 8,-10 12,-12 Q 16,-10 16,0 Z" fill="#e08040"/></g>
+    <g transform="translate(100,0)"><path d="M 8,0 Q 8,-10 12,-12 Q 16,-10 16,0 Z" fill="#e08040"/></g>
+    <g transform="translate(125,0)"><path d="M 8,0 Q 8,-10 12,-12 Q 16,-10 16,0 Z" fill="#e08040"/></g>
+  </g>
+</g>
+<!-- Peacock silhouette -->
+<g transform="translate(80,155)" opacity=".7">
+  <path d="M 0,20 Q 5,10 0,0 Q -5,10 0,20 Z" fill="#1a3a2a"/>
+  <circle cx="0" cy="-2" r="6" fill="#2a5a3a"/>
+  <!-- Fan tail -->
+  <g fill="none" stroke="#1a4a3a" stroke-width="1.2" opacity=".7">
+    <path d="M 0,5 Q -20,-15 -15,-25"/><path d="M 0,5 Q -12,-20 -5,-28"/>
+    <path d="M 0,5 Q 0,-22 0,-30"/><path d="M 0,5 Q 12,-20 5,-28"/>
+    <path d="M 0,5 Q 20,-15 15,-25"/>
+  </g>
+  <g fill="#2a7a4a" opacity=".5"><circle cx="-15" cy="-25" r="3"/><circle cx="-5" cy="-28" r="3"/><circle cx="0" cy="-30" r="3"/><circle cx="5" cy="-28" r="3"/><circle cx="15" cy="-25" r="3"/></g>
+</g>
+<!-- Tamil script accent -->
+<text x="420" y="175" font-family="serif" font-size="18" fill="#ffd700" opacity=".4">தமிழ்</text>
+<!-- Tinai ecological zones strip -->
+<g opacity=".3" transform="translate(15,205)">
+  <text font-family="serif" font-size="9" fill="#e08040" letter-spacing="3">KURINJI · MULLAI · MARUDAM · NEYTAL · PALAI</text>
+</g>
+<text x="18" y="200" font-family="'Orbitron',monospace" font-size="8" fill="#e08040" opacity=".6" letter-spacing=".1em">SANGAM TAMIL · GOPURAM · TOLKĀPPIYAM</text>
+</svg>`,
+
+// ── Machu Picchu for andean_tawantinsuyu (reuse inca) ─────
+andean_tawantinsuyu:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="at-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#060814"/><stop offset="40%" stop-color="#10203a"/><stop offset="100%" stop-color="#283848"/></linearGradient>
+  <linearGradient id="at-mtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#384855"/><stop offset="100%" stop-color="#1e2830"/></linearGradient>
+  <linearGradient id="at-sun" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ff8800"/></linearGradient>
+  <filter id="at-mist"><feGaussianBlur stdDeviation="5"/></filter>
+  <filter id="at-glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="560" height="220" fill="url(#at-sky)"/>
+<g opacity=".6"><circle cx="40" cy="12" r="1.2" fill="#c8e0ff"/><circle cx="100" cy="6" r="1" fill="#fff"/><circle cx="175" cy="18" r="1.4" fill="#ffe8b0"/><circle cx="460" cy="10" r="1.2" fill="#e8f0ff"/><circle cx="525" cy="22" r="1" fill="#fff"/></g>
+<!-- Inti sun disc -->
+<g filter="url(#at-glow)" transform="translate(420,45)">
+  <circle cx="0" cy="0" r="22" fill="url(#at-sun)" opacity=".85"/>
+  <circle cx="0" cy="0" r="14" fill="#ffd700"/>
+  <g stroke="#ffd700" stroke-width="2" opacity=".5">
+    <line x1="0" y1="-22" x2="0" y2="-32"/><line x1="0" y1="22" x2="0" y2="32"/>
+    <line x1="-22" y1="0" x2="-32" y2="0"/><line x1="22" y1="0" x2="32" y2="0"/>
+    <line x1="-16" y1="-16" x2="-22" y2="-22"/><line x1="16" y1="16" x2="22" y2="22"/>
+    <line x1="16" y1="-16" x2="22" y2="-22"/><line x1="-16" y1="16" x2="-22" y2="22"/>
+  </g>
+  <circle cx="-5" cy="-4" r="2.5" fill="#c48000"/><circle cx="5" cy="-4" r="2.5" fill="#c48000"/>
+  <path d="M -5,4 Q 0,9 5,4" fill="none" stroke="#c48000" stroke-width="1.5"/>
+</g>
+<!-- Mountains -->
+<path d="M 320,95 L 378,28 L 436,95" fill="url(#at-mtn)"/>
+<path d="M 330,95 L 378,30 L 426,95" fill="#303a45"/>
+<!-- Mountain ridge -->
+<path d="M 0,138 Q 80,108 160,126 Q 240,143 320,126 Q 400,110 480,128 Q 520,138 560,123 L 560,220 L 0,220 Z" fill="#1e2830"/>
+<!-- Mist -->
+<ellipse cx="280" cy="133" rx="200" ry="22" fill="#283848" opacity=".35" filter="url(#at-mist)"/>
+<!-- Machu Picchu ridge + terraces -->
+<rect x="82" y="126" width="358" height="8" rx="3" fill="#384850"/>
+<g>
+  <rect x="87" y="134" width="348" height="6" rx="1" fill="#2a3830"/>
+  <rect x="92" y="140" width="338" height="6" rx="1" fill="#243228"/>
+  <rect x="97" y="146" width="328" height="6" rx="1" fill="#1e2c24"/>
+  <rect x="102" y="152" width="318" height="6" rx="1" fill="#182618"/>
+  <rect x="107" y="158" width="308" height="6" rx="1" fill="#122014"/>
+</g>
+<!-- Buildings -->
+<g fill="#384850">
+  <rect x="107" y="118" width="22" height="8" rx="1"/><rect x="134" y="116" width="18" height="10" rx="1"/>
+  <rect x="157" y="118" width="25" height="8" rx="1"/><rect x="187" y="115" width="20" height="11" rx="1"/>
+  <rect x="212" y="117" width="30" height="9" rx="1"/><rect x="247" y="114" width="18" height="12" rx="1"/>
+  <rect x="270" y="117" width="22" height="9" rx="1"/><rect x="297" y="116" width="25" height="10" rx="1"/>
+  <rect x="327" y="118" width="18" height="8" rx="1"/><rect x="350" y="117" width="22" height="9" rx="1"/>
+</g>
+<!-- Llama silhouette -->
+<g transform="translate(90,118)" fill="#384850" opacity=".8">
+  <path d="M 0,20 Q 5,0 15,-5 Q 20,0 18,5 Q 22,-5 28,0 Q 28,20 20,20 L 0,20 Z"/>
+  <circle cx="15" cy="-7" r="5"/><!-- Head -->
+  <path d="M 15,-12 Q 17,-18 16,-22" stroke="#384850" stroke-width="2" fill="none"/><!-- Neck/ears -->
+</g>
+<!-- Quipu knots -->
+<g transform="translate(498,128)" opacity=".5" stroke="#c49a50" stroke-width="1.5" fill="none">
+  <line x1="0" y1="0" x2="0" y2="40"/>
+  <line x1="-8" y1="5" x2="-8" y2="30"/><line x1="8" y1="8" x2="8" y2="28"/>
+  <circle cx="-8" cy="18" r="3" fill="#c49a50"/><circle cx="8" cy="20" r="2" fill="#c49a50"/>
+  <circle cx="-8" cy="12" r="2" fill="#c49a50"/>
+</g>
+<text x="18" y="212" font-family="'Orbitron',monospace" font-size="8" fill="#ffd700" opacity=".6" letter-spacing=".1em">MACHU PICCHU · TAWANTINSUYU · KHIPU · INTI</text>
+</svg>`,
+
+// ── Classic Maya (El Castillo) ─────────────────────────────
+maya_classic:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="mc-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#030a05"/><stop offset="45%" stop-color="#0a1a10"/><stop offset="100%" stop-color="#3a2800"/></linearGradient>
+  <filter id="mc-glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="560" height="220" fill="url(#mc-sky)"/>
+<g opacity=".8"><circle cx="45" cy="18" r="1.2" fill="#e0f0ff"/><circle cx="110" cy="10" r="1" fill="#fff"/><circle cx="200" cy="22" r="1.4" fill="#ffe8b0"/><circle cx="380" cy="14" r="1.2" fill="#e0f0ff"/><circle cx="510" cy="8" r="1.6" fill="#c8e0ff"/></g>
+<g filter="url(#mc-glow)"><circle cx="440" cy="35" r="5" fill="#e8f8ff" opacity=".9"/></g>
+<path d="M 0,175 Q 30,155 60,175 Q 85,158 115,175 Q 135,160 160,175 L 0,175 Z" fill="#061208"/>
+<path d="M 400,175 Q 430,158 460,175 Q 480,160 510,175 Q 530,162 560,172 L 560,175 Z" fill="#061208"/>
+<rect x="0" y="178" width="560" height="42" fill="#2a2010"/>
+<rect x="120" y="165" width="320" height="13" fill="#6a6852" rx="1"/>
+<rect x="135" y="152" width="290" height="13" fill="#8a8870" rx="1"/>
+<rect x="155" y="140" width="250" height="12" fill="#7a7860" rx="1"/>
+<rect x="175" y="129" width="210" height="11" fill="#8a8870" rx="1"/>
+<rect x="195" y="119" width="170" height="10" fill="#7a7860" rx="1"/>
+<rect x="212" y="110" width="136" height="9" fill="#8a8870" rx="1"/>
+<rect x="228" y="102" width="104" height="8" fill="#7a7860" rx="1"/>
+<rect x="242" y="95" width="76" height="7" fill="#8a8870" rx="1"/>
+<rect x="254" y="89" width="52" height="6" fill="#7a7860" rx="1"/>
+<rect x="264" y="84" width="32" height="5" fill="#8a8870" rx="1"/>
+<rect x="256" y="65" width="48" height="19" fill="#8a8870"/>
+<rect x="253" y="62" width="54" height="3" fill="#9a9880"/>
+<path d="M 254,62 Q 280,50 306,62 Z" fill="#7a7860"/>
+<!-- Serpent shadow -->
+<path d="M 135,165 Q 155,158 140,152 Q 155,148 138,143" fill="none" stroke="#4a3810" stroke-width="6" opacity=".7"/>
+<ellipse cx="132" cy="168" rx="8" ry="5" fill="#3a2808" opacity=".7"/>
+<rect x="277" y="65" width="6" height="100" fill="#5a5840" opacity=".6"/>
+<!-- Dresden Codex panel (top right) -->
+<g transform="translate(440,55)" opacity=".55">
+  <rect x="0" y="0" width="80" height="100" fill="#e8d8b0" rx="3"/>
+  <rect x="2" y="2" width="76" height="96" fill="#d8c8a0" rx="2"/>
+  <!-- Glyph rows -->
+  <g fill="#5a1808">
+    <rect x="8" y="8" width="14" height="14" rx="2"/><rect x="30" y="8" width="14" height="14" rx="2"/><rect x="52" y="8" width="14" height="14" rx="2"/>
+    <rect x="8" y="28" width="14" height="14" rx="2"/><rect x="30" y="28" width="14" height="14" rx="2"/><rect x="52" y="28" width="14" height="14" rx="2"/>
+    <rect x="8" y="48" width="14" height="14" rx="2"/><rect x="30" y="48" width="14" height="14" rx="2"/><rect x="52" y="48" width="14" height="14" rx="2"/>
+  </g>
+  <!-- Dot-bar numbers -->
+  <g fill="#5a1808">
+    <circle cx="14" cy="72" r="2"/><circle cx="20" cy="72" r="2"/><rect x="8" y="77" width="18" height="3" rx="1"/>
+    <circle cx="40" cy="72" r="2"/><rect x="35" y="77" width="10" height="3" rx="1"/>
+    <circle cx="60" cy="72" r="2"/><circle cx="66" cy="72" r="2"/><circle cx="60" cy="67" r="2"/>
+  </g>
+  <!-- Venus symbol -->
+  <path d="M 30,88 Q 40,82 50,88" fill="none" stroke="#5a1808" stroke-width="1.5"/>
+  <circle cx="40" cy="82" r="4" fill="none" stroke="#5a1808" stroke-width="1.2"/>
+</g>
+<text x="18" y="198" font-family="'Orbitron',monospace" font-size="8" fill="#88cc44" opacity=".6" letter-spacing=".1em">CLASSIC MAYA · EL CASTILLO · DRESDEN CODEX</text>
+</svg>`,
+
+// ── Antarctic / Yaghan — Beagle Channel ───────────────────
+antarctic:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <linearGradient id="ac-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#020810"/><stop offset="100%" stop-color="#060e1a"/></linearGradient>
+  <linearGradient id="ac-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#04101e"/><stop offset="100%" stop-color="#020810"/></linearGradient>
+  <linearGradient id="ac-mtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#aabbcc"/><stop offset="100%" stop-color="#5a6a78"/></linearGradient>
+  <filter id="ac-aur"><feGaussianBlur stdDeviation="8"/></filter>
+  <filter id="ac-fire"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="560" height="220" fill="url(#ac-sky)"/>
+<!-- Aurora australis -->
+<g filter="url(#ac-aur)" opacity=".55">
+  <path d="M 0,60 Q 140,30 280,60 Q 420,90 560,40" fill="none" stroke="#00ff88" stroke-width="22" opacity=".3"/>
+  <path d="M 0,90 Q 140,55 280,80 Q 420,105 560,65" fill="none" stroke="#00ddaa" stroke-width="14" opacity=".25"/>
+  <path d="M 0,45 Q 140,70 280,45 Q 420,20 560,55" fill="none" stroke="#44ff88" stroke-width="10" opacity=".2"/>
+</g>
+<!-- Stars (Southern Cross prominent) -->
+<g opacity=".9">
+  <circle cx="350" cy="25" r="2.2" fill="#e8f8ff"/><circle cx="362" cy="42" r="2.2" fill="#e8f8ff"/>
+  <circle cx="340" cy="38" r="1.8" fill="#e8f8ff"/><circle cx="360" cy="32" r="1.4" fill="#e8f8ff"/>
+  <!-- Crux lines -->
+  <line x1="350" y1="25" x2="362" y2="42" stroke="#e8f8ff" stroke-width=".6" opacity=".4"/>
+  <line x1="340" y1="38" x2="360" y2="32" stroke="#e8f8ff" stroke-width=".6" opacity=".4"/>
+</g>
+<g opacity=".7"><circle cx="30" cy="18" r="1.2" fill="#c8e0ff"/><circle cx="88" cy="8" r="1" fill="#fff"/><circle cx="155" cy="25" r="1.4" fill="#e8f8ff"/><circle cx="480" cy="14" r="1" fill="#c8e0ff"/><circle cx="530" cy="28" r="1.2" fill="#fff"/></g>
+<!-- Snow mountains — Beagle Channel scenery -->
+<!-- Left mountains -->
+<path d="M 0,140 L 80,60 L 160,140" fill="url(#ac-mtn)"/>
+<path d="M 10,140 L 80,62 L 150,140" fill="#7a8a98"/>
+<!-- Snow cap left -->
+<path d="M 65,64 L 80,58 L 95,64 L 90,80 L 70,80 Z" fill="#eef6ff" opacity=".9"/>
+<!-- Right mountains -->
+<path d="M 400,140 L 480,55 L 560,140" fill="url(#ac-mtn)"/>
+<path d="M 410,140 L 480,57 L 550,140" fill="#7a8a98"/>
+<!-- Snow cap right -->
+<path d="M 465,59 L 480,53 L 495,59 L 490,75 L 470,75 Z" fill="#eef6ff" opacity=".9"/>
+<!-- Middle distant mountains -->
+<path d="M 150,145 L 210,100 L 270,145" fill="#6a7a88" opacity=".7"/>
+<path d="M 290,145 L 350,95 L 410,145" fill="#6a7a88" opacity=".7"/>
+<!-- Snow on middle mountains -->
+<path d="M 198,103 L 210,98 L 222,103 L 218,114 L 202,114 Z" fill="#d8e8f0" opacity=".7"/>
+<path d="M 338,98 L 350,93 L 362,98 L 358,108 L 342,108 Z" fill="#d8e8f0" opacity=".7"/>
+<!-- Beagle Channel water -->
+<rect x="0" y="148" width="560" height="72" fill="url(#ac-sea)"/>
+<!-- Ice reflections -->
+<g opacity=".2">
+  <path d="M 400,148 L 480,165 L 560,155 L 560,148 Z" fill="#aabbcc"/>
+  <path d="M 0,148 L 80,162 L 160,152 L 0,148 Z" fill="#aabbcc"/>
+</g>
+<!-- Water ripples -->
+<g stroke="#0af" stroke-width=".5" opacity=".1" fill="none">
+  <path d="M 0,160 Q 140,153 280,160 Q 420,167 560,160"/>
+  <path d="M 0,172 Q 140,165 280,172 Q 420,179 560,172"/>
+</g>
+<!-- Yaghan bark canoe with fire -->
+<g transform="translate(195,145)">
+  <!-- Hull -->
+  <path d="M 0,15 Q 4,8 12,6 L 148,6 Q 158,8 168,15 Q 155,20 84,22 Q 20,22 0,15 Z" fill="#4a2808"/>
+  <path d="M 5,13 Q 10,8 16,7 L 144,7 Q 152,9 158,13 Q 145,18 84,19 Q 28,19 5,13 Z" fill="#5a3210"/>
+  <!-- Fire in canoe -->
+  <g filter="url(#ac-fire)" transform="translate(80,3)">
+    <path d="M 0,0 Q -5,-8 0,-18 Q 5,-8 0,0 Z" fill="#ff8800" opacity=".95"/>
+    <path d="M -3,-4 Q -2,-10 0,-14 Q 2,-10 3,-4 Q 0,0 -3,-4 Z" fill="#ffcc00"/>
+    <path d="M 0,0 Q 3,-6 0,-12 Q -3,-6 0,0 Z" fill="#ffd700" opacity=".8"/>
+  </g>
+</g>
+<!-- Penguin silhouettes -->
+<g transform="translate(50,148)" fill="#1a2830">
+  <g transform="translate(0,0)"><ellipse cx="0" cy="0" rx="5" ry="9"/><ellipse cx="0" cy="-11" rx="4" ry="5"/><ellipse cx="1" cy="-9" rx="2" ry="3" fill="#ddd"/></g>
+  <g transform="translate(18,3)"><ellipse cx="0" cy="0" rx="4" ry="7"/><ellipse cx="0" cy="-9" rx="3.5" ry="4"/><ellipse cx="1" cy="-8" rx="1.8" ry="2.5" fill="#ddd"/></g>
+  <g transform="translate(35,1)"><ellipse cx="0" cy="0" rx="5" ry="9"/><ellipse cx="0" cy="-11" rx="4" ry="5"/><ellipse cx="1" cy="-9" rx="2" ry="3" fill="#ddd"/></g>
+</g>
+<!-- Southern Cross label -->
+<text x="330" y="18" font-family="'Orbitron',monospace" font-size="7" fill="#e8f8ff" opacity=".4">✛ CRUX</text>
+<text x="18" y="212" font-family="'Orbitron',monospace" font-size="8" fill="#00ff88" opacity=".6" letter-spacing=".1em">BEAGLE CHANNEL · YAGHAN · AURORA AUSTRALIS</text>
+</svg>`,
+
+// ── Generic fallback ───────────────────────────────────────
+_generic:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%">
+<defs>
+  <radialGradient id="gn-bg" cx="50%" cy="50%"><stop offset="0%" stop-color="#061828"/><stop offset="100%" stop-color="#010810"/></radialGradient>
+  <radialGradient id="gn-orb" cx="50%" cy="50%"><stop offset="0%" stop-color="#00aaff"/><stop offset="60%" stop-color="#004488"/><stop offset="100%" stop-color="#00000000"/></radialGradient>
+  <filter id="gn-glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="560" height="220" fill="url(#gn-bg)"/>
+<!-- Stars scattered -->
+<g opacity=".7">
+  <circle cx="50" cy="20" r="1.5" fill="#e8e0ff"/><circle cx="120" cy="12" r="1.2" fill="#fff"/><circle cx="200" cy="28" r="1" fill="#c8e0ff"/>
+  <circle cx="280" cy="15" r="1.8" fill="#ffe8b0"/><circle cx="360" cy="22" r="1.2" fill="#e0f0ff"/><circle cx="440" cy="10" r="1" fill="#fff"/>
+  <circle cx="510" cy="25" r="1.4" fill="#c8e0ff"/>
+</g>
+<!-- Constellation web -->
+<g stroke="#0af" stroke-width=".5" opacity=".15">
+  <line x1="50" y1="20" x2="120" y2="12"/><line x1="120" y1="12" x2="200" y2="28"/>
+  <line x1="200" y1="28" x2="280" y2="15"/><line x1="280" y1="15" x2="360" y2="22"/>
+  <line x1="360" y1="22" x2="440" y2="10"/><line x1="440" y1="10" x2="510" y2="25"/>
+</g>
+<!-- Central orb -->
+<g filter="url(#gn-glow)">
+  <circle cx="280" cy="110" r="55" fill="url(#gn-orb)" opacity=".8"/>
+  <circle cx="280" cy="110" r="35" fill="#004488" opacity=".6"/>
+  <circle cx="280" cy="110" r="18" fill="#0066aa" opacity=".7"/>
+</g>
+<!-- Latitude/longitude lines on orb -->
+<g transform="translate(280,110)" fill="none" stroke="#0af" stroke-width=".7" opacity=".25">
+  <circle cx="0" cy="0" r="55"/><circle cx="0" cy="0" r="38"/>
+  <ellipse rx="55" ry="20" transform="rotate(30)"/>
+  <ellipse rx="55" ry="20" transform="rotate(-30)"/>
+  <line x1="-55" y1="0" x2="55" y2="0"/><line x1="0" y1="-55" x2="0" y2="55"/>
+</g>
+</svg>`
+}; // end CULTURE_SVG_ART
+
+// ── Alias shared scenes ───────────────────────────────────
+CULTURE_SVG_ART.kush        = CULTURE_SVG_ART.kemet;
+CULTURE_SVG_ART.maori       = CULTURE_SVG_ART.polynesia;
+CULTURE_SVG_ART.samoa       = CULTURE_SVG_ART.polynesia;
+CULTURE_SVG_ART.tonga       = CULTURE_SVG_ART.polynesia;
+CULTURE_SVG_ART.marquesas   = CULTURE_SVG_ART.polynesia;
+CULTURE_SVG_ART.palau       = CULTURE_SVG_ART.polynesia;
+CULTURE_SVG_ART.thailand    = CULTURE_SVG_ART.khmer;
+CULTURE_SVG_ART.maya        = CULTURE_SVG_ART.maya_classic;
+CULTURE_SVG_ART.aztec       = CULTURE_SVG_ART.maya_classic;
+CULTURE_SVG_ART.inca        = CULTURE_SVG_ART.andean_tawantinsuyu;
+CULTURE_SVG_ART.tiwanaku    = CULTURE_SVG_ART.andean_tawantinsuyu;
+CULTURE_SVG_ART.moche       = CULTURE_SVG_ART.andean_tawantinsuyu;
+CULTURE_SVG_ART.sumer       = CULTURE_SVG_ART.mesopotamia;
+CULTURE_SVG_ART.akkad       = CULTURE_SVG_ART.mesopotamia;
+CULTURE_SVG_ART.babylonia   = CULTURE_SVG_ART.mesopotamia;
+CULTURE_SVG_ART.assyria     = CULTURE_SVG_ART.mesopotamia;
+CULTURE_SVG_ART.inuit       = CULTURE_SVG_ART.antarctic;
+CULTURE_SVG_ART.nenets      = CULTURE_SVG_ART.antarctic;
+CULTURE_SVG_ART.chukchi     = CULTURE_SVG_ART.antarctic;
+
+// ── Landmark display names ───────────────────────────────
+const LANDMARK_CONFIGS = {
+  kanaka_kumulipo:     {name:"Hawaiian Islands & Hōkūleʻa"},
+  polynesia:           {name:"Polynesian Voyaging Canoe"},
+  maori:               {name:"Te Waka / Polynesian Navigator"},
+  samoa:               {name:"Polynesian Voyaging Tradition"},
+  tonga:               {name:"Tu'i Tonga Maritime Heritage"},
+  marquesas:           {name:"Te Henua Enana"},
+  palau:               {name:"Micronesian Reef & Lagoon"},
+  kemet:               {name:"Giza Complex & the Nile"},
+  kush:                {name:"Nubian Pyramids & Nile Corridor"},
+  khmer:               {name:"Angkor Wat, Cambodia"},
+  thailand:            {name:"Wat Phra Kaew, Chao Phraya"},
+  norse:               {name:"Norse Longship & Aurora Borealis"},
+  maya:                {name:"El Castillo, Chichén Itzá"},
+  maya_classic:        {name:"Classic Maya · Dresden Codex"},
+  aztec:               {name:"Templo Mayor, Tenochtitlan"},
+  inca:                {name:"Machu Picchu, Tawantinsuyu"},
+  andean_tawantinsuyu: {name:"Machu Picchu · Inti · Khipu"},
+  tiwanaku:            {name:"Tiwanaku — Gateway of the Sun"},
+  moche:               {name:"Huaca de la Luna, North Coast Peru"},
+  mesopotamia:         {name:"Ziggurat of Ur, Sumer"},
+  sumer:               {name:"Ziggurat of Ur — Cuneiform"},
+  akkad:               {name:"Akkadian Empire"},
+  babylonia:           {name:"Babylon — Hammurabi's Code"},
+  assyria:             {name:"Nineveh — Library of Ashurbanipal"},
+  antarctic:           {name:"Beagle Channel — Yaghan & Fire"},
+  inuit:               {name:"Arctic Ocean — Sea Ice Intelligence"},
+  nenets:              {name:"Yamal Peninsula — Reindeer Migration"},
+  chukchi:             {name:"Chukotka — Sea Ice & Whale"},
+  yoruba:              {name:"Ilé-Ifè — Ifa Divination & Bronze"},
+  dravidian_sangam:    {name:"Sangam Tamil — Gopuram Temple"},
+};
+
+// ── CSS animation keyframes (injected once) ───────────────
+(function(){
+  if(document.getElementById('cw-art-styles')) return;
+  const s=document.createElement('style');
+  s.id='cw-art-styles';
+  s.textContent=`
+    .landmark-art-wrap { position:relative; overflow:hidden; border-radius:0 0 8px 8px; }
+    .landmark-art-wrap svg { display:block; width:100%; height:auto; }
+    @keyframes cw-star-twinkle { 0%,100%{opacity:.7} 50%{opacity:1} }
+    @keyframes cw-aurora-pulse { 0%,100%{opacity:.55} 50%{opacity:.75} }
+    @keyframes cw-canoe-rock { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-2px)} }
+    @keyframes cw-flame-flicker { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08) translateY(-1px)} }
+    @keyframes cw-sun-pulse { 0%,100%{opacity:.85} 50%{opacity:1} }
+  `;
+  document.head.appendChild(s);
+})();
+
+
+// ══════════════════════════════════════════════════════════
+// LANDMARK SCENE CLASS — SVG-based cultural art renderer
+// ══════════════════════════════════════════════════════════
+class LandmarkScene {
+  constructor(){ this._el = null; }
+
+  mount(cultureId, containerId){
+    const container = document.getElementById(containerId);
+    if(!container) return;
+    this.unmount();
+    const cfg  = LANDMARK_CONFIGS[cultureId] || {};
+    const svg  = CULTURE_SVG_ART[cultureId]  || CULTURE_SVG_ART._generic;
+    const name = cfg.name || cultureId.replace(/_/g,' ').replace(/\b\w/g, c=>c.toUpperCase());
+    container.innerHTML = `
+      <div class="landmark-hdr">⬡ ${name}</div>
+      <div class="landmark-art-wrap">${svg}</div>
+    `;
+    container.style.display = 'block';
+    this._el = container;
+  }
+
+  unmount(){
+    if(this._el){ this._el.style.display = 'none'; this._el.innerHTML = ''; }
+    this._el = null;
+  }
+
+  // keep destroy() as an alias so existing callers don't break
+  destroy(){ this.unmount(); }
+}
+
+// ══════════════════════════════════════════════════════════
+// HAWAIIAN STAR MAP OVERLAY
+// 36 named stars · 21 constellation lines · 280 background stars
+// ══════════════════════════════════════════════════════════
+const HAWAIIAN_STARS=[
+  // ── Tier 0: Primary navigation zenith stars ──
+  {h:"Hōkūleʻa",          w:"Arcturus",        ra:213.9,dec:+19.2,mag:-0.1,tier:0,note:"Zenith star of Hawaiʻi · Canoe star"},
+  {h:"Hōkūpaʻa",          w:"Polaris",         ra:37.9, dec:+89.3,mag:+2.0,tier:0,note:"The fixed north star · Does not move"},
+  {h:"Kohu",               w:"Sirius",          ra:101.3,dec:-16.7,mag:-1.5,tier:0,note:"Brightest star in the sky"},
+  {h:"Humu",               w:"Vega",            ra:279.2,dec:+38.8,mag:+0.0,tier:0,note:""},
+  {h:"Ke Aliʻi",           w:"Betelgeuse",      ra:88.8, dec:+7.4, mag:+0.4,tier:0,note:"The chief · Red giant"},
+  {h:"Hōkū-lei",           w:"Capella",         ra:79.2, dec:+46.0,mag:+0.1,tier:0,note:"Crown star"},
+  // ── Tier 1: Secondary wayfinding stars ──
+  {h:"Kaelo",              w:"Procyon",         ra:114.8,dec:+5.2, mag:+0.4,tier:1,note:""},
+  {h:"Kaʻaʻahai",          w:"Antares",         ra:247.4,dec:-26.4,mag:+1.1,tier:1,note:"Heart of the scorpion"},
+  {h:"Hōkū-keokeo",        w:"Spica",           ra:201.3,dec:-11.2,mag:+1.0,tier:1,note:"White star"},
+  {h:"Ka Makaliʻi",        w:"Pleiades",        ra:56.9, dec:+24.1,mag:+1.6,tier:1,note:"The little eyes · New year marker"},
+  {h:"Hōkū-hoʻokele-waʻa",w:"Canopus",         ra:96.0, dec:-52.7,mag:-0.7,tier:1,note:"Canoe-steering star"},
+  {h:"Hōkū-ā",             w:"Fomalhaut",       ra:344.4,dec:-29.6,mag:+1.2,tier:1,note:"Autumn south star"},
+  {h:"Hōkū-maʻa",          w:"Deneb",           ra:310.4,dec:+45.3,mag:+1.3,tier:1,note:""},
+  {h:"Hōkū-maʻa-2",        w:"Altair",          ra:297.7,dec:+8.9, mag:+0.8,tier:1,note:""},
+  {h:"Hōkū-kīhia",         w:"Regulus",         ra:152.1,dec:+11.9,mag:+1.4,tier:1,note:""},
+  {h:"Hōkūʻula",           w:"Aldebaran",       ra:68.9, dec:+16.5,mag:+0.9,tier:1,note:"Red eye of the bull"},
+  {h:"Puana",               w:"Rigel",           ra:78.6, dec:-8.2, mag:+0.1,tier:1,note:"Blue-white foot of Orion"},
+  {h:"Māhoe-hope",          w:"Alpha Centauri",  ra:219.9,dec:-60.8,mag:-0.3,tier:1,note:""},
+  // ── Tier 2: Nā Hiku (Big Dipper — 7 stars) ──
+  {h:"Nā Hiku-1",           w:"Dubhe",           ra:165.9,dec:+61.8,mag:+1.8,tier:2,note:""},
+  {h:"Nā Hiku-2",           w:"Merak",           ra:165.5,dec:+56.4,mag:+2.4,tier:2,note:""},
+  {h:"Nā Hiku-3",           w:"Phecda",          ra:178.5,dec:+53.7,mag:+2.4,tier:2,note:""},
+  {h:"Nā Hiku-4",           w:"Megrez",          ra:183.9,dec:+57.0,mag:+3.3,tier:2,note:""},
+  {h:"Nā Hiku-5",           w:"Alioth",          ra:193.5,dec:+55.9,mag:+1.8,tier:2,note:""},
+  {h:"Nā Hiku-6",           w:"Mizar",           ra:200.9,dec:+54.9,mag:+2.0,tier:2,note:""},
+  {h:"Nā Hiku-7",           w:"Alkaid",          ra:206.9,dec:+49.3,mag:+1.9,tier:2,note:""},
+  // ── Tier 2: Orion belt (Hoʻopuka) ──
+  {h:"Hoʻopuka-1",          w:"Alnitak",         ra:85.2, dec:-1.9, mag:+1.7,tier:2,note:""},
+  {h:"Hoʻopuka-2",          w:"Alnilam",         ra:84.1, dec:-1.2, mag:+1.7,tier:2,note:"Middle of Orion belt"},
+  {h:"Hoʻopuka-3",          w:"Mintaka",         ra:83.0, dec:-0.3, mag:+2.2,tier:2,note:""},
+  // ── Tier 2: Scorpius tail ──
+  {h:"Nā Kā-1",             w:"Shaula",          ra:263.4,dec:-37.1,mag:+1.6,tier:2,note:"Scorpion stinger"},
+  {h:"Nā Kā-2",             w:"Lesath",          ra:264.3,dec:-37.3,mag:+2.7,tier:2,note:""},
+  // ── Tier 2: Southern Cross ──
+  {h:"Newe-1",              w:"Acrux",           ra:186.6,dec:-63.1,mag:+0.8,tier:2,note:""},
+  {h:"Newe-2",              w:"Mimosa",          ra:191.9,dec:-59.7,mag:+1.2,tier:2,note:""},
+  {h:"Newe-3",              w:"Gacrux",          ra:187.8,dec:-57.1,mag:+1.6,tier:2,note:""},
+  {h:"Newe-4",              w:"Delta Cru",       ra:183.8,dec:-58.7,mag:+2.8,tier:2,note:""},
+  // ── Nā Pōkea (Gemini twins) ──
+  {h:"Nā Pōkea-1",          w:"Castor",          ra:113.6,dec:+31.9,mag:+1.6,tier:2,note:""},
+  {h:"Nā Pōkea-2",          w:"Pollux",          ra:116.3,dec:+28.0,mag:+1.1,tier:2,note:""},
+];
+
+const HAWAIIAN_CONST_LINES=[
+  // Nā Hiku — Big Dipper bowl + handle
+  ["Nā Hiku-1","Nā Hiku-2"],["Nā Hiku-2","Nā Hiku-3"],["Nā Hiku-3","Nā Hiku-4"],
+  ["Nā Hiku-4","Nā Hiku-1"],// bowl square
+  ["Nā Hiku-4","Nā Hiku-5"],["Nā Hiku-5","Nā Hiku-6"],["Nā Hiku-6","Nā Hiku-7"],// handle
+  // Pointer to north
+  ["Nā Hiku-1","Hōkūpaʻa"],["Nā Hiku-2","Hōkūpaʻa"],
+  // Orion belt
+  ["Hoʻopuka-1","Hoʻopuka-2"],["Hoʻopuka-2","Hoʻopuka-3"],
+  // Orion body
+  ["Ke Aliʻi","Hoʻopuka-2"],["Puana","Hoʻopuka-2"],["Ke Aliʻi","Kaelo"],
+  // Orion to Sirius
+  ["Hoʻopuka-1","Kohu"],
+  // Hōkūleʻa connections
+  ["Hōkūleʻa","Ke Aliʻi"],["Hōkūleʻa","Hōkū-keokeo"],
+  // Summer triangle
+  ["Humu","Hōkū-maʻa"],["Hōkū-maʻa","Hōkū-maʻa-2"],["Hōkū-maʻa-2","Humu"],
+  // Scorpius
+  ["Kaʻaʻahai","Nā Kā-1"],["Nā Kā-1","Nā Kā-2"],
+  // Southern Cross
+  ["Newe-1","Newe-3"],["Newe-2","Newe-4"],// cross arms
+];
+
+class HawaiianStarOverlay{
+  constructor(container){this.container=container;this.svg=null;this.visible=false;this._rafId=null;this._bgStars=null;}
+
+  _build(){
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('aria-label','Ka Pānalāʻā ao — Hawaiian Star Map');
+    svg.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:12;display:none;';
+    this.container.appendChild(svg);this.svg=svg;
+    // pre-generate 280 background stars
+    this._bgStars=Array.from({length:280},()=>({
+      x:Math.random(),y:Math.random(),
+      r:Math.random()*1.1+0.3,
+      op:Math.random()*0.35+0.12,
+      tw:Math.random()*Math.PI*2
+    }));
+  }
+
+  toggle(globe){
+    if(!this.svg)this._build();
+    this.visible=!this.visible;
+    this.svg.style.display=this.visible?'block':'none';
+    if(this.visible)this._startLoop(globe);
+    else this._stopLoop();
+    return this.visible;
+  }
+  _startLoop(globe){const loop=()=>{if(!this.visible)return;this._render(globe);this._rafId=requestAnimationFrame(loop);};this._stopLoop();loop();}
+  _stopLoop(){if(this._rafId){cancelAnimationFrame(this._rafId);this._rafId=null;}}
+
+  _el(tag,attrs,text){
+    const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+    for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);
+    if(text!=null)e.textContent=text;
+    return e;
+  }
+
+  _render(globe){
+    if(!this.svg||!globe)return;
+    const W=this.container.clientWidth||800,H=this.container.clientHeight||560;
+    this.svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    this.svg.innerHTML='';
+    const t=Date.now()/1000;
+    const E=this._el.bind(this);
+
+    // ── Deep sky overlay ──
+    this.svg.appendChild(E('rect',{width:W,height:H,fill:'rgba(1,4,18,.75)'}));
+
+    // ── Milky Way band ──
+    const mw=E('ellipse',{cx:W*.45,cy:H*.52,rx:W*.44,ry:H*.17,fill:'rgba(160,185,240,.04)',transform:`rotate(-35,${W*.45},${H*.52})`});
+    this.svg.appendChild(mw);
+    this.svg.appendChild(E('ellipse',{cx:W*.45,cy:H*.52,rx:W*.26,ry:H*.07,fill:'rgba(190,210,255,.055)',transform:`rotate(-35,${W*.45},${H*.52})`}));
+
+    // ── Background star field (280 fixed-screen stars) ──
+    const bg=document.createElementNS('http://www.w3.org/2000/svg','g');
+    this._bgStars.forEach(s=>{
+      const op=Math.min(0.7,s.op+Math.sin(t*1.1+s.tw)*0.06);
+      const r=s.r*(1+Math.sin(t*0.8+s.tw+1)*0.05);
+      bg.appendChild(E('circle',{cx:(s.x*W).toFixed(1),cy:(s.y*H).toFixed(1),r:r.toFixed(2),fill:'#b0c8f0',opacity:op.toFixed(2)}));
+    });
+    this.svg.appendChild(bg);
+
+    // ── Project RA/Dec onto globe camera ──
+    const project=(ra,dec)=>{
+      const phi=dec*Math.PI/180,lam=ra*Math.PI/180;
+      const v=new THREE.Vector3(50*Math.cos(phi)*Math.cos(lam),50*Math.sin(phi),50*Math.cos(phi)*Math.sin(lam));
+      v.project(globe.camera);
+      return{x:(v.x*.5+.5)*W,y:(-v.y*.5+.5)*H,inFront:v.z<1.0};
+    };
+
+    const pts=HAWAIIAN_STARS.map(s=>({...s,...project(s.ra,s.dec)}));
+    const byName=new Map(pts.map(s=>[s.h,s]));
+
+    // ── Constellation lines ──
+    const lg=document.createElementNS('http://www.w3.org/2000/svg','g');
+    HAWAIIAN_CONST_LINES.forEach(([a,b])=>{
+      const sa=byName.get(a),sb=byName.get(b);
+      if(!sa?.inFront||!sb?.inFront)return;
+      const gold=a==="Nā Hiku-1"&&b==="Hōkūpaʻa"||a==="Nā Hiku-2"&&b==="Hōkūpaʻa"||a.startsWith("Hōkūleʻa");
+      lg.appendChild(E('line',{x1:sa.x.toFixed(1),y1:sa.y.toFixed(1),x2:sb.x.toFixed(1),y2:sb.y.toFixed(1),
+        stroke:gold?'rgba(255,215,0,.52)':'rgba(0,200,255,.32)',
+        'stroke-width':gold?'1.2':'0.85','stroke-dasharray':gold?'5 5':'3 6','stroke-linecap':'round'}));
+    });
+    this.svg.appendChild(lg);
+
+    // ── Compass rose (top-right) ──
+    const cx=W-58,cy2=58,cr=30;
+    this.svg.appendChild(E('circle',{cx,cy:cy2,r:cr,fill:'none',stroke:'rgba(0,247,255,.18)','stroke-width':'0.8'}));
+    this.svg.appendChild(E('circle',{cx,cy:cy2,r:cr*.6,fill:'none',stroke:'rgba(0,247,255,.1)','stroke-width':'0.6','stroke-dasharray':'2 5'}));
+    [{d:'N',a:0,c:'rgba(255,215,0,.8)'},{d:'S',a:Math.PI,c:'rgba(0,247,255,.45)'},{d:'E',a:Math.PI/2,c:'rgba(0,247,255,.45)'},{d:'W',a:-Math.PI/2,c:'rgba(0,247,255,.45)'}].forEach(({d,a,c})=>{
+      this.svg.appendChild(E('line',{x1:cx+Math.sin(a)*(cr-5),y1:cy2-Math.cos(a)*(cr-5),x2:cx+Math.sin(a)*(cr+3),y2:cy2-Math.cos(a)*(cr+3),stroke:c,'stroke-width':'1.5','stroke-linecap':'round'}));
+      this.svg.appendChild(E('text',{x:cx+Math.sin(a)*(cr+14),y:cy2-Math.cos(a)*(cr+14)+3.5,'text-anchor':'middle',fill:c,'font-size':d==='N'?'9':'8','font-family':'Orbitron,monospace','font-weight':d==='N'?'700':'400'},d));
+    });
+
+    // ── Named stars ──
+    pts.filter(s=>s.inFront).forEach(star=>{
+      const t0=star.tier===0,isHok=star.h==="Hōkūleʻa",isNorth=star.h==="Hōkūpaʻa";
+      const baseR=Math.max(2.5,8.5-Math.max(0,star.mag)*1.9);
+      const r=t0?baseR*1.45:baseR;
+      const starT=Date.now()/1000;
+      const tR=r*(1+Math.sin(starT*1.9+star.ra*.05)*.05);
+
+      // Glow layers
+      if(t0){
+        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*5).toFixed(1),fill:isHok?'rgba(255,215,0,.05)':isNorth?'rgba(180,200,255,.05)':'rgba(0,200,255,.04)'}));
+        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*2.5).toFixed(1),fill:isHok?'rgba(255,215,0,.14)':isNorth?'rgba(180,200,255,.12)':'rgba(0,200,255,.1)'}));
+      } else if(star.tier===1){
+        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*2).toFixed(1),fill:'rgba(0,180,255,.055)'}));
+      }
+
+      // Star body
+      const col=isHok?'#ffd700':isNorth?'#ddeeff':star.mag<0?'#fff9f0':star.mag<0.5?'rgba(220,235,255,.95)':star.mag<1.5?'rgba(185,215,255,.88)':'rgba(155,190,240,.7)';
+      this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:tR.toFixed(2),fill:col}));
+
+      // 4-point cross sparkle for bright stars
+      if(t0||star.mag<0.5){
+        const len=r*(isHok?3:2.4);
+        [[1,0],[0,1],[.707,.707],[-.707,.707]].forEach(([dx,dy])=>{
+          this.svg.appendChild(E('line',{
+            x1:(star.x-dx*len).toFixed(1),y1:(star.y-dy*len).toFixed(1),
+            x2:(star.x+dx*len).toFixed(1),y2:(star.y+dy*len).toFixed(1),
+            stroke:isHok?'rgba(255,215,0,.48)':'rgba(180,215,255,.32)',
+            'stroke-width':'0.8','stroke-linecap':'round'
+          }));
+        });
+      }
+
+      // Special fixed-star ring for Polaris
+      if(isNorth){
+        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*4).toFixed(1),fill:'none',stroke:'rgba(180,210,255,.22)','stroke-width':'0.8','stroke-dasharray':'3 4'}));
+        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*6.5).toFixed(1),fill:'none',stroke:'rgba(180,210,255,.1)','stroke-width':'0.5','stroke-dasharray':'2 7'}));
+      }
+
+      // Labels for tier 0 + 1 only
+      if(star.tier<=1){
+        const ox=star.x>W*.78?-(r+5):r+6;
+        const anch=star.x>W*.78?'end':'start';
+        this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+4).toFixed(1),'text-anchor':anch,
+          fill:isHok?'rgba(255,215,0,.95)':t0?'rgba(0,247,255,.85)':'rgba(0,225,245,.6)',
+          'font-size':isHok?'11':t0?'10':'8.5','font-family':'Orbitron,monospace','font-weight':t0?'500':'400'},
+          star.h.replace(/-[0-9]$/,'').trim()));
+        this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+15).toFixed(1),'text-anchor':anch,
+          fill:'rgba(130,175,215,.35)','font-size':'7','font-family':'sans-serif'},star.w));
+        if(star.note&&t0&&star.note.length>0){
+          this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+27).toFixed(1),'text-anchor':anch,
+            fill:'rgba(255,215,0,.42)','font-size':'7','font-family':'sans-serif','font-style':'italic'},star.note));
+        }
+      }
+    });
+
+    // ── Header ──
+    this.svg.appendChild(E('text',{x:14,y:22,fill:'rgba(255,215,0,.82)','font-size':'10','font-family':'Orbitron,monospace','letter-spacing':'0.12em'},'KA PĀNALĀʻĀ AO — HAWAIIAN STAR MAP'));
+    const vis=pts.filter(s=>s.inFront).length;
+    this.svg.appendChild(E('text',{x:14,y:36,fill:'rgba(0,247,255,.38)','font-size':'8','font-family':'sans-serif','font-style':'italic'},`${vis} named stars visible · 280 background stars`));
+
+    // ── Legend (bottom-left) ──
+    [
+      {c:'#ffd700',          l:'Hōkūleʻa / Primary navigation'},
+      {c:'rgba(0,247,255,.78)',l:'Named wayfinding stars'},
+      {c:'rgba(0,200,255,.38)',l:'Constellation patterns'},
+      {c:'rgba(100,155,215,.3)',l:'Background star field'},
+    ].forEach((k,i)=>{
+      const y=H-14-i*16;
+      this.svg.appendChild(E('circle',{cx:16,cy:y,r:4,fill:k.c}));
+      this.svg.appendChild(E('text',{x:26,y:y+3.5,fill:'rgba(180,215,240,.45)','font-size':'8','font-family':'sans-serif'},k.l));
+    });
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// TOOLTIP MANAGER
+// Hover tooltip with culture preview
+// ══════════════════════════════════════════════════════════
+class TooltipManager{
+  constructor(container){
+    this.container=container;this.el=null;this._visible=false;
+    this._build();
+  }
+  _build(){
+    this.el=document.createElement('div');
+    this.el.id='cw-tooltip';
+    this.el.setAttribute('role','tooltip');
+    this.el.setAttribute('aria-live','polite');
+    this.el.style.cssText=
+      'position:absolute;pointer-events:none;z-index:30;'+
+      'background:rgba(4,9,20,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);'+
+      'border:1px solid rgba(0,247,255,.32);border-radius:12px;'+
+      'padding:10px 14px;max-width:235px;min-width:160px;'+
+      'display:none;opacity:0;transition:opacity .15s ease;';
+    this.container.appendChild(this.el);
+  }
+  show(culture,cx,cy){
+    if(!this.el||!culture) return;
+    const rect=this.container.getBoundingClientRect();
+    const lx=cx-rect.left, ly=cy-rect.top;
+    const TW=240, TH=140;
+    const px=lx+18+TW>rect.width ? lx-TW-12 : lx+18;
+    const py=ly+18+TH>rect.height? ly-TH-12 : ly+18;
+    this.el.style.left=px+'px';this.el.style.top=py+'px';
+    const tagsHtml=(culture.tags||[]).slice(0,4).map(t=>`<span style="font-size:.62rem;padding:2px 7px;border-radius:999px;background:rgba(0,247,255,.1);color:rgba(0,247,255,.8);border:1px solid rgba(0,247,255,.18);margin-right:3px;display:inline-block;margin-bottom:2px;">${escapeHtml(t)}</span>`).join('');
+    const desc=(culture.desc||'').slice(0,90)+(culture.desc?.length>90?'…':'');
+    this.el.innerHTML=`
+<div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;">
+  <span style="font-size:1.5rem;line-height:1;">${escapeHtml(culture.symbol||'🌐')}</span>
+  <div style="min-width:0;">
+    <div style="font-size:.82rem;font-weight:600;color:rgba(255,255,255,.96);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(culture.name)}</div>
+    <div style="font-size:.68rem;color:rgba(0,247,255,.7);margin-top:1px;">${escapeHtml(culture.region||'')}${culture.era?' · '+escapeHtml(culture.era):''}</div>
+  </div>
+</div>
+${desc?`<div style="font-size:.73rem;color:rgba(170,200,220,.7);line-height:1.5;margin-bottom:7px;">${escapeHtml(desc)}</div>`:''}
+<div style="margin-bottom:7px;">${tagsHtml}</div>
+<div style="font-size:.65rem;color:rgba(255,215,0,.6);letter-spacing:.1em;font-family:Orbitron,monospace;">TAP TO EXPLORE ↗</div>`;
+    this.el.style.display='block';
+    requestAnimationFrame(()=>{this.el&&(this.el.style.opacity='1');});
+    this._visible=true;
+  }
+  hide(){
+    if(!this.el||!this._visible) return;
+    this.el.style.opacity='0';
+    setTimeout(()=>{if(this.el&&!this._visible) this.el.style.display='none';},160);
+    this._visible=false;
+  }
+}
+// ══════════════════════════════════════════════════════════
 class ThreeGlobe {
   constructor(container) {
     this.container  = container;
@@ -266,6 +1669,8 @@ class ThreeGlobe {
     /* Callbacks set by app */
     this.onSelect   = null;
     this.onDeselect = null;
+    this.onHover    = null;
+    this.onHoverEnd = null;
   }
 
   async init(world) {
@@ -526,7 +1931,7 @@ void main(){
     this.mouse.y=-((cy-r.top) /r.height)*2+1;
   }
 
-  _onMove(e){this._setMouse(e.clientX,e.clientY);this._doHover();}
+  _onMove(e){this._setMouse(e.clientX,e.clientY);this._doHover();this._lastMouseX=e.clientX;this._lastMouseY=e.clientY;}
 
   _onClickCanvas(e){
     this._setMouse(e.clientX,e.clientY);
@@ -543,8 +1948,10 @@ void main(){
         this.hovered=obj;this._hoverObj(obj);
         this.renderer.domElement.style.cursor='pointer';
       }
+      if(obj) this.onHover?.(obj.data,this._lastMouseX||0,this._lastMouseY||0);
     } else {
       if(this.hovered&&this.hovered!==this.selected){this._unhoverObj(this.hovered);this.hovered=null;this.renderer.domElement.style.cursor='default';}
+      this.onHoverEnd?.();
     }
   }
 
@@ -855,9 +2262,9 @@ void main(){
   }
 }
 
-/* ══════════════════════════════════════════════════════════
-   D3 MAP CLASS  (simplified from original)
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// D3 MAP CLASS  (simplified from original)
+// ══════════════════════════════════════════════════════════
 class D3Map {
   constructor(container) {
     this.container=container;this.svg=null;this.root=null;
@@ -941,10 +2348,10 @@ class D3Map {
   }
 }
 
-/* ══════════════════════════════════════════════════════════
-   FORCE GRAPH CLASS
-   D3 force simulation on canvas — toggle mode from globe
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// FORCE GRAPH CLASS
+// D3 force simulation on canvas — toggle mode from globe
+// ══════════════════════════════════════════════════════════
 class ForceGraph {
   constructor(container) {
     this.container=container;
@@ -1093,10 +2500,10 @@ class ForceGraph {
   destroy(){cancelAnimationFrame(this._animId);this.container.innerHTML='';}
 }
 
-/* ══════════════════════════════════════════════════════════
-   TIMELINE CONTROLLER
-   Adds an era scrubber below the globe
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// TIMELINE CONTROLLER
+// Adds an era scrubber below the globe
+// ══════════════════════════════════════════════════════════
 class TimelineController {
   constructor(mountEl){
     this.mount=mountEl;
@@ -1180,10 +2587,10 @@ class TimelineController {
   }
 }
 
-/* ══════════════════════════════════════════════════════════
-   TOUR CONTROLLER
-   Auto-flies camera through Weave Path stops
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// TOUR CONTROLLER
+// Auto-flies camera through Weave Path stops
+// ══════════════════════════════════════════════════════════
 class TourController {
   constructor(btnEl, progressEl){
     this.btn=btnEl;this.progressEl=progressEl;
@@ -1232,9 +2639,9 @@ class TourController {
   }
 }
 
-/* ══════════════════════════════════════════════════════════
-   SUGGESTED LINKS
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// SUGGESTED LINKS
+// ══════════════════════════════════════════════════════════
 function overlapScore(a,b){
   const A=new Set([...(a.tags||[]),...(a.keyTerms||[])].map(String));
   const B=new Set([...(b.tags||[]),...(b.keyTerms||[])].map(String));
@@ -1253,9 +2660,9 @@ function buildSuggested(cultures,linksOfficial){
   return out.slice(0,240);
 }
 
-/* ══════════════════════════════════════════════════════════
-   CULTURE DETAIL PANEL  (same as original, condensed)
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// CULTURE DETAIL PANEL  (same as original, condensed)
+// ══════════════════════════════════════════════════════════
 function renderDetailPanel(c,el){
   if(!c||!el) return;
   const set=(id,v)=>{const e=document.getElementById(id);if(e) e.textContent=v;};
@@ -1382,9 +2789,9 @@ function renderConnections(c,allLinks,byId){
   });
 }
 
-/* ══════════════════════════════════════════════════════════
-   WEAVE PATH HELPERS
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// WEAVE PATH HELPERS
+// ══════════════════════════════════════════════════════════
 const LENS_EXPLAIN={
   all:'All lenses — no filter.',
   'Creation':'Highlights origin/cosmology links.',
@@ -1419,9 +2826,9 @@ function buildWeavePresets(lensCache,byId){
   return{presets,order};
 }
 
-/* ══════════════════════════════════════════════════════════
-   COSMIC WEAVE — MAIN APP
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// COSMIC WEAVE — MAIN APP
+// ══════════════════════════════════════════════════════════
 class CosmicWeave {
   constructor(){
     /* Data */
@@ -1439,6 +2846,7 @@ class CosmicWeave {
     /* Modules */
     this.globe=null;this.map=null;this.graph=null;
     this.timeline=null;this.tour=null;
+    this.landmarkScene=null;this.tooltip=null;this.starOverlay=null;
     /* Containers */
     this._containers={};
   }
@@ -1476,6 +2884,17 @@ class CosmicWeave {
     /* Wire UI */
     this._wireUI();
     this._wireKeyboard();
+    /* Landmark mini-scene */
+    this.landmarkScene=new LandmarkScene();
+    /* Tooltip */
+    const globeVp=document.getElementById('globe-viewport-3d');
+    if(globeVp){this.tooltip=new TooltipManager(globeVp);}
+    /* Hawaiian star overlay */
+    if(globeVp){
+      this.starOverlay=new HawaiianStarOverlay(globeVp);
+      this.globe.onHover=(culture,cx,cy)=>{this.tooltip?.show(culture,cx,cy);};
+      this.globe.onHoverEnd=()=>{this.tooltip?.hide();};
+    }
     /* Deep link */
     try{const id=new URL(location.href).searchParams.get('c');if(id&&this.byId.has(id)) this.selectCulture(id,false);}catch{}
     /* Default detail */
@@ -1532,6 +2951,8 @@ class CosmicWeave {
     this.map?.render(id,this.lens);
     /* Panels */
     renderDetailPanel(c,document.getElementById('culture-name'));
+    /* Landmark preview disabled */
+    // this.landmarkScene?.mount(id,'landmark-preview');
     const allL=this.showSuggested?[...this.linksOfficial,...this.linksSuggested]:this.linksOfficial;
     renderConnections(c,allL,this.byId);
     /* Layer threads */
@@ -1657,6 +3078,11 @@ class CosmicWeave {
 
   /* ── UI wiring ── */
   _wireUI(){
+    /* Star map toggle */
+    document.getElementById('btnStarMap')?.addEventListener('click',()=>{
+      const visible=this.starOverlay?.toggle(this.globe);
+      document.getElementById('btnStarMap')?.classList.toggle('active',!!visible);
+    });
     /* Tabs */
     document.getElementById('tabGlobe')?.addEventListener('click',()=>this.setMode('globe'));
     document.getElementById('tabMap')?.addEventListener('click',()=>this.setMode('map'));
@@ -1720,9 +3146,9 @@ class CosmicWeave {
   }
 }
 
-/* ══════════════════════════════════════════════════════════
-   BOOT
-══════════════════════════════════════════════════════════ */
+// ══════════════════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════════════════
 async function boot() {
   /* Ensure Three.js is available */
   if(!window.THREE) {
