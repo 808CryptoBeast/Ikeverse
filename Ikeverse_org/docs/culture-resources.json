@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "_note": "Resource expansion patch — merge into matching entries in your existing cultures data. For newCultureResources, match each key to the object in newCultures where id matches.",
+  "_note": "Merged resource-expanded cultures patch with stronger Hawaiian sources, added researchPapers, and upgraded reading links for newer cultures.",
   "cultures": {
     "kanaka_kumulipo": {
       "readingLinks": [
@@ -29,14 +29,14 @@
           "desc": "Foundational Native Hawaiian account of beliefs, institutions, rituals, and origin traditions."
         },
         {
-          "title": "The Moʻolelo Hawaiʻi of Davida Malo, Volume 2 — Hawaiian Text and Translation",
+          "title": "The Moʻolelo Hawaiʻi of Davida Malo, Volume 2: Hawaiian Text and Translation",
           "url": "https://uhpress.hawaii.edu/title/the-mo%CA%BBolelo-hawai%CA%BBi-of-davida-malo-volume-2-hawaiian-text-and-translation/",
           "kind": "Primary Text",
           "desc": "Annotated bilingual edition for closer study of Malo in Hawaiian and English."
         },
         {
           "title": "Nānā i ke Kumu (Look to the Source), Volume I — Mary Kawena Pukui, E. W. Haertig, Catherine Lee",
-          "url": "https://ulukau.org/ulukau-books/?a=d&d=EBOOK-QLCC1&l=haw",
+          "url": "https://ulukau.org/ulukau-books/?a=d&d=EBOOK-QLCC1",
           "kind": "Reference",
           "desc": "Classic work on Hawaiian values, concepts, customs, and cultural logic."
         },
@@ -56,33 +56,37 @@
           "title": "Place Names of Hawaiʻi — Mary Kawena Pukui, Samuel H. Elbert, Esther T. Mookini",
           "url": "https://ulukau.org/ulukau-books/?a=d&d=EBOOK-PEPN",
           "kind": "Reference",
-          "desc": "Geographic memory, layered meaning, and ʻike place-based naming traditions."
-        },
-        {
-          "title": "Hawaiian Dictionary — Mary Kawena Pukui and Samuel H. Elbert",
-          "url": "https://uhpress.hawaii.edu/title/hawaiian-dictionary-hawaiian-english-english-hawaiian-revised-and-enlarged-edition/",
-          "kind": "Reference",
-          "desc": "Core lexicon for precise language study and reading older Hawaiian materials."
+          "desc": "Geographic memory, layered meaning, and place-based naming traditions."
         },
         {
           "title": "Mālama Honua — Hōkūleʻa World Voyage",
           "url": "https://www.hokulea.com/malamaHonua/",
           "kind": "Living Practice",
-          "desc": "Contemporary continuity of voyaging knowledge, ancestral relationship, and ʻike navigation."
+          "desc": "Contemporary continuity of voyaging knowledge, ancestral relationship, and wayfinding."
         }
+      ],
+      "additionalHighlights": [
+        "2,102-line chant composed ~1700 CE for Kalaniʻōpuʻu",
+        "Maps 16 cosmic eras from primordial darkness (pō) to light (ao)",
+        "Recognized by UNESCO for its epistemological depth",
+        "Recited to establish genealogical legitimacy of ruling aliʻi",
+        "Contemporary resurgence in Hawaiian language immersion schools",
+        "Kamakau preserves older Hawaiian social, political, and sacred structures from Native Hawaiian perspective",
+        "Pukui's work helps connect proverb, value, language, and practice across everyday and ceremonial life",
+        "David Malo remains one of the most important nineteenth-century Native Hawaiian historians"
       ],
       "researchPapers": [
         {
           "title": "Historians of Traditional Hawaiʻi: An Annotated Bibliography",
           "url": "https://evols.library.manoa.hawaii.edu/bitstreams/9b5a3b48-c2c0-489d-9d64-cbf456f402c8/download",
           "kind": "Research Paper",
-          "desc": "Useful research map into Malo, Kamakau, and other early Hawaiian historians."
+          "desc": "Research map into Malo, Kamakau, and other early Hawaiian historians."
         },
         {
           "title": "Malo's Moʻolelo Hawaiʻi: The Lost Translation",
           "url": "https://evols.library.manoa.hawaii.edu/server/api/core/bitstreams/63f45340-0609-428d-9304-c5c97782879d/content",
           "kind": "Research Paper",
-          "desc": "Study of translation history, manuscript transmission, and textual interpretation around David Malo."
+          "desc": "Study of translation history, manuscript transmission, and interpretation around David Malo."
         },
         {
           "title": "Davida Malo's Unpublished Account of Keōpūolani",
@@ -113,7 +117,7 @@
           "desc": "Accessible study text on non-instrument navigation and canoe knowledge."
         },
         {
-          "title": "Bishop Museum — 2025 Nānā i ke Kumu Series",
+          "title": "Bishop Museum — Nānā i ke Kumu Series",
           "url": "https://www.bishopmuseum.org/2025-nana-i-ke-kumu-series/",
           "kind": "Museum",
           "desc": "Public-facing cultural programming connected to Hawaiian and Pacific knowledge lineages."
@@ -152,19 +156,19 @@
           "title": "Ancient Egyptian Mortuary Texts, an Introduction",
           "url": "https://smarthistory.org/ancient-egyptian-mortuary-texts/",
           "kind": "Essay",
-          "desc": "Good entry point into Pyramid Texts, Coffin Texts, and afterlife literature."
+          "desc": "Entry point into Pyramid Texts, Coffin Texts, and afterlife literature."
         },
         {
           "title": "The Pyramid Texts (ETANA catalog entry)",
           "url": "https://etana.org/abzu/view-item.pl?ETANA-RN=ETANA_CATALOG000015",
           "kind": "Primary Text",
-          "desc": "Core gateway to the oldest surviving royal mortuary corpus."
+          "desc": "Gateway to the oldest surviving royal mortuary corpus."
         },
         {
-          "title": "Primeval Water and First Emergence in Egyptian Creation Thought",
-          "url": "https://www.metmuseum.org/essays/hippopotami-in-ancient-egypt",
-          "kind": "Museum",
-          "desc": "Met essay touching the Nun, primeval mound, and first emergence motifs."
+          "title": "Atum — Encyclopaedia Britannica",
+          "url": "https://www.britannica.com/topic/Atum",
+          "kind": "Reference",
+          "desc": "Reference entry on the self-created creator deity."
         }
       ],
       "researchPapers": [
@@ -189,6 +193,12 @@
           "url": "https://www.floridamuseum.ufl.edu/histarch/research/haiti/en-bas-saline/taino-society/",
           "kind": "Reference",
           "desc": "Strong overview of social life, subsistence, and Taíno community structure."
+        },
+        {
+          "title": "Taíno Culture History — Florida Museum of Natural History",
+          "url": "https://www.floridamuseum.ufl.edu/histarch/research/haiti/en-bas-saline/taino-culture/",
+          "kind": "Reference",
+          "desc": "Background on origins, migration, and cultural development."
         },
         {
           "title": "Living Taíno Identity — Cultural Survival Quarterly",
@@ -231,8 +241,69 @@
       ]
     }
   },
-  "newCultureResources": {
-    "yoruba": {
+  "newCultures": [
+    {
+      "id": "yoruba",
+      "name": "Yoruba",
+      "symbol": "⚡",
+      "coords": [
+        3.9,
+        7.4
+      ],
+      "region": "Africa",
+      "location": "West Africa (Nigeria, Benin, Togo)",
+      "era": "500 BCE – present",
+      "desc": "One of the world's largest ethnic groups, with a sophisticated cosmological system, a 256-sign binary divination corpus (Ifá), and urban city-states predating European contact. The Ifá corpus is recognized by UNESCO as an Intangible Cultural Heritage.",
+      "tags": [
+        "Cosmology",
+        "Governance",
+        "Oral Tradition",
+        "Divination",
+        "Trade",
+        "Art"
+      ],
+      "creationStories": [
+        "Obatala descends from Olódùmarè on a chain of iron, carrying a calabash of sand and a five-toed hen that scatter into land and water",
+        "Odùduwà — the primordial king who completed creation after Obatala fell asleep",
+        "The 401 Orishas emanate from Olódùmarè as divine forces of nature and humanity",
+        "Ilé-Ifè regarded as the sacred center of creation — 'Ile-Ife, the land where the morning first dawned'"
+      ],
+      "corePrinciples": [
+        "Ifá — binary divination system encoding 256 Odù (chapters), each a body of medicine, law, philosophy, and story",
+        "Ori — personal divine destiny carried within the individual head",
+        "Ashe — divine energy / life-force flowing through all existence",
+        "Eégúngún — ancestral masquerade tradition connecting living and dead",
+        "Ubuntu-linked concept of Omoluabi: embodied character and social responsibility",
+        "Odu Merindinlogun — 16-cowrie divination system practiced across the African diaspora"
+      ],
+      "knowledgeSystems": [
+        "Ifá geomancy — binary notation system with 256 permutations of 16 principal signs",
+        "Traditional medicine (Egbogi) — herbalism integrated with divination",
+        "Gelede masquerade — theatrical knowledge of female spiritual power",
+        "Àrokò — non-verbal symbolic communication system using objects",
+        "Yoruba calendrical system: 4-day week, 91-day market cycle",
+        "Indigo dyeing (adire eleko) — resist-dyeing knowledge preserved across generations"
+      ],
+      "movement": [
+        "Trans-Atlantic slave trade carried Yoruba religion to Cuba (Lucumí/Santería), Brazil (Candomblé), and Trinidad (Shango)",
+        "Ile-Ife as hub of trans-Saharan trade networks c. 1000–1400 CE",
+        "Diaspora diffusion of Ifá to the Americas — now practiced by millions across four continents",
+        "19th-century Lagos merchants connected West Africa to Victorian global commerce"
+      ],
+      "highlights": [
+        "Ifá was proclaimed a UNESCO Masterpiece in 2005 and inscribed on the Representative List in 2008",
+        "City-states of Oyo, Benin, and Ile-Ife had populations rivaling contemporary European capitals",
+        "Benin bronzes — sophisticated lost-wax casting tradition pre-dating Renaissance Europe",
+        "Yoruba is the most globally dispersed African language system due to diaspora",
+        "16 Yoruba kings (Obas) still reign in constitutional Nigeria today"
+      ],
+      "modernLegacy": [
+        "Candomblé and Santería are living Yoruba religious systems with 60M+ practitioners",
+        "Afrobeat (Fela Kuti) drew explicitly on Yoruba rhythmic and oratory traditions",
+        "Wole Soyinka — Nobel Laureate whose work centers Yoruba cosmology",
+        "Yoruba diaspora in Brazil preserves Candomblé as a recognized religion",
+        "Contemporary Ifá revival in West Africa and the Americas"
+      ],
       "readingLinks": [
         {
           "title": "Ifá Divination System — UNESCO Intangible Heritage",
@@ -244,7 +315,7 @@
           "title": "Ifá of the Yoruba People of Nigeria — UNESCO multimedia",
           "url": "https://www.unesco.org/archives/multimedia/document-3742",
           "kind": "Reference",
-          "desc": "Short interpretive UNESCO introduction to the Ifá corpus and practice."
+          "desc": "Short UNESCO introduction to the Ifá corpus and practice."
         },
         {
           "title": "Olódùmarè: God in Yoruba Belief — archive record",
@@ -256,7 +327,7 @@
           "title": "Yoruba Art & Culture",
           "url": "https://hearstmuseum.berkeley.edu/wp-content/uploads/TeachingKit_YorubaArtAndCulture.pdf",
           "kind": "Reference",
-          "desc": "Accessible museum teaching guide connecting cosmology, art, and divination."
+          "desc": "Accessible museum guide connecting cosmology, art, and divination."
         },
         {
           "title": "Yoruba: Nine Centuries of African Art and Thought",
@@ -276,7 +347,7 @@
           "title": "God in Yoruba Belief and the Theistic Problem of Evil",
           "url": "https://asq.africa.ufl.edu/wp-content/uploads/sites/168/ASQ-Vol-2-Issue-1-Bewaji.pdf",
           "kind": "Research Paper",
-          "desc": "Frequently cited philosophical treatment of Olódùmarè and Yoruba theology."
+          "desc": "Philosophical treatment of Olódùmarè and Yoruba theology."
         },
         {
           "title": "Development of the Ifa Priesthood in Nigeria and the United States",
@@ -288,11 +359,72 @@
           "title": "Divinity, Creativity and Humanity in Yoruba Aesthetics",
           "url": "https://faculty.risd.edu/bcampbel/lawal-divinity%2Ccreativity%26humanity.pdf",
           "kind": "Research Paper",
-          "desc": "Strong study of Yoruba visual thought, sacred form, and cosmology."
+          "desc": "Study of Yoruba visual thought, sacred form, and cosmology."
         }
       ]
     },
-    "maya_classic": {
+    {
+      "id": "maya_classic",
+      "name": "Classic Maya",
+      "symbol": "🌽",
+      "coords": [
+        -89.5,
+        17.2
+      ],
+      "region": "Americas",
+      "location": "Mesoamerica (Southern Mexico, Guatemala, Belize)",
+      "era": "250 CE – 900 CE",
+      "desc": "The Classic Maya developed one of the only fully-developed writing systems in the pre-Columbian Americas, a sophisticated astronomy, long-count calendrics, and monumental urban centers. Their knowledge systems survived colonial suppression and are being actively revived.",
+      "tags": [
+        "Astronomy",
+        "Agriculture",
+        "Cosmology",
+        "Governance",
+        "Writing",
+        "Ecology"
+      ],
+      "creationStories": [
+        "Popol Vuh: twin heroes Hunahpu and Xbalanque outwit the lords of Xibalba (underworld), then become the sun and moon",
+        "Humans created from white and yellow maize — previous attempts with mud and wood failed",
+        "The Bacabs — four brothers hold up the sky at cardinal directions",
+        "13 heavens and 9 underworlds connected by a cosmic World Tree (Yaxché)"
+      ],
+      "corePrinciples": [
+        "The Long Count calendar — a 5,125-year cycle tracking deep cosmic time",
+        "Tzolkʼin — 260-day ritual calendar coordinated with human gestation cycle",
+        "Haabʼ — 365-day solar calendar with 18 months of 20 days plus 5 Wayebʼ days",
+        "Kʼulel — sacred vital force present in all living beings",
+        "Reciprocal obligations between humans and deities through bloodletting and offering",
+        "Cacao as sacred currency, offering material, and medicine"
+      ],
+      "knowledgeSystems": [
+        "Mayan epigraphy — ~800-glyph syllabic and logographic script fully deciphered (1990s)",
+        "Dresden Codex — astronomical almanac predicting Venus cycles within 2 minutes/year accuracy",
+        "Milpa system — rotational polyculture of maize, beans, squash, and cacao",
+        "Cenote hydrology — mapping underground water systems in karst limestone",
+        "Rubber processing — vulcanization centuries before Goodyear",
+        "Architectural acoustics — acoustic chambers in Chichén Itzá's El Castillo"
+      ],
+      "movement": [
+        "Cacao trade networks reaching from Yucatán to Teotihuacan",
+        "Jade exchange connecting Maya highlands to lowlands across 1,000 km",
+        "Maritime trade routes along the Gulf Coast of Mexico",
+        "Post-Classic Maya merchants (Putun/Chontal) dominated Caribbean sea trade"
+      ],
+      "highlights": [
+        "Dresden Codex: most accurate astronomical almanac in the pre-modern world",
+        "Palenque — inscriptions trace royal genealogy across 1,000 years",
+        "Caracol (Belize) observatory aligned precisely to Venus heliacal rise",
+        "Copán's Hieroglyphic Stairway — longest known Mayan inscription",
+        "Modern descendants number 7 million+ across Guatemala and Mexico"
+      ],
+      "modernLegacy": [
+        "7 million Maya speakers today; 30+ distinct Mayan languages survive",
+        "Zapatista movement (EZLN) explicitly grounded in Tzeltal-Tojolabal Maya knowledge",
+        "Contemporary Maya astronomers publish alongside academic scientists",
+        "UNESCO-listed Mayan biosphere reserves practicing milpa agroforestry",
+        "Day-keepers (Ajkʼijabʼ) continue the 260-day ritual calendar uninterrupted"
+      ],
       "readingLinks": [
         {
           "title": "Popol Vuh: Sacred Book of the Quiché Maya People",
@@ -307,16 +439,16 @@
           "desc": "Closer line-level rendering for detailed textual study."
         },
         {
+          "title": "Popol Vuh: Original Text Transcription",
+          "url": "https://www.mesoweb.com/publications/Christenson/PV-Original.pdf",
+          "kind": "Primary Text",
+          "desc": "Original-language transcription useful for text-centered study."
+        },
+        {
           "title": "FAMSI — Foundation for the Advancement of Mesoamerican Studies",
           "url": "http://www.famsi.org/",
           "kind": "Reference",
           "desc": "Large archive of codices, reports, epigraphy, and Maya research material."
-        },
-        {
-          "title": "Maya Astronomy",
-          "url": "https://www.mesoweb.com/publications/CAA/CAA02.pdf",
-          "kind": "Reference",
-          "desc": "Accessible scholarly overview of calendrics and astronomical reasoning."
         },
         {
           "title": "Mesoweb Publications Index",
@@ -336,23 +468,84 @@
           "title": "Disaster, Deluge, and Destruction on the Star War Vase",
           "url": "https://www.mesoweb.com/articles/Zender_2020.pdf",
           "kind": "Research Paper",
-          "desc": "Scholarly article linking iconography, myth, and celestial warfare themes."
+          "desc": "Links iconography, myth, and celestial warfare themes."
         },
         {
           "title": "Maya Creator Gods",
           "url": "https://www.mesoweb.com/features/bassie/CreatorGods/CreatorGods.pdf",
           "kind": "Research Paper",
-          "desc": "Good research piece for creation deities and mythic continuity."
+          "desc": "Research piece on creation deities and mythic continuity."
         }
       ]
     },
-    "andean_tawantinsuyu": {
+    {
+      "id": "andean_tawantinsuyu",
+      "name": "Tawantinsuyu (Inca)",
+      "symbol": "🦙",
+      "coords": [
+        -72.5,
+        -13.5
+      ],
+      "region": "Americas",
+      "location": "Andes (Peru, Bolivia, Ecuador, Chile, Argentina)",
+      "era": "1438 CE – 1533 CE",
+      "desc": "The largest pre-Columbian empire in the Americas, stretching 4,000 km along the Andes. The Inca built an extraordinary administrative, agricultural, and knowledge system without a conventional writing system, instead encoding data in knotted strings called quipus.",
+      "tags": [
+        "Governance",
+        "Agriculture",
+        "Astronomy",
+        "Trade",
+        "Engineering",
+        "Stewardship"
+      ],
+      "creationStories": [
+        "Manco Cápac and Mama Ocllo emerge from Lake Titicaca, sent by Inti (the Sun) to found Cusco",
+        "Viracocha — the primordial creator who made humans from stone on an island in the sacred lake",
+        "The four Suyus: Chinchaysuyu, Antisuyu, Kuntisuyu, and Qullasuyu — cosmic quarters of the earth",
+        "Pachamama (Earth Mother) as living entity sustaining all creation through reciprocal offerings (ayni)"
+      ],
+      "corePrinciples": [
+        "Ayni — sacred reciprocity: the governing principle of exchange between humans, deities, and environment",
+        "Minka — collective labor for the common good, replacing market-based exchange",
+        "Ceque system — 41 sacred lines radiating from the Coricancha (Temple of the Sun) in Cusco",
+        "Mit'a — labor tribute system that built roads, terraces, and cities without coercive wages",
+        "Sumac kawsay — 'good living,' a relational ethic that influenced Ecuador's 2008 constitution",
+        "Khipu (quipu) — complex knotted-string encoding system for data, narrative, and genealogy"
+      ],
+      "knowledgeSystems": [
+        "Khipu — binary knotted-string system capable of encoding numerical, administrative, and possibly narrative data",
+        "Andean astronomy — ceque lines function as a horizon calendar aligning with stellar rise/set points",
+        "Terrace agriculture (andenes) — engineered microclimates across 8 altitude zones",
+        "Freeze-drying technology — chuño (freeze-dried potato) enabled 7-year food storage",
+        "Road engineering — 40,000 km of roads built across extreme Andean terrain",
+        "Colca Canyon aqueducts — hydraulic systems still in use today"
+      ],
+      "movement": [
+        "Royal road network (Qhapaq Ñan) — 40,000 km connecting empire from Colombia to Argentina",
+        "Trained chasqui runners relayed messages across 2,400 km in under a week",
+        "Llama caravans transported textiles, dried food, and minerals across altitude zones",
+        "Trade routes connecting Amazon, Andean, and Pacific coast ecosystems"
+      ],
+      "highlights": [
+        "Machu Picchu — engineered at 2,430m with earthquake-resistant interlocking stones",
+        "Khipu: only known recording system based on three-dimensional textile logic",
+        "More species of potato (3,000+) developed by Andean farmers than exist in the rest of the world",
+        "Qhapaq Ñan road network inscribed as UNESCO World Heritage Site (2014)",
+        "Tiwanaku — predecessor civilization with 17,000+ year agricultural technology at 3,850m"
+      ],
+      "modernLegacy": [
+        "Quechua spoken by 8–10 million people across six Andean countries",
+        "Sumak kawsay enshrined in Ecuador's 2008 constitution as Buen Vivir",
+        "Khipu decipherment project ongoing at Harvard and MIT",
+        "Traditional terrace farming revived as climate-adaptive agriculture",
+        "Andean cosmovision underpins indigenous rights movements across the Americas"
+      ],
       "readingLinks": [
         {
-          "title": "Khipu Database Project — Harvard",
-          "url": "https://khipukamayuq.fas.harvard.edu/",
+          "title": "The Khipu Database (UNESCO Memory of the World)",
+          "url": "https://www.unesco.org/en/memory-world/lac/khipu-database-khipu-archives",
           "kind": "Reference",
-          "desc": "Primary research archive of surviving khipu and metadata."
+          "desc": "Overview of the Harvard-led digital khipu archive and its scope."
         },
         {
           "title": "Qhapaq Ñan, Andean Road System — UNESCO",
@@ -384,7 +577,7 @@
           "title": "Cracking the Khipu Code",
           "url": "https://www.science.org/doi/10.1126/science.300.5626.1650",
           "kind": "Research Paper",
-          "desc": "Concise research report on khipu decoding and narrative possibility."
+          "desc": "Research report on khipu decoding and narrative possibility."
         },
         {
           "title": "Terraces and Ancestral Knowledge in an Andean Agroecosystem",
@@ -396,17 +589,84 @@
           "title": "Terracing, Land Management and Agricultural Soils in the Andes",
           "url": "https://digitalcommons.du.edu/context/etd/article/2257/viewcontent/Murphy_denver_0061M_11523.pdf",
           "kind": "Research Paper",
-          "desc": "Deep academic treatment of terrace systems and land-use engineering."
+          "desc": "Academic treatment of terrace systems and land-use engineering."
         }
       ]
     },
-    "dravidian_sangam": {
+    {
+      "id": "dravidian_sangam",
+      "name": "Sangam Tamil",
+      "symbol": "🌺",
+      "coords": [
+        79.8,
+        11.0
+      ],
+      "region": "Asia",
+      "location": "South India (Tamil Nadu, Sri Lanka)",
+      "era": "300 BCE – 300 CE",
+      "desc": "The Sangam era produced one of the world's oldest secular literary traditions — over 2,000 poems by 450+ named poets, including women. Tamil civilization developed sophisticated grammar, love poetry classified by ecological zones, maritime trade across the Indian Ocean, and rice cultivation systems.",
+      "tags": [
+        "Literature",
+        "Ecology",
+        "Trade",
+        "Navigation",
+        "Governance",
+        "Agriculture"
+      ],
+      "creationStories": [
+        "Murugan (Karthikeya) — the eternal youth god born of Shiva, protector of Tamil language and mountains",
+        "The Kumari Kandam legend — a drowned southern continent where early Sangam academies convened",
+        "Mayon (Vishnu) associated with pastoralism and dark forest — tinai landscape deity",
+        "Tamil is regarded as itself divine — Tolkaappiyam grammar as the body of language-consciousness"
+      ],
+      "corePrinciples": [
+        "Tinai system — five ecological zones (mountain, forest, pastoral, coastal, wasteland) each encoding specific love and war emotions",
+        "Akam (interior) and puram (exterior) — classical Tamil poetry divided into inner emotional and outer social worlds",
+        "Aram (dharma/virtue), porul (wealth/polity), inbam (love) — three classical Tamil values",
+        "Yāl — ancient harp tradition embodying the relationship between music and landscape",
+        "Tamil grammar (Tolkaappiyam, 3rd c. BCE) — most complete grammar of any ancient language",
+        "Salt as sacred trade item — salterns as hubs of coastal exchange networks"
+      ],
+      "knowledgeSystems": [
+        "Tolkāppiyam — oldest surviving Tamil grammar, foundational to all South Asian linguistic theory",
+        "Siddha medicine (Siddha vaidyam) — alchemical-based healing system using mercury, sulfur, and 64 mineral preparations",
+        "Water management — tank (Eri) systems irrigating millions of hectares, still in use",
+        "Maritime astronomy — star-based navigation across the Arabian Sea to Rome and Southeast Asia",
+        "Textile knowledge — Kanchipuram silk weaving as encoded sacred geometry",
+        "Carnatic music theory — 72 parent scales (melakarta) as mathematical classification"
+      ],
+      "movement": [
+        "Roman-Tamil trade: Tamil ports exported pepper, ivory, textiles to Rome; received gold coins in return",
+        "Tamil maritime merchants (Chettiars) established networks across Southeast Asia and Sri Lanka",
+        "Tamil Buddhist monks carried Sanskrit and Pali texts to Sri Lanka, Myanmar, and Thailand",
+        "Chola Empire (900–1300 CE) projected Tamil influence from the Maldives to Sumatra"
+      ],
+      "highlights": [
+        "Sangam corpus: 2,381 poems in 18 anthologies — authored by kings, outcasts, and women equally",
+        "Discovered: Tamil-Brahmi inscriptions dating to 4th century BCE in Sri Lanka",
+        "Tamil is the only ancient classical language still spoken natively by 80M+ people",
+        "Carnatic music — mathematical theory of 72 parent scales developed 1200 years before Western equal temperament",
+        "Eri (tank irrigation) — 40,000 traditional water harvesting tanks in Tamil Nadu today"
+      ],
+      "modernLegacy": [
+        "Tamil diaspora in 40+ countries — one of the world's most globally distributed language communities",
+        "Tamil classical education revival through Sangam poetry in contemporary curriculum",
+        "Siddha medicine recognized as one of India's six official medical systems",
+        "Carnatic music performed globally as one of the two major classical Indian music traditions",
+        "Tamil Eelam movement and contemporary Tamil identity politics rooted in Sangam heritage"
+      ],
       "readingLinks": [
         {
           "title": "Tamil Virtual Academy / Tamil Virtual University",
           "url": "https://www.tamilvu.org/",
           "kind": "Reference",
-          "desc": "Best general portal for Tamil classical texts, grammar tools, and Sangam material."
+          "desc": "Portal for Tamil classical texts, grammar tools, and Sangam material."
+        },
+        {
+          "title": "Tamil Virtual University — Sangam literature course",
+          "url": "https://www.tamilvu.org/courses/degree/a041/a0411/html/a04112en.htm",
+          "kind": "Reference",
+          "desc": "Introductory overview of Sangam literature and chronology."
         },
         {
           "title": "Sangam Literature Digital Archive",
@@ -415,7 +675,7 @@
           "desc": "English access point to key Sangam anthologies."
         },
         {
-          "title": "Tolkappiyam in English",
+          "title": "Tolkāppiyam in English",
           "url": "https://ia800809.us.archive.org/33/items/dli.jZY9lup2kZl6TuXGlZQdjZU3kZly.TVA_BOK_0006660/TVA_BOK_0006660_Tolkappiyam_in_english_text.pdf",
           "kind": "Primary Text",
           "desc": "English-access version of the foundational Tamil grammatical tradition."
@@ -424,13 +684,7 @@
           "title": "Gleanings of Tamil Culture",
           "url": "https://www.tamilvu.org/library/nationalized/pdf/53-paramasivanantham/008.gleaningsoftamilliterature.pdf",
           "kind": "Reference",
-          "desc": "Useful synthetic reading for literature, worldview, and civilizational framing."
-        },
-        {
-          "title": "Tamil among the Classical Languages of the World",
-          "url": "https://www.tamilvu.org/library/kulothungan/pdf/Tamil_Among_the_Classical_Languages_of_the_World.pdf",
-          "kind": "Reference",
-          "desc": "Good framing text for the significance of Tamil classicality."
+          "desc": "Synthetic reading for literature, worldview, and civilizational framing."
         }
       ],
       "researchPapers": [
@@ -460,5 +714,83 @@
         }
       ]
     }
-  }
+  ],
+  "newLinks": [
+    {
+      "source": "yoruba",
+      "target": "taino",
+      "label": "Diaspora Convergence",
+      "themes": [
+        "Cosmology",
+        "Oral Tradition",
+        "Resistance"
+      ],
+      "description": "Yoruba enslaved peoples carried Orishas to the Caribbean, where they merged with Taíno sacred geography in Lucumí (Cuba) and Candomblé ceremonies."
+    },
+    {
+      "source": "yoruba",
+      "target": "kemet",
+      "label": "African Intellectual Lineage",
+      "themes": [
+        "Cosmology",
+        "Governance",
+        "Philosophy"
+      ],
+      "description": "Yoruba and Kemetic cosmologies share structural parallels — creation from primordial water, divine breath animating matter, and sacred kingship as cosmic mediation."
+    },
+    {
+      "source": "maya_classic",
+      "target": "andean_tawantinsuyu",
+      "label": "Andean-Mesoamerican Exchange",
+      "themes": [
+        "Agriculture",
+        "Astronomy",
+        "Trade"
+      ],
+      "description": "Long-distance maritime trade connected Maya merchants on Pacific coasts with Andean llama-caravan networks; cacao, spondylus shell, and obsidian all moved between the two spheres."
+    },
+    {
+      "source": "maya_classic",
+      "target": "taino",
+      "label": "Caribbean-Mesoamerican Exchange",
+      "themes": [
+        "Trade",
+        "Agriculture",
+        "Navigation"
+      ],
+      "description": "Post-Classic Maya sea traders (Putun/Chontal) operated across the Gulf of Mexico and Western Caribbean, overlapping with Taíno maritime networks."
+    },
+    {
+      "source": "polynesia",
+      "target": "andean_tawantinsuyu",
+      "label": "Sweet Potato Evidence",
+      "themes": [
+        "Navigation",
+        "Agriculture",
+        "Ecology"
+      ],
+      "description": "Genetic studies confirm Polynesian contact with South America c. 1200 CE — the Quechua word for sweet potato (kumara) matches Polynesian cognates, and the plant traveled west across the Pacific."
+    },
+    {
+      "source": "dravidian_sangam",
+      "target": "polynesia",
+      "label": "Indian Ocean Navigation",
+      "themes": [
+        "Navigation",
+        "Trade",
+        "Seafaring"
+      ],
+      "description": "Tamil maritime astronomers and Polynesian wayfinders independently developed star-compass systems; both trade networks reached Southeast Asia where the systems likely exchanged technique."
+    },
+    {
+      "source": "dravidian_sangam",
+      "target": "kemet",
+      "label": "Spice Route",
+      "themes": [
+        "Trade",
+        "Governance"
+      ],
+      "description": "Tamil pepper and ivory reached Egypt via Red Sea ports as early as 300 BCE; Roman-era papyri record Tamil merchants (Cholas) by name."
+    }
+  ]
 }
