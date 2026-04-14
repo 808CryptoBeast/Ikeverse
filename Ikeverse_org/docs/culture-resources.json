@@ -1,5 +1,6 @@
 {
-  "version": 1,
+  "version": 3,
+  "_note": "Resource expansion patch — merge into matching entries in your existing cultures data. For newCultureResources, match each key to the object in newCultures where id matches.",
   "cultures": {
     "kanaka_kumulipo": {
       "readingLinks": [
@@ -7,67 +8,455 @@
           "title": "The Kumulipo: a Hawaiian Creation Chant (Beckwith, Ulukau edition)",
           "url": "https://ulukau.org/ulukau-books/?a=d&d=EBOOK-BECKWIT2.1.2",
           "kind": "Primary Text",
-          "desc": "Full text + Beckwith commentary (digital library)."
+          "desc": "Digital edition of the Kumulipo with translation and commentary."
         },
         {
-          "title": "Kumulipo (Text and Translation) PDF (KSBE / Ke Aliʻi Daki)",
-          "url": "https://blogs.ksbe.edu/adakina/files/2008/02/kumulipo-text.pdf",
+          "title": "Ka Poʻe Kahiko: The People of Old — Samuel Mānaiakalani Kamakau",
+          "url": "https://bishopmuseumpress.org/products/ka-poe-kahiko-the-people-of-old",
           "kind": "Primary Text",
-          "desc": "PDF excerpt/edition: Hawaiian + English translation."
+          "desc": "Kamakau on Hawaiian society, religion, social structure, and ʻike kūpuna."
         },
         {
-          "title": "Kumulipo (Bishop Museum featured article)",
-          "url": "https://www.bishopmuseum.org/japanese-featured-article-4/",
-          "kind": "Museum",
-          "desc": "Museum context for Kumulipo exhibit (Japanese page)."
+          "title": "The Works of the People of Old: Nā Hana a Ka Poʻe Kahiko — Samuel Mānaiakalani Kamakau",
+          "url": "https://bishopmuseumpress.org/products/the-works-of-the-people-of-old",
+          "kind": "Primary Text",
+          "desc": "Kamakau on cultivation, fishponds, kapa, canoe work, house building, and everyday practice."
         },
         {
-          "title": "Kumulipo overview (Wikipedia)",
-          "url": "https://en.wikipedia.org/wiki/Kumulipo",
+          "title": "Hawaiian Antiquities: Moʻolelo Hawaiʻi — David Malo",
+          "url": "https://bishopmuseumpress.org/products/hawaiian-antiquities-mo-olelo-hawai-i",
+          "kind": "Primary Text",
+          "desc": "Foundational Native Hawaiian account of beliefs, institutions, rituals, and origin traditions."
+        },
+        {
+          "title": "The Moʻolelo Hawaiʻi of Davida Malo, Volume 2 — Hawaiian Text and Translation",
+          "url": "https://uhpress.hawaii.edu/title/the-mo%CA%BBolelo-hawai%CA%BBi-of-davida-malo-volume-2-hawaiian-text-and-translation/",
+          "kind": "Primary Text",
+          "desc": "Annotated bilingual edition for closer study of Malo in Hawaiian and English."
+        },
+        {
+          "title": "Nānā i ke Kumu (Look to the Source), Volume I — Mary Kawena Pukui, E. W. Haertig, Catherine Lee",
+          "url": "https://ulukau.org/ulukau-books/?a=d&d=EBOOK-QLCC1&l=haw",
           "kind": "Reference",
-          "desc": "Quick overview and bibliography pointers."
+          "desc": "Classic work on Hawaiian values, concepts, customs, and cultural logic."
+        },
+        {
+          "title": "Nānā i ke Kumu (Look to the Source), Volume II — Mary Kawena Pukui, E. W. Haertig, Catherine Lee",
+          "url": "https://ulukau.org/ulukau-books/?a=d&d=EBOOK-QLCC2",
+          "kind": "Reference",
+          "desc": "Continuation covering broader social practice, healing, symbols, family, and relational life."
+        },
+        {
+          "title": "ʻŌlelo Noʻeau: Hawaiian Proverbs & Poetical Sayings — Mary Kawena Pukui",
+          "url": "https://www.bishopmuseumpress.org/products/olelo-no-eau-hawaiian-proverbs-poetical-sayings-1",
+          "kind": "Reference",
+          "desc": "Essential proverb collection for layered Hawaiian thought, ethics, and metaphor."
+        },
+        {
+          "title": "Place Names of Hawaiʻi — Mary Kawena Pukui, Samuel H. Elbert, Esther T. Mookini",
+          "url": "https://ulukau.org/ulukau-books/?a=d&d=EBOOK-PEPN",
+          "kind": "Reference",
+          "desc": "Geographic memory, layered meaning, and ʻike place-based naming traditions."
+        },
+        {
+          "title": "Hawaiian Dictionary — Mary Kawena Pukui and Samuel H. Elbert",
+          "url": "https://uhpress.hawaii.edu/title/hawaiian-dictionary-hawaiian-english-english-hawaiian-revised-and-enlarged-edition/",
+          "kind": "Reference",
+          "desc": "Core lexicon for precise language study and reading older Hawaiian materials."
+        },
+        {
+          "title": "Mālama Honua — Hōkūleʻa World Voyage",
+          "url": "https://www.hokulea.com/malamaHonua/",
+          "kind": "Living Practice",
+          "desc": "Contemporary continuity of voyaging knowledge, ancestral relationship, and ʻike navigation."
+        }
+      ],
+      "researchPapers": [
+        {
+          "title": "Historians of Traditional Hawaiʻi: An Annotated Bibliography",
+          "url": "https://evols.library.manoa.hawaii.edu/bitstreams/9b5a3b48-c2c0-489d-9d64-cbf456f402c8/download",
+          "kind": "Research Paper",
+          "desc": "Useful research map into Malo, Kamakau, and other early Hawaiian historians."
+        },
+        {
+          "title": "Malo's Moʻolelo Hawaiʻi: The Lost Translation",
+          "url": "https://evols.library.manoa.hawaii.edu/server/api/core/bitstreams/63f45340-0609-428d-9304-c5c97782879d/content",
+          "kind": "Research Paper",
+          "desc": "Study of translation history, manuscript transmission, and textual interpretation around David Malo."
+        },
+        {
+          "title": "Davida Malo's Unpublished Account of Keōpūolani",
+          "url": "https://evols.library.manoa.hawaii.edu/bitstreams/73598516-310e-464e-b6a7-496a6c56ec5f/download",
+          "kind": "Research Paper",
+          "desc": "Primary-source scholarship useful for Malo's narrative method and historical context."
         }
       ]
     },
     "polynesia": {
       "readingLinks": [
         {
-          "title": "Bishop Museum — 2025 Nānā i ke Kumu Series (voyaging / knowledge sharing)",
+          "title": "Polynesian Voyaging Society",
+          "url": "https://www.hokulea.com/",
+          "kind": "Living Practice",
+          "desc": "Primary portal for Hōkūleʻa, wayfinding, and living oceanic knowledge traditions."
+        },
+        {
+          "title": "Mālama Honua",
+          "url": "https://www.hokulea.com/malamaHonua/",
+          "kind": "Living Practice",
+          "desc": "Global voyage archive centered on stewardship, navigation, and inter-island knowledge."
+        },
+        {
+          "title": "Voyaging on Hōkūleʻa",
+          "url": "https://coe.hawaii.edu/ethnomath/wp-content/uploads/sites/12/2019/12/Voyaging-on-Hokulea.pdf",
+          "kind": "Reference",
+          "desc": "Accessible study text on non-instrument navigation and canoe knowledge."
+        },
+        {
+          "title": "Bishop Museum — 2025 Nānā i ke Kumu Series",
           "url": "https://www.bishopmuseum.org/2025-nana-i-ke-kumu-series/",
           "kind": "Museum",
-          "desc": "Public programming on voyaging knowledge lineage."
+          "desc": "Public-facing cultural programming connected to Hawaiian and Pacific knowledge lineages."
+        }
+      ],
+      "researchPapers": [
+        {
+          "title": "Voyaging and Interaction in Ancient East Polynesia",
+          "url": "https://scholarspace.manoa.hawaii.edu/bitstream/handle/10125/17170/AP-v41n2-182-194.pdf?sequence=1",
+          "kind": "Research Paper",
+          "desc": "Scholarly treatment of voyaging networks and inter-island contact."
+        },
+        {
+          "title": "Nautical Cartography and Traditional Navigation in Oceania",
+          "url": "https://press.uchicago.edu/books/hoc/HOC_V2_B3/HOC_VOLUME2_Book3_chapter13.pdf",
+          "kind": "Research Paper",
+          "desc": "Major reference chapter on Pacific navigation systems and spatial knowledge."
+        },
+        {
+          "title": "Understanding How Winds May Have Influenced Polynesian Voyaging",
+          "url": "https://opensky.ucar.edu/system/files/2025-04/04_kong-johnson_072924.pdf",
+          "kind": "Research Paper",
+          "desc": "Recent atmospheric study engaging voyaging routes and environmental conditions."
         }
       ]
     },
     "kemet": {
       "readingLinks": [
         {
-          "title": "Creation myths and forms of the gods in ancient Egypt (Smarthistory)",
+          "title": "Creation Myths and Form(s) of the Gods in Ancient Egypt",
           "url": "https://smarthistory.org/creation-myths-and-forms-of-the-gods-in-ancient-egypt/",
           "kind": "Essay",
-          "desc": "Overview of major Egyptian cosmogonies (Heliopolitan, etc.)."
+          "desc": "Clear overview of Heliopolitan, Hermopolitan, and Memphite creation structures."
         },
         {
-          "title": "Atum (Wikipedia)",
-          "url": "https://en.wikipedia.org/wiki/Atum",
-          "kind": "Reference",
-          "desc": "Primer on Atum and links to further resources."
+          "title": "Ancient Egyptian Mortuary Texts, an Introduction",
+          "url": "https://smarthistory.org/ancient-egyptian-mortuary-texts/",
+          "kind": "Essay",
+          "desc": "Good entry point into Pyramid Texts, Coffin Texts, and afterlife literature."
+        },
+        {
+          "title": "The Pyramid Texts (ETANA catalog entry)",
+          "url": "https://etana.org/abzu/view-item.pl?ETANA-RN=ETANA_CATALOG000015",
+          "kind": "Primary Text",
+          "desc": "Core gateway to the oldest surviving royal mortuary corpus."
+        },
+        {
+          "title": "Primeval Water and First Emergence in Egyptian Creation Thought",
+          "url": "https://www.metmuseum.org/essays/hippopotami-in-ancient-egypt",
+          "kind": "Museum",
+          "desc": "Met essay touching the Nun, primeval mound, and first emergence motifs."
+        }
+      ],
+      "researchPapers": [
+        {
+          "title": "The Presence of Myth in the Pyramid Texts",
+          "url": "https://etana.org/node/8419",
+          "kind": "Research Paper",
+          "desc": "Focused scholarly treatment of mythic structure inside the Pyramid Text tradition."
+        },
+        {
+          "title": "The Mechanics of Ancient Egyptian Magical Practice",
+          "url": "https://isac.uchicago.edu/sites/default/files/uploads/shared/docs/saoc54_4th.pdf",
+          "kind": "Research Paper",
+          "desc": "Substantial academic study of ritual language, magical operation, and cosmological logic."
         }
       ]
     },
     "taino": {
       "readingLinks": [
         {
-          "title": "Taíno Society (Florida Museum of Natural History)",
+          "title": "Taíno Society — Florida Museum of Natural History",
           "url": "https://www.floridamuseum.ufl.edu/histarch/research/haiti/en-bas-saline/taino-society/",
           "kind": "Reference",
-          "desc": "Accessible overview: economy, conucos, trade, social life."
+          "desc": "Strong overview of social life, subsistence, and Taíno community structure."
         },
         {
-          "title": "SARE project note on conucos / agroforestry (Puerto Rico)",
+          "title": "Living Taíno Identity — Cultural Survival Quarterly",
+          "url": "https://www.culturalsurvival.org/publications/cultural-survival-quarterly/living-taino-identity",
+          "kind": "Essay",
+          "desc": "Contemporary continuity and descendant voice across the Caribbean."
+        },
+        {
+          "title": "Conucos / Agroforestry in Puerto Rico — SARE",
           "url": "https://projects.sare.org/sare_project/gs23-287/",
           "kind": "Reference",
-          "desc": "Short description of conuco practice and citations."
+          "desc": "Applied revival of Taíno-style agroforestry and land care."
+        }
+      ],
+      "researchPapers": [
+        {
+          "title": "The Structure and Material Assemblage of a Jamaican Taíno Residence at First Spanish Contact",
+          "url": "https://www.floridamuseum.ufl.edu/wp-content/uploads/sites/44/2022/03/JCA-Burley-2022.pdf",
+          "kind": "Research Paper",
+          "desc": "Recent archaeological study of household life and material culture."
+        },
+        {
+          "title": "Taíno Use of Flooded Caverns in the East National Park Region, Dominican Republic",
+          "url": "https://www.floridamuseum.ufl.edu/wp-content/uploads/sites/44/2017/04/Beekeretal.pdf",
+          "kind": "Research Paper",
+          "desc": "Important work on cave use, ritual space, and sacred geography."
+        },
+        {
+          "title": "Crossing the Caribbean Sea and Tracking Intellectual Currents in the Archaeology of the Caribbean",
+          "url": "https://www.floridamuseum.ufl.edu/wp-content/uploads/sites/44/2017/04/Siegel.pdf",
+          "kind": "Research Paper",
+          "desc": "Scholarly frame for mobility, exchange, and Taíno origins debates."
+        },
+        {
+          "title": "Pre-Columbian Human Osteological Remains from Jamaica",
+          "url": "https://www.floridamuseum.ufl.edu/wp-content/uploads/sites/44/2022/04/JCA-Santos-and-Allsworth.pdf",
+          "kind": "Research Paper",
+          "desc": "Bioarchaeological synthesis useful for population and mortuary study."
+        }
+      ]
+    }
+  },
+  "newCultureResources": {
+    "yoruba": {
+      "readingLinks": [
+        {
+          "title": "Ifá Divination System — UNESCO Intangible Heritage",
+          "url": "https://ich.unesco.org/en/RL/ifa-divination-system-00146",
+          "kind": "Reference",
+          "desc": "UNESCO overview of Ifá as a living knowledge system."
+        },
+        {
+          "title": "Ifá of the Yoruba People of Nigeria — UNESCO multimedia",
+          "url": "https://www.unesco.org/archives/multimedia/document-3742",
+          "kind": "Reference",
+          "desc": "Short interpretive UNESCO introduction to the Ifá corpus and practice."
+        },
+        {
+          "title": "Olódùmarè: God in Yoruba Belief — archive record",
+          "url": "https://archive.org/details/olodumaregodinyo0000idow",
+          "kind": "Primary Text",
+          "desc": "Classic study of Yoruba metaphysics and divine order."
+        },
+        {
+          "title": "Yoruba Art & Culture",
+          "url": "https://hearstmuseum.berkeley.edu/wp-content/uploads/TeachingKit_YorubaArtAndCulture.pdf",
+          "kind": "Reference",
+          "desc": "Accessible museum teaching guide connecting cosmology, art, and divination."
+        },
+        {
+          "title": "Yoruba: Nine Centuries of African Art and Thought",
+          "url": "https://www.amherst.edu/system/files/media/1117/Reduced%2520Yoruba9CenturiesChap1.pdf",
+          "kind": "Reference",
+          "desc": "Strong cultural-historical framing of Yoruba cosmology and aesthetics."
+        }
+      ],
+      "researchPapers": [
+        {
+          "title": "The Study of Yoruba Religious Tradition in Historical Perspective",
+          "url": "https://www.jstor.org/stable/pdf/3270151.pdf",
+          "kind": "Research Paper",
+          "desc": "Major historiographic essay on Yoruba religious scholarship."
+        },
+        {
+          "title": "God in Yoruba Belief and the Theistic Problem of Evil",
+          "url": "https://asq.africa.ufl.edu/wp-content/uploads/sites/168/ASQ-Vol-2-Issue-1-Bewaji.pdf",
+          "kind": "Research Paper",
+          "desc": "Frequently cited philosophical treatment of Olódùmarè and Yoruba theology."
+        },
+        {
+          "title": "Development of the Ifa Priesthood in Nigeria and the United States",
+          "url": "https://openscholar.uga.edu/record/3398/files/Development%20of%20the%20Ifa%20Priesthood%20Final.pdf",
+          "kind": "Research Paper",
+          "desc": "Useful for continuity, transmission, and diaspora priesthood formation."
+        },
+        {
+          "title": "Divinity, Creativity and Humanity in Yoruba Aesthetics",
+          "url": "https://faculty.risd.edu/bcampbel/lawal-divinity%2Ccreativity%26humanity.pdf",
+          "kind": "Research Paper",
+          "desc": "Strong study of Yoruba visual thought, sacred form, and cosmology."
+        }
+      ]
+    },
+    "maya_classic": {
+      "readingLinks": [
+        {
+          "title": "Popol Vuh: Sacred Book of the Quiché Maya People",
+          "url": "https://www.mesoweb.com/publications/Christenson/PopolVuh.pdf",
+          "kind": "Primary Text",
+          "desc": "Widely used translation for creation cycles, hero twins, and cosmological structure."
+        },
+        {
+          "title": "Popol Vuh: Literal Translation",
+          "url": "https://www.mesoweb.com/publications/Christenson/PV-Literal.pdf",
+          "kind": "Primary Text",
+          "desc": "Closer line-level rendering for detailed textual study."
+        },
+        {
+          "title": "FAMSI — Foundation for the Advancement of Mesoamerican Studies",
+          "url": "http://www.famsi.org/",
+          "kind": "Reference",
+          "desc": "Large archive of codices, reports, epigraphy, and Maya research material."
+        },
+        {
+          "title": "Maya Astronomy",
+          "url": "https://www.mesoweb.com/publications/CAA/CAA02.pdf",
+          "kind": "Reference",
+          "desc": "Accessible scholarly overview of calendrics and astronomical reasoning."
+        },
+        {
+          "title": "Mesoweb Publications Index",
+          "url": "https://www.mesoweb.com/index/title.html",
+          "kind": "Reference",
+          "desc": "Gateway to Classic Maya scholarship, translations, and epigraphic studies."
+        }
+      ],
+      "researchPapers": [
+        {
+          "title": "Classic Maya Murals and Astronomical Tables at Xultun",
+          "url": "https://www.mesoweb.com/reports/Xultun.pdf",
+          "kind": "Research Paper",
+          "desc": "Important for astronomical calculation and scribal knowledge."
+        },
+        {
+          "title": "Disaster, Deluge, and Destruction on the Star War Vase",
+          "url": "https://www.mesoweb.com/articles/Zender_2020.pdf",
+          "kind": "Research Paper",
+          "desc": "Scholarly article linking iconography, myth, and celestial warfare themes."
+        },
+        {
+          "title": "Maya Creator Gods",
+          "url": "https://www.mesoweb.com/features/bassie/CreatorGods/CreatorGods.pdf",
+          "kind": "Research Paper",
+          "desc": "Good research piece for creation deities and mythic continuity."
+        }
+      ]
+    },
+    "andean_tawantinsuyu": {
+      "readingLinks": [
+        {
+          "title": "Khipu Database Project — Harvard",
+          "url": "https://khipukamayuq.fas.harvard.edu/",
+          "kind": "Reference",
+          "desc": "Primary research archive of surviving khipu and metadata."
+        },
+        {
+          "title": "Qhapaq Ñan, Andean Road System — UNESCO",
+          "url": "https://whc.unesco.org/en/list/1459/",
+          "kind": "Reference",
+          "desc": "World Heritage overview of the Inca and pre-Inca road network."
+        },
+        {
+          "title": "Main Andean Road — Qhapaq Ñan",
+          "url": "https://whc.unesco.org/en/qhapaqnan/",
+          "kind": "Reference",
+          "desc": "Supplemental UNESCO entry focused on the road system as imperial backbone."
+        },
+        {
+          "title": "The Domesticated Landscapes of the Andes",
+          "url": "https://anthropology.sas.upenn.edu/sites/default/files/page/EricksonDomesticatedLandscapesOfTheAndes2019b.pdf",
+          "kind": "Reference",
+          "desc": "Broad landscape and agriculture overview for Andean ecological engineering."
+        }
+      ],
+      "researchPapers": [
+        {
+          "title": "Khipu Accounting in Ancient Peru",
+          "url": "https://www.science.org/doi/10.1126/science.1113426",
+          "kind": "Research Paper",
+          "desc": "Landmark article on patterned khipu accounting structures."
+        },
+        {
+          "title": "Cracking the Khipu Code",
+          "url": "https://www.science.org/doi/10.1126/science.300.5626.1650",
+          "kind": "Research Paper",
+          "desc": "Concise research report on khipu decoding and narrative possibility."
+        },
+        {
+          "title": "Terraces and Ancestral Knowledge in an Andean Agroecosystem",
+          "url": "https://www.uvm.edu/d10-files/documents/2025-02/Gallegos-RiofrioCAEtAl_TerracesAncestralKnowledgeAndes_22.pdf",
+          "kind": "Research Paper",
+          "desc": "Recent study on terrace knowledge, continuity, and agroecology."
+        },
+        {
+          "title": "Terracing, Land Management and Agricultural Soils in the Andes",
+          "url": "https://digitalcommons.du.edu/context/etd/article/2257/viewcontent/Murphy_denver_0061M_11523.pdf",
+          "kind": "Research Paper",
+          "desc": "Deep academic treatment of terrace systems and land-use engineering."
+        }
+      ]
+    },
+    "dravidian_sangam": {
+      "readingLinks": [
+        {
+          "title": "Tamil Virtual Academy / Tamil Virtual University",
+          "url": "https://www.tamilvu.org/",
+          "kind": "Reference",
+          "desc": "Best general portal for Tamil classical texts, grammar tools, and Sangam material."
+        },
+        {
+          "title": "Sangam Literature Digital Archive",
+          "url": "https://www.tamilnation.org/literature/sangam/",
+          "kind": "Primary Text",
+          "desc": "English access point to key Sangam anthologies."
+        },
+        {
+          "title": "Tolkappiyam in English",
+          "url": "https://ia800809.us.archive.org/33/items/dli.jZY9lup2kZl6TuXGlZQdjZU3kZly.TVA_BOK_0006660/TVA_BOK_0006660_Tolkappiyam_in_english_text.pdf",
+          "kind": "Primary Text",
+          "desc": "English-access version of the foundational Tamil grammatical tradition."
+        },
+        {
+          "title": "Gleanings of Tamil Culture",
+          "url": "https://www.tamilvu.org/library/nationalized/pdf/53-paramasivanantham/008.gleaningsoftamilliterature.pdf",
+          "kind": "Reference",
+          "desc": "Useful synthetic reading for literature, worldview, and civilizational framing."
+        },
+        {
+          "title": "Tamil among the Classical Languages of the World",
+          "url": "https://www.tamilvu.org/library/kulothungan/pdf/Tamil_Among_the_Classical_Languages_of_the_World.pdf",
+          "kind": "Reference",
+          "desc": "Good framing text for the significance of Tamil classicality."
+        }
+      ],
+      "researchPapers": [
+        {
+          "title": "Papers in Tamil Literature",
+          "url": "https://www.tamilvu.org/library/nationalized/pdf/56-cbalasubramaniyan/papersintamilliterature.pdf",
+          "kind": "Research Paper",
+          "desc": "Collected scholarly essays with useful Sangam-era literary context."
+        },
+        {
+          "title": "Early South Indian Society and Economy: The Tinai Concept",
+          "url": "https://www.jstor.org/stable/3516448",
+          "kind": "Research Paper",
+          "desc": "Classic study of ecology, poetics, and society through the tinai framework."
+        },
+        {
+          "title": "Can the Tinai Help Understand the Iron Age / Early Historic Transition in Tamil Nadu?",
+          "url": "https://www.jstor.org/stable/26160188",
+          "kind": "Research Paper",
+          "desc": "Archaeology-literature bridge for landscape, chronology, and social organization."
+        },
+        {
+          "title": "Department of Tamil Studies — Shodhganga",
+          "url": "https://shodhganga.inflibnet.ac.in/handle/10603/33193",
+          "kind": "Research Repository",
+          "desc": "Open repository for theses on Tamil studies, literature, language, and history."
         }
       ]
     }

@@ -1,24 +1,128 @@
-<!-- file: cosmic-weave.html -->
+<!-- file: Ikeverse_org/cosmic-weave.html — Full Three.js rebuild -->
 <!DOCTYPE html>
 <html lang="en" data-mode="quantum">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>The Cosmic Weave | Ikeverse</title>
+  <meta name="description" content="Interactive 3D globe connecting ancestral wisdom traditions — Three.js WebGL sphere with force graph, timeline scrubber, and guided tour.">
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/cosmic-weave.css" />
-  <link rel="stylesheet" href="./css/culture-details.css">
-
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <script src="https://d3js.org/d3.v7.min.js" defer></script>
-  <script src="https://unpkg.com/topojson@3" defer></script>
-  <script src="js/cosmic-weave.js" defer></script>
+  <style>
+    /* ── Viewports ── */
+    .viz-stage { position:relative; }
+    #globe-viewport-3d, #map-viewport, #graph-viewport {
+      width:100%; height:100%; position:absolute; top:0; left:0;
+    }
+    #map-viewport  { display:none; }
+    #graph-viewport{ display:none; }
+
+    /* ── Tour progress bar ── */
+    #tourProgress {
+      display:none; align-items:center; padding:8px 16px;
+      background:rgba(4,7,15,.85); border-top:1px solid rgba(0,247,255,.1);
+      flex-wrap:wrap; gap:4px;
+    }
+    .tour-active { background:rgba(157,0,255,.15)!important; border-color:rgba(157,0,255,.5)!important; }
+
+    /* ── Timeline ── */
+    .tl-btn {
+      font-family:Orbitron,monospace; font-size:10px; padding:4px 10px;
+      border:1px solid rgba(0,247,255,.25); background:rgba(0,247,255,.07);
+      color:rgba(255,255,255,.8); border-radius:999px; cursor:pointer;
+    }
+    .tl-btn:hover { background:rgba(0,247,255,.15); }
+
+    /* ── Clickable culture tags ── */
+    .culture-tag--btn {
+      cursor:pointer; border:1px solid rgba(0,247,255,.2);
+      background:rgba(0,247,255,.06); color:rgba(0,247,255,.85);
+      padding:3px 10px; border-radius:999px; font-size:.75rem;
+      font-family:Orbitron,monospace; transition:all .2s;
+    }
+    .culture-tag--btn:hover { background:rgba(0,247,255,.15); border-color:rgba(0,247,255,.5); }
+    .culture-tag--active {
+      background:rgba(255,215,0,.15)!important; border-color:rgba(255,215,0,.6)!important;
+      color:rgba(255,215,0,.95)!important; box-shadow:0 0 8px rgba(255,215,0,.3);
+    }
+
+    /* ── Reading links ── */
+    .culture-reading-links { margin-top:12px; }
+    .cw-reading-list { list-style:none; display:flex; flex-direction:column; gap:6px; padding:4px 0; }
+    .cw-reading-item { display:block; }
+    .cw-reading-link {
+      display:flex; align-items:flex-start; gap:10px; padding:9px 12px;
+      background:rgba(0,247,255,.04); border:1px solid rgba(0,247,255,.12);
+      border-radius:8px; text-decoration:none; transition:all .2s;
+      color:inherit;
+    }
+    .cw-reading-link:hover {
+      background:rgba(0,247,255,.1); border-color:rgba(0,247,255,.35);
+      transform:translateX(3px);
+    }
+    .cw-reading-icon {
+      font-size:14px; color:rgba(0,247,255,.7); flex-shrink:0; margin-top:2px;
+    }
+    .cw-reading-body { display:flex; flex-direction:column; gap:2px; flex:1; min-width:0; }
+    .cw-reading-title { font-size:.82rem; font-weight:500; color:rgba(220,240,255,.9); line-height:1.4; }
+    .cw-reading-kind {
+      font-size:.68rem; font-family:Orbitron,monospace; letter-spacing:.06em;
+      color:rgba(255,215,0,.65); text-transform:uppercase;
+    }
+    .cw-reading-desc { font-size:.75rem; color:rgba(180,200,220,.65); line-height:1.4; }
+    .cw-reading-ext { font-size:10px; color:rgba(0,247,255,.4); flex-shrink:0; margin-top:3px; }
+
+    /* ── Connection card enhancements ── */
+    .connection-card-head { display:flex; align-items:center; gap:10px; }
+    .connection-symbol { font-size:1.4rem; flex-shrink:0; }
+    .connection-region { font-size:.72rem; color:rgba(180,200,220,.55); display:block; }
+    .connection-fly-btn {
+      margin-left:auto; flex-shrink:0; width:30px; height:30px;
+      border:1px solid rgba(0,247,255,.2); background:rgba(0,247,255,.06);
+      color:rgba(0,247,255,.7); border-radius:50%; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; font-size:11px;
+      transition:all .2s;
+    }
+    .connection-fly-btn:hover {
+      background:rgba(0,247,255,.2); border-color:rgba(0,247,255,.5);
+      color:#fff; transform:scale(1.1);
+    }
+    .connection-card--suggested { border-color:rgba(157,0,255,.25)!important; }
+    .connection-suggested-badge {
+      font-size:.68rem; font-family:Orbitron,monospace; color:rgba(157,0,255,.7);
+      margin-top:4px; letter-spacing:.06em;
+    }
+
+    /* ── Mobile toolbar scroll ── */
+    @media (max-width:860px){
+      .cw-world-toolbar { flex-direction:column; gap:8px; padding:10px; }
+      .cw-toolbar-left, .cw-toolbar-right { width:100%; justify-content:flex-start; }
+      .cw-toolbar-center { width:100%; flex:unset; padding:8px; }
+      .cw-toolbar-row { flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; justify-content:flex-start; scrollbar-width:none; }
+      .cw-toolbar-row::-webkit-scrollbar { display:none; }
+      .cw-lens, .cw-layer-btn { flex-shrink:0; font-size:.78rem; padding:.42rem .65rem; white-space:nowrap; }
+      .globe-control { width:44px; height:44px; }
+    }
+    @media (max-width:600px){
+      #globe-viewport-3d canvas, #map-viewport svg, #graph-viewport canvas { height:320px!important; }
+      .viz-stage { height:320px!important; }
+    }
+
+    /* ── Force graph hint ── */
+    .graph-hint { font-size:10px; font-family:Orbitron,monospace; color:rgba(0,247,255,.4); text-align:center; padding:4px 0 0; letter-spacing:.08em; }
+
+    /* ── Keyboard hint ── */
+    .cw-keyboard-hint { display:none; font-size:.75rem; color:rgba(0,247,255,.4); font-family:Orbitron,monospace; letter-spacing:.08em; text-align:center; padding:6px 0 2px; }
+    @media(hover:hover){.cw-keyboard-hint{display:block;}}
+  </style>
 </head>
 
 <body>
+  <!-- Video background -->
   <div class="cosmic-video-background">
     <video autoplay muted loop playsinline id="cosmic-video">
       <source src="assets/images/cosmic.mp4" type="video/mp4">
@@ -26,249 +130,241 @@
     <div class="video-overlay"></div>
   </div>
 
+  <!-- Nav -->
   <nav class="quantum-nav cosmic-nav">
     <div class="nav-portal" id="nav-portal">
       <div class="portal-ring outer"></div>
       <div class="portal-ring middle"></div>
       <div class="portal-ring inner"></div>
       <div class="portal-center">
-        <span class="logo-icon">🌌</span>
+        <img src="../assets/images/KMicon.png" alt="KM"
+             style="width:30px;height:30px;object-fit:contain;border-radius:4px;"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="logo-icon" style="display:none">🌌</span>
       </div>
     </div>
 
     <div class="nav-links-container" id="nav-links">
       <ul class="nav-links">
-        <li class="nav-item">
-          <a href="index.html" class="nav-link">
-            <span class="link-icon"><i class="fas fa-home"></i></span>
-            <span class="link-text">Home</span>
-            <span class="link-pulse"></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="cosmic-weave.html" class="nav-link active">
-            <span class="link-icon"><i class="fas fa-atom"></i></span>
-            <span class="link-text">Cosmic Weave</span>
-            <span class="link-pulse"></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="roadmap.html" class="nav-link">
-            <span class="link-icon"><i class="fas fa-timeline"></i></span>
-            <span class="link-text">Our Journey</span>
-            <span class="link-pulse"></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="whitepaper.pdf" class="nav-link cta" target="_blank" rel="noopener">
-            <span class="link-icon"><i class="fas fa-scroll"></i></span>
-            <span class="link-text">White Paper</span>
-            <span class="link-pulse"></span>
-          </a>
-        </li>
+        <li class="nav-item"><a href="../index.html" class="nav-link"><span class="link-icon"><i class="fas fa-home"></i></span><span class="link-text">Home</span></a></li>
+        <li class="nav-item"><a href="cosmic-weave.html" class="nav-link active"><span class="link-icon"><i class="fas fa-atom"></i></span><span class="link-text">Cosmic Weave</span></a></li>
+        <li class="nav-item"><a href="../culturalverse.html" class="nav-link"><span class="link-icon"><i class="fas fa-scroll"></i></span><span class="link-text">Culturalverse</span></a></li>
+        <li class="nav-item"><a href="roadmap.html" class="nav-link"><span class="link-icon"><i class="fas fa-timeline"></i></span><span class="link-text">Journey</span></a></li>
+        <li class="nav-item"><a href="whitepaper.pdf" class="nav-link cta" target="_blank" rel="noopener"><span class="link-icon"><i class="fas fa-file-alt"></i></span><span class="link-text">White Paper</span></a></li>
       </ul>
     </div>
-
-    <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" type="button">
-      <i class="fas fa-bars"></i>
-    </button>
-
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" type="button"><i class="fas fa-bars"></i></button>
     <div class="nav-scanline"></div>
     <div class="nav-hologram"></div>
   </nav>
 
+  <!-- Hero -->
   <section class="cosmic-hero">
     <h1>The Cosmic Weave</h1>
-    <p class="hero-slogan">"All knowledge is connected like the threads of a great mat" - Polynesian proverb</p>
-    <p class="hero-hint">Globe ↔ Map ↔ Split • Lenses show meaning • Layers show structure • Weave Paths explain links</p>
-    <div class="floating-glyphs">
-      <span>🌐</span><span>🌌</span><span>🔗</span>
-    </div>
+    <p class="hero-slogan">"All knowledge is connected like the threads of a great mat" — Polynesian proverb</p>
+    <p class="hero-hint">Drag · Rotate · Zoom · Click nodes · Filter by lens · Scrub the timeline · Take a guided tour</p>
+    <p class="cw-keyboard-hint">← → arrow keys cycle cultures &nbsp;·&nbsp; Esc deselects</p>
+    <div class="floating-glyphs"><span>🌐</span><span>🌌</span><span>🔗</span></div>
   </section>
 
+  <!-- Main globe section -->
   <section class="globe-section">
-    <div id="globe-container" class="viz-mode-globe" aria-label="Cosmic Weave world view">
-      <div class="cw-world-toolbar" role="toolbar" aria-label="World toolbar">
-        <div class="cw-toolbar-left" aria-label="View mode tabs">
-          <button id="tabGlobe" class="viz-tab active" type="button"><i class="fas fa-globe"></i> Globe</button>
-          <button id="tabMap" class="viz-tab" type="button"><i class="fas fa-map"></i> Map</button>
-          <button id="tabSplit" class="viz-tab" type="button"><i class="fas fa-columns"></i> Split</button>
+    <div id="globe-container" class="viz-mode-globe">
+
+      <!-- ── Toolbar ── -->
+      <div class="cw-world-toolbar" role="toolbar">
+
+        <!-- Mode tabs (Globe / Map / Graph) -->
+        <div class="cw-toolbar-left">
+          <button id="tabGlobe"  class="viz-tab active" type="button"><i class="fas fa-globe"></i> Globe</button>
+          <button id="tabMap"    class="viz-tab" type="button"><i class="fas fa-map"></i> Map</button>
+          <button id="tabGraph"  class="viz-tab" type="button"><i class="fas fa-diagram-project"></i> Graph</button>
+          <!-- Tour button (globe only) -->
+          <button id="btnTour" class="viz-tab" type="button" style="margin-left:8px;background:rgba(157,0,255,.1);border-color:rgba(157,0,255,.35);">
+            <i class="fas fa-play-circle"></i> Tour
+          </button>
         </div>
 
-        <!-- MERGED: Lenses + Layers + Guide -->
-        <div class="cw-toolbar-center" aria-label="Meaning and structure">
-          <div class="cw-toolbar-row cw-toolbar-row--lenses" aria-label="Focus lenses">
-            <button class="cw-lens active" data-lens="all" type="button"><i class="fas fa-layer-group"></i> All</button>
-            <button class="cw-lens" data-lens="Creation" type="button"><i class="fas fa-stars"></i> Creation</button>
-            <button class="cw-lens" data-lens="Navigation" type="button"><i class="fas fa-compass"></i> Navigation</button>
-            <button class="cw-lens" data-lens="Martial Arts" type="button"><i class="fas fa-hand-fist"></i> Martial Arts</button>
-            <button class="cw-lens" data-lens="Stewardship" type="button"><i class="fas fa-leaf"></i> Stewardship</button>
-            <button class="cw-lens" data-lens="Ecology" type="button"><i class="fas fa-water"></i> Ecology</button>
-            <button class="cw-lens" data-lens="Governance" type="button"><i class="fas fa-scale-balanced"></i> Governance</button>
+        <!-- Lenses + Layers (horizontal scroll on mobile) -->
+        <div class="cw-toolbar-center">
+          <div class="cw-toolbar-row cw-toolbar-row--lenses">
+            <button class="cw-lens active" data-lens="all"         type="button"><i class="fas fa-layer-group"></i> All</button>
+            <button class="cw-lens" data-lens="Creation"           type="button"><i class="fas fa-stars"></i> Creation</button>
+            <button class="cw-lens" data-lens="Navigation"         type="button"><i class="fas fa-compass"></i> Navigation</button>
+            <button class="cw-lens" data-lens="Martial Arts"       type="button"><i class="fas fa-hand-fist"></i> Martial Arts</button>
+            <button class="cw-lens" data-lens="Stewardship"        type="button"><i class="fas fa-leaf"></i> Stewardship</button>
+            <button class="cw-lens" data-lens="Ecology"            type="button"><i class="fas fa-water"></i> Ecology</button>
+            <button class="cw-lens" data-lens="Governance"         type="button"><i class="fas fa-scale-balanced"></i> Governance</button>
           </div>
-
-          <div class="cw-toolbar-row cw-toolbar-row--layers" aria-label="Project layers">
-            <button class="cw-layer-btn active" data-layer="paths" type="button"><i class="fas fa-route"></i> Weave Path</button>
-            <button class="cw-layer-btn" data-layer="food" type="button"><i class="fas fa-seedling"></i> Food</button>
-            <button class="cw-layer-btn" data-layer="water" type="button"><i class="fas fa-water"></i> Water</button>
-            <button class="cw-layer-btn" data-layer="navigation" type="button"><i class="fas fa-compass"></i> Navigation</button>
-            <button class="cw-layer-btn" data-layer="trade" type="button"><i class="fas fa-coins"></i> Trade</button>
-            <button class="cw-layer-btn" data-layer="stewardship" type="button"><i class="fas fa-leaf"></i> Stewardship</button>
-            <button class="cw-layer-btn" data-layer="governance" type="button"><i class="fas fa-scale-balanced"></i> Governance</button>
-            <button class="cw-layer-btn" data-layer="suggested" type="button"><i class="fas fa-wand-magic-sparkles"></i> Suggested</button>
-
-            <button id="toggleLayerLegend" class="cw-layer-btn cw-layer-btn--legend" type="button">
-              <i class="fas fa-circle-info"></i> Guide
-            </button>
+          <div class="cw-toolbar-row cw-toolbar-row--layers">
+            <button class="cw-layer-btn active" data-layer="paths"        type="button"><i class="fas fa-route"></i> Weave Path</button>
+            <button class="cw-layer-btn" data-layer="food"                type="button"><i class="fas fa-seedling"></i> Food</button>
+            <button class="cw-layer-btn" data-layer="water"               type="button"><i class="fas fa-water"></i> Water</button>
+            <button class="cw-layer-btn" data-layer="navigation"          type="button"><i class="fas fa-compass"></i> Nav</button>
+            <button class="cw-layer-btn" data-layer="trade"               type="button"><i class="fas fa-coins"></i> Trade</button>
+            <button class="cw-layer-btn" data-layer="stewardship"         type="button"><i class="fas fa-leaf"></i> Stewardship</button>
+            <button class="cw-layer-btn" data-layer="governance"          type="button"><i class="fas fa-scale-balanced"></i> Gov</button>
+            <button class="cw-layer-btn" data-layer="suggested"           type="button"><i class="fas fa-wand-magic-sparkles"></i> Suggested</button>
+            <button id="toggleLayerLegend" class="cw-layer-btn cw-layer-btn--legend" type="button"><i class="fas fa-circle-info"></i> Guide</button>
           </div>
-
-          <div id="layerLegend" class="cw-layer-legend cw-scroll" hidden aria-label="Guide panel"></div>
+          <div id="layerLegend" class="cw-layer-legend cw-scroll" hidden></div>
         </div>
 
-        <div class="cw-toolbar-right" aria-label="World controls">
-          <div class="cw-controls cw-controls--globe">
-            <button class="globe-control" id="zoomIn" title="Zoom In" type="button">+</button>
-            <button class="globe-control" id="zoomOut" title="Zoom Out" type="button">-</button>
-            <button class="globe-control" id="resetView" title="Reset View" type="button">↺</button>
-            <button class="globe-control" id="toggleConnections" title="Toggle Connections" type="button"><i class="fas fa-project-diagram"></i></button>
-            <button class="globe-control" id="toggleLabels" title="Toggle Labels" type="button"><i class="fas fa-tag"></i></button>
-          </div>
-
-          <div class="cw-controls cw-controls--map">
-            <button class="globe-control" id="btnLocate" title="Current location" type="button"><i class="fas fa-location-crosshairs"></i></button>
-            <button class="globe-control" id="btnResetMap" title="Reset map" type="button"><i class="fas fa-rotate-left"></i></button>
-            <button class="globe-control" id="toggleMapConnections" title="Toggle selected threads" type="button"><i class="fas fa-project-diagram"></i></button>
+        <!-- Controls -->
+        <div class="cw-toolbar-right">
+          <div class="cw-controls">
+            <button class="globe-control" id="zoomIn"       title="Zoom in"      type="button">+</button>
+            <button class="globe-control" id="zoomOut"      title="Zoom out"     type="button">−</button>
+            <button class="globe-control" id="resetView"    title="Reset"        type="button">↺</button>
+            <button class="globe-control" id="toggleLabels" title="Labels"       type="button"><i class="fas fa-tag"></i></button>
+            <button class="globe-control" id="btnDiscover"  title="Random"       type="button" style="background:rgba(157,0,255,.12);border-color:rgba(157,0,255,.35);"><i class="fas fa-dice"></i></button>
+            <button class="globe-control" id="btnResetMap"  title="Reset map"    type="button"><i class="fas fa-rotate-left"></i></button>
+            <button class="globe-control" id="btnCopyLink"  title="Copy link"    type="button"><i class="fas fa-link"></i></button>
           </div>
         </div>
+      </div><!-- /toolbar -->
+
+      <!-- ── Viz stage ── -->
+      <div class="viz-stage" style="height:560px;overflow:hidden;position:relative;">
+        <!-- Three.js globe -->
+        <div id="globe-viewport-3d"></div>
+        <!-- D3 map -->
+        <div id="map-viewport"></div>
+        <!-- Force graph -->
+        <div id="graph-viewport"></div>
+        <p class="graph-hint" id="graphHint" style="display:none;position:absolute;bottom:8px;left:0;right:0;">Node size = connections · Drag to rearrange · Click to select</p>
       </div>
 
-      <div class="viz-stage" aria-label="World stage">
-        <svg id="globe" aria-label="3D globe visualization"></svg>
-        <div id="map" aria-label="Interactive map"></div>
-      </div>
+      <!-- Tour progress -->
+      <div id="tourProgress"></div>
+
+      <!-- Timeline scrubber (mounted here by TimelineController) -->
+      <div id="tlMount"></div>
 
       <div class="culture-tooltip" id="tooltip"></div>
-    </div>
+    </div><!-- /globe-container -->
 
-    <!-- Culture Details -->
-    <section class="cw-panel cw-panel--details" aria-label="Culture details">
+    <!-- Culture Details panel -->
+    <section class="cw-panel cw-panel--details">
       <header class="cw-panel-header cw-details-header">
         <div>
           <div class="cw-panel-title"><i class="fas fa-scroll"></i> Culture Details</div>
-          <div class="cw-panel-sub">Cards are equal height. Long content scrolls with a custom cosmic scrollbar.</div>
+          <div class="cw-panel-sub">Click a node · ← → keys cycle · Drag globe to rotate · Pinch to zoom</div>
         </div>
-
-        <div class="cw-details-actions" aria-label="Actions">
-          <button id="toggleCompare" type="button"><i class="fas fa-columns"></i> Compare</button>
+        <div class="cw-details-actions">
           <button id="btnSuggestLinks" type="button"><i class="fas fa-wand-magic-sparkles"></i> Suggestions</button>
-          <button id="btnDownloadSuggestions" type="button"><i class="fas fa-download"></i> Download</button>
-          <button id="btnCopyLink" type="button"><i class="fas fa-link"></i> Copy Link</button>
+          <button id="btnCopyLink"     type="button"><i class="fas fa-link"></i> Copy Link</button>
         </div>
       </header>
-
       <div class="cw-panel-body cw-details-body">
         <div class="cw-details-top">
           <div class="culture-header">
             <div class="culture-icon" id="culture-symbol">🌐</div>
             <div>
-              <h2 class="culture-name" id="culture-name">Select a Wisdom Tradition</h2>
+              <h2 class="culture-name"     id="culture-name">Select a Wisdom Tradition</h2>
               <div class="culture-location" id="culture-location"></div>
-              <div class="culture-era" id="culture-era"></div>
+              <div class="culture-era"      id="culture-era"></div>
             </div>
           </div>
-
-          <p class="culture-desc" id="culture-desc">
-            Click a culture on the globe/map to explore details and connections.
-          </p>
-
+          <p class="culture-desc" id="culture-desc">Click any glowing node on the globe to explore its knowledge system, connections, and cultural context.</p>
           <div class="culture-tags" id="culture-tags"></div>
         </div>
-
         <div class="culture-extra" id="culture-extra"></div>
       </div>
     </section>
 
-    <!-- Weave Paths (replaces Corridor Studio entirely) -->
-    <section class="cw-panel cw-panel--paths" aria-label="Weave Paths">
+    <!-- Weave Paths -->
+    <section class="cw-panel cw-panel--paths">
       <header class="cw-panel-header">
-        <div>
-          <div class="cw-panel-title"><i class="fas fa-route"></i> Weave Paths</div>
-          <div class="cw-panel-sub">
-            Guided meaning journeys built from your real links. Each leg shows the connection label + explanation.
-          </div>
-        </div>
+        <div class="cw-panel-title"><i class="fas fa-route"></i> Weave Paths</div>
+        <div class="cw-panel-sub">Guided journeys through real cultural links. Take the Tour for a cinematic fly-through.</div>
       </header>
-
       <div class="cw-panel-body">
         <div class="cw-path-controls">
           <div class="cw-path-select">
-            <label for="weavePreset" class="cw-label">Path</label>
-            <select id="weavePreset" aria-label="Select a weave path"></select>
+            <select id="weavePreset"></select>
           </div>
-
           <div class="cw-path-buttons">
-            <button id="weavePrev" type="button"><i class="fas fa-arrow-left"></i> Prev</button>
-            <button id="weaveNext" type="button">Next <i class="fas fa-arrow-right"></i></button>
+            <button id="weavePrev"    type="button"><i class="fas fa-arrow-left"></i> Prev</button>
+            <button id="weaveNext"    type="button">Next <i class="fas fa-arrow-right"></i></button>
             <button id="weaveShuffle" type="button"><i class="fas fa-shuffle"></i> Shuffle</button>
-            <button id="weaveAuto" type="button"><i class="fas fa-play"></i> Auto</button>
+            <button id="weaveAuto"    type="button"><i class="fas fa-play"></i> Auto</button>
           </div>
-
           <div class="cw-path-meta" id="weaveSummary">Select a path to begin.</div>
         </div>
-
         <div class="cw-path-grid">
           <div class="cw-path-stops">
             <div class="cw-mini-title">Stops</div>
-            <ul class="cw-path-list cw-scroll" id="weaveStops" aria-label="Weave stops"></ul>
+            <ul class="cw-path-list cw-scroll" id="weaveStops"></ul>
           </div>
-
-          <div class="cw-path-notes cw-scroll" id="weaveNotes" aria-label="Weave notes">
-            Pick a path. Click a stop to focus. The leg-by-leg explanations appear here.
+          <div class="cw-path-notes cw-scroll" id="weaveNotes">
+            Pick a path and click a stop to fly there. Enable Tour mode for auto cinematic playback.
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Compare Panel -->
-    <section class="cw-panel cw-panel--compare" id="comparePanel" aria-label="Compare cultures" style="display:none">
-      <header class="cw-panel-header">
-        <div class="cw-panel-title"><i class="fas fa-columns"></i> Compare</div>
-        <div class="cw-panel-sub">Pin A and Pin B, then compare themes and details.</div>
-      </header>
-
-      <div class="cw-panel-body">
-        <div id="compareShared"></div>
-        <div class="cw-compare-grid">
-          <div id="compareA"></div>
-          <div id="compareB"></div>
         </div>
       </div>
     </section>
 
     <!-- Connections -->
-    <section class="cw-panel cw-panel--connections" aria-label="Connections">
+    <section class="cw-panel cw-panel--connections">
       <header class="cw-panel-header">
         <div class="cw-panel-title"><i class="fas fa-project-diagram"></i> Connections</div>
-        <div class="cw-panel-sub">Related threads for the selected culture. Click a card to jump.</div>
+        <div class="cw-panel-sub">Related threads. Click a card to jump.</div>
       </header>
-      <div class="cw-panel-body">
-        <div id="connections"></div>
-      </div>
+      <div class="cw-panel-body"><div id="connections"></div></div>
     </section>
-  </section>
 
+  </section><!-- /globe-section -->
+
+  <!-- Footer -->
   <footer class="cosmic-footer">
     <div class="footer-content">
       <div class="footer-logo">
-        <span class="logo-icon">🌌</span>
+        <img src="../assets/images/KMicon.png" alt="KM" style="width:26px;height:26px;object-fit:contain;" onerror="this.style.display='none'">
         <span class="logo-text">IKEVERSE</span>
       </div>
-      <p>© 2026 Ikeverse. All rights reserved.</p>
+      <p>© 2026 Ikeverse · Decolonizing knowledge through quantum-indigenous synthesis.</p>
       <div class="footer-links">
         <a href="roadmap.html">Roadmap</a>
-        <a href="whitepaper.pdf" target="_blank" rel="noopener">White Paper</a>
+        <a href="../index.html">Knowledge Matrix</a>
+        <a href="../culturalverse.html">Culturalverse</a>
       </div>
     </div>
   </footer>
+
+  <!-- ── Scripts: Three.js must load before cosmic-weave.js ── -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+  <script>
+    (function(){
+      var s=document.createElement('script');
+      s.src='https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/renderers/CSS2DRenderer.js';
+      s.onload=function(){
+        if(typeof CSS2DRenderer!=='undefined'){THREE.CSS2DRenderer=window.CSS2DRenderer=CSS2DRenderer;}
+        if(typeof CSS2DObject!=='undefined'){THREE.CSS2DObject=window.CSS2DObject=CSS2DObject;}
+      };
+      document.head.appendChild(s);
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/topojson@3"></script>
+  <!-- Small delay to let Three.js extras settle -->
+  <script>
+    window.addEventListener('load', function() {
+      if(THREE.OrbitControls) return; // already attached
+      // Normalize OrbitControls to THREE namespace
+      if(typeof OrbitControls !== 'undefined') THREE.OrbitControls = OrbitControls;
+    });
+    // Graph hint visibility
+    document.getElementById('tabGraph')?.addEventListener('click', function(){
+      document.getElementById('graphHint').style.display='block';
+    });
+    ['tabGlobe','tabMap'].forEach(id=>{
+      document.getElementById(id)?.addEventListener('click',()=>{
+        document.getElementById('graphHint').style.display='none';
+      });
+    });
+  </script>
+  <script src="js/cosmic-weave.js"></script>
 </body>
 </html>
