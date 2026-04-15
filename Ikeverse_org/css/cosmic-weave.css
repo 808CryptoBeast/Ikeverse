@@ -2813,15 +2813,14 @@ body{
   display: flex; flex-direction: column; gap: 3px; min-width: 0;
 }
 .cw-reading-title {
-  display: block;
   font-size: .86rem; font-weight: 500;
   color: rgba(255,255,255,.88);
   line-height: 1.35;
-  /* Allow wrapping but limit to 3 lines */
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  line-clamp: 3;
 }
 .cw-reading-link:hover .cw-reading-title { color: rgba(0,247,255,.92); }
 .culture-research-papers .cw-reading-link:hover .cw-reading-title { color: rgba(180,120,255,.92); }
@@ -2842,13 +2841,13 @@ body{
 }
 
 .cw-reading-desc {
-  display: block;
   font-size: .78rem; color: rgba(255,255,255,.45);
   line-height: 1.4;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  line-clamp: 2;
 }
 
 .cw-reading-ext {
