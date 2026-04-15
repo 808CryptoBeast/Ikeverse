@@ -117,6 +117,10 @@ const LAYER_CFGS = [
   {key:'governance',label:'Governance', stroke:0xffffff, strokeCss:'rgba(255,255,255,.5)',dash:true, fn:hasGovSig},
 ];
 
+// ── Performance utilities ──
+const debounce=(fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};};
+const throttle=(fn,ms)=>{let last=0;return(...a)=>{const now=Date.now();if(now-last>=ms){last=now;fn(...a);}};};
+
 function normalizeCulture(c) {
   const id=String(c.id||'').trim()||`c_${Math.random().toString(16).slice(2)}`;
   const coords=Array.isArray(c.coords)?c.coords:[0,0];
@@ -135,7 +139,11 @@ function normalizeCulture(c) {
     modernLegacy:arr(c.modernLegacy),agricultureSystems:arr(c.agricultureSystems),
     story:Array.isArray(c.story)?c.story.map(String):[],
     readingLinks:Array.isArray(c.readingLinks)?c.readingLinks:[],
-    keyTerms:[...tags].slice(0,10),
+    researchPapers:Array.isArray(c.researchPapers)?c.researchPapers:[],
+    guidingQuestions:arr(c.guidingQuestions),
+    keyTerms:Array.isArray(c.keyTerms)?c.keyTerms.map(String):[...tags].slice(0,10),
+    modernConnections:arr(c.modernConnections),
+    recommendedReadings:arr(c.recommendedReadings),
   };
 }
 
@@ -1320,37 +1328,6 @@ const LANDMARK_CONFIGS = {
   document.head.appendChild(s);
 })();
 
-
-// ══════════════════════════════════════════════════════════
-// LANDMARK SCENE CLASS — SVG-based cultural art renderer
-// ══════════════════════════════════════════════════════════
-class LandmarkScene {
-  constructor(){ this._el = null; }
-
-  mount(cultureId, containerId){
-    const container = document.getElementById(containerId);
-    if(!container) return;
-    this.unmount();
-    const cfg  = LANDMARK_CONFIGS[cultureId] || {};
-    const svg  = CULTURE_SVG_ART[cultureId]  || CULTURE_SVG_ART._generic;
-    const name = cfg.name || cultureId.replace(/_/g,' ').replace(/\b\w/g, c=>c.toUpperCase());
-    container.innerHTML = `
-      <div class="landmark-hdr">⬡ ${name}</div>
-      <div class="landmark-art-wrap">${svg}</div>
-    `;
-    container.style.display = 'block';
-    this._el = container;
-  }
-
-  unmount(){
-    if(this._el){ this._el.style.display = 'none'; this._el.innerHTML = ''; }
-    this._el = null;
-  }
-
-  // keep destroy() as an alias so existing callers don't break
-  destroy(){ this.unmount(); }
-}
-
 // ══════════════════════════════════════════════════════════
 // REAL CELESTIAL STAR MAP OVERLAY
 // Accurate RA/Dec catalog · Real constellation lines
@@ -1568,6 +1545,16 @@ class CelestialStarOverlay {
     svg.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:12;display:none;';
     this.container.appendChild(svg);
     this.svg=svg;
+    // Interactive hit layer for star clicks — sits ABOVE globe canvas, BELOW SVG labels
+    this._hitLayer=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    this._hitLayer.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:13;display:none;';
+    this.container.appendChild(this._hitLayer);
+    this._lastCamPos=null;
+    this._bgRafId=null;
+    this._needsRedraw=true;
+    this._selectedStar=null;
+    // Build star info panel
+    this._buildInfoPanel();
     // Pre-generate 350 background stars
     this._bg=Array.from({length:350},()=>({
       x:Math.random(), y:Math.random(),
@@ -1578,23 +1565,114 @@ class CelestialStarOverlay {
     }));
   }
 
+  _buildInfoPanel(){
+    const panel=document.createElement('div');
+    panel.id='cw-star-panel';
+    panel.className='cw-star-panel';
+    panel.innerHTML='';
+    document.body.appendChild(panel);
+    this._infoPanel=panel;
+    panel.addEventListener('click',e=>{if(e.target===panel||e.target.closest('.cw-star-close'))this._closeInfo();});
+    // Close on ESC key
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&this._selectedStar)this._closeInfo();});
+  }
+
+  _showStarInfo(star){
+    const p=this._infoPanel; if(!p) return;
+    this._selectedStar=star.id;
+    const isHok=star.id==='Arcturus';
+    // Try to get rich data from stars.json if loaded
+    const rich=window._starData?.find?.(s=>s.id===star.id)||null;
+    const hawaiianName=star.h||rich?.hawaiian_name||'';
+    const hawaiianMeaning=rich?.hawaiian_meaning||'';
+    const moolelo=rich?.moolelo||star.note||'';
+    const navUse=rich?.navigation_use||'';
+    const distance=rich?.distance_ly?`${rich.distance_ly} light years`:'';
+    const type=rich?.type||star.con;
+    const culturalNotes=rich?.cultural_notes||{};
+    const culturalKeys=Object.keys(culturalNotes).filter(k=>k!=='note'&&culturalNotes[k]);
+    const noteText=culturalNotes.note||'';
+
+    p.innerHTML=`
+      <div class="cw-sp-inner">
+        <button class="cw-star-close" type="button" aria-label="Close"><i class="fas fa-times"></i></button>
+        <div class="cw-sp-head">
+          <div class="cw-sp-star-vis" style="background:${isHok?'radial-gradient(circle,#ffd70044 0%,transparent 70%)':'radial-gradient(circle,rgba(0,200,255,.2) 0%,transparent 70%)'}">
+            <div class="cw-sp-dot" style="background:${isHok?'#ffd700':star.mag<0?'#fff8f0':star.mag<0.5?'#d8ebff':'#a0c8f0'}"></div>
+          </div>
+          <div class="cw-sp-names">
+            ${hawaiianName?`<div class="cw-sp-hawaiian">${escapeHtml(hawaiianName)}</div>`:''}
+            <div class="cw-sp-western">${escapeHtml(star.id)} <span class="cw-sp-con">${escapeHtml(star.con)}</span></div>
+            ${hawaiianMeaning?`<div class="cw-sp-meaning">${escapeHtml(hawaiianMeaning)}</div>`:''}
+          </div>
+        </div>
+        <div class="cw-sp-stats">
+          <span><i class="fas fa-circle-dot"></i> Mag ${star.mag.toFixed(2)}</span>
+          ${distance?`<span><i class="fas fa-ruler-horizontal"></i> ${distance}</span>`:''}
+          ${type?`<span><i class="fas fa-star"></i> ${escapeHtml(type)}</span>`:''}
+        </div>
+        ${navUse?`<div class="cw-sp-nav"><i class="fas fa-compass"></i> ${escapeHtml(navUse)}</div>`:''}
+        ${moolelo?`<div class="cw-sp-section"><div class="cw-sp-label">Moʻolelo</div><div class="cw-sp-text">${escapeHtml(moolelo)}</div></div>`:''}
+        ${culturalKeys.length?`<div class="cw-sp-section"><div class="cw-sp-label">Across Traditions</div><div class="cw-sp-traditions">${culturalKeys.map(k=>`<div class="cw-sp-trad"><span class="cw-sp-trad-name">${escapeHtml(k)}</span><span class="cw-sp-trad-text">${escapeHtml(culturalNotes[k])}</span></div>`).join('')}</div></div>`:''}
+        ${noteText?`<div class="cw-sp-note"><i class="fas fa-circle-info"></i> ${escapeHtml(noteText)}</div>`:''}
+      </div>`;
+    p.classList.add('cw-star-panel--open');
+  }
+
+  _closeInfo(){
+    this._selectedStar=null;
+    this._infoPanel?.classList.remove('cw-star-panel--open');
+  }
+
   toggle(globe){
     if(!this.svg) this._build();
     this.visible=!this.visible;
     this.svg.style.display=this.visible?'block':'none';
+    this._hitLayer.style.display=this.visible?'block':'none';
+    if(!this.visible){ this._closeInfo(); }
     if(this.visible) this._loop(globe);
     else if(this._rafId){ cancelAnimationFrame(this._rafId); this._rafId=null; }
     return this.visible;
   }
 
   _loop(globe){
-    const go=()=>{
+    // Redraw only when camera moves or size changes; bg stars twinkle on slower cycle
+    let lastW=0,lastH=0,twinkleT=0;
+    const go=(ts)=>{
       if(!this.visible) return;
-      this._draw(globe);
       this._rafId=requestAnimationFrame(go);
+      const W=this.container.clientWidth||800,H=this.container.clientHeight||560;
+      const cam=globe.camera;
+      const pos=cam?`${cam.position.x.toFixed(2)},${cam.position.y.toFixed(2)},${cam.position.z.toFixed(2)}`:null;
+      const sizeChanged=W!==lastW||H!==lastH;
+      const cameraChanged=pos!==this._lastCamPos;
+      // Full redraw on camera move or resize
+      if(cameraChanged||sizeChanged||this._needsRedraw){
+        this._lastCamPos=pos; lastW=W; lastH=H; this._needsRedraw=false;
+        this._draw(globe);
+      } else if(ts-twinkleT>80){
+        // Light twinkle pass: just update bg star opacities without full redraw
+        twinkleT=ts;
+        this._twinkleBg(W,H,ts/1000);
+      }
     };
     if(this._rafId) cancelAnimationFrame(this._rafId);
-    go();
+    this._needsRedraw=true;
+    requestAnimationFrame(go);
+  }
+
+  _twinkleBg(W,H,t){
+    if(!this.svg||!this._bg) return;
+    // Only update background star circles (first group after the two ellipses)
+    const groups=this.svg.querySelectorAll('g');
+    const bgGroup=groups[0]; // bg stars are in the first <g>
+    if(!bgGroup) return;
+    const circles=bgGroup.querySelectorAll('circle');
+    this._bg.forEach((s,i)=>{
+      const el=circles[i]; if(!el) return;
+      const op=Math.min(.7,s.op+Math.sin(t*s.sp+s.tw)*.05);
+      el.setAttribute('opacity',op.toFixed(2));
+    });
   }
 
   _e(tag,attrs,text){
@@ -1801,6 +1879,39 @@ class CelestialStarOverlay {
       const y=H-12-i*16;
       this.svg.appendChild(E('circle',{cx:16,cy:y,r:4,fill:k.c}));
       this.svg.appendChild(E('text',{x:26,y:y+3.5,fill:'rgba(180,215,240,.45)','font-size':'8','font-family':'sans-serif'},k.l));
+    });
+
+    // ── Update hit zones on hit layer ──
+    this._updateHitZones(proj,W,H);
+  }
+
+  _updateHitZones(proj,W,H){
+    if(!this._hitLayer) return;
+    this._hitLayer.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    this._hitLayer.innerHTML='';
+    Object.values(proj).filter(s=>s.inFront).forEach(star=>{
+      const baseR=Math.max(2.2,8-Math.max(-1.5,star.mag)*1.7);
+      const hitR=Math.max(18, baseR*(star.id==='Arcturus'?2.5:2.0)); // generous hit area
+      const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      circle.setAttribute('cx',star.x.toFixed(1));
+      circle.setAttribute('cy',star.y.toFixed(1));
+      circle.setAttribute('r',hitR.toFixed(1));
+      circle.setAttribute('fill','transparent');
+      circle.style.cursor='pointer';
+      circle.style.pointerEvents='all';
+      circle.setAttribute('data-star-id',star.id);
+      circle.setAttribute('aria-label',star.h||star.id);
+      circle.addEventListener('click',e=>{
+        e.stopPropagation();
+        this._showStarInfo(star);
+      });
+      circle.addEventListener('mouseenter',()=>{
+        circle.setAttribute('fill','rgba(255,255,255,.05)');
+      });
+      circle.addEventListener('mouseleave',()=>{
+        circle.setAttribute('fill','transparent');
+      });
+      this._hitLayer.appendChild(circle);
     });
   }
 
@@ -2147,7 +2258,7 @@ void main(){
     cv.addEventListener('mousemove',e=>this._onMove(e));
     cv.addEventListener('click',e=>this._onClickCanvas(e));
     cv.addEventListener('touchend',e=>{if(e.changedTouches.length){const t=e.changedTouches[0];this._setMouse(t.clientX,t.clientY);this._doClick();}},{passive:true});
-    window.addEventListener('resize',()=>this._onResize(),{passive:true});
+    window.addEventListener('resize',debounce(()=>this._onResize(),120),{passive:true});
   }
 
   _setMouse(cx,cy){
@@ -2239,6 +2350,12 @@ void main(){
     if(this.selected) this._deselectObj(this.selected);
     this.selected=null;
     if(this.controls) this.controls.autoRotate=true;
+    // Dim all arcs back to baseline
+    this.arcObjs?.forEach(a=>{
+      if(window.gsap) gsap.to(a.tube.material,{opacity:.08,duration:.3});
+      else a.tube.material.opacity=.08;
+      a._speed=0.003;
+    });
   }
 
   _brightArcs(obj,on){
@@ -2528,7 +2645,7 @@ class D3Map {
     this.zoom=d3.zoom().scaleExtent([.5,8]).on('zoom',e=>{this.transform=e.transform;root.attr('transform',e.transform);});
     this.svg.call(this.zoom);
     this.svg.on('click',()=>{this.onDeselect?.();});
-    window.addEventListener('resize',()=>this._resize(),{passive:true});
+    window.addEventListener('resize',debounce(()=>this._resize(),120),{passive:true});
     this.render(null,'all');
   }
 
@@ -2628,7 +2745,7 @@ class ForceGraph {
   }
 
   _bindEvents(){
-    window.addEventListener('resize',()=>this._resize(),{passive:true});
+    window.addEventListener('resize',debounce(()=>this._resize(),120),{passive:true});
     this.canvas.addEventListener('click',e=>this._onClick(e));
     this.canvas.addEventListener('mousemove',e=>this._onMove(e));
     this.canvas.addEventListener('mousedown',e=>this._onDown(e));
@@ -2892,6 +3009,21 @@ function renderDetailPanel(c,el){
   if(!c||!el) return;
   const set=(id,v)=>{const e=document.getElementById(id);if(e) e.textContent=v;};
   set('culture-symbol',c.symbol||'🌐');set('culture-name',c.name||'');
+  /* Compare button injection */
+  const existingCmpBtn=document.getElementById('cw-compare-btn-inline');
+  if(existingCmpBtn) existingCmpBtn.remove();
+  const actionsBar=document.querySelector('.cw-details-actions');
+  if(actionsBar&&!document.getElementById('cw-compare-btn-inline')){
+    const cmpBtn=document.createElement('button');
+    cmpBtn.id='cw-compare-btn-inline';
+    cmpBtn.type='button';
+    cmpBtn.dataset.compareId=c.id;
+    cmpBtn.className='cw-compare-btn'+(window._cwCompare?.isSelected(c.id)?' cw-compare-btn--active':'');
+    cmpBtn.title='Compare with another culture';
+    cmpBtn.innerHTML='<i class="fas fa-code-compare"></i> Compare';
+    cmpBtn.addEventListener('click',()=>window._cwCompare?.toggle(c));
+    actionsBar.insertBefore(cmpBtn,actionsBar.firstChild);
+  }
   set('culture-location',`${c.location||''}${c.region?(c.location?' • ':'')+c.region:''}`);
   set('culture-era',c.era||'');set('culture-desc',c.desc||'');
 
@@ -2961,7 +3093,55 @@ function renderDetailPanel(c,el){
     </ul>
   </section>`:'';
 
-  extra.innerHTML=`<div class="culture-extra-grid">${sectionsHtml}</div>${readingHtml}`;
+  /* Research Papers section */
+  const papers=Array.isArray(c.researchPapers)?c.researchPapers:[];
+  const papersHtml=papers.length?`
+  <section class="culture-card culture-extra-card culture-research-papers">
+    <header class="culture-card-header">
+      <h4 class="culture-card-title"><i class="fas fa-flask-vial"></i> Research Papers</h4>
+    </header>
+    <ul class="cw-reading-list">
+      ${papers.map(p=>{
+        return `<li class="cw-reading-item">
+          <a href="${escapeAttr(p.url||'#')}" target="_blank" rel="noopener noreferrer" class="cw-reading-link">
+            <span class="cw-reading-icon"><i class="fas fa-file-lines"></i></span>
+            <span class="cw-reading-body">
+              <span class="cw-reading-title">${escapeHtml(p.title||p.url||'')}</span>
+              ${p.kind?`<span class="cw-reading-kind">${escapeHtml(p.kind)}</span>`:''}
+              ${p.desc?`<span class="cw-reading-desc">${escapeHtml(p.desc)}</span>`:''}
+            </span>
+            <span class="cw-reading-ext"><i class="fas fa-arrow-up-right-from-square"></i></span>
+          </a>
+        </li>`;
+      }).join('')}
+    </ul>
+  </section>`:'' ;
+
+  /* Guiding Questions section */
+  const gqs=Array.isArray(c.guidingQuestions)?c.guidingQuestions:[];
+  const gqHtml=gqs.length?`
+  <section class="culture-card culture-extra-card culture-guiding-qs">
+    <header class="culture-card-header">
+      <h4 class="culture-card-title"><i class="fas fa-compass"></i> Guiding Questions</h4>
+    </header>
+    <ol class="culture-card-list cw-scroll">
+      ${gqs.map(q=>`<li class="cw-gq-item">${escapeHtml(q)}</li>`).join('')}
+    </ol>
+  </section>`:'';
+
+  /* Key Terms section */
+  const kts=Array.isArray(c.keyTerms)?c.keyTerms:[];
+  const ktHtml=kts.length?`
+  <section class="culture-card culture-extra-card culture-key-terms">
+    <header class="culture-card-header">
+      <h4 class="culture-card-title"><i class="fas fa-key"></i> Key Terms</h4>
+    </header>
+    <div class="cw-key-terms-grid">
+      ${kts.map(t=>`<span class="cw-key-term">${escapeHtml(t)}</span>`).join('')}
+    </div>
+  </section>`:'';
+
+  extra.innerHTML=`<div class="culture-extra-grid">${sectionsHtml}</div>${gqHtml}${ktHtml}${readingHtml}${papersHtml}`;
 }
 
 function setDetailDefault(){
@@ -3051,6 +3231,377 @@ function buildWeavePresets(lensCache,byId){
   return{presets,order};
 }
 
+// LEARNING PATH SYSTEM — curated thematic culture tours
+// ══════════════════════════════════════════════════════════
+const LEARNING_PATHS = [
+  {
+    id:'ocean-navigators',
+    title:'Ocean Navigators',
+    icon:'🌊',
+    desc:'How humanity read the sea — star compasses, swell piloting, and wayfinding traditions across the Pacific and Atlantic.',
+    cultures:['kanaka_kumulipo','polynesia','maori','marquesas','samoa','tonga','palau','philippines','norse','antarctic'],
+  },
+  {
+    id:'river-civilizations',
+    title:'River Corridor Civilizations',
+    icon:'💧',
+    desc:'How rivers became the spines of civilization — irrigation, administration, and the politics of water.',
+    cultures:['mesopotamia','sumer','akkad','babylonia','assyria','kemet','kush','china','khmer','vietnam'],
+  },
+  {
+    id:'governance-innovations',
+    title:'Governance Innovations',
+    icon:'⚖️',
+    desc:'From deliberative assemblies to long-horizon ethics — how different traditions solved the problem of living together.',
+    cultures:['haudenosaunee','tswana','maori','mali','vedic','kemet','iceland','sami','dine','celtic'],
+  },
+  {
+    id:'ecological-intelligence',
+    title:'Ecological Intelligence',
+    icon:'🌿',
+    desc:'Knowledge systems built from deep observation of place — tracking, reef governance, and permafrost reading.',
+    cultures:['san','inuit','nenets','chukchi','sami','evenki','sakha','palau','khoekhoe','dine'],
+  },
+  {
+    id:'knowledge-writing',
+    title:'Knowledge & Writing Systems',
+    icon:'📜',
+    desc:'From cuneiform to quipu to Hangul — the diversity of human strategies for recording and transmitting knowledge.',
+    cultures:['sumer','kemet','maya','kush','mali','korea','china','vedic','dravidian_sangam','inca'],
+  },
+  {
+    id:'martial-traditions',
+    title:'Embodied Martial Traditions',
+    icon:'🥋',
+    desc:'Martial arts as philosophy, geometry, and cultural archive — weapon systems, warrior ethics, and lineage transmission.',
+    cultures:['japan','korea','philippines','indonesia','thailand','vietnam','zulu','celtic','haudenosaunee','vedic'],
+  },
+  {
+    id:'andean-pacific',
+    title:'Andean & Mesoamerican Civilizations',
+    icon:'🏔️',
+    desc:'Mountain empires and lowland city-states — terrace farming, calendrics, and landscape engineering in the Americas.',
+    cultures:['olmec','maya','maya_classic','aztec','moche','tiwanaku','inca','andean_tawantinsuyu','taino'],
+  },
+  {
+    id:'africa-deep',
+    title:'African Knowledge Traditions',
+    icon:'🌍',
+    desc:'The depth of African civilizational achievement — from forager tracking to manuscript culture to stone architecture.',
+    cultures:['san','khoekhoe','great_zimbabwe','tswana','xhosa','zulu','kemet','kush','mali','yoruba'],
+  },
+];
+
+class LearningPathUI {
+  constructor(app){ this.app=app; this._panel=null; this._step=0; this._active=null; }
+
+  open(){
+    if(this._panel) { this._panel.remove(); this._panel=null; }
+    const panel=document.createElement('div');
+    panel.className='cw-lp-panel';
+    panel.setAttribute('role','dialog');
+    panel.setAttribute('aria-label','Learning Paths');
+    panel.setAttribute('aria-modal','true');
+    // Add backdrop
+    const backdrop=document.createElement('div');
+    backdrop.className='cw-lp-backdrop'; backdrop.id='cw-lp-backdrop';
+    document.body.appendChild(backdrop);
+    requestAnimationFrame(()=>backdrop.classList.add('cw-lp-backdrop--show'));
+    backdrop.addEventListener('click',()=>this.close());
+    panel.innerHTML=`
+      <div class="cw-lp-header">
+        <h3 class="cw-lp-title"><i class="fas fa-route"></i> Weave Paths</h3>
+        <button class="cw-lp-close" type="button" aria-label="Close"><i class="fas fa-times"></i></button>
+      </div>
+      <p class="cw-lp-sub">Eight thematic journeys through the Ikeverse — each stop reveals a culture's role in the larger pattern</p>
+      <ul class="cw-lp-list">
+        ${LEARNING_PATHS.map(p=>`
+          <li><button class="cw-lp-btn" data-id="${p.id}" type="button">
+            <span class="cw-lp-icon">${p.icon}</span>
+            <span class="cw-lp-info">
+              <span class="cw-lp-name">${escapeHtml(p.title)}</span>
+              <span class="cw-lp-desc">${escapeHtml(p.desc)}</span>
+              <span class="cw-lp-count"><i class="fas fa-circle-nodes"></i> ${p.cultures.length} cultures</span>
+            </span>
+            <i class="fas fa-chevron-right cw-lp-arrow"></i>
+          </button></li>`).join('')}
+      </ul>`;
+    document.body.appendChild(panel);
+    this._panel=panel;
+    panel.querySelector('.cw-lp-close').addEventListener('click',()=>this.close());
+    panel.querySelectorAll('[data-id]').forEach(btn=>{
+      btn.addEventListener('click',()=>this.startPath(btn.dataset.id));
+    });
+    requestAnimationFrame(()=>panel.classList.add('cw-lp-panel--open'));
+  }
+
+  close(){
+    if(!this._panel) return;
+    this._panel.classList.remove('cw-lp-panel--open');
+    const bd=document.getElementById('cw-lp-backdrop');
+    if(bd){ bd.classList.remove('cw-lp-backdrop--show'); setTimeout(()=>bd.remove(),300); }
+    setTimeout(()=>{ this._panel?.remove(); this._panel=null; },300);
+    this._active=null;
+  }
+
+  startPath(id){
+    const path=LEARNING_PATHS.find(p=>p.id===id);
+    if(!path) return;
+    this._active=path; this._step=0;
+    this.close();
+    this._showStep();
+    this._showPathBar();
+  }
+
+  _showStep(){
+    if(!this._active) return;
+    const cid=this._active.cultures[this._step];
+    if(cid && this.app.byId?.get(cid)){
+      this.app.selectCulture(cid,true);
+      // Close star info panel if open (avoid overlap)
+      document.getElementById('cw-star-panel')?.classList.remove('cw-star-panel--open');
+    }
+  }
+
+  _showPathBar(){
+    document.getElementById('cw-lp-bar')?.remove();
+    if(!this._active) return;
+    const {title,icon,desc,cultures}=this._active;
+    const cid=cultures[this._step];
+    const c=this.app.byId?.get(cid);
+    const prev=this._step>0?this.app.byId?.get(cultures[this._step-1]):null;
+    const next=this._step<cultures.length-1?this.app.byId?.get(cultures[this._step+1]):null;
+
+    // Find direct link between current and previous culture
+    const allLinks=this.app.linksOfficial||[];
+    const prevLink=prev?allLinks.find(l=>(l.source?.id===cid&&l.target?.id===prev.id)||(l.target?.id===cid&&l.source?.id===prev.id)):null;
+    const nextLink=next?allLinks.find(l=>(l.source?.id===cid&&l.target?.id===next.id)||(l.target?.id===cid&&l.source?.id===next.id)):null;
+
+    const bar=document.createElement('div');
+    bar.id='cw-lp-bar';
+    bar.innerHTML=`
+      <div class="cw-lpb-track">
+        <div class="cw-lpb-progress" style="width:${((this._step+1)/cultures.length)*100}%"></div>
+      </div>
+      <div class="cw-lpb-inner">
+        <!-- Left: Path identity -->
+        <div class="cw-lpb-path-id">
+          <span class="cw-lpb-icon">${icon}</span>
+          <div>
+            <div class="cw-lpb-title">${escapeHtml(title)}</div>
+            <div class="cw-lpb-step">${this._step+1} of ${cultures.length}</div>
+          </div>
+        </div>
+
+        <!-- Center: Culture spotlight -->
+        ${c?`<div class="cw-lpb-spotlight">
+          <div class="cw-lpb-spot-head">
+            <span class="cw-lpb-spot-sym">${c.symbol||'🌐'}</span>
+            <div>
+              <div class="cw-lpb-spot-name">${escapeHtml(c.name.split('(')[0].trim())}</div>
+              <div class="cw-lpb-spot-era">${escapeHtml(c.era||'')} · ${escapeHtml(c.region||'')}</div>
+            </div>
+          </div>
+          <div class="cw-lpb-spot-desc">${escapeHtml((c.desc||'').substring(0,160))}${(c.desc||'').length>160?'…':''}</div>
+          ${(c.highlights||[]).length?`
+          <div class="cw-lpb-spot-highlights">
+            ${(c.highlights||[]).slice(0,2).map(h=>`<div class="cw-lpb-spot-hl"><i class="fas fa-bolt"></i> ${escapeHtml(h)}</div>`).join('')}
+          </div>`:''}
+          ${(c.keyTerms||[]).length?`
+          <div class="cw-lpb-spot-terms">
+            ${(c.keyTerms||[]).slice(0,5).map(t=>`<span class="cw-lpb-term">${escapeHtml(t)}</span>`).join('')}
+          </div>`:''}
+          <!-- Connections in path context -->
+          ${prevLink?`<div class="cw-lpb-conn cw-lpb-conn--prev">
+            <i class="fas fa-arrow-left"></i>
+            <span><strong>${escapeHtml((prev?.name||'').split('(')[0].trim())}</strong> — ${escapeHtml(prevLink.label||'Connection')}</span>
+          </div>`:''}
+          ${nextLink?`<div class="cw-lpb-conn cw-lpb-conn--next">
+            <span><strong>${escapeHtml((next?.name||'').split('(')[0].trim())}</strong> — ${escapeHtml(nextLink.label||'Connection')}</span>
+            <i class="fas fa-arrow-right"></i>
+          </div>`:''}
+          ${!prevLink&&!nextLink&&(prev||next)?`<div class="cw-lpb-thematic">
+            <i class="fas fa-share-nodes"></i>
+            <span>Part of a thematic journey through ${escapeHtml(title)}</span>
+            ${next?`<span class="cw-lpb-next-preview">Next: ${escapeHtml((next?.name||'').split('(')[0].trim())}</span>`:''}
+          </div>`:''}
+        </div>`:'<div class="cw-lpb-spotlight"><em>Loading…</em></div>'}
+
+        <!-- Right: Controls -->
+        <div class="cw-lpb-controls">
+          <div class="cw-lpb-dots">
+            ${cultures.map((_,i)=>`<span class="cw-lpb-dot${i===this._step?' cw-lpb-dot--active':i<this._step?' cw-lpb-dot--done':''}"></span>`).join('')}
+          </div>
+          <div class="cw-lpb-btns">
+            <button class="cw-lpb-btn" id="cw-lpb-prev" type="button" ${this._step===0?'disabled':''}><i class="fas fa-chevron-left"></i><span>Prev</span></button>
+            <button class="cw-lpb-btn cw-lpb-btn--primary" id="cw-lpb-next" type="button">
+              ${this._step===cultures.length-1?'<span>Complete</span><i class="fas fa-check"></i>':'<span>Next</span><i class="fas fa-chevron-right"></i>'}
+            </button>
+            <button class="cw-lpb-btn cw-lpb-btn--ghost" id="cw-lpb-exit" type="button" title="Exit path"><i class="fas fa-times"></i></button>
+          </div>
+        </div>
+      </div>`;
+
+    document.body.appendChild(bar);
+    requestAnimationFrame(()=>bar.classList.add('cw-lpb--visible'));
+    bar.querySelector('#cw-lpb-prev').addEventListener('click',()=>{
+      if(this._step>0){this._step--;this._showStep();this._showPathBar();}
+    });
+    bar.querySelector('#cw-lpb-next').addEventListener('click',()=>{
+      if(this._step<cultures.length-1){this._step++;this._showStep();this._showPathBar();}
+      else{this._active=null;bar.remove();document.getElementById('cw-lp-backdrop')?.remove();}
+    });
+    bar.querySelector('#cw-lpb-exit').addEventListener('click',()=>{
+      this._active=null;
+      bar.classList.remove('cw-lpb--visible');
+      setTimeout(()=>bar.remove(),300);
+      document.getElementById('cw-lp-backdrop')?.remove();
+    });
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// CULTURE COMPARISON MODE
+// ══════════════════════════════════════════════════════════
+class CultureCompare {
+  constructor(app){ this.app=app; this._cultures=[]; this._panel=null; }
+
+  toggle(culture){
+    if(!culture) return;
+    const idx=this._cultures.findIndex(c=>c.id===culture.id);
+    if(idx>=0){
+      this._cultures.splice(idx,1);
+    } else {
+      if(this._cultures.length>=2) this._cultures.shift();
+      this._cultures.push(culture);
+    }
+    this._update();
+  }
+
+  isSelected(id){ return this._cultures.some(c=>c.id===id); }
+
+  _update(){
+    if(this._cultures.length===2){
+      this._show();
+    } else {
+      this._panel?.remove(); this._panel=null;
+      document.getElementById('cw-compare-hint')?.remove();
+      if(this._cultures.length===1) this._showHint();
+    }
+    // Update compare button states across detail panels
+    document.querySelectorAll('[data-compare-id]').forEach(btn=>{
+      const active=this.isSelected(btn.dataset.compareId);
+      btn.classList.toggle('cw-compare-btn--active',active);
+      btn.title=active?'Remove from comparison':'Compare with another culture';
+    });
+  }
+
+  _showHint(){
+    document.getElementById('cw-compare-hint')?.remove();
+    const h=document.createElement('div');
+    h.id='cw-compare-hint';
+    h.className='cw-compare-hint';
+    h.innerHTML=`<i class="fas fa-code-compare"></i> <strong>${escapeHtml(this._cultures[0].name.split('(')[0].trim())}</strong> selected — click Compare on another culture`;
+    document.body.appendChild(h);
+    setTimeout(()=>h.classList.add('cw-compare-hint--show'),50);
+  }
+
+  _show(){
+    document.getElementById('cw-compare-hint')?.remove();
+    const [a,b]=this._cultures;
+    if(this._panel) this._panel.remove();
+    const panel=document.createElement('div');
+    panel.className='cw-compare-panel';
+    const FIELDS=[
+      {key:'desc',label:'Overview',multi:false},
+      {key:'corePrinciples',label:'Core Principles',multi:true},
+      {key:'knowledgeSystems',label:'Knowledge Systems',multi:true},
+      {key:'highlights',label:'Highlights',multi:true},
+      {key:'martialArts',label:'Martial Arts',multi:true},
+      {key:'movement',label:'Exchange & Movement',multi:true},
+      {key:'modernLegacy',label:'Modern Legacy',multi:true},
+      {key:'modernConnections',label:'Modern Connections',multi:true},
+    ];
+    const col=(c)=>`
+      <div class="cw-cmp-col">
+        <div class="cw-cmp-head">
+          <span class="cw-cmp-sym">${c.symbol||'🌐'}</span>
+          <span class="cw-cmp-name">${escapeHtml(c.name.split('(')[0].trim())}</span>
+          <span class="cw-cmp-era">${escapeHtml(c.era||'')} · ${escapeHtml(c.location?.split('(')[0].trim()||c.region||'')}</span>
+          ${(c.tags||[]).length?`<div class="cw-cmp-tags">${(c.tags||[]).slice(0,6).map(t=>`<span class="cw-cmp-tag">${escapeHtml(t)}</span>`).join('')}</div>`:''}
+        </div>
+        ${FIELDS.map(f=>{
+          const v=c[f.key];
+          if(!v||(Array.isArray(v)&&!v.length)) return `<div class="cw-cmp-field"><div class="cw-cmp-fl">${f.label}</div><div class="cw-cmp-fv cw-cmp-fv--empty">—</div></div>`;
+          const body=Array.isArray(v)?`<ul>${v.slice(0,4).map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>`:escapeHtml(v);
+          return `<div class="cw-cmp-field"><div class="cw-cmp-fl">${f.label}</div><div class="cw-cmp-fv">${body}</div></div>`;
+        }).join('')}
+      </div>`;
+    // Compute shared tags
+    const tagsA=new Set(a.tags||[]);
+    const sharedTags=(b.tags||[]).filter(t=>tagsA.has(t));
+    const sharedLinks=window._cwApp?.linksOfficial?.filter(l=>(l.source?.id===a.id&&l.target?.id===b.id)||(l.source?.id===b.id&&l.target?.id===a.id))||[];
+
+    panel.innerHTML=`
+      <div class="cw-cmp-header">
+        <span class="cw-cmp-title"><i class="fas fa-code-compare"></i> Comparing ${escapeHtml(a.name.split('(')[0].trim())} & ${escapeHtml(b.name.split('(')[0].trim())}</span>
+        <button class="cw-cmp-close" type="button" aria-label="Close comparison"><i class="fas fa-times"></i></button>
+      </div>
+      ${sharedTags.length||sharedLinks.length?`
+      <div class="cw-cmp-shared-row">
+        <strong><i class="fas fa-link"></i> Shared</strong>
+        ${sharedLinks.length?`<span class="cw-cmp-shared-tag"><i class="fas fa-link"></i> ${sharedLinks.length} direct link${sharedLinks.length>1?'s':''}: ${escapeHtml(sharedLinks[0]?.label||'')}</span>`:''}
+        ${sharedTags.map(t=>`<span class="cw-cmp-shared-tag">${escapeHtml(t)}</span>`).join('')}
+      </div>`:''}
+      <div class="cw-cmp-body">
+        ${col(a)}
+        <div class="cw-cmp-divider"></div>
+        ${col(b)}
+      </div>`;
+    document.body.appendChild(panel);
+    this._panel=panel;
+    requestAnimationFrame(()=>panel.classList.add('cw-compare-panel--open'));
+    panel.querySelector('.cw-cmp-close').addEventListener('click',()=>{
+      panel.classList.remove('cw-compare-panel--open');
+      setTimeout(()=>{ this._cultures=[]; this._panel=null; panel.remove(); },320);
+      // Reset compare button states
+      document.querySelectorAll('.cw-compare-btn--active').forEach(b=>b.classList.remove('cw-compare-btn--active'));
+      document.getElementById('cw-compare-hint')?.remove();
+    });
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// MOBILE SWIPE GESTURES — swipe globe to cycle cultures
+// ══════════════════════════════════════════════════════════
+function initSwipeGestures(app){
+  let sx=0,sy=0,sTime=0;
+  const vp=document.getElementById('globe-viewport-3d');
+  if(!vp) return;
+  vp.addEventListener('touchstart',e=>{
+    if(e.touches.length!==1) return;
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY; sTime=Date.now();
+  },{passive:true});
+  vp.addEventListener('touchend',e=>{
+    if(!e.changedTouches.length) return;
+    const dx=e.changedTouches[0].clientX-sx;
+    const dy=e.changedTouches[0].clientY-sy;
+    const dt=Date.now()-sTime;
+    // Short, horizontal swipe → cycle cultures
+    if(dt<400 && Math.abs(dx)>55 && Math.abs(dx)>Math.abs(dy)*1.8){
+      const ids=[...app.byId.keys()];
+      const cur=app.selectedId;
+      const idx=cur?ids.indexOf(cur):-1;
+      const next=dx<0?
+        ids[(idx+1)%ids.length]:
+        ids[(idx-1+ids.length)%ids.length];
+      app.selectCulture(next,true);
+    }
+    // Short tap (no drag) → deselect if selecting
+  },{passive:true});
+}
+
+
 // ══════════════════════════════════════════════════════════
 // COSMIC WEAVE — MAIN APP
 // ══════════════════════════════════════════════════════════
@@ -3071,7 +3622,7 @@ class CosmicWeave {
     /* Modules */
     this.globe=null;this.map=null;this.graph=null;
     this.timeline=null;this.tour=null;
-    this.landmarkScene=null;this.tooltip=null;this.starOverlay=null;
+    this.tooltip=null;this.starOverlay=null;
     /* Containers */
     this._containers={};
   }
@@ -3110,7 +3661,6 @@ class CosmicWeave {
     this._wireUI();
     this._wireKeyboard();
     /* Landmark mini-scene */
-    this.landmarkScene=new LandmarkScene();
     /* Tooltip */
     const globeVp=document.getElementById('globe-viewport-3d');
     if(globeVp){this.tooltip=new TooltipManager(globeVp);}
@@ -3162,6 +3712,26 @@ class CosmicWeave {
   selectCulture(id,push=true){
     const c=this.byId.get(id);if(!c) return;
     if(this.selectedId===id){this.deselectAll();return;}
+
+    /* ── Clear ALL arc highlights before selecting new node ── */
+    if(this.globe){
+      // Dim all arcs to baseline immediately
+      this.globe.arcObjs?.forEach(a=>{
+        if(window.gsap) gsap.to(a.tube.material,{opacity:.08,duration:.25});
+        else a.tube.material.opacity=.08;
+        a._speed=0.003;
+      });
+      // Clear all layer threads
+      LAYER_CFGS.forEach(cfg=>{
+        (this.globe._layerMeshes?.[cfg.key]||[]).forEach(m=>{
+          this.globe.scene.remove(m); m.geometry?.dispose();
+        });
+        if(this.globe._layerMeshes) this.globe._layerMeshes[cfg.key]=[];
+      });
+      // Clear lens arcs
+      this.globe.setLensArcs([],false);
+    }
+
     this.selectedId=id;
     /* Sync globe node selection */
     const obj=this.globe?.nodeObjs.find(n=>n.data.id===id);
@@ -3177,7 +3747,6 @@ class CosmicWeave {
     /* Panels */
     renderDetailPanel(c,document.getElementById('culture-name'));
     /* Landmark preview disabled */
-    // this.landmarkScene?.mount(id,'landmark-preview');
     const allL=this.showSuggested?[...this.linksOfficial,...this.linksSuggested]:this.linksOfficial;
     renderConnections(c,allL,this.byId);
     /* Layer threads */
@@ -3304,6 +3873,17 @@ class CosmicWeave {
   /* ── UI wiring ── */
   _wireUI(){
     /* Star map toggle */
+    /* ── Learning Paths ── */
+    this.learningPath=new LearningPathUI(this);
+    document.getElementById('btnLearningPath')?.addEventListener('click',()=>this.learningPath.open());
+
+    /* ── Culture Compare ── */
+    this.compare=new CultureCompare(this);
+    window._cwCompare=this.compare; // accessible from renderDetailPanel
+
+    /* ── Mobile Swipe ── */
+    initSwipeGestures(this);
+
     document.getElementById('btnStarMap')?.addEventListener('click',()=>{
       const visible=this.starOverlay?.toggle(this.globe);
       document.getElementById('btnStarMap')?.classList.toggle('active',!!visible);
@@ -3380,6 +3960,15 @@ async function boot() {
     console.warn('[CW] Three.js not loaded — 3D globe unavailable');
     /* Still boot but globe will be empty */
   }
+
+// ══════════════════════════════════════════════════════════
+
+
+  // Load stars.json for rich star info
+  fetch('./docs/stars.json')
+    .then(r=>r.ok?r.json():null)
+    .then(d=>{ if(d?.stars) window._starData=d.stars; })
+    .catch(()=>{});
   const app=new CosmicWeave();
   window._cwApp=app;
   try { await app.init(); }

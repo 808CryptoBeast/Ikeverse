@@ -236,6 +236,7 @@
             <button id="btnTour"   class="cw-mode-tab cw-mode-tab--tour"  type="button" title="Guided Tour">
               <i class="fas fa-play-circle"></i><span>Tour</span>
             </button>
+            <button id="btnLearningPath" class="cw-ctrl-btn" type="button" title="Learning Paths"><i class="fas fa-route"></i> Paths</button>
             <button id="btnStarMap" class="cw-mode-tab cw-mode-tab--stars" type="button" title="Hawaiian Star Map">
               <i class="fas fa-star-and-crescent"></i><span>Stars</span>
             </button>
@@ -384,18 +385,49 @@
   </section><!-- /globe-section -->
 
   <!-- Footer -->
-  <footer class="cosmic-footer">
-    <div class="footer-content">
-      <div class="footer-logo">
-        <img src="../assets/images/KMicon.png" alt="KM" style="width:26px;height:26px;object-fit:contain;" onerror="this.style.display='none'">
-        <span class="logo-text">IKEVERSE</span>
+  <footer class="ik-footer">
+    <div class="ik-footer-inner">
+      <!-- Brand -->
+      <div class="ik-footer-brand">
+        <div class="ik-footer-logo-wrap">
+          <img src="../assets/images/thelivingknowledge.png" alt="Ikeverse" class="ik-footer-logo"
+               onerror="this.style.display='none'">
+        </div>
+        <div>
+          <div class="ik-footer-site">IKEVERSE</div>
+          <div class="ik-footer-tagline">Living Knowledge · Decolonizing Consciousness</div>
+        </div>
       </div>
-      <p>© 2026 Ikeverse · Decolonizing knowledge through quantum-indigenous synthesis.</p>
-      <div class="footer-links">
-        <a href="roadmap.html">Roadmap</a>
-        <a href="../index.html">Knowledge Matrix</a>
-        <a href="../culturalverse.html">Culturalverse</a>
+
+      <!-- Links -->
+      <nav class="ik-footer-nav" aria-label="Footer navigation">
+        <div class="ik-footer-col">
+          <div class="ik-footer-col-title">Explore</div>
+          <a href="cosmic-weave.html" class="ik-footer-link">Cosmic Weave</a>
+          <a href="../culturalverse.html" class="ik-footer-link">Culturalverse</a>
+          <a href="roadmap.html" class="ik-footer-link">Journey Map</a>
+        </div>
+        <div class="ik-footer-col">
+          <div class="ik-footer-col-title">Knowledge</div>
+          <a href="../index.html" class="ik-footer-link">Knowledge Matrix</a>
+          <a href="whitepaper.pdf" class="ik-footer-link" target="_blank" rel="noopener">White Paper</a>
+        </div>
+      </nav>
+
+      <!-- Stats strip -->
+      <div class="ik-footer-stats">
+        <div class="ik-footer-stat"><span class="ik-footer-stat-n">55</span><span class="ik-footer-stat-l">Cultures</span></div>
+        <div class="ik-footer-stat"><span class="ik-footer-stat-n">64</span><span class="ik-footer-stat-l">Connections</span></div>
+        <div class="ik-footer-stat"><span class="ik-footer-stat-n">65</span><span class="ik-footer-stat-l">Named Stars</span></div>
+        <div class="ik-footer-stat"><span class="ik-footer-stat-n">8</span><span class="ik-footer-stat-l">Learning Paths</span></div>
       </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="ik-footer-bottom">
+      <span>© 2026 Ikeverse · All cultures honored, no knowledge exploited.</span>
+      <span class="ik-footer-dot">·</span>
+      <span>Built with reverence for indigenous wisdom traditions.</span>
     </div>
   </footer>
 
@@ -434,6 +466,27 @@
     });
   </script>
   <script src="js/cosmic-weave.js"></script>
+
+  <!-- ── Loading Screen ── -->
+  <div id="ik-loader" class="ik-loader" aria-live="polite" aria-label="Loading Ikeverse">
+    <div class="ik-loader-inner">
+      <div class="ik-loader-rings">
+        <div class="ik-loader-ring ik-loader-ring--1"></div>
+        <div class="ik-loader-ring ik-loader-ring--2"></div>
+        <div class="ik-loader-ring ik-loader-ring--3"></div>
+        <div class="ik-loader-core">
+          <img src="../assets/images/thelivingknowledge.png" class="ik-loader-logo-img"
+               alt="Ikeverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span class="ik-loader-glyph" style="display:none">🌌</span>
+        </div>
+      </div>
+      <div class="ik-loader-text">
+        <span class="ik-loader-title">IKEVERSE</span>
+        <span class="ik-loader-sub" id="ik-loader-sub">Initializing knowledge graph…</span>
+      </div>
+      <div class="ik-loader-bar"><div class="ik-loader-fill" id="ik-loader-fill"></div></div>
+    </div>
+  </div>
 
   <!-- ── Ikeverse Nav JS ── -->
   <script>
@@ -477,6 +530,47 @@
     drawer?.querySelectorAll('.ik-drawer-link').forEach(a=>{
       a.addEventListener('click', closeDrawer);
     });
+  })();
+  </script>
+
+  <!-- ── Loader controller ── -->
+  <script>
+  (function(){
+    const loader=document.getElementById('ik-loader');
+    const fill=document.getElementById('ik-loader-fill');
+    const sub=document.getElementById('ik-loader-sub');
+    if(!loader) return;
+    const steps=[
+      [10,'Loading star catalog…'],
+      [30,'Mapping cultures…'],
+      [55,'Building knowledge graph…'],
+      [75,'Rendering globe…'],
+      [90,'Connecting traditions…'],
+      [100,'Ready'],
+    ];
+    let si=0;
+    const tick=()=>{
+      if(si>=steps.length) return;
+      const[pct,msg]=steps[si++];
+      if(fill) fill.style.width=pct+'%';
+      if(sub) sub.textContent=msg;
+      if(pct<100) setTimeout(tick, si===1?200:400+Math.random()*300);
+    };
+    tick();
+    // Hide after page fully loads + a short grace period
+    const hide=()=>{
+      if(fill) fill.style.width='100%';
+      if(sub) sub.textContent='Ready';
+      setTimeout(()=>{
+        loader.classList.add('ik-loader--done');
+        setTimeout(()=>loader.remove(),600);
+      },350);
+    };
+    if(document.readyState==='complete'){
+      setTimeout(hide,800);
+    } else {
+      window.addEventListener('load',()=>setTimeout(hide,600));
+    }
   })();
   </script>
 </body>
