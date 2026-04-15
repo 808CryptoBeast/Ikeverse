@@ -1352,244 +1352,469 @@ class LandmarkScene {
 }
 
 // ══════════════════════════════════════════════════════════
-// HAWAIIAN STAR MAP OVERLAY
-// 36 named stars · 21 constellation lines · 280 background stars
+// REAL CELESTIAL STAR MAP OVERLAY
+// Accurate RA/Dec catalog · Real constellation lines
+// 68 named stars · 10 constellations · 350 background stars
 // ══════════════════════════════════════════════════════════
-const HAWAIIAN_STARS=[
-  // ── Tier 0: Primary navigation zenith stars ──
-  {h:"Hōkūleʻa",          w:"Arcturus",        ra:213.9,dec:+19.2,mag:-0.1,tier:0,note:"Zenith star of Hawaiʻi · Canoe star"},
-  {h:"Hōkūpaʻa",          w:"Polaris",         ra:37.9, dec:+89.3,mag:+2.0,tier:0,note:"The fixed north star · Does not move"},
-  {h:"Kohu",               w:"Sirius",          ra:101.3,dec:-16.7,mag:-1.5,tier:0,note:"Brightest star in the sky"},
-  {h:"Humu",               w:"Vega",            ra:279.2,dec:+38.8,mag:+0.0,tier:0,note:""},
-  {h:"Ke Aliʻi",           w:"Betelgeuse",      ra:88.8, dec:+7.4, mag:+0.4,tier:0,note:"The chief · Red giant"},
-  {h:"Hōkū-lei",           w:"Capella",         ra:79.2, dec:+46.0,mag:+0.1,tier:0,note:"Crown star"},
-  // ── Tier 1: Secondary wayfinding stars ──
-  {h:"Kaelo",              w:"Procyon",         ra:114.8,dec:+5.2, mag:+0.4,tier:1,note:""},
-  {h:"Kaʻaʻahai",          w:"Antares",         ra:247.4,dec:-26.4,mag:+1.1,tier:1,note:"Heart of the scorpion"},
-  {h:"Hōkū-keokeo",        w:"Spica",           ra:201.3,dec:-11.2,mag:+1.0,tier:1,note:"White star"},
-  {h:"Ka Makaliʻi",        w:"Pleiades",        ra:56.9, dec:+24.1,mag:+1.6,tier:1,note:"The little eyes · New year marker"},
-  {h:"Hōkū-hoʻokele-waʻa",w:"Canopus",         ra:96.0, dec:-52.7,mag:-0.7,tier:1,note:"Canoe-steering star"},
-  {h:"Hōkū-ā",             w:"Fomalhaut",       ra:344.4,dec:-29.6,mag:+1.2,tier:1,note:"Autumn south star"},
-  {h:"Hōkū-maʻa",          w:"Deneb",           ra:310.4,dec:+45.3,mag:+1.3,tier:1,note:""},
-  {h:"Hōkū-maʻa-2",        w:"Altair",          ra:297.7,dec:+8.9, mag:+0.8,tier:1,note:""},
-  {h:"Hōkū-kīhia",         w:"Regulus",         ra:152.1,dec:+11.9,mag:+1.4,tier:1,note:""},
-  {h:"Hōkūʻula",           w:"Aldebaran",       ra:68.9, dec:+16.5,mag:+0.9,tier:1,note:"Red eye of the bull"},
-  {h:"Puana",               w:"Rigel",           ra:78.6, dec:-8.2, mag:+0.1,tier:1,note:"Blue-white foot of Orion"},
-  {h:"Māhoe-hope",          w:"Alpha Centauri",  ra:219.9,dec:-60.8,mag:-0.3,tier:1,note:""},
-  // ── Tier 2: Nā Hiku (Big Dipper — 7 stars) ──
-  {h:"Nā Hiku-1",           w:"Dubhe",           ra:165.9,dec:+61.8,mag:+1.8,tier:2,note:""},
-  {h:"Nā Hiku-2",           w:"Merak",           ra:165.5,dec:+56.4,mag:+2.4,tier:2,note:""},
-  {h:"Nā Hiku-3",           w:"Phecda",          ra:178.5,dec:+53.7,mag:+2.4,tier:2,note:""},
-  {h:"Nā Hiku-4",           w:"Megrez",          ra:183.9,dec:+57.0,mag:+3.3,tier:2,note:""},
-  {h:"Nā Hiku-5",           w:"Alioth",          ra:193.5,dec:+55.9,mag:+1.8,tier:2,note:""},
-  {h:"Nā Hiku-6",           w:"Mizar",           ra:200.9,dec:+54.9,mag:+2.0,tier:2,note:""},
-  {h:"Nā Hiku-7",           w:"Alkaid",          ra:206.9,dec:+49.3,mag:+1.9,tier:2,note:""},
-  // ── Tier 2: Orion belt (Hoʻopuka) ──
-  {h:"Hoʻopuka-1",          w:"Alnitak",         ra:85.2, dec:-1.9, mag:+1.7,tier:2,note:""},
-  {h:"Hoʻopuka-2",          w:"Alnilam",         ra:84.1, dec:-1.2, mag:+1.7,tier:2,note:"Middle of Orion belt"},
-  {h:"Hoʻopuka-3",          w:"Mintaka",         ra:83.0, dec:-0.3, mag:+2.2,tier:2,note:""},
-  // ── Tier 2: Scorpius tail ──
-  {h:"Nā Kā-1",             w:"Shaula",          ra:263.4,dec:-37.1,mag:+1.6,tier:2,note:"Scorpion stinger"},
-  {h:"Nā Kā-2",             w:"Lesath",          ra:264.3,dec:-37.3,mag:+2.7,tier:2,note:""},
-  // ── Tier 2: Southern Cross ──
-  {h:"Newe-1",              w:"Acrux",           ra:186.6,dec:-63.1,mag:+0.8,tier:2,note:""},
-  {h:"Newe-2",              w:"Mimosa",          ra:191.9,dec:-59.7,mag:+1.2,tier:2,note:""},
-  {h:"Newe-3",              w:"Gacrux",          ra:187.8,dec:-57.1,mag:+1.6,tier:2,note:""},
-  {h:"Newe-4",              w:"Delta Cru",       ra:183.8,dec:-58.7,mag:+2.8,tier:2,note:""},
-  // ── Nā Pōkea (Gemini twins) ──
-  {h:"Nā Pōkea-1",          w:"Castor",          ra:113.6,dec:+31.9,mag:+1.6,tier:2,note:""},
-  {h:"Nā Pōkea-2",          w:"Pollux",          ra:116.3,dec:+28.0,mag:+1.1,tier:2,note:""},
+
+// ── Star catalog: {id, ra (degrees), dec (degrees), mag, con (constellation), h (Hawaiian name if any)} ──
+const STAR_CATALOG = [
+  // ── ORION ──────────────────────────────────────────────
+  {id:"Betelgeuse", ra:88.79,  dec:+7.41,  mag:0.42,  con:"Orion",    h:"Ke Aliʻi",    note:"Zenith region of Hawaiʻi"},
+  {id:"Rigel",      ra:78.63,  dec:-8.20,  mag:0.18,  con:"Orion",    h:"Puana",       note:"Blue-white foot of Orion"},
+  {id:"Bellatrix",  ra:81.28,  dec:+6.35,  mag:1.64,  con:"Orion",    h:"",            note:""},
+  {id:"Saiph",      ra:86.94,  dec:-9.67,  mag:2.06,  con:"Orion",    h:"",            note:""},
+  {id:"Mintaka",    ra:83.00,  dec:-0.30,  mag:2.23,  con:"Orion",    h:"Hoʻopuka-3",  note:"West belt star"},
+  {id:"Alnilam",    ra:84.05,  dec:-1.20,  mag:1.69,  con:"Orion",    h:"Hoʻopuka-2",  note:"Center belt star"},
+  {id:"Alnitak",    ra:85.19,  dec:-1.94,  mag:1.74,  con:"Orion",    h:"Hoʻopuka-1",  note:"East belt star"},
+  // ── URSA MAJOR (Big Dipper / Nā Hiku) ─────────────────
+  {id:"Dubhe",      ra:165.93, dec:+61.75, mag:1.79,  con:"UMa",      h:"Nā Hiku-1",   note:""},
+  {id:"Merak",      ra:165.46, dec:+56.38, mag:2.37,  con:"UMa",      h:"Nā Hiku-2",   note:""},
+  {id:"Phecda",     ra:178.46, dec:+53.69, mag:2.44,  con:"UMa",      h:"Nā Hiku-3",   note:""},
+  {id:"Megrez",     ra:183.86, dec:+57.03, mag:3.32,  con:"UMa",      h:"Nā Hiku-4",   note:""},
+  {id:"Alioth",     ra:193.51, dec:+55.96, mag:1.76,  con:"UMa",      h:"Nā Hiku-5",   note:""},
+  {id:"Mizar",      ra:200.98, dec:+54.93, mag:2.27,  con:"UMa",      h:"Nā Hiku-6",   note:""},
+  {id:"Alkaid",     ra:206.89, dec:+49.31, mag:1.86,  con:"UMa",      h:"Nā Hiku-7",   note:""},
+  // ── URSA MINOR ─────────────────────────────────────────
+  {id:"Polaris",    ra:37.95,  dec:+89.26, mag:2.02,  con:"UMi",      h:"Hōkūpaʻa",   note:"Fixed north star"},
+  {id:"Kochab",     ra:222.68, dec:+74.16, mag:2.08,  con:"UMi",      h:"",            note:""},
+  // ── CASSIOPEIA (W shape) ───────────────────────────────
+  {id:"Schedar",    ra:10.13,  dec:+56.54, mag:2.24,  con:"Cas",      h:"",            note:""},
+  {id:"Caph",       ra:2.29,   dec:+59.15, mag:2.27,  con:"Cas",      h:"",            note:""},
+  {id:"GammaCas",   ra:14.18,  dec:+60.72, mag:2.47,  con:"Cas",      h:"",            note:""},
+  {id:"Ruchbah",    ra:21.45,  dec:+60.24, mag:2.68,  con:"Cas",      h:"",            note:""},
+  {id:"Segin",      ra:28.60,  dec:+63.67, mag:3.35,  con:"Cas",      h:"",            note:""},
+  // ── SCORPIUS ───────────────────────────────────────────
+  {id:"Antares",    ra:247.35, dec:-26.43, mag:1.09,  con:"Sco",      h:"Kaʻaʻahai",  note:"Heart of the scorpion"},
+  {id:"Graffias",   ra:241.36, dec:-19.81, mag:2.62,  con:"Sco",      h:"",            note:""},
+  {id:"Dschubba",   ra:240.08, dec:-22.62, mag:2.32,  con:"Sco",      h:"",            note:""},
+  {id:"Shaula",     ra:263.40, dec:-37.10, mag:1.62,  con:"Sco",      h:"Nā Kā-1",    note:"Scorpion stinger"},
+  {id:"Lesath",     ra:264.33, dec:-37.30, mag:2.69,  con:"Sco",      h:"Nā Kā-2",    note:""},
+  {id:"Sargas",     ra:264.33, dec:-43.00, mag:1.87,  con:"Sco",      h:"",            note:""},
+  // ── SUMMER TRIANGLE ────────────────────────────────────
+  {id:"Vega",       ra:279.24, dec:+38.78, mag:0.03,  con:"Lyr",      h:"Humu",        note:""},
+  {id:"Deneb",      ra:310.36, dec:+45.28, mag:1.25,  con:"Cyg",      h:"Hōkū-maʻa",  note:""},
+  {id:"Altair",     ra:297.70, dec:+8.87,  mag:0.76,  con:"Aql",      h:"Hōkū-maʻa-2",note:""},
+  // ── CYGNUS (Northern Cross) ────────────────────────────
+  {id:"Sadr",       ra:305.56, dec:+40.26, mag:2.23,  con:"Cyg",      h:"",            note:""},
+  {id:"Gienah",     ra:311.55, dec:+33.97, mag:2.46,  con:"Cyg",      h:"",            note:""},
+  {id:"AlbireoA",   ra:292.68, dec:+27.96, mag:3.18,  con:"Cyg",      h:"",            note:""},
+  // ── TAURUS ─────────────────────────────────────────────
+  {id:"Aldebaran",  ra:68.98,  dec:+16.51, mag:0.87,  con:"Tau",      h:"Hōkūʻula",   note:"Red eye of the bull"},
+  {id:"Alcyone",    ra:56.87,  dec:+24.11, mag:2.87,  con:"Tau",      h:"Ka Makaliʻi", note:"Pleiades center — rise marks new year"},
+  {id:"Elnath",     ra:81.57,  dec:+28.61, mag:1.65,  con:"Tau",      h:"",            note:""},
+  // ── GEMINI ─────────────────────────────────────────────
+  {id:"Pollux",     ra:116.33, dec:+28.03, mag:1.16,  con:"Gem",      h:"Nā Pōkea-2", note:""},
+  {id:"Castor",     ra:113.65, dec:+31.89, mag:1.58,  con:"Gem",      h:"Nā Pōkea-1", note:""},
+  // ── CANIS MAJOR ────────────────────────────────────────
+  {id:"Sirius",     ra:101.29, dec:-16.72, mag:-1.46, con:"CMa",      h:"Kohu",        note:"Brightest star in the sky"},
+  {id:"Adhara",     ra:104.66, dec:-28.97, mag:1.50,  con:"CMa",      h:"",            note:""},
+  {id:"Wezen",      ra:107.10, dec:-26.39, mag:1.83,  con:"CMa",      h:"",            note:""},
+  // ── CANIS MINOR ────────────────────────────────────────
+  {id:"Procyon",    ra:114.83, dec:+5.23,  mag:0.38,  con:"CMi",      h:"Kaelo",       note:""},
+  // ── AURIGA ─────────────────────────────────────────────
+  {id:"Capella",    ra:79.17,  dec:+45.99, mag:0.08,  con:"Aur",      h:"Hōkū-lei",   note:"Crown star"},
+  // ── BOÖTES ─────────────────────────────────────────────
+  {id:"Arcturus",   ra:213.92, dec:+19.18, mag:-0.04, con:"Boo",      h:"Hōkūleʻa",  note:"Zenith star of Hawaiʻi · canoe star"},
+  // ── VIRGO ──────────────────────────────────────────────
+  {id:"Spica",      ra:201.30, dec:-11.16, mag:0.97,  con:"Vir",      h:"Hōkū-keokeo",note:"White star"},
+  // ── LEO ────────────────────────────────────────────────
+  {id:"Regulus",    ra:152.09, dec:+11.97, mag:1.35,  con:"Leo",      h:"Hōkū-kīhia", note:""},
+  {id:"Denebola",   ra:177.26, dec:+14.57, mag:2.14,  con:"Leo",      h:"",            note:""},
+  {id:"Algieba",    ra:154.99, dec:+19.84, mag:2.28,  con:"Leo",      h:"",            note:""},
+  {id:"EtaLeo",     ra:149.47, dec:+16.76, mag:3.48,  con:"Leo",      h:"",            note:""},
+  // ── CENTAURUS / SOUTHERN CROSS ─────────────────────────
+  {id:"RigilKent",  ra:219.92, dec:-60.83, mag:-0.01, con:"Cen",      h:"Māhoe-hope",  note:""},
+  {id:"Hadar",      ra:210.96, dec:-60.37, mag:0.61,  con:"Cen",      h:"",            note:""},
+  {id:"Acrux",      ra:186.65, dec:-63.10, mag:0.77,  con:"Cru",      h:"Newe-1",      note:"Southern Cross top"},
+  {id:"Mimosa",     ra:191.93, dec:-59.69, mag:1.25,  con:"Cru",      h:"Newe-2",      note:""},
+  {id:"Gacrux",     ra:187.79, dec:-57.11, mag:1.63,  con:"Cru",      h:"Newe-3",      note:"Southern Cross bottom"},
+  {id:"Imai",       ra:183.79, dec:-58.75, mag:2.79,  con:"Cru",      h:"Newe-4",      note:""},
+  // ── CARINA ─────────────────────────────────────────────
+  {id:"Canopus",    ra:96.00,  dec:-52.70, mag:-0.72, con:"Car",      h:"Hōkū-hoʻokele-waʻa", note:"Canoe-steering star"},
+  // ── PISCIS AUSTRINUS ───────────────────────────────────
+  {id:"Fomalhaut",  ra:344.41, dec:-29.62, mag:1.17,  con:"PsA",      h:"Hōkū-ā",     note:"Autumn south star"},
+  // ── PERSEUS ────────────────────────────────────────────
+  {id:"Mirfak",     ra:51.08,  dec:+49.86, mag:1.79,  con:"Per",      h:"",            note:""},
+  {id:"Algol",      ra:47.04,  dec:+40.96, mag:2.12,  con:"Per",      h:"",            note:""},
+  // ── ANDROMEDA ──────────────────────────────────────────
+  {id:"Alpheratz",  ra:2.10,   dec:+29.09, mag:2.07,  con:"And",      h:"",            note:""},
+  {id:"Mirach",     ra:17.43,  dec:+35.62, mag:2.07,  con:"And",      h:"",            note:""},
+  // ── PEGASUS ────────────────────────────────────────────
+  {id:"Markab",     ra:346.19, dec:+15.21, mag:2.49,  con:"Peg",      h:"",            note:""},
+  {id:"Scheat",     ra:345.94, dec:+28.08, mag:2.44,  con:"Peg",      h:"",            note:""},
+  {id:"Algenib",    ra:3.31,   dec:+15.18, mag:2.83,  con:"Peg",      h:"",            note:""},
+  // ── ARIES ──────────────────────────────────────────────
+  {id:"Hamal",      ra:31.79,  dec:+23.46, mag:2.00,  con:"Ari",      h:"",            note:""},
 ];
 
-const HAWAIIAN_CONST_LINES=[
-  // Nā Hiku — Big Dipper bowl + handle
-  ["Nā Hiku-1","Nā Hiku-2"],["Nā Hiku-2","Nā Hiku-3"],["Nā Hiku-3","Nā Hiku-4"],
-  ["Nā Hiku-4","Nā Hiku-1"],// bowl square
-  ["Nā Hiku-4","Nā Hiku-5"],["Nā Hiku-5","Nā Hiku-6"],["Nā Hiku-6","Nā Hiku-7"],// handle
-  // Pointer to north
-  ["Nā Hiku-1","Hōkūpaʻa"],["Nā Hiku-2","Hōkūpaʻa"],
-  // Orion belt
-  ["Hoʻopuka-1","Hoʻopuka-2"],["Hoʻopuka-2","Hoʻopuka-3"],
-  // Orion body
-  ["Ke Aliʻi","Hoʻopuka-2"],["Puana","Hoʻopuka-2"],["Ke Aliʻi","Kaelo"],
-  // Orion to Sirius
-  ["Hoʻopuka-1","Kohu"],
-  // Hōkūleʻa connections
-  ["Hōkūleʻa","Ke Aliʻi"],["Hōkūleʻa","Hōkū-keokeo"],
-  // Summer triangle
-  ["Humu","Hōkū-maʻa"],["Hōkū-maʻa","Hōkū-maʻa-2"],["Hōkū-maʻa-2","Humu"],
-  // Scorpius
-  ["Kaʻaʻahai","Nā Kā-1"],["Nā Kā-1","Nā Kā-2"],
-  // Southern Cross
-  ["Newe-1","Newe-3"],["Newe-2","Newe-4"],// cross arms
+// ── Constellation line pairs [from_id, to_id, optional_group] ──
+const CONST_LINES = [
+  // ORION — body
+  ["Betelgeuse","Bellatrix"],
+  ["Bellatrix","Mintaka"],
+  ["Mintaka","Alnilam"],
+  ["Alnilam","Alnitak"],       // belt L→R
+  ["Betelgeuse","Alnitak"],    // left shoulder → left belt
+  ["Rigel","Saiph"],
+  ["Rigel","Mintaka"],         // right foot → belt
+  ["Saiph","Alnitak"],         // left foot → belt
+  // ORION → CANIS MAJOR (pointer)
+  ["Alnitak","Sirius"],
+  // ORION → CANIS MINOR
+  ["Betelgeuse","Procyon"],
+  // URSA MAJOR — bowl (square)
+  ["Dubhe","Merak"],
+  ["Merak","Phecda"],
+  ["Phecda","Megrez"],
+  ["Megrez","Dubhe"],
+  // URSA MAJOR — handle
+  ["Megrez","Alioth"],
+  ["Alioth","Mizar"],
+  ["Mizar","Alkaid"],
+  // POINTER to POLARIS
+  ["Dubhe","Polaris"],
+  ["Merak","Polaris"],
+  // CASSIOPEIA — W
+  ["Caph","Schedar"],
+  ["Schedar","GammaCas"],
+  ["GammaCas","Ruchbah"],
+  ["Ruchbah","Segin"],
+  // SCORPIUS — body + tail
+  ["Graffias","Dschubba"],
+  ["Dschubba","Antares"],
+  ["Antares","Sargas"],
+  ["Sargas","Shaula"],
+  ["Shaula","Lesath"],
+  // SUMMER TRIANGLE
+  ["Vega","Deneb"],
+  ["Deneb","Altair"],
+  ["Altair","Vega"],
+  // CYGNUS — Northern Cross
+  ["Deneb","Sadr"],
+  ["Sadr","AlbireoA"],         // long arm
+  ["Sadr","Gienah"],           // cross arm R
+  // TAURUS
+  ["Aldebaran","Elnath"],
+  ["Alcyone","Aldebaran"],
+  // GEMINI
+  ["Castor","Pollux"],
+  // CANIS MAJOR — body
+  ["Sirius","Adhara"],
+  ["Adhara","Wezen"],
+  // LEO — sickle (head) + triangle (body)
+  ["Regulus","EtaLeo"],
+  ["EtaLeo","Algieba"],
+  ["Algieba","Denebola"],
+  ["Algieba","Regulus"],
+  // BOÖTES → VIRGO
+  ["Arcturus","Spica"],
+  // SOUTHERN CROSS — cross arms
+  ["Acrux","Gacrux"],          // vertical
+  ["Mimosa","Imai"],           // horizontal
+  // CENTAURUS pointers to Crux
+  ["Hadar","RigilKent"],
+  ["RigilKent","Acrux"],
+  // ANDROMEDA
+  ["Alpheratz","Mirach"],
+  // GREAT SQUARE OF PEGASUS
+  ["Markab","Scheat"],
+  ["Scheat","Alpheratz"],
+  ["Alpheratz","Algenib"],
+  ["Algenib","Markab"],
 ];
 
-class HawaiianStarOverlay{
-  constructor(container){this.container=container;this.svg=null;this.visible=false;this._rafId=null;this._bgStars=null;}
+// Constellation color palette
+const CON_COLORS = {
+  Orion: "#5bf",
+  UMa:   "#fd0",
+  UMi:   "#fd0",
+  Cas:   "#f8c",
+  Sco:   "#f55",
+  Lyr:   "#8ff",
+  Cyg:   "#8ff",
+  Aql:   "#8ff",
+  Tau:   "#fa5",
+  Gem:   "#aff",
+  CMa:   "#fff",
+  CMi:   "#9df",
+  Aur:   "#cf7",
+  Boo:   "#fd0",
+  Vir:   "#cf7",
+  Leo:   "#fa8",
+  Cen:   "#9f9",
+  Cru:   "#9f9",
+  Car:   "#aef",
+  PsA:   "#bcf",
+  Per:   "#ddf",
+  And:   "#ddf",
+  Peg:   "#ddf",
+  Ari:   "#fdb",
+};
+
+class CelestialStarOverlay {
+  constructor(container){
+    this.container=container;
+    this.svg=null;
+    this.visible=false;
+    this._rafId=null;
+    this._bg=null;
+    this._t0=Date.now();
+  }
 
   _build(){
     const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-    svg.setAttribute('aria-label','Ka Pānalāʻā ao — Hawaiian Star Map');
+    svg.setAttribute('aria-label','Ka Pānalāʻā ao — Real Celestial Star Map');
     svg.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:12;display:none;';
-    this.container.appendChild(svg);this.svg=svg;
-    // pre-generate 280 background stars
-    this._bgStars=Array.from({length:280},()=>({
-      x:Math.random(),y:Math.random(),
-      r:Math.random()*1.1+0.3,
-      op:Math.random()*0.35+0.12,
-      tw:Math.random()*Math.PI*2
+    this.container.appendChild(svg);
+    this.svg=svg;
+    // Pre-generate 350 background stars
+    this._bg=Array.from({length:350},()=>({
+      x:Math.random(), y:Math.random(),
+      r:Math.random()*1.2+0.25,
+      op:Math.random()*0.32+0.08,
+      tw:Math.random()*Math.PI*2,
+      sp:Math.random()*0.6+0.7
     }));
   }
 
   toggle(globe){
-    if(!this.svg)this._build();
+    if(!this.svg) this._build();
     this.visible=!this.visible;
     this.svg.style.display=this.visible?'block':'none';
-    if(this.visible)this._startLoop(globe);
-    else this._stopLoop();
+    if(this.visible) this._loop(globe);
+    else if(this._rafId){ cancelAnimationFrame(this._rafId); this._rafId=null; }
     return this.visible;
   }
-  _startLoop(globe){const loop=()=>{if(!this.visible)return;this._render(globe);this._rafId=requestAnimationFrame(loop);};this._stopLoop();loop();}
-  _stopLoop(){if(this._rafId){cancelAnimationFrame(this._rafId);this._rafId=null;}}
 
-  _el(tag,attrs,text){
-    const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
-    for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);
-    if(text!=null)e.textContent=text;
-    return e;
+  _loop(globe){
+    const go=()=>{
+      if(!this.visible) return;
+      this._draw(globe);
+      this._rafId=requestAnimationFrame(go);
+    };
+    if(this._rafId) cancelAnimationFrame(this._rafId);
+    go();
   }
 
-  _render(globe){
-    if(!this.svg||!globe)return;
-    const W=this.container.clientWidth||800,H=this.container.clientHeight||560;
+  _e(tag,attrs,text){
+    const el=document.createElementNS('http://www.w3.org/2000/svg',tag);
+    for(const[k,v]of Object.entries(attrs)) el.setAttribute(k,v);
+    if(text!=null) el.textContent=text;
+    return el;
+  }
+
+  _project(ra,dec,camera,W,H){
+    const phi=dec*Math.PI/180, lam=ra*Math.PI/180;
+    const v=new THREE.Vector3(
+      50*Math.cos(phi)*Math.cos(lam),
+      50*Math.sin(phi),
+      50*Math.cos(phi)*Math.sin(lam)
+    );
+    v.project(camera);
+    return {x:(v.x*.5+.5)*W, y:(-v.y*.5+.5)*H, inFront:v.z<1.0};
+  }
+
+  _draw(globe){
+    if(!this.svg||!globe) return;
+    const W=this.container.clientWidth||800, H=this.container.clientHeight||560;
     this.svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
     this.svg.innerHTML='';
-    const t=Date.now()/1000;
-    const E=this._el.bind(this);
+    const t=(Date.now()-this._t0)/1000;
+    const E=this._e.bind(this);
 
-    // ── Deep sky overlay ──
-    this.svg.appendChild(E('rect',{width:W,height:H,fill:'rgba(1,4,18,.75)'}));
+    // ── Sky overlay ──
+    this.svg.appendChild(E('rect',{width:W,height:H,fill:'rgba(0,2,14,.78)'}));
 
     // ── Milky Way band ──
-    const mw=E('ellipse',{cx:W*.45,cy:H*.52,rx:W*.44,ry:H*.17,fill:'rgba(160,185,240,.04)',transform:`rotate(-35,${W*.45},${H*.52})`});
-    this.svg.appendChild(mw);
-    this.svg.appendChild(E('ellipse',{cx:W*.45,cy:H*.52,rx:W*.26,ry:H*.07,fill:'rgba(190,210,255,.055)',transform:`rotate(-35,${W*.45},${H*.52})`}));
+    const mwa=E('ellipse',{cx:W*.46,cy:H*.54,rx:W*.46,ry:H*.20,
+      fill:'rgba(140,165,230,.04)',transform:`rotate(-32,${W*.46},${H*.54})`});
+    const mwb=E('ellipse',{cx:W*.46,cy:H*.54,rx:W*.30,ry:H*.09,
+      fill:'rgba(170,195,255,.055)',transform:`rotate(-32,${W*.46},${H*.54})`});
+    this.svg.appendChild(mwa); this.svg.appendChild(mwb);
 
-    // ── Background star field (280 fixed-screen stars) ──
-    const bg=document.createElementNS('http://www.w3.org/2000/svg','g');
-    this._bgStars.forEach(s=>{
-      const op=Math.min(0.7,s.op+Math.sin(t*1.1+s.tw)*0.06);
-      const r=s.r*(1+Math.sin(t*0.8+s.tw+1)*0.05);
-      bg.appendChild(E('circle',{cx:(s.x*W).toFixed(1),cy:(s.y*H).toFixed(1),r:r.toFixed(2),fill:'#b0c8f0',opacity:op.toFixed(2)}));
+    // ── Background star field ──
+    const bgG=document.createElementNS('http://www.w3.org/2000/svg','g');
+    this._bg.forEach(s=>{
+      const op=Math.min(.7,s.op+Math.sin(t*s.sp+s.tw)*.05);
+      const r=s.r*(1+Math.sin(t*.7+s.tw)*.04);
+      bgG.appendChild(E('circle',{cx:(s.x*W).toFixed(1),cy:(s.y*H).toFixed(1),
+        r:r.toFixed(2),fill:'#a8c0f0',opacity:op.toFixed(2)}));
     });
-    this.svg.appendChild(bg);
+    this.svg.appendChild(bgG);
 
-    // ── Project RA/Dec onto globe camera ──
-    const project=(ra,dec)=>{
-      const phi=dec*Math.PI/180,lam=ra*Math.PI/180;
-      const v=new THREE.Vector3(50*Math.cos(phi)*Math.cos(lam),50*Math.sin(phi),50*Math.cos(phi)*Math.sin(lam));
-      v.project(globe.camera);
-      return{x:(v.x*.5+.5)*W,y:(-v.y*.5+.5)*H,inFront:v.z<1.0};
-    };
-
-    const pts=HAWAIIAN_STARS.map(s=>({...s,...project(s.ra,s.dec)}));
-    const byName=new Map(pts.map(s=>[s.h,s]));
+    // ── Project all catalog stars ──
+    const proj={};
+    STAR_CATALOG.forEach(s=>{
+      proj[s.id]={...s,...this._project(s.ra,s.dec,globe.camera,W,H)};
+    });
 
     // ── Constellation lines ──
-    const lg=document.createElementNS('http://www.w3.org/2000/svg','g');
-    HAWAIIAN_CONST_LINES.forEach(([a,b])=>{
-      const sa=byName.get(a),sb=byName.get(b);
-      if(!sa?.inFront||!sb?.inFront)return;
-      const gold=a==="Nā Hiku-1"&&b==="Hōkūpaʻa"||a==="Nā Hiku-2"&&b==="Hōkūpaʻa"||a.startsWith("Hōkūleʻa");
-      lg.appendChild(E('line',{x1:sa.x.toFixed(1),y1:sa.y.toFixed(1),x2:sb.x.toFixed(1),y2:sb.y.toFixed(1),
-        stroke:gold?'rgba(255,215,0,.52)':'rgba(0,200,255,.32)',
-        'stroke-width':gold?'1.2':'0.85','stroke-dasharray':gold?'5 5':'3 6','stroke-linecap':'round'}));
+    const lineG=document.createElementNS('http://www.w3.org/2000/svg','g');
+    CONST_LINES.forEach(([a,b])=>{
+      const sa=proj[a], sb=proj[b];
+      if(!sa?.inFront||!sb?.inFront) return;
+      const con=sa.con;
+      const hex=CON_COLORS[con]||'#6af';
+      const isPointer=(a==='Dubhe'&&b==='Polaris')||(a==='Merak'&&b==='Polaris');
+      lineG.appendChild(E('line',{
+        x1:sa.x.toFixed(1),y1:sa.y.toFixed(1),
+        x2:sb.x.toFixed(1),y2:sb.y.toFixed(1),
+        stroke:isPointer?'rgba(255,215,0,.6)':this._hexAlpha(hex,.28),
+        'stroke-width':isPointer?'1.3':'0.85',
+        'stroke-dasharray':isPointer?'5 5':'4 6',
+        'stroke-linecap':'round'
+      }));
     });
-    this.svg.appendChild(lg);
+    this.svg.appendChild(lineG);
 
     // ── Compass rose (top-right) ──
-    const cx=W-58,cy2=58,cr=30;
-    this.svg.appendChild(E('circle',{cx,cy:cy2,r:cr,fill:'none',stroke:'rgba(0,247,255,.18)','stroke-width':'0.8'}));
-    this.svg.appendChild(E('circle',{cx,cy:cy2,r:cr*.6,fill:'none',stroke:'rgba(0,247,255,.1)','stroke-width':'0.6','stroke-dasharray':'2 5'}));
-    [{d:'N',a:0,c:'rgba(255,215,0,.8)'},{d:'S',a:Math.PI,c:'rgba(0,247,255,.45)'},{d:'E',a:Math.PI/2,c:'rgba(0,247,255,.45)'},{d:'W',a:-Math.PI/2,c:'rgba(0,247,255,.45)'}].forEach(({d,a,c})=>{
-      this.svg.appendChild(E('line',{x1:cx+Math.sin(a)*(cr-5),y1:cy2-Math.cos(a)*(cr-5),x2:cx+Math.sin(a)*(cr+3),y2:cy2-Math.cos(a)*(cr+3),stroke:c,'stroke-width':'1.5','stroke-linecap':'round'}));
-      this.svg.appendChild(E('text',{x:cx+Math.sin(a)*(cr+14),y:cy2-Math.cos(a)*(cr+14)+3.5,'text-anchor':'middle',fill:c,'font-size':d==='N'?'9':'8','font-family':'Orbitron,monospace','font-weight':d==='N'?'700':'400'},d));
+    const cx=W-62, cy2=62, cr=32;
+    this.svg.appendChild(E('circle',{cx,cy:cy2,r:cr,fill:'none',stroke:'rgba(0,247,255,.16)','stroke-width':'.8'}));
+    this.svg.appendChild(E('circle',{cx,cy:cy2,r:cr*.55,fill:'none',stroke:'rgba(0,247,255,.08)','stroke-width':'.6','stroke-dasharray':'2 5'}));
+    [{d:'N',a:0,c:'rgba(255,215,0,.82)'},{d:'S',a:Math.PI,c:'rgba(0,247,255,.42)'},{d:'E',a:Math.PI/2,c:'rgba(0,247,255,.42)'},{d:'W',a:-Math.PI/2,c:'rgba(0,247,255,.42)'}].forEach(({d,a,c})=>{
+      this.svg.appendChild(E('line',{
+        x1:(cx+Math.sin(a)*(cr-4)).toFixed(1),y1:(cy2-Math.cos(a)*(cr-4)).toFixed(1),
+        x2:(cx+Math.sin(a)*(cr+4)).toFixed(1),y2:(cy2-Math.cos(a)*(cr+4)).toFixed(1),
+        stroke:c,'stroke-width':'1.8','stroke-linecap':'round'
+      }));
+      this.svg.appendChild(E('text',{
+        x:(cx+Math.sin(a)*(cr+14)).toFixed(1),
+        y:(cy2-Math.cos(a)*(cr+14)+3.5).toFixed(1),
+        'text-anchor':'middle',fill:c,
+        'font-size':d==='N'?'10':'8.5','font-family':'Orbitron,monospace','font-weight':d==='N'?'700':'400'
+      },d));
     });
 
-    // ── Named stars ──
-    pts.filter(s=>s.inFront).forEach(star=>{
-      const t0=star.tier===0,isHok=star.h==="Hōkūleʻa",isNorth=star.h==="Hōkūpaʻa";
-      const baseR=Math.max(2.5,8.5-Math.max(0,star.mag)*1.9);
-      const r=t0?baseR*1.45:baseR;
-      const starT=Date.now()/1000;
-      const tR=r*(1+Math.sin(starT*1.9+star.ra*.05)*.05);
+    // ── Draw named stars ──
+    Object.values(proj).filter(s=>s.inFront).forEach(star=>{
+      const isHok=star.id==='Arcturus';
+      const isBright=star.mag<0.5;
+      const isMed=star.mag<1.5&&!isBright;
+      const baseR=Math.max(2.2,8-Math.max(-1.5,star.mag)*1.7);
+      const r=baseR*(isHok?1.55:1);
+      const tR=r*(1+Math.sin(t*1.8+star.ra*.04)*.045);
+      const conCol=CON_COLORS[star.con]||'#8af';
 
       // Glow layers
-      if(t0){
-        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*5).toFixed(1),fill:isHok?'rgba(255,215,0,.05)':isNorth?'rgba(180,200,255,.05)':'rgba(0,200,255,.04)'}));
-        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*2.5).toFixed(1),fill:isHok?'rgba(255,215,0,.14)':isNorth?'rgba(180,200,255,.12)':'rgba(0,200,255,.1)'}));
-      } else if(star.tier===1){
-        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*2).toFixed(1),fill:'rgba(0,180,255,.055)'}));
+      if(isHok||isBright){
+        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),
+          r:(r*5.5).toFixed(1),fill:isHok?'rgba(255,215,0,.04)':this._hexAlpha(conCol,.04)}));
+        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),
+          r:(r*2.5).toFixed(1),fill:isHok?'rgba(255,215,0,.15)':this._hexAlpha(conCol,.10)}));
+      } else if(isMed){
+        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),
+          r:(r*2).toFixed(1),fill:this._hexAlpha(conCol,.06)}));
       }
 
-      // Star body
-      const col=isHok?'#ffd700':isNorth?'#ddeeff':star.mag<0?'#fff9f0':star.mag<0.5?'rgba(220,235,255,.95)':star.mag<1.5?'rgba(185,215,255,.88)':'rgba(155,190,240,.7)';
-      this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:tR.toFixed(2),fill:col}));
+      // Star body — color based on magnitude/type
+      const col=isHok?'#ffd700'
+               :star.id==='Betelgeuse'||star.id==='Antares'||star.id==='Aldebaran'?'#ffaa66'
+               :star.id==='Rigel'||star.id==='Spica'?'#aac8ff'
+               :star.mag<0?'#fff8f0'
+               :star.mag<0.5?'rgba(220,235,255,.97)'
+               :star.mag<1.5?'rgba(190,215,255,.90)'
+               :'rgba(160,195,245,.78)';
+      this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),
+        r:tR.toFixed(2),fill:col}));
 
-      // 4-point cross sparkle for bright stars
-      if(t0||star.mag<0.5){
-        const len=r*(isHok?3:2.4);
+      // 4-point sparkle for brightest stars
+      if(isHok||star.mag<0.5){
+        const len=r*(isHok?3.2:2.5);
         [[1,0],[0,1],[.707,.707],[-.707,.707]].forEach(([dx,dy])=>{
           this.svg.appendChild(E('line',{
             x1:(star.x-dx*len).toFixed(1),y1:(star.y-dy*len).toFixed(1),
             x2:(star.x+dx*len).toFixed(1),y2:(star.y+dy*len).toFixed(1),
-            stroke:isHok?'rgba(255,215,0,.48)':'rgba(180,215,255,.32)',
-            'stroke-width':'0.8','stroke-linecap':'round'
+            stroke:isHok?'rgba(255,215,0,.5)':'rgba(200,225,255,.35)',
+            'stroke-width':'.85','stroke-linecap':'round'
           }));
         });
       }
 
-      // Special fixed-star ring for Polaris
-      if(isNorth){
-        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*4).toFixed(1),fill:'none',stroke:'rgba(180,210,255,.22)','stroke-width':'0.8','stroke-dasharray':'3 4'}));
-        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*6.5).toFixed(1),fill:'none',stroke:'rgba(180,210,255,.1)','stroke-width':'0.5','stroke-dasharray':'2 7'}));
+      // Polaris special rings
+      if(star.id==='Polaris'){
+        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*4.2).toFixed(1),fill:'none',stroke:'rgba(200,220,255,.22)','stroke-width':'.7','stroke-dasharray':'3 4'}));
+        this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*7).toFixed(1),fill:'none',stroke:'rgba(200,220,255,.10)','stroke-width':'.5','stroke-dasharray':'2 7'}));
       }
 
-      // Labels for tier 0 + 1 only
-      if(star.tier<=1){
+      // Constellation label (only show for prominent stars)
+      const showLabel=isHok||star.mag<0.5||(star.h&&star.h.length>0&&star.mag<1.8);
+      if(showLabel){
+        const labelName=star.h||star.id;
         const ox=star.x>W*.78?-(r+5):r+6;
         const anch=star.x>W*.78?'end':'start';
-        this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+4).toFixed(1),'text-anchor':anch,
-          fill:isHok?'rgba(255,215,0,.95)':t0?'rgba(0,247,255,.85)':'rgba(0,225,245,.6)',
-          'font-size':isHok?'11':t0?'10':'8.5','font-family':'Orbitron,monospace','font-weight':t0?'500':'400'},
-          star.h.replace(/-[0-9]$/,'').trim()));
-        this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+15).toFixed(1),'text-anchor':anch,
-          fill:'rgba(130,175,215,.35)','font-size':'7','font-family':'sans-serif'},star.w));
-        if(star.note&&t0&&star.note.length>0){
-          this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+27).toFixed(1),'text-anchor':anch,
-            fill:'rgba(255,215,0,.42)','font-size':'7','font-family':'sans-serif','font-style':'italic'},star.note));
+        const mainCol=isHok?'rgba(255,215,0,.95)':star.h?'rgba(0,247,255,.82)':'rgba(180,210,255,.55)';
+        this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+3.5).toFixed(1),
+          'text-anchor':anch,fill:mainCol,'font-size':isHok?'11':star.h?'9':'8',
+          'font-family':'Orbitron,monospace','font-weight':isHok?'600':'400'},labelName));
+        if(star.h&&star.id!==star.h){
+          this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+14).toFixed(1),
+            'text-anchor':anch,fill:'rgba(120,170,215,.35)','font-size':'7','font-family':'sans-serif'},star.id));
+        }
+        if(isHok&&star.note){
+          this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+26).toFixed(1),
+            'text-anchor':anch,fill:'rgba(255,215,0,.42)','font-size':'6.5','font-family':'sans-serif','font-style':'italic'},star.note));
         }
       }
+
+      // Constellation name at centroid — draw once per visible con
+    });
+
+    // ── Constellation name labels ──
+    const conCentroids={};
+    Object.values(proj).filter(s=>s.inFront).forEach(s=>{
+      if(!conCentroids[s.con]) conCentroids[s.con]={sx:0,sy:0,n:0};
+      conCentroids[s.con].sx+=s.x;
+      conCentroids[s.con].sy+=s.y;
+      conCentroids[s.con].n++;
+    });
+    Object.entries(conCentroids).forEach(([con,{sx,sy,n}])=>{
+      const label={UMa:'Nā Hiku · Big Dipper',UMi:'Ursa Minor',Orion:'Orion',Cas:'Cassiopeia',
+        Sco:'Scorpius',Lyr:'Lyra',Cyg:'Cygnus',Aql:'Aquila',Tau:'Taurus',Gem:'Gemini',
+        CMa:'Canis Major',CMi:'Canis Minor',Aur:'Auriga',Boo:'Boötes',Vir:'Virgo',
+        Leo:'Leo',Cen:'Centaurus',Cru:'Southern Cross',Car:'Carina',PsA:'Piscis Austrinus',
+        Per:'Perseus',And:'Andromeda',Peg:'Pegasus',Ari:'Aries'}[con]||con;
+      const col=this._hexAlpha(CON_COLORS[con]||'#8af',.4);
+      this.svg.appendChild(E('text',{
+        x:(sx/n).toFixed(0),y:((sy/n)-12).toFixed(0),
+        'text-anchor':'middle',fill:col,'font-size':'7.5',
+        'font-family':'Orbitron,monospace','letter-spacing':'.08em',
+        'pointer-events':'none','user-select':'none'
+      },label));
     });
 
     // ── Header ──
-    this.svg.appendChild(E('text',{x:14,y:22,fill:'rgba(255,215,0,.82)','font-size':'10','font-family':'Orbitron,monospace','letter-spacing':'0.12em'},'KA PĀNALĀʻĀ AO — HAWAIIAN STAR MAP'));
-    const vis=pts.filter(s=>s.inFront).length;
-    this.svg.appendChild(E('text',{x:14,y:36,fill:'rgba(0,247,255,.38)','font-size':'8','font-family':'sans-serif','font-style':'italic'},`${vis} named stars visible · 280 background stars`));
+    const vis=Object.values(proj).filter(s=>s.inFront).length;
+    this.svg.appendChild(E('text',{x:14,y:22,fill:'rgba(255,215,0,.82)','font-size':'10',
+      'font-family':'Orbitron,monospace','letter-spacing':'.12em'},
+      'KA PĀNALĀʻĀ AO · REAL CELESTIAL STAR MAP'));
+    this.svg.appendChild(E('text',{x:14,y:36,fill:'rgba(0,247,255,.4)','font-size':'8',
+      'font-family':'sans-serif','font-style':'italic'},
+      `${vis} named stars · ${CONST_LINES.length} constellation lines · 350 background stars`));
 
     // ── Legend (bottom-left) ──
-    [
-      {c:'#ffd700',          l:'Hōkūleʻa / Primary navigation'},
-      {c:'rgba(0,247,255,.78)',l:'Named wayfinding stars'},
-      {c:'rgba(0,200,255,.38)',l:'Constellation patterns'},
-      {c:'rgba(100,155,215,.3)',l:'Background star field'},
+    [{c:'#ffd700',l:'Hōkūleʻa (Arcturus) · Hawaiʻi zenith star'},
+     {c:'rgba(0,247,255,.78)',l:'Stars with Hawaiian names'},
+     {c:'rgba(190,215,255,.7)',l:'Bright catalog stars'},
+     {c:'rgba(255,215,0,.5)',l:'─ ─  North pointer / key lines'},
     ].forEach((k,i)=>{
-      const y=H-14-i*16;
+      const y=H-12-i*16;
       this.svg.appendChild(E('circle',{cx:16,cy:y,r:4,fill:k.c}));
       this.svg.appendChild(E('text',{x:26,y:y+3.5,fill:'rgba(180,215,240,.45)','font-size':'8','font-family':'sans-serif'},k.l));
     });
   }
+
+  _hexAlpha(hex,a){
+    // Convert shorthand hex color to rgba
+    let h=hex.replace('#','');
+    if(h.length===3) h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    const r=parseInt(h.substring(0,2),16);
+    const g=parseInt(h.substring(2,4),16);
+    const b=parseInt(h.substring(4,6),16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
 }
+
 
 // ══════════════════════════════════════════════════════════
 // TOOLTIP MANAGER
@@ -2891,7 +3116,7 @@ class CosmicWeave {
     if(globeVp){this.tooltip=new TooltipManager(globeVp);}
     /* Hawaiian star overlay */
     if(globeVp){
-      this.starOverlay=new HawaiianStarOverlay(globeVp);
+      this.starOverlay=new CelestialStarOverlay(globeVp);
       this.globe.onHover=(culture,cx,cy)=>{this.tooltip?.show(culture,cx,cy);};
       this.globe.onHoverEnd=()=>{this.tooltip?.hide();};
     }

@@ -27,24 +27,6 @@
     .gx-node-label:hover { background:rgba(4,9,18,.88); border-color:rgba(0,247,255,.45); }
     @media(max-width:600px){ .gx-node-label { font-size:8px; padding:2px 5px; } }
 
-    /* ── Nav portal as button ── */
-    .nav-portal--btn {
-      display:block; text-decoration:none;
-      cursor:pointer; position:relative;
-      border-radius:50%;
-      transition:transform .2s ease, box-shadow .2s ease;
-      border:none; background:transparent; outline:none;
-    }
-    .nav-portal--btn:hover {
-      transform:scale(1.08);
-      box-shadow:0 0 18px rgba(0,247,255,.35), 0 0 32px rgba(0,247,255,.15);
-    }
-    .nav-portal--btn:focus-visible {
-      outline:2px solid rgba(0,247,255,.6);
-      outline-offset:3px;
-    }
-    .nav-portal--btn:active { transform:scale(0.97); }
-
     /* ── Star map toggle button ── */
     #btnStarMap { background:rgba(20,0,60,.12); border-color:rgba(100,0,200,.35); }
     #btnStarMap.active { background:rgba(100,0,200,.2); border-color:rgba(157,0,255,.65); color:#aa88ff; box-shadow:0 0 10px rgba(157,0,255,.3); }
@@ -167,32 +149,59 @@
   </div>
 
   <!-- Nav -->
-  <nav class="quantum-nav cosmic-nav">
-    <a href="../index.html" class="nav-portal nav-portal--btn" id="nav-portal" aria-label="Go to Ikeverse home" title="Ikeverse Home">
-      <div class="portal-ring outer"></div>
-      <div class="portal-ring middle"></div>
-      <div class="portal-ring inner"></div>
-      <div class="portal-center">
-        <img src="assets/images/KMicon.png" alt="KM"
-             style="width:30px;height:30px;object-fit:contain;border-radius:4px;"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-        <span class="logo-icon" style="display:none">🌌</span>
-      </div>
+  <!-- ── Ikeverse Navigation ── -->
+  <nav class="ik-nav" id="ik-nav" role="navigation" aria-label="Main navigation">
+
+    <!-- Brand / Home button -->
+    <a href="../index.html" class="ik-brand" aria-label="Ikeverse — go to home">
+      <span class="ik-brand-icon">
+        <img src="../assets/images/KMicon.png" alt="" class="ik-brand-img"
+             onerror="this.style.display='none'">
+        <span class="ik-brand-fallback" aria-hidden="true">🌌</span>
+      </span>
+      <span class="ik-brand-name">IKEVERSE</span>
+      <span class="ik-brand-badge">Beta</span>
     </a>
 
-    <div class="nav-links-container" id="nav-links">
-      <ul class="nav-links">
-        <li class="nav-item"><a href="../index.html" class="nav-link"><span class="link-icon"><i class="fas fa-home"></i></span><span class="link-text">Home</span></a></li>
-        <li class="nav-item"><a href="cosmic-weave.html" class="nav-link active"><span class="link-icon"><i class="fas fa-atom"></i></span><span class="link-text">Cosmic Weave</span></a></li>
-        <li class="nav-item"><a href="https://pikoverse.xyz/" class="nav-link"><span class="link-icon"><i class="fas fa-scroll"></i></span><span class="link-text">Culturalverse</span></a></li>
-        <li class="nav-item"><a href="roadmap.html" class="nav-link"><span class="link-icon"><i class="fas fa-timeline"></i></span><span class="link-text">Journey</span></a></li>
-        <li class="nav-item"><a href="whitepaper.pdf" class="nav-link cta" target="_blank" rel="noopener"><span class="link-icon"><i class="fas fa-file-alt"></i></span><span class="link-text">White Paper</span></a></li>
-      </ul>
-    </div>
-    <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" type="button"><i class="fas fa-bars"></i></button>
-    <div class="nav-scanline"></div>
-    <div class="nav-hologram"></div>
+    <!-- Desktop links -->
+    <ul class="ik-links" role="list">
+      <li><a href="../index.html" class="ik-link"><i class="fas fa-home ik-icon"></i><span>Home</span></a></li>
+      <li><a href="cosmic-weave.html" class="ik-link ik-link--active" aria-current="page"><i class="fas fa-atom ik-icon"></i><span>Cosmic Weave</span></a></li>
+      <li><a href="../culturalverse.html" class="ik-link"><i class="fas fa-scroll ik-icon"></i><span>Culturalverse</span></a></li>
+      <li><a href="roadmap.html" class="ik-link"><i class="fas fa-map ik-icon"></i><span>Journey</span></a></li>
+      <li><a href="whitepaper.pdf" class="ik-link ik-link--cta" target="_blank" rel="noopener"><i class="fas fa-file-alt ik-icon"></i><span>White Paper</span></a></li>
+    </ul>
+
+    <!-- Hamburger (mobile) -->
+    <button class="ik-burger" id="ik-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ik-drawer">
+      <span class="ik-burger-bar"></span>
+      <span class="ik-burger-bar"></span>
+      <span class="ik-burger-bar"></span>
+    </button>
+
+    <!-- Decorative line -->
+    <div class="ik-nav-line" aria-hidden="true"></div>
   </nav>
+
+  <!-- Mobile drawer -->
+  <div class="ik-drawer" id="ik-drawer" aria-hidden="true" role="dialog" aria-label="Navigation menu">
+    <div class="ik-drawer-header">
+      <span class="ik-drawer-logo">IKEVERSE</span>
+      <button class="ik-drawer-close" id="ik-drawer-close" type="button" aria-label="Close menu"><i class="fas fa-times"></i></button>
+    </div>
+    <ul class="ik-drawer-links" role="list">
+      <li><a href="../index.html" class="ik-drawer-link"><i class="fas fa-home"></i><span>Home</span></a></li>
+      <li><a href="cosmic-weave.html" class="ik-drawer-link ik-drawer-link--active" aria-current="page"><i class="fas fa-atom"></i><span>Cosmic Weave</span></a></li>
+      <li><a href="../culturalverse.html" class="ik-drawer-link"><i class="fas fa-scroll"></i><span>Culturalverse</span></a></li>
+      <li><a href="roadmap.html" class="ik-drawer-link"><i class="fas fa-map"></i><span>Journey</span></a></li>
+      <li><a href="whitepaper.pdf" class="ik-drawer-link ik-drawer-link--cta" target="_blank" rel="noopener"><i class="fas fa-file-alt"></i><span>White Paper</span></a></li>
+    </ul>
+    <div class="ik-drawer-footer">
+      <span>Ikeverse · Living Knowledge</span>
+    </div>
+  </div>
+  <!-- Overlay backdrop -->
+  <div class="ik-overlay" id="ik-overlay" aria-hidden="true"></div>
 
   <!-- Hero -->
   <section class="cosmic-hero">
@@ -425,5 +434,50 @@
     });
   </script>
   <script src="js/cosmic-weave.js"></script>
+
+  <!-- ── Ikeverse Nav JS ── -->
+  <script>
+  (function(){
+    const burger  = document.getElementById('ik-burger');
+    const drawer  = document.getElementById('ik-drawer');
+    const overlay = document.getElementById('ik-overlay');
+    const closeBtn= document.getElementById('ik-drawer-close');
+    const nav     = document.getElementById('ik-nav');
+
+    function openDrawer(){
+      drawer.classList.add('ik-drawer--open');
+      overlay.classList.add('ik-overlay--show');
+      burger.setAttribute('aria-expanded','true');
+      drawer.setAttribute('aria-hidden','false');
+      burger.classList.add('ik-burger--open');
+      document.body.style.overflow='hidden';
+    }
+    function closeDrawer(){
+      drawer.classList.remove('ik-drawer--open');
+      overlay.classList.remove('ik-overlay--show');
+      burger.setAttribute('aria-expanded','false');
+      drawer.setAttribute('aria-hidden','true');
+      burger.classList.remove('ik-burger--open');
+      document.body.style.overflow='';
+    }
+
+    burger?.addEventListener('click', ()=> drawer.classList.contains('ik-drawer--open') ? closeDrawer() : openDrawer());
+    closeBtn?.addEventListener('click', closeDrawer);
+    overlay?.addEventListener('click', closeDrawer);
+
+    // Close on Escape
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
+
+    // Scroll shadow
+    window.addEventListener('scroll', ()=>{
+      nav?.classList.toggle('ik-nav--scrolled', window.scrollY > 10);
+    }, {passive:true});
+
+    // Close drawer on any drawer link click
+    drawer?.querySelectorAll('.ik-drawer-link').forEach(a=>{
+      a.addEventListener('click', closeDrawer);
+    });
+  })();
+  </script>
 </body>
 </html>
