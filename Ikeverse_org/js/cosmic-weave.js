@@ -3749,6 +3749,7 @@ class CosmicWeave {
     /* Landmark preview disabled */
     const allL=this.showSuggested?[...this.linksOfficial,...this.linksSuggested]:this.linksOfficial;
     renderConnections(c,allL,this.byId);
+    this._showRelated(c);
     /* Layer threads */
     LAYER_CFGS.forEach(cfg=>this.globe?.highlightLayer(cfg.key,c,this.cultures,this.layers[cfg.key]));
     /* Deep link */
@@ -3758,6 +3759,147 @@ class CosmicWeave {
   }
 
   selectById(id){this.selectCulture(id,true);}
+
+  _buildSearch(){
+    // Inject search UI into the toolbar
+    const toolbar=document.querySelector('.cw-world-toolbar')||document.querySelector('.cw-toolbar');
+    if(!toolbar) return;
+    const wrap=document.createElement('div');
+    wrap.className='cw-search-wrap';
+    wrap.innerHTML=`
+      <div class="cw-search-box" id="cw-search-box">
+        <i class="fas fa-search cw-search-icon"></i>
+        <input class="cw-search-input" id="cw-search-input" type="search"
+               placeholder="Search cultures…" autocomplete="off" spellcheck="false">
+        <div class="cw-search-results" id="cw-search-results"></div>
+      </div>`;
+    toolbar.prepend(wrap);
+    const input=wrap.querySelector('#cw-search-input');
+    const results=wrap.querySelector('#cw-search-results');
+    let debT;
+    input.addEventListener('input',()=>{
+      clearTimeout(debT);
+      debT=setTimeout(()=>this._runSearch(input.value,results),120);
+    });
+    input.addEventListener('keydown',e=>{
+      if(e.key==='Escape'){input.value='';results.style.display='none';}
+      if(e.key==='ArrowDown'){results.querySelector('.cw-sr-item')?.focus();}
+    });
+    document.addEventListener('click',e=>{
+      if(!wrap.contains(e.target)) results.style.display='none';
+    });
+    // Keyboard shortcut: / to focus search
+    document.addEventListener('keydown',e=>{
+      if(e.key==='/'&&document.activeElement!==input&&!e.ctrlKey&&!e.metaKey){
+        e.preventDefault(); input.focus();
+      }
+    });
+  }
+
+  _runSearch(q,resultsEl){
+    q=q.trim().toLowerCase();
+    if(!q){resultsEl.style.display='none';return;}
+    const hits=this.cultures.filter(c=>
+      c.name?.toLowerCase().includes(q)||
+      c.id?.toLowerCase().includes(q)||
+      c.region?.toLowerCase().includes(q)||
+      c.era?.toLowerCase().includes(q)||
+      (c.tags||[]).some(t=>t.toLowerCase().includes(q))||
+      c.desc?.toLowerCase().includes(q)
+    ).slice(0,8);
+    if(!hits.length){
+      resultsEl.innerHTML='<div class="cw-sr-empty">No results</div>';
+      resultsEl.style.display='block'; return;
+    }
+    resultsEl.innerHTML=hits.map(c=>`
+      <button class="cw-sr-item" data-id="${c.id}" type="button">
+        <span class="cw-sr-sym">${c.symbol||'🌐'}</span>
+        <span class="cw-sr-info">
+          <span class="cw-sr-name">${c.name}</span>
+          <span class="cw-sr-meta">${c.region||''} · ${c.era?.substring(0,30)||''}</span>
+        </span>
+      </button>`).join('');
+    resultsEl.style.display='block';
+    resultsEl.querySelectorAll('.cw-sr-item').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        this.selectCulture(btn.dataset.id,true);
+        document.getElementById('cw-search-input').value='';
+        resultsEl.style.display='none';
+      });
+      btn.addEventListener('keydown',e=>{
+        if(e.key==='ArrowDown') btn.nextElementSibling?.focus();
+        if(e.key==='ArrowUp') btn.previousElementSibling?.focus()||document.getElementById('cw-search-input').focus();
+        if(e.key==='Enter') btn.click();
+      });
+    });
+  }
+
+  _showRelated(culture){
+    const panel=document.getElementById('cw-related-panel');
+    if(!panel||!culture) return;
+    const tagSet=new Set(culture.tags||[]);
+    const scored=this.cultures
+      .filter(c=>c.id!==culture.id)
+      .map(c=>({c, score:(c.tags||[]).filter(t=>tagSet.has(t)).length}))
+      .filter(x=>x.score>0)
+      .sort((a,b)=>b.score-a.score)
+      .slice(0,3);
+    if(!scored.length){panel.style.display='none';return;}
+    panel.style.display='block';
+    panel.innerHTML=`
+      <div class="cw-related-title"><i class="fas fa-share-nodes"></i> Related</div>
+      ${scored.map(({c,score})=>`
+        <button class="cw-related-item" data-id="${c.id}" type="button">
+          <span class="cw-rel-sym">${c.symbol||'🌐'}</span>
+          <span class="cw-rel-info">
+            <span class="cw-rel-name">${c.name.split('(')[0].trim()}</span>
+            <span class="cw-rel-score">${score} shared theme${score>1?'s':''}</span>
+          </span>
+        </button>`).join('')}`;
+    panel.querySelectorAll('.cw-related-item').forEach(btn=>{
+      btn.addEventListener('click',()=>this.selectCulture(btn.dataset.id,true));
+    });
+  }
+
+  _showTour(){
+    if(localStorage.getItem('ik_tour_done')) return;
+    const STEPS=[
+      {target:'#globe-viewport-3d',title:'The Cosmic Weave',text:'This is the knowledge globe. Every node is a culture — click any to explore it. Rotate by dragging, zoom with scroll.'},
+      {target:'#btnStarMap',title:'Star Map',text:'Toggle the real celestial star map. 65 named stars with Hawaiian moʻolelo (stories) and navigation use. Click any star to read its story.'},
+      {target:'#btnLearningPath',title:'Weave Paths',text:'Eight thematic journeys — Ocean Navigators, Governance Innovations, Martial Traditions, and more. Each stop shows why that culture belongs in the path.'},
+      {target:'.cw-search-wrap',title:'Search',text:'Search any culture by name, region, tag, or era. Press / anywhere to focus the search bar.'},
+      {target:'#connections',title:'Connections',text:'When you select a culture, its links appear here. Each connection has a historical description and theme tags.'},
+    ];
+    let step=0;
+    const overlay=document.createElement('div');
+    overlay.className='cw-tour-overlay'; overlay.id='cw-tour';
+    document.body.appendChild(overlay);
+    const showStep=()=>{
+      const s=STEPS[step];
+      const target=document.querySelector(s.target);
+      const rect=target?.getBoundingClientRect()||{top:300,left:300,width:100,height:40};
+      const isLast=step===STEPS.length-1;
+      overlay.innerHTML=`
+        <div class="cw-tour-box" style="top:${Math.min(rect.bottom+12,window.innerHeight-180)}px;left:${Math.max(12,Math.min(rect.left,window.innerWidth-320))}px">
+          <div class="cw-tour-step">${step+1} of ${STEPS.length}</div>
+          <div class="cw-tour-title">${s.title}</div>
+          <div class="cw-tour-text">${s.text}</div>
+          <div class="cw-tour-btns">
+            <button class="cw-tour-skip" type="button">Skip tour</button>
+            <button class="cw-tour-next" type="button">${isLast?'Done':'Next →'}</button>
+          </div>
+        </div>
+        <div class="cw-tour-highlight" style="top:${rect.top-4}px;left:${rect.left-4}px;width:${rect.width+8}px;height:${rect.height+8}px"></div>`;
+      overlay.querySelector('.cw-tour-next').addEventListener('click',()=>{
+        if(isLast){overlay.remove();localStorage.setItem('ik_tour_done','1');}
+        else{step++;showStep();}
+      });
+      overlay.querySelector('.cw-tour-skip').addEventListener('click',()=>{
+        overlay.remove();localStorage.setItem('ik_tour_done','1');
+      });
+    };
+    setTimeout(showStep, 1200);
+  }
 
   deselectAll(){
     this.selectedId=null;
@@ -3873,6 +4015,23 @@ class CosmicWeave {
   /* ── UI wiring ── */
   _wireUI(){
     /* Star map toggle */
+    /* ── Global Search ── */
+    this._buildSearch();
+
+    /* ── Share Button ── */
+    document.getElementById('btnShare')?.addEventListener('click',()=>{
+      const url=location.href;
+      if(navigator.clipboard){
+        navigator.clipboard.writeText(url).then(()=>{
+          const btn=document.getElementById('btnShare');
+          const orig=btn.innerHTML;
+          btn.innerHTML='<i class="fas fa-check"></i>';
+          btn.style.color='rgba(60,220,100,.9)';
+          setTimeout(()=>{btn.innerHTML=orig;btn.style.color='';},2000);
+        }).catch(()=>prompt('Copy this URL:',url));
+      } else { prompt('Copy this URL:',url); }
+    });
+
     /* ── Learning Paths ── */
     this.learningPath=new LearningPathUI(this);
     document.getElementById('btnLearningPath')?.addEventListener('click',()=>this.learningPath.open());
@@ -3970,6 +4129,8 @@ async function boot() {
     .then(d=>{ if(d?.stars) window._starData=d.stars; })
     .catch(()=>{});
   const app=new CosmicWeave();
+  // Start guided tour for first-time visitors
+  setTimeout(()=>app._showTour?.(),2000);
   window._cwApp=app;
   try { await app.init(); }
   catch(err) { console.error('[CW] Init failed:',err); }

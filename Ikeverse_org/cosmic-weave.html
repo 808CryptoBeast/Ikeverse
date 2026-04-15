@@ -155,7 +155,7 @@
     <!-- Brand / Home button -->
     <a href="../index.html" class="ik-brand" aria-label="Ikeverse — go to home">
       <span class="ik-brand-icon">
-        <img src="assets/images/KMicon.png" alt="" class="ik-brand-img"
+        <img src="../assets/images/KMicon.png" alt="" class="ik-brand-img"
              onerror="this.style.display='none'">
         <span class="ik-brand-fallback" aria-hidden="true">🌌</span>
       </span>
@@ -237,6 +237,7 @@
               <i class="fas fa-play-circle"></i><span>Tour</span>
             </button>
             <button id="btnLearningPath" class="cw-ctrl-btn" type="button" title="Learning Paths"><i class="fas fa-route"></i> Paths</button>
+            <button id="btnShare" class="cw-ctrl-btn" type="button" title="Share this culture (copy URL)"><i class="fas fa-share-nodes"></i></button>
             <button id="btnStarMap" class="cw-mode-tab cw-mode-tab--stars" type="button" title="Hawaiian Star Map">
               <i class="fas fa-star-and-crescent"></i><span>Stars</span>
             </button>
@@ -379,7 +380,8 @@
         <div class="cw-panel-title"><i class="fas fa-project-diagram"></i> Connections</div>
         <div class="cw-panel-sub">Related threads. Click a card to jump.</div>
       </header>
-      <div class="cw-panel-body"><div id="connections"></div></div>
+      <div class="cw-panel-body"><div id="cw-related-panel" class="cw-related-panel" style="display:none"></div>
+      <div id="connections"></div></div>
     </section>
 
   </section><!-- /globe-section -->
@@ -390,7 +392,7 @@
       <!-- Brand -->
       <div class="ik-footer-brand">
         <div class="ik-footer-logo-wrap">
-          <img src="assets/images/thelivingknowledge.png" alt="Ikeverse" class="ik-footer-logo"
+          <img src="../assets/images/thelivingknowledge.png" alt="Ikeverse" class="ik-footer-logo"
                onerror="this.style.display='none'">
         </div>
         <div>
@@ -475,7 +477,7 @@
         <div class="ik-loader-ring ik-loader-ring--2"></div>
         <div class="ik-loader-ring ik-loader-ring--3"></div>
         <div class="ik-loader-core">
-          <img src="assets/images/thelivingknowledge.png" class="ik-loader-logo-img"
+          <img src="../assets/images/thelivingknowledge.png" class="ik-loader-logo-img"
                alt="Ikeverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <span class="ik-loader-glyph" style="display:none">🌌</span>
         </div>

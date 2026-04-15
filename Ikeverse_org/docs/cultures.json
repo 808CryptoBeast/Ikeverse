@@ -128,6 +128,16 @@
           "kind": "Research Paper",
           "desc": "Classic anthropological study of the healing dance as community diagnostic system."
         }
+      ],
+      "movement": [
+        "Seasonal movement across Kalahari Desert, Namib, and Cape regions following water and game",
+        "Rock art sites connected across thousands of kilometers — a shared visual language across southern Africa",
+        "Exchange of goods, ochre, ostrich eggshell beads, and knowledge between dispersed groups"
+      ],
+      "modernLegacy": [
+        "Tracking principles taught in nature awareness schools and survival courses globally",
+        "Louis Liebenberg's CyberTracker technology — tracking-based citizen science used in 40+ countries",
+        "San land rights movements in Botswana and Namibia are landmark cases in indigenous rights law"
       ]
     },
     {
@@ -229,6 +239,16 @@
           "kind": "Research Paper",
           "desc": "Classic study of Khoikhoi seasonal movement and cattle-centered social organization."
         }
+      ],
+      "movement": [
+        "Seasonal pastoral routes following rainfall and grazing conditions across the Cape and Namaqualand",
+        "Trade routes with San foragers and later with Bantu-speaking agricultural communities",
+        "Maritime interface — the Cape as a meeting point between Khoekhoe and Indian Ocean trade networks"
+      ],
+      "modernLegacy": [
+        "Khoekhoe pastoralism and land rights are active political questions in South Africa and Namibia",
+        "Khoekhoegowab language revitalization ongoing in both countries",
+        "The Cape's complex colonial history — including Sara Baartman — drives contemporary conversations about dignity and representation"
       ]
     },
     {
@@ -348,6 +368,16 @@
           "kind": "Research Paper",
           "desc": "Article examining the role of Indian Ocean commerce in Zimbabwe's rise."
         }
+      ],
+      "movement": [
+        "Gold and ivory trade routes connecting the Zimbabwe plateau to Swahili Coast ports (Sofala, Kilwa)",
+        "Cattle corridor movements between southern African plateau zones",
+        "Indian Ocean trade network: Zimbabwe→Swahili Coast→Arabian Peninsula→India→China"
+      ],
+      "modernLegacy": [
+        "The Zimbabwe Bird is the national symbol — on the flag, currency, and coat of arms",
+        "Great Zimbabwe's denial by colonial archaeologists is a foundational text in debates about African historiography",
+        "Tourism and archaeological research ongoing — site continues to yield new finds"
       ]
     },
     {
@@ -453,6 +483,16 @@
           "kind": "Research Paper",
           "desc": "Academic analysis of how the kgotla functions within Botswana's modern governance."
         }
+      ],
+      "movement": [
+        "Long-distance cattle trade routes across the Limpopo basin and into the Cape Colony",
+        "Migration during the Mfecane/Difaqane disruption period — large-scale Tswana town relocations",
+        "Trade connections with Sotho-speaking neighbors and later with European traders via missionary stations"
+      ],
+      "modernLegacy": [
+        "The kgotla public assembly is constitutionally recognized in Botswana — live governance institution",
+        "Tswana customary law influences family and land law across southern Africa",
+        "Botswana's diamond-funded state model draws on Tswana communal resource ethics"
       ]
     },
     {
@@ -567,6 +607,16 @@
           "kind": "Research Paper",
           "desc": "Philosophical analysis of ubuntu as a foundation for African ethics."
         }
+      ],
+      "movement": [
+        "Eastward expansion of Xhosa-speaking peoples along the eastern Cape coast over centuries",
+        "Trade networks with Sotho, Zulu, and Khoekhoe neighbors — cattle, iron, and medicines",
+        "The Great Trek and Frontier Wars forced massive displacements that are remembered as living history"
+      ],
+      "modernLegacy": [
+        "Xhosa language and culture are carried by 8+ million speakers in South Africa",
+        "Nelson Mandela's and Steve Biko's political thought is deeply rooted in Xhosa governance ethics",
+        "Ubuntu as an ethical framework is cited in South African constitutional law and international governance theory"
       ]
     },
     {
@@ -678,6 +728,16 @@
           "kind": "Research Paper",
           "desc": "Classic historical analysis of Shaka's political and military innovations."
         }
+      ],
+      "movement": [
+        "The Mfecane — expansion of the Zulu state caused ripple migrations across southern and eastern Africa",
+        "Trade networks in cattle, ivory, and iron across the highveld",
+        "Labor migration to Johannesburg's mines beginning in the 1880s — a pattern that continues today"
+      ],
+      "modernLegacy": [
+        "Zulu cultural institutions, including the monarchy and ibutho traditions, remain active in KwaZulu-Natal",
+        "Isicathamiya (choral tradition, popularized by Ladysmith Black Mambazo) is globally recognized",
+        "Zulu language is one of South Africa's 11 official languages — 12+ million speakers"
       ]
     },
     {
@@ -1396,7 +1456,11 @@
         "Writing as archival infrastructure for governance and memory"
       ],
       "story": [
-        "Ancient Egypt did not think of itself as ancient. Kemet — the Black Land, named for the dark silt the Nile left behind each year — understood itself as the ongoing work of creation, renewed daily at sunrise and annually at inundation."
+        "Ancient Egypt did not think of itself as ancient. Kemet — the Black Land, named for the dark silt the Nile left behind each year — understood itself as the ongoing work of creation, renewed daily at sunrise and annually at inundation.",
+        "Ma'at is not a metaphor. When a scribe wrote ma'at — the feather, the word, the cosmic principle — they were describing a physical reality: the order that holds the sky above the earth, the Nile in its course, the sun on its path. Every morning, the king performed rituals that were not symbolic but functional — maintenance work on the fabric of the cosmos. The idea that human governance could fail cosmically, not just politically, is one of Kemet's most durable contributions to human thought.",
+        "The Nile made prediction possible. Nilometers measured the flood height. Accountants calculated grain yields. Physicians diagnosed disease with systematic observation. The Edwin Smith Papyrus — the world's oldest surgical text — contains a remarkable instruction for a wound that cannot be treated: 'An ailment not to be treated.' Intellectual honesty under pressure. Clinical realism embedded in the oldest medical document we have.",
+        "Egyptian hieroglyphics were not just a writing system — they were a theory of creation. Ptah thought the world into being by naming it. The hieroglyph was not a representation of a thing but a thing itself — writing a crocodile summoned crocodile energy. Libraries were sealed with spells. Books of the Dead were not guides to the afterlife but tools for navigating it. The Egyptians understood that knowledge is not passive — it does things in the world.",
+        "The 25th Dynasty is one of history's great ironies: Nubian kings from Kush ruled all of Egypt for a century, restoring the canonical artistic and religious traditions that native Egyptian dynasties had allowed to decay. Pharaoh Taharqa built obelisks in Egypt and pyramids in Kush. The direction of cultural influence was not always what we assume. Africa was teaching Egypt what Egypt had taught the world."
       ],
       "readingLinks": [
         {
@@ -1477,6 +1541,16 @@
         "Egyptian medical papyri are studied in the history of medicine as early evidence-based clinical reasoning",
         "Kemeticism and Kemetic Orthodoxy represent living spiritual traditions drawing on ancient Egyptian cosmology",
         "Egyptian architectural and mathematical knowledge is studied in archaeoastronomy and sacred geometry"
+      ],
+      "movement": [
+        "Nile corridor trade: gold, ivory, ebony north from Nubia; grain, papyrus, textiles south",
+        "Mediterranean trade networks: cedar from Lebanon, copper from Cyprus, tin from Anatolia",
+        "Red Sea routes to Punt for incense and exotic animals; later connections to India via monsoon navigation"
+      ],
+      "modernLegacy": [
+        "Egyptian hieroglyphics and the Rosetta Stone catalyzed modern linguistics and the science of decipherment",
+        "Kemetic spiritual traditions (Kemeticism) are practiced globally as living religious systems",
+        "Egyptian architectural and mathematical knowledge underpins Western classical traditions via Greece"
       ]
     },
     {
@@ -1603,6 +1677,16 @@
           "kind": "Research Paper",
           "desc": "Summary of progress in decoding the Meroitic writing system."
         }
+      ],
+      "movement": [
+        "Nile corridor control: Kush commanded the cataracts — the chokepoints of African-Mediterranean trade",
+        "Caravan routes across the Sahara connecting sub-Saharan Africa to the Mediterranean",
+        "Iron technology diffused from Meroë southward, reaching East African Rift Valley communities"
+      ],
+      "modernLegacy": [
+        "Nubian pyramid fields at Meroë draw growing archaeological and tourist interest",
+        "Pan-African historical scholarship uses Kush to counter the narrative that civilization began in Egypt or Greece",
+        "Sudanese national identity engages Kushite history as evidence of pre-Islamic African civilization"
       ]
     },
     {
@@ -1715,6 +1799,16 @@
           "kind": "Research Paper",
           "desc": "Analysis of myrrh and frankincense trade networks from Horn of Africa to Mediterranean."
         }
+      ],
+      "movement": [
+        "Red Sea monsoon navigation — seasonal winds enabled regular trans-Red Sea passage",
+        "East African coastal trade linking Horn of Africa to Arabian Peninsula and onward to India",
+        "Incense road: overland routes from southern Arabia north through the Hijaz to Egypt and Mesopotamia"
+      ],
+      "modernLegacy": [
+        "The Red Sea corridor remains one of the world's most strategic maritime routes — Suez Canal, Bab el-Mandeb",
+        "Punt's geographic identity debate (Ethiopia/Eritrea/Djibouti/Somalia) continues in active scholarship",
+        "The incense trade established commercial relationships that persist as East Africa-Arabia connections today"
       ]
     },
     {
@@ -1881,6 +1975,16 @@
         "The Polynesian Voyaging Society's Hōkūleʻa catalyzed a pan-Pacific navigation renaissance",
         "Ahupuaʻa watershed management is studied in environmental science as an integrated land-sea governance model",
         "Hawaiian language immersion schools (Pūnana Leo) are internationally recognized models for indigenous language revitalization"
+      ],
+      "movement": [
+        "Long-distance voyaging from the Marquesas to Hawaiʻi (c. 400-800 CE) — founding migration",
+        "Inter-island sailing routes connecting the Hawaiian archipelago as a political and exchange network",
+        "The Hōkūleʻa voyaging canoe (1976-present) — modern revival of traditional Pacific navigation routes"
+      ],
+      "modernLegacy": [
+        "The Hōkūleʻa sparked a pan-Pacific indigenous navigation renaissance spanning 30+ nations",
+        "Ahupuaʻa watershed management is studied in environmental science as integrated land-sea governance",
+        "Hawaiian language immersion schools (Pūnana Leo) are internationally recognized models for indigenous language revitalization"
       ]
     },
     {
@@ -2006,6 +2110,16 @@
         "The Hōkūleʻa revival demonstrated traditional navigation is fully functional and triggered similar revival movements across Oceania",
         "Mau Piailug's transmission of Carolinian wayfinding to Hawaiian navigators is a landmark in cross-cultural knowledge preservation",
         "Polynesian wayfinding is studied in cognitive science as embodied, distributed, multi-signal pattern recognition"
+      ],
+      "movement": [
+        "Lapita expansion (c. 1500 BCE): the original Polynesian diaspora from Bismarck Archipelago to Samoa/Tonga",
+        "The Polynesian Triangle settlement: Hawaiʻi, Aotearoa, Easter Island — 8,000 km in each direction",
+        "Return voyages and ongoing contact — not one-way colonization but maintained networks"
+      ],
+      "modernLegacy": [
+        "The Polynesian Voyaging Society and Hōkūleʻa demonstrated traditional navigation works — sparking global revival",
+        "Pacific island sovereignty movements draw on traditional navigation as proof of sophisticated civilization",
+        "Te Moana Nui a Kiwa (the Pacific) is being reclaimed as an ocean of indigenous connection, not colonial separation"
       ]
     },
     {
@@ -2138,6 +2252,16 @@
           "kind": "Research Paper",
           "desc": "The 2017 NZ legislation granting the Whanganui River legal personhood — full text."
         }
+      ],
+      "movement": [
+        "Great Fleet voyages from Hawaiki (ancestral homeland) to Aotearoa — genealogically encoded in tribal narratives",
+        "Inter-island and coastal trade between North Island and South Island — pounamu (greenstone) from the south",
+        "Māori diaspora to Australian cities — Auckland is the largest Polynesian city in the world"
+      ],
+      "modernLegacy": [
+        "Kaitiakitanga (guardianship) is embedded in New Zealand's Resource Management Act",
+        "Te reo Māori is an official language of New Zealand — revitalization is internationally studied",
+        "The Treaty of Waitangi (1840) remains the foundational legal document of New Zealand governance"
       ]
     },
     {
@@ -2243,6 +2367,16 @@
           "kind": "Research Paper",
           "desc": "Academic analysis of the matai chiefly title system as a governance structure."
         }
+      ],
+      "movement": [
+        "Lapita maritime network — Samoa as a central node in early Polynesian expansion",
+        "Inter-archipelago voyaging maintaining relationships with Tonga, Fiji, and wider Pacific",
+        "Samoan diaspora: New Zealand, Australia, and the US are home to large communities maintaining fa'a Sāmoa"
+      ],
+      "modernLegacy": [
+        "Fa'a Sāmoa governance principles (fono, matai) are constitutionally active in independent Samoa",
+        "Samoan rugby culture — globally recognized — draws on collective discipline rooted in fa'a Sāmoa values",
+        "Samoan diaspora communities actively practice ceremonial traditions in urban contexts worldwide"
       ]
     },
     {
@@ -2344,6 +2478,16 @@
           "kind": "Research Paper",
           "desc": "Scholarly analysis of the Tu'i Tonga sphere and how it was maintained through ceremony."
         }
+      ],
+      "movement": [
+        "The Tu'i Tonga maritime empire — sustained alliance networks across Fiji, Samoa, and Niue",
+        "Kava and prestige goods traded across the central Pacific as relationship-maintenance tools",
+        "Tongan diaspora maintains strong connections to the homeland through remittances and ceremony"
+      ],
+      "modernLegacy": [
+        "Tonga remains the only Pacific island nation never formally colonized",
+        "Ha'amonga 'a Maui trilithon is a living pilgrimage and cultural identity site",
+        "Kava ceremony practice has spread globally through Tongan and Pacific diaspora communities"
       ]
     },
     {
@@ -2445,6 +2589,16 @@
           "kind": "Research Paper",
           "desc": "Archaeological and linguistic evidence for Marquesas as Polynesian settlement hub."
         }
+      ],
+      "movement": [
+        "Long-distance voyaging east to Easter Island, north to Hawaiʻi — the Marquesas as launch hub",
+        "Inter-island communication within the archipelago despite each island's mountainous isolation",
+        "Trade in turtles, feathers, carved objects, and tattoo knowledge between islands"
+      ],
+      "modernLegacy": [
+        "Marquesan tattoo tradition is a direct ancestor of the global Polynesian tattoo revival",
+        "Cultural revitalization through the Marquesas Arts Festival — carving, tattoo, chant, dance",
+        "The Marquesas continue to attract linguistic and archaeological research into Polynesian origins"
       ]
     },
     {
@@ -2546,6 +2700,16 @@
           "kind": "Research Paper",
           "desc": "Case study of how bul governance outperforms externally-designed conservation."
         }
+      ],
+      "movement": [
+        "Maritime trade routes between Palau, Philippines, Indonesia, and the wider Micronesian network",
+        "Yap stone money trade routes — Palauan limestone quarried and transported to Yap as prestige currency",
+        "Seasonal inter-island navigation within the Palauan archipelago for resources and ceremony"
+      ],
+      "modernLegacy": [
+        "Palau Marine Sanctuary (2015) — one of the world's largest — models traditional bul governance at scale",
+        "Palau's shark sanctuary legislation influenced global marine conservation policy",
+        "The bul reef closure system is a case study in marine biology and indigenous conservation management"
       ]
     },
     {
@@ -2665,6 +2829,16 @@
           "kind": "Research Paper",
           "desc": "Mauss's foundational theoretical work derived from PNG exchange systems — free."
         }
+      ],
+      "movement": [
+        "Kula ring exchange — Trobriand islanders sail hundreds of kilometers in a ritual circuit of gift exchange",
+        "Hiri trade voyages — Motu people sailed west to Gulf of Papua trading pottery for sago and canoes",
+        "Overland trade routes through the highlands connecting 800+ language groups"
+      ],
+      "modernLegacy": [
+        "Kuk Swamp is reshaping world history of agriculture — independent domestication 10,000 years ago",
+        "Kula ring exchange is foundational in economic anthropology — Malinowski's work built modern gift theory",
+        "PNG's biodiversity and ethnobotany are among the most intensively studied in tropical ecology"
       ]
     },
     {
@@ -2786,6 +2960,16 @@
           "kind": "Research Paper",
           "desc": "Archaeological and linguistic evidence for Austronesian migration through the Philippines."
         }
+      ],
+      "movement": [
+        "Austronesian maritime expansion — Philippines as both origin and midpoint of Pacific-Indian Ocean trade",
+        "Manila galleon trade (1565-1815) — the world's first regular trans-Pacific trade route",
+        "Overseas Filipino workers — one of the world's largest diaspora communities (10+ million abroad)"
+      ],
+      "modernLegacy": [
+        "Arnis/Eskrima/Kali is taught in Philippine public schools and used by military and law enforcement globally",
+        "The Laguna Copperplate drives renewed recognition of pre-colonial Philippine literacy and complexity",
+        "Filipino diaspora sustains martial arts, craft, and oral traditions in communities worldwide"
       ]
     },
     {
@@ -2907,6 +3091,16 @@
           "kind": "Research Paper",
           "desc": "Archaeological study of Indonesian maritime networks and inter-island trade corridors."
         }
+      ],
+      "movement": [
+        "Spice trade routes — cloves, nutmeg, and pepper from the Maluku Islands drove global commerce",
+        "Maritime Silk Road: Indonesia as the pivot between Indian Ocean and South China Sea networks",
+        "Austronesian expansion: Indonesian languages and cultures spread from Madagascar to Easter Island"
+      ],
+      "modernLegacy": [
+        "Pencak Silat (UNESCO 2019) is practiced on six continents — hundreds of distinct regional schools",
+        "Borobudur is one of Asia's most visited heritage sites and an active pilgrimage destination",
+        "Gotong royong (communal labor) is a constitutional principle in Indonesia shaping social policy"
       ]
     },
     {
@@ -3019,6 +3213,16 @@
           "kind": "Research Paper",
           "desc": "Classic theoretical framework for understanding Majapahit-style political organization."
         }
+      ],
+      "movement": [
+        "Maritime trade network controlling the Malacca Strait — the chokepoint of Indian Ocean-Pacific commerce",
+        "Cultural diplomacy voyages: Majapahit artists, merchants, and clergy traveled to Southeast Asian courts",
+        "The Zheng He voyages (1405-1433) passed through Majapahit territory — diplomatic and commercial exchange"
+      ],
+      "modernLegacy": [
+        "Majapahit's Garuda emblem is Indonesia's national symbol and national airline name",
+        "Wayang shadow puppetry (UNESCO) continues as a living art form across Java and Bali",
+        "The Majapahit model informs contemporary Indonesian national identity as an archipelagic civilization"
       ]
     },
     {
@@ -3131,6 +3335,16 @@
           "kind": "Research Paper",
           "desc": "Agricultural history of the Chao Phraya delta and flood-adaptive rice cultivation."
         }
+      ],
+      "movement": [
+        "Chao Phraya River corridor — north-south movement of trade, armies, and Buddhism",
+        "Overland Silk Road connections linking Thai states to Chinese and Indian trade networks",
+        "Southeast Asian mainland corridor — Ayutthaya as a hub between China, India, and maritime Southeast Asia"
+      ],
+      "modernLegacy": [
+        "Muay Thai is practiced in over 100 countries — one of the most globally diffused martial arts",
+        "Thai Buddhist monastic networks function as social welfare and education systems across the region",
+        "Thai cuisine is one of the world's most popular culinary traditions globally — soft power through food"
       ]
     },
     {
@@ -3246,6 +3460,16 @@
           "kind": "Research Paper",
           "desc": "Analysis of the làng commune as the fundamental unit of Vietnamese cultural continuity."
         }
+      ],
+      "movement": [
+        "Red River and Mekong corridor trade — north-south and east-west connections across mainland Southeast Asia",
+        "Maritime Silk Road: Vietnamese ports connected China, Southeast Asia, and India",
+        "Diaspora communities across France, the US, and Australia maintain Vietnamese cultural traditions at scale"
+      ],
+      "modernLegacy": [
+        "Vietnamese water management heritage is studied in climate adaptation and flood resilience engineering",
+        "Vovinam has federations in 60+ countries — Vietnamese martial arts as global cultural export",
+        "Vietnamese coffee culture is one of the world's most distinctive culinary traditions — Vietnam is the world's second-largest coffee producer"
       ]
     },
     {
@@ -3366,6 +3590,16 @@
           "kind": "Research Paper",
           "desc": "2013 PNAS paper revealing Greater Angkor as one of the largest pre-industrial cities."
         }
+      ],
+      "movement": [
+        "Mekong River trade routes connecting Angkor to Chinese and mainland Southeast Asian markets",
+        "Maritime connections via the Gulf of Thailand to Indian Ocean trade networks",
+        "Khmer cultural sphere: Angkor's architectural and religious influence spread across Thailand, Laos, and beyond"
+      ],
+      "modernLegacy": [
+        "Angkor Wat is one of the world's most visited heritage sites and a UNESCO World Heritage benchmark",
+        "LiDAR surveys continue revealing the full extent of Greater Angkor — the field is actively expanding",
+        "Bokator martial art revival is part of Cambodian cultural identity reconstruction after Khmer Rouge"
       ]
     },
     {
@@ -3489,6 +3723,16 @@
           "kind": "Research Paper",
           "desc": "Historical study of the Hwarang as integration of martial, ethical, and artistic training."
         }
+      ],
+      "movement": [
+        "Maritime Silk Road connections via Korean peninsula to Japan, China, and Southeast Asia",
+        "Buddhist transmission route: Chinese Buddhism entered Korea, was refined, and transmitted to Japan",
+        "Korean Wave (Hallyu) — Korean cultural exports (K-pop, K-drama, K-food) are a 21st-century diaspora of ideas"
+      ],
+      "modernLegacy": [
+        "Hangul is studied globally as a model of scientific language design — other communities have adopted it",
+        "Korean Wave is one of the most successful state-supported cultural soft power programs in history",
+        "Taekwondo is an Olympic sport practiced in 200+ countries — the most globally diffused Korean martial art"
       ]
     },
     {
@@ -3622,6 +3866,16 @@
           "kind": "Research Paper",
           "desc": "Classic study of the 1,300-year keju system as meritocratic governance technology."
         }
+      ],
+      "movement": [
+        "Silk Road (land and sea): the most extensive pre-modern trade network, connecting China to Rome",
+        "Zheng He voyages (1405-1433): the largest pre-modern naval fleet reaching East Africa and Arabia",
+        "Chinese diaspora: communities across Southeast Asia, the Americas, and Europe maintaining Chinese cultural traditions"
+      ],
+      "modernLegacy": [
+        "Traditional Chinese Medicine is recognized by the WHO and practiced in 180+ countries",
+        "Taijiquan has over 200 million practitioners globally — the world's most practiced martial art",
+        "China's Belt and Road Initiative draws on Silk Road corridor governance concepts"
       ]
     },
     {
@@ -3753,6 +4007,16 @@
           "kind": "Research Paper",
           "desc": "Scientific study of satoyama as one of the most biodiverse human-managed landscapes."
         }
+      ],
+      "movement": [
+        "Buddhist transmission route: from India through China and Korea to Japan — 500 years of cultural synthesis",
+        "Maritime trade with China, Korea, and Southeast Asia — the Edo period sakoku (closed country) was an exception",
+        "Japanese diaspora communities in Brazil, Hawaii, and North America maintaining distinct cultural traditions"
+      ],
+      "modernLegacy": [
+        "Kaizen philosophy underlies Toyota Production System, Lean manufacturing, and agile software globally",
+        "Judo, Karate, Aikido, and Kendo are practiced in virtually every country — Japanese martial arts as universal practice",
+        "Japanese aesthetics (wabi-sabi, mono no aware, ma) influence design, architecture, and philosophy globally"
       ]
     },
     {
@@ -3888,6 +4152,16 @@
           "kind": "Research Paper",
           "desc": "Analysis of Panini's Sanskrit grammar as the most sophisticated pre-modern linguistic work."
         }
+      ],
+      "movement": [
+        "Silk Road connections linking India to Rome, China, and Central Asia — Indian merchants active across Eurasia",
+        "Buddhist transmission: from Bodh Gaya to Lanka, Southeast Asia, China, Korea, Japan — 1,500 years of spread",
+        "Indian diaspora: communities across East Africa, the Caribbean, UK, and US maintaining cultural and religious traditions"
+      ],
+      "modernLegacy": [
+        "Yoga is practiced by 300+ million people globally — the most broadly transmitted Indian knowledge technology",
+        "Ayurveda is recognized as a traditional medicine system in 80+ countries and is experiencing global revival",
+        "Mindfulness-based stress reduction (MBSR) draws directly on Vedic meditation practices — now in hospitals worldwide"
       ]
     },
     {
@@ -4009,6 +4283,16 @@
           "kind": "Research Paper",
           "desc": "Analysis of how Islamic scholarship traveled with commercial caravans across the Sahara."
         }
+      ],
+      "movement": [
+        "Trans-Saharan caravan routes: gold and salt north; books, scholars, and textiles south",
+        "Pilgrimage routes: Mansa Musa's 1324 pilgrimage to Mecca connected Mali to the Islamic scholarly world",
+        "West African diaspora through the transatlantic slave trade carried griots and musical traditions to the Americas"
+      ],
+      "modernLegacy": [
+        "Griot traditions continue as living oral history practice influencing global music from blues to hip-hop",
+        "The djembé drum and kora have become global instruments — played on every continent",
+        "Timbuktu manuscript preservation is a landmark in African digital heritage conservation"
       ]
     },
     {
@@ -4146,6 +4430,16 @@
         "Taíno language words are woven into everyday English (hammock, hurricane, barbecue, canoe, tobacco, potato, guava)",
         "Taíno descendant communities in Puerto Rico and the broader Caribbean are engaged in cultural and genealogical recovery movements",
         "Cassava processing technologies remain the staple food foundation for hundreds of millions globally"
+      ],
+      "movement": [
+        "Canoe trade networks across the Caribbean — inter-island connections in dugouts capable of 100+ mile crossings",
+        "Trade with mainland Mesoamerica and South America — rubber balls, gold, and agricultural knowledge",
+        "Taíno words traveled globally through Spanish colonizers: hammock, hurricane, barbecue, canoe, tobacco, potato"
+      ],
+      "modernLegacy": [
+        "Taíno language words are embedded in everyday English, Spanish, and Portuguese",
+        "Taíno descendant communities in Puerto Rico and the broader Caribbean are engaged in cultural recovery",
+        "Cassava processing technologies developed by Taíno ancestors feed hundreds of millions globally today"
       ]
     },
     {
@@ -4259,6 +4553,16 @@
           "kind": "Research Paper",
           "desc": "Scholarly debate about whether Olmec was a 'mother culture' or participant in a web."
         }
+      ],
+      "movement": [
+        "Overland trade routes connecting the Gulf Coast to highland Oaxaca, Guerrero, and Central Mexico",
+        "Obsidian and jade trade networks spanning Mesoamerica — Olmec as both producer and coordinator",
+        "Coastal maritime trade along the Gulf of Mexico connecting Olmec centers to distant communities"
+      ],
+      "modernLegacy": [
+        "Olmec colossal heads are among the most recognized pre-Columbian artworks globally",
+        "The Cascajal Block continues to attract debate about the earliest writing in the Americas",
+        "Olmec symbolic vocabulary is traceable through Maya, Aztec, and Zapotec — a foundational civilizational layer"
       ]
     },
     {
@@ -4392,6 +4696,16 @@
           "kind": "Research Paper",
           "desc": "Analysis of the Dresden Codex astronomical tables and their accuracy."
         }
+      ],
+      "movement": [
+        "Sacbe (raised white roads): formal road network connecting Maya cities across the lowlands",
+        "Maritime trade routes along the Caribbean and Gulf coasts — Maya merchants active from Yucatán to Panama",
+        "Cenotes as ritual and trade connection points — underground water linking communities"
+      ],
+      "modernLegacy": [
+        "7 million Maya speakers maintain 30+ distinct Mayan languages — one of the most vital indigenous language communities",
+        "Contemporary Maya day-keepers practice the 260-day ritual calendar uninterrupted to the present",
+        "The Zapatista movement explicitly grounds its political identity in Tzeltal-Tojolabal Maya knowledge frameworks"
       ]
     },
     {
@@ -4517,6 +4831,16 @@
           "kind": "Research Paper",
           "desc": "Analysis of the Tlatelolco market as economic and intelligence infrastructure."
         }
+      ],
+      "movement": [
+        "Pochteca merchant networks: long-distance traders traveling to Guatemala, the Gulf Coast, and Pacific shore",
+        "Tribute highway network: roads connecting provincial cities to Tenochtitlan for resource flows",
+        "Mexica diaspora after the Spanish conquest spread across New Spain carrying Nahuatl language and traditions"
+      ],
+      "modernLegacy": [
+        "Nahuatl words are embedded in everyday English and Spanish: chocolate, avocado, tomato, chili, coyote, ocelot",
+        "Chinampa agriculture is being revived in Xochimilco as urban farming and wetland restoration",
+        "Día de los Muertos — rooted in Aztec ancestor veneration — is now a globally recognized cultural practice"
       ]
     },
     {
@@ -4630,6 +4954,16 @@
           "kind": "Research Paper",
           "desc": "Archaeological study of the canal systems connecting multiple Peruvian river valleys."
         }
+      ],
+      "movement": [
+        "Coastal maritime trade along the Pacific shore connecting northern Peru to Ecuador and Colombia",
+        "Inter-valley canal systems connecting communities across the Moche, Chicama, and Virú valleys",
+        "High-altitude trade connections to the Andean highlands for obsidian, wool, and ritual goods"
+      ],
+      "modernLegacy": [
+        "The Lord of Sipán discovery reshaped understanding of pre-Columbian wealth — museum in Lambayeque draws global visitors",
+        "Moche ceramic vessels are in major museums worldwide — a visual encyclopedia of ancient Peruvian life",
+        "Coastal irrigation engineering is being studied for climate adaptation in El Niño-prone environments"
       ]
     },
     {
@@ -4741,6 +5075,16 @@
           "kind": "Research Paper",
           "desc": "Archaeological analysis of Tiwanaku's influence on Andean civilizations including the Inca."
         }
+      ],
+      "movement": [
+        "Llama caravan routes connecting Tiwanaku to Pacific coast (300km) and tropical lowlands",
+        "Exchange network reaching from Ecuador in the north to Argentina in the south — one of the widest pre-Columbian networks",
+        "Shared ceremonial goods: Tiwanaku-style textiles and ceramics found across the Andes"
+      ],
+      "modernLegacy": [
+        "Raised field revival projects in Bolivia demonstrate the technology's climate resilience and productivity",
+        "Tiwanaku is a UNESCO World Heritage Site and the symbolic origin point of Bolivian national identity",
+        "Aymara-speaking communities maintain cultural continuity connecting living communities to Tiwanaku's legacy"
       ]
     },
     {
@@ -4864,6 +5208,16 @@
           "kind": "Research Paper",
           "desc": "Analysis of how the 40,000km Qhapaq Ñan functioned as imperial nervous system."
         }
+      ],
+      "movement": [
+        "Qhapaq Ñan: 40,000+ km road network — relay runners (chasqui) transmitted messages in days across the empire",
+        "Llama caravan routes connecting coastal, highland, and lowland ecological zones",
+        "Mitima population transfers: the Inca deliberately moved communities across the empire to build loyalty and spread culture"
+      ],
+      "modernLegacy": [
+        "Andean terrace restoration projects are demonstrating the productivity of Inca engineering in climate adaptation",
+        "Sumak kawsay (Buen Vivir) is enshrined in Ecuador's 2008 constitution — indigenous governance ethics in law",
+        "The Inca road network is a UNESCO World Heritage Site shared across 6 countries — the largest in Latin America"
       ]
     },
     {
@@ -4991,6 +5345,16 @@
           "kind": "Research Paper",
           "desc": "Analysis of Brehon Law's non-carceral approach as a model for restorative justice."
         }
+      ],
+      "movement": [
+        "La Tène migration period (4th-3rd century BCE): Celtic peoples spread from Central Europe to Iberia, Anatolia, and Britain",
+        "Tin trade routes: Cornish tin moved to Mediterranean markets — Celtic peoples as intermediaries in Atlantic trade",
+        "Atlantic Seaways: the western sea route connecting Ireland, Wales, Brittany, Galicia, and Iberia as a cultural corridor"
+      ],
+      "modernLegacy": [
+        "Irish and Welsh language revitalization are among Europe's most active indigenous language recovery programs",
+        "Celtic music and festivals have created global community — Celtic diaspora in North America, Australia, and Argentina",
+        "Brehon Law's restorative justice principles are studied in legal reform and indigenous rights frameworks globally"
       ]
     },
     {
@@ -5117,6 +5481,16 @@
           "kind": "Research Paper",
           "desc": "Analysis of the Althing (930 CE) as the world's oldest surviving parliamentary institution."
         }
+      ],
+      "movement": [
+        "North Atlantic voyaging routes: Norway→Iceland→Greenland→Vinland (North America) — the first trans-Atlantic route",
+        "Eastern expansion: Varangian routes through Russia's river systems to Byzantium and the Islamic Caliphate",
+        "Viking trade networks: Scandinavian furs, amber, and slaves exchanged for silk, silver, and spices from the Islamic world"
+      ],
+      "modernLegacy": [
+        "L'Anse aux Meadows confirms Norse presence in North America 500 years before Columbus",
+        "The Icelandic sagas are foundational texts in world literature and Norse cultural identity",
+        "Norse mythology has experienced global revival through popular culture (Marvel, Tolkien's influences, modern paganism)"
       ]
     },
     {
@@ -5240,6 +5614,16 @@
           "kind": "Research Paper",
           "desc": "Application of seven-generation governance principle in contemporary environmental policy."
         }
+      ],
+      "movement": [
+        "Longhouse diplomacy: Haudenosaunee ambassadors traveled throughout eastern North America maintaining the Confederacy",
+        "Trade networks extending from the Great Lakes to the Atlantic Coast and into the Mississippi watershed",
+        "The Covenant Chain: formal alliance relationships maintained through wampum exchange and regular ceremony"
+      ],
+      "modernLegacy": [
+        "Haudenosaunee Confederacy is actively engaged in contemporary sovereignty, treaty rights, and land governance",
+        "Seven-generation thinking is cited in environmental law, sustainability policy, and indigenous governance worldwide",
+        "Lacrosse — rooted in Haudenosaunee stickball — is a global sport with Olympic status"
       ]
     },
     {
@@ -5363,6 +5747,16 @@
           "kind": "Research Paper",
           "desc": "Documentation of changes in sea ice as observed through Inuit traditional knowledge."
         }
+      ],
+      "movement": [
+        "Coastal migration routes across the Arctic from Siberia through Alaska to Greenland — the Last Glacial Maximum dispersal",
+        "Seasonal camps following marine mammals, caribou, and fish — planned multi-month circuits",
+        "Trade between coastal (maritime) and interior (caribou) Inuit groups — seal oil for caribou hides"
+      ],
+      "modernLegacy": [
+        "Inuit Qaujimajatuqangit (IQ) is formally incorporated into Nunavut territorial governance",
+        "The kayak (qajaq) design underlies the global sea kayaking industry — practiced on every continent",
+        "Inuit throat singing and drum dance are globally recognized art forms undergoing active revival"
       ]
     },
     {
@@ -5475,6 +5869,16 @@
           "kind": "Research Paper",
           "desc": "Documentation of Nenets snow classification and landscape knowledge as survival intelligence."
         }
+      ],
+      "movement": [
+        "1,000+ km annual migration between winter forest camps and summer tundra grazing grounds",
+        "Trade networks with Russian merchants, Komi neighbors, and distant Siberian groups — reindeer for manufactured goods",
+        "The Ob River as a highway: seasonal boat travel connects far-flung Nenets camps"
+      ],
+      "modernLegacy": [
+        "Nenets migration routes are being studied for climate change impact — permafrost thaw is already forcing route changes",
+        "Yamal Peninsula gas extraction conflict is a live frontline of indigenous environmental rights in Russia",
+        "Nenets traditional knowledge of permafrost and snow dynamics is formally sought by Arctic engineers"
       ]
     },
     {
@@ -5587,6 +5991,16 @@
           "kind": "Research Paper",
           "desc": "Anthropological study of coordinated whale hunting as social technology."
         }
+      ],
+      "movement": [
+        "Bering Strait crossing: Chukchi maintained active contact with Yup'ik and Inupiaq communities across the strait",
+        "Coastal migration routes along the Chukchi Sea and Bering Sea — maritime peoples following whales and walrus",
+        "Trade routes south to Koryak and Yakut neighbors — whale products for reindeer, metal, and plant foods"
+      ],
+      "modernLegacy": [
+        "Chukchi traditional sea-ice knowledge is being integrated into Arctic climate science",
+        "The Bering Strait region connects Chukchi and Yup'ik communities maintaining ancient cultural relationships — despite the Cold War border",
+        "Traditional Chukchi whale-hunting ceremonies are part of active cultural revitalization efforts"
       ]
     },
     {
@@ -5708,6 +6122,16 @@
           "kind": "Research Paper",
           "desc": "Historical analysis of how Diné linguistic complexity functioned as military cipher."
         }
+      ],
+      "movement": [
+        "The Long Walk (1864-1868): forced removal to Bosque Redondo — a defining trauma encoded in collective memory",
+        "Trade networks connecting Diné Bikéyah to Pueblo neighbors, Plains peoples, and later Spanish and American markets",
+        "Seasonal movement between winter hogans and summer grazing grounds within the four sacred mountains boundary"
+      ],
+      "modernLegacy": [
+        "Navajo Nation is the largest land area of any Native American nation in the United States",
+        "Navajo Code Talkers are recognized as decisive contributors to Allied communication security in WWII",
+        "Diné Bizaad language revitalization — ~170,000 speakers — is one of the most active indigenous language programs in North America"
       ]
     },
     {
@@ -5828,6 +6252,16 @@
           "kind": "Research Paper",
           "desc": "Musicological and anthropological analysis of yoik as identity evocation."
         }
+      ],
+      "movement": [
+        "Seasonal reindeer herding migration across 4 national borders — one of the longest cross-border migration traditions",
+        "Trade networks with Norwegian and Swedish coastal communities — reindeer for fish, grain, and metal tools",
+        "Sámi joik traveled: musical traditions carried cultural memory across the vast Sápmi territory"
+      ],
+      "modernLegacy": [
+        "Sámi parliaments in Norway, Sweden, and Finland represent one of Europe's most developed indigenous political institutions",
+        "The Girjas case (2020) is a landmark European indigenous rights ruling — studied in international law",
+        "Yoik has influenced Nordic folk, jazz, and electronic music — Sámi artists perform globally"
       ]
     },
     {
@@ -5942,6 +6376,16 @@
           "kind": "Research Paper",
           "desc": "Etymological and anthropological analysis of the Evenki word saman and its global spread."
         }
+      ],
+      "movement": [
+        "Seasonal migration across up to 1 million km² of Siberian taiga — the largest nomadic territory of any group",
+        "River corridor routes: the Yenisei, Lena, and Amur as travel arteries for Evenki canoes and winter sleds",
+        "Trade networks extending to Chinese markets (furs), Russian posts (tools, textiles), and neighboring Siberian groups"
+      ],
+      "modernLegacy": [
+        "The English word 'shaman' comes directly from the Evenki word saman — a global conceptual legacy",
+        "Birch bark technology and lightweight boat designs influenced arctic exploration and survival equipment",
+        "Evenki language documentation is ongoing — the language is critically endangered with <30,000 speakers"
       ]
     },
     {
@@ -6058,6 +6502,16 @@
           "kind": "Research Paper",
           "desc": "Scholarly analysis of the Olonkho as an improvised multi-day performance tradition."
         }
+      ],
+      "movement": [
+        "Lena River corridor: the river as highway connecting Sakha communities from Lake Baikal to the Arctic Ocean",
+        "Seasonal horse and cattle drives to summer pastures — Sakha as the northernmost horse-herding culture",
+        "Trade connections to Chinese markets (furs, mammal ivory) and Russian frontier posts"
+      ],
+      "modernLegacy": [
+        "Olonkho epic tradition (UNESCO 2005) is a thriving living institution — performance culture drawing thousands",
+        "Sakha cinema is achieving international recognition — rooted in olonkho storytelling as a world cinema",
+        "Permafrost knowledge: Sakha traditional understanding is being formally integrated into Arctic climate science and engineering"
       ]
     },
     {
@@ -6182,7 +6636,10 @@
       ],
       "story": [
         "The Ife bronze heads — produced in the 11th–15th centuries — depict Yoruba rulers with a realism and technical sophistication that stunned European historians when first studied in the 20th century. The heads encode cosmological legitimacy: the ruler as the intersection of divine and human worlds, their face the meeting point of Ori (individual destiny) and the collective ancestral field.",
-        "Ifá is not prediction. It is a consultation system that connects the client to a body of knowledge accumulated across millennia. Each of the 256 Odù is a corpus — a genre of stories, medicines, laws, and guidance that the priest (babalawo) has spent years memorizing. When the divination chain falls in a configuration, it points to one of the 256, and the babalawo recites the relevant texts and works with the client to identify which one applies. The system is simultaneously archive, philosophy, and clinical practice."
+        "Ifá is not prediction. It is a consultation system that connects the client to a body of knowledge accumulated across millennia. Each of the 256 Odù is a corpus — a genre of stories, medicines, laws, and guidance that the priest (babalawo) has spent years memorizing. When the divination chain falls in a configuration, it points to one of the 256, and the babalawo recites the relevant texts and works with the client to identify which one applies. The system is simultaneously archive, philosophy, and clinical practice.",
+        "The Ifá oracle is not divination in the Western sense — not prediction but diagnosis. A trained babalawo (diviner) casts sixteen cowries or an opele chain, generating a binary code from sixteen possible symbols, each linked to a specific odù — one of 256 chapters of oral literature, each containing hundreds of verses, proverbs, stories, and prescriptions. It takes years to memorize even a fraction of the corpus. The system is a library, accessed through randomness, interpreted through relationship.",
+        "The Yoruba world is full of force. Ashe — the power of things to fulfill their potential — is present in words, gestures, objects, and people. An elder's curse has ashe. A master's praise-poem has ashe. The blacksmith's hammer has ashe. Nothing is inert. This is not animism in the dismissive colonial sense — it is a theory of agency that modern complexity science is still trying to articulate: force is relational, contextual, and activated by correct practice.",
+        "The orishas survived the Middle Passage. Through the violence of slavery, Yoruba people carried their cosmology into the Americas, disguising orishas as Catholic saints so they could be practiced openly. Candomblé in Brazil, Santería in Cuba, Trinidad Orisha — these are not syncretic mixtures but strategic camouflage. The underlying structure is Yoruba. The disguise was survival. Today, 60 million people worldwide practice Orisha traditions — one of the most remarkable examples of knowledge transmission under impossible conditions."
       ],
       "guidingQuestions": [
         "How does the Ifá divination system encode knowledge across 256 chapters of oral literature?",
@@ -6338,7 +6795,10 @@
       ],
       "story": [
         "The Dresden Codex — one of only four surviving pre-Columbian Maya books — contains eclipse tables accurate to within minutes over a 33-year cycle, and Venus cycle tables accurate to within hours over centuries. This was achieved through centuries of systematic naked-eye observation. Two civilizations, on opposite sides of the world, independently developed remarkably similar mathematical approaches to sky observation.",
-        "The Popol Vuh begins with the gods attempting to create humans from mud, then from wood, both failures. The third attempt, with maize, succeeds. Maize is the central fact of Maya civilization — the crop that enabled population density, that structured the agricultural calendar, that appeared in the iconography of gods and kings. To say humans are made of maize is to say something precise about what sustains human community and what obligations that creates."
+        "The Popol Vuh begins with the gods attempting to create humans from mud, then from wood, both failures. The third attempt, with maize, succeeds. Maize is the central fact of Maya civilization — the crop that enabled population density, that structured the agricultural calendar, that appeared in the iconography of gods and kings. To say humans are made of maize is to say something precise about what sustains human community and what obligations that creates.",
+        "The Dresden Codex is one of the most astonishing documents in human history. Eleven pages of folded bark paper contain Venus cycle tables accurate to within two hours per year — achieved by Mayan astronomers who made no instruments except their own patient eyes, no telescopes, no computers, only the discipline to record the same observations night after night across generations and the mathematical sophistication to extract the pattern. They did not inherit this knowledge — they built it, over centuries, systematically.",
+        "The Classic Maya collapse is not the end of Maya civilization — it is the end of a particular political configuration. The cities of the southern lowlands were abandoned between 800 and 900 CE, the Long Count calendar stopped being carved, the elite writing tradition ceased. But millions of Maya people continued living. The languages survived. The farming survived. The 260-day calendar survived. What collapsed was a political class and its monumental apparatus — not the people who had built it.",
+        "The Hero Twins of the Popol Vuh — Hunahpu and Xbalanque — descend into Xibalba (the underworld), defeat the lords of death through wit rather than force, and rise as the sun and moon. Their story is a theory of time: death is not the end but a transformation, and transformation is the engine of renewal. This is why the Maya Long Count's end date (2012 CE) was never understood by the Maya themselves as apocalypse — it was the completion of a cycle and the beginning of the next, as it had always been."
       ],
       "guidingQuestions": [
         "How does the Dresden Codex demonstrate that centuries of systematic observation constitute scientific practice?",
@@ -6495,7 +6955,10 @@
       ],
       "story": [
         "The Qhapaq Ñan — the royal road network — is 40,000 kilometers of paved, drained, bridged, and marked road running through some of the most extreme terrain on earth. Relay runners (chasqui) could carry a message or a fresh fish from the coast to Cusco in two days. The road network is the nervous system of an administrative state, designed to move information, tribute, and military forces at state command.",
-        "The quipu — knotted string records — may be the most sophisticated non-written information storage system ever developed. Knot type, knot position, string color, string material, and the directionality of the twist all encode information. If researchers confirm that quipus also encoded narrative, the Inca had writing all along; we just haven't learned to read it yet."
+        "The quipu — knotted string records — may be the most sophisticated non-written information storage system ever developed. Knot type, knot position, string color, string material, and the directionality of the twist all encode information. If researchers confirm that quipus also encoded narrative, the Inca had writing all along; we just haven't learned to read it yet.",
+        "The quipu is a mystery we have not fully solved. Knotted strings of cotton or wool, in specific colors, with knots at specific intervals in specific patterns — we know they encoded numerical data (census, tribute, calendar). But Inca oral tradition holds that some quipu encoded narrative: history, poetry, law. A handful of researchers think they've found the phonological signature. The stakes are extraordinary: if quipu encoded language, it would be one of the world's only known non-written narrative information storage systems — a completely novel form of recorded human thought.",
+        "The Inca did not just build terraces — they built ecologies. The andenes (terraces) were not simply flat surfaces carved into slopes. They were engineered microclimates: drainage layers preventing waterlogging, thermal mass retaining heat against frost, distinct soil regimes for different crops at each altitude. Potatoes could be freeze-dried into chuño on the high terraces while maize grew lower and quinoa somewhere between. Managing 3,000+ potato varieties as a living seed bank was not agricultural practice — it was civilizational risk management.",
+        "Ayni — sacred reciprocity — was not charity and not taxation. It was the fundamental transaction of Andean life: you give labor, the community gives back care. The mit'a (labor service) that built Machu Picchu, the roads, the storehouses — the workers were fed, housed, and clothed from the state's qollqa (storehouses). Nobody starved in the Inca Empire during normal times. When the Spanish arrived and imposed repartimiento — forced labor without reciprocal provision — they didn't just change the political system. They broke the ethical architecture of the world."
       ],
       "guidingQuestions": [
         "How does a 40,000 km road network function as a political instrument rather than just infrastructure?",
@@ -6651,7 +7114,10 @@
       ],
       "story": [
         "The Sangam corpus — 2,381 poems in 18 anthologies — is remarkable not only for its age but for its authorship. Among the 450+ named poets are women, low-caste individuals, and people from every social position. Tamil poetry did not require noble birth.",
-        "The tinai system classifies the five ecological zones of the Tamil landscape and assigns each zone a specific emotional register for poetry. Mountain = kurinji, associated with union and love. Forest = mullai, separation. Pastoral = marudam, infidelity. Coastal = neytal, waiting and longing. Wasteland = palai, hardship and journey. This is not metaphor — it is a classification system in which landscape and emotion are the same phenomenon. To write a poem about separation is to write a poem about the forest."
+        "The tinai system classifies the five ecological zones of the Tamil landscape and assigns each zone a specific emotional register for poetry. Mountain = kurinji, associated with union and love. Forest = mullai, separation. Pastoral = marudam, infidelity. Coastal = neytal, waiting and longing. Wasteland = palai, hardship and journey. This is not metaphor — it is a classification system in which landscape and emotion are the same phenomenon. To write a poem about separation is to write a poem about the forest.",
+        "The tinai system is one of humanity's most elegant cognitive architectures. Five landscapes — kurinji (mountain), mullai (forest), marudam (agricultural plain), neytal (coastal), and pālai (wasteland/dry) — each encode a distinct emotional register, a season, a time of day, a set of flora and fauna, and a specific romantic situation. A poet writing about kurinji is writing about mountains AND about the longing of new love AND about monsoon season AND about a particular bird's call — simultaneously. The landscape is the emotion. The emotion is the landscape. It is a unified theory of perception and feeling.",
+        "Tamil is the only ancient classical language still spoken natively by 80+ million people. The Tolkāppiyam (c. 300 BCE), the oldest surviving Tamil grammar, is also a philosophical text about the relationship between language, community, and cosmos. The Sangam poets — writing 2,000 years ago — were democratic in a way no other ancient literary tradition was: men and women, kings and farmers, brahmins and outcastes all appear as credited authors. The poetry does not record court life — it records interior life with devastating precision.",
+        "The Siddha medical tradition is an alchemical system — not in the mystical sense but in the technical one. Siddha physicians worked with mercury, sulfur, arsenic, and gold processed through elaborate purification protocols to create ras (mercury preparations) and churna (powders). This is not folk medicine — it is a systematic pharmaceutical tradition that recognized metal compounds as therapeutic agents centuries before modern pharmacology. The Siddha understanding of the body (three humors: vatam, pitam, kabam) is structurally distinct from both Ayurveda and Greek medicine — a third independent theory of physiology."
       ],
       "guidingQuestions": [
         "How does the tinai system classify both landscape and emotion as the same phenomenon?",
@@ -6769,7 +7235,10 @@
       ],
       "story": [
         "The Yaghan tended fire aboard their bark canoes in waters that regularly dropped to near-freezing. This was not a minor inconvenience to manage — it was the central fact of their civilization. Fire was carried as a living thing, never allowed to die. It was the mediator between the hostile cold ocean and the warm human body. Darwin, who encountered Yaghan people in 1832, was astonished by their ability to sit nearly naked in sleet and rain without apparent discomfort. Later research revealed a physiological adaptation: a resting metabolic rate 1-2°C higher than other humans, developed over thousands of years. The body itself had become a kind of fire.",
-        "Cristina Calderón, born in 1928 on Navarino Island, is the last known fluent native speaker of Yaghan. She has worked with linguists for decades to document a language that grammarians describe as one of the most complex ever studied — with thousands of verb forms, each encoding information about the relationship between speaker, listener, and the action described. When a language dies, it takes with it not just words but a way of parsing reality. Each untranscribed word is an irreplaceable tool for thinking about a specific environment."
+        "Cristina Calderón, born in 1928 on Navarino Island, is the last known fluent native speaker of Yaghan. She has worked with linguists for decades to document a language that grammarians describe as one of the most complex ever studied — with thousands of verb forms, each encoding information about the relationship between speaker, listener, and the action described. When a language dies, it takes with it not just words but a way of parsing reality. Each untranscribed word is an irreplaceable tool for thinking about a specific environment.",
+        "The Yaghan people built fires in their canoes. In Tierra del Fuego — where temperatures hover near freezing year-round, where storms arrive without warning off Cape Horn, where the sea is always cold enough to kill in minutes — they navigated coastal waterways in bark canoes with a fire kept burning at the bow, the smoke and heat creating a minimal warm zone. Darwin, watching from the Beagle, was convinced they must be suffering. They were not. They had adapted — not just technologically but physiologically. Yaghan metabolic rates ran 1-2°C higher than expected, their bodies generating more heat. The line between cultural and biological adaptation had blurred.",
+        "The kina ceremony was the most elaborate knowledge transmission event in Yaghan society — a multi-day initiation that encoded cosmology, ecology, social law, and practical survival knowledge in performance, song, and drama. The participants wore body paint representing specific spirits. The ceremony was secret — men and women performed complementary roles in separate but interlocking rites. When missionary contact disrupted the ceremony in the late 19th century and early 20th century, the knowledge it carried — the specific names of winds, the behavior of currents, the recipes for medicines — began to disappear with the people who held it.",
+        "Cristina Calderón was born in 1928. For decades she has been the last fully fluent native speaker of Yaghan (Yamana). She was not a passive survivor — she was an active documenter, working with linguists and her own granddaughter to produce dictionaries, recordings, and educational materials. The effort to preserve a language from one person is an extraordinary thing: the vocabulary, the grammar, the embedded ecological knowledge of the Beagle Channel — an entire way of parsing reality — dependent on the life and will of a single human being to transmit itself forward. Yaghan is not dead. But it balances on that edge."
       ],
       "guidingQuestions": [
         "What does maintaining fire aboard a canoe in sub-zero conditions reveal about the relationship between technology and cosmology?",
@@ -7579,6 +8048,584 @@
         "Institutions"
       ],
       "description": "Overlapping in time and Andean space — Moche valley irrigation and Tiwanaku raised-field engineering as two expressions of the same civilizational project: turning a difficult landscape into abundant food."
+    },
+    {
+      "source": "kemet",
+      "target": "celtic",
+      "label": "Monumental solar astronomy",
+      "themes": [
+        "Astronomy",
+        "Architecture",
+        "Stewardship"
+      ],
+      "description": "Newgrange (c. 3200 BCE) predates the Great Pyramid by 600 years and shares its solstice-alignment precision — two traditions independently encoding celestial timing in stone as a governance technology."
+    },
+    {
+      "source": "mali",
+      "target": "norse",
+      "label": "Atlantic knowledge corridor",
+      "themes": [
+        "Trade",
+        "Networks",
+        "Navigation"
+      ],
+      "description": "Norse traders reached the Saharan edge through Muslim intermediaries; West African gold funded the same Islamic scholarship networks that the Norse encountered in Byzantium — the Atlantic was a shared medium before colonialism."
+    },
+    {
+      "source": "kemet",
+      "target": "mesopotamia",
+      "label": "Ancient Near East scholarly exchange",
+      "themes": [
+        "Writing",
+        "Astronomy",
+        "Trade",
+        "Institutions"
+      ],
+      "description": "Egyptian and Mesopotamian astronomical knowledge cross-pollinated via Levantine trade routes — the two great river civilizations in continuous contact for 3,000 years."
+    },
+    {
+      "source": "norse",
+      "target": "mesopotamia",
+      "label": "Flood narrative and cosmological parallels",
+      "themes": [
+        "Creation",
+        "Oral Tradition",
+        "Cosmology"
+      ],
+      "description": "The Norse world-destruction-and-renewal cycle and the Babylonian creation epic both encode cyclic time, divine conflict, and world ocean as independent responses to the same existential questions."
+    },
+    {
+      "source": "celtic",
+      "target": "mesopotamia",
+      "label": "Proto-Indo-European heritage",
+      "themes": [
+        "Oral Tradition",
+        "Institutions",
+        "Creation"
+      ],
+      "description": "Celtic and Mesopotamian traditions both preserve mathematical and astronomical concepts traceable to earlier shared knowledge corridors — the Indo-European expansion carried a common intellectual inheritance westward."
+    },
+    {
+      "source": "mesopotamia",
+      "target": "polynesia",
+      "label": "Independent celestial navigation traditions",
+      "themes": [
+        "Astronomy",
+        "Navigation",
+        "Networks"
+      ],
+      "description": "Babylonian star catalogs and Polynesian star compasses represent humanity's two most sophisticated ancient stellar navigation systems — developed independently, encoding the same sky through different epistemological frameworks."
+    },
+    {
+      "source": "sumer",
+      "target": "kanaka_kumulipo",
+      "label": "Cosmic genealogy as creation",
+      "themes": [
+        "Creation",
+        "Cosmology",
+        "Oral Tradition"
+      ],
+      "description": "The Kumulipo chant and Sumerian creation texts both trace creation through ordered genealogical emergence — being arises through relational sequencing, not sudden act."
+    },
+    {
+      "source": "maya",
+      "target": "babylonia",
+      "label": "Parallel astronomical precision",
+      "themes": [
+        "Astronomy",
+        "Mathematics",
+        "Writing"
+      ],
+      "description": "Maya Dresden Codex Venus tables and Babylonian astronomical diaries both achieved naked-eye precision equivalent to modern measurements — fully independent inventions of systematic observational science."
+    },
+    {
+      "source": "aztec",
+      "target": "sumer",
+      "label": "Independent hydraulic city invention",
+      "themes": [
+        "Agriculture",
+        "Water",
+        "Governance",
+        "Institutions"
+      ],
+      "description": "Tenochtitlan (lake-city with chinampas) and Ur (river-city with canals) as independent inventions of the hydraulic urban form — water management as the foundation of political power."
+    },
+    {
+      "source": "thailand",
+      "target": "vietnam",
+      "label": "Mainland Southeast Asian corridor",
+      "themes": [
+        "Trade",
+        "Governance",
+        "Networks",
+        "Agriculture"
+      ],
+      "description": "The Mekong and Chao Phraya river systems as parallel corridors — Thai and Vietnamese states competed and cooperated across the Indochinese peninsula, sharing Theravada Buddhism, rice cultivation systems, and legal traditions."
+    },
+    {
+      "source": "olmec",
+      "target": "aztec",
+      "label": "Mesoamerican deep civilizational sequence",
+      "themes": [
+        "Cosmology",
+        "Art",
+        "Institutions",
+        "Governance"
+      ],
+      "description": "The Aztec/Mexica drew directly on Olmec-originated symbolic vocabulary — the were-jaguar, the feathered serpent, jade as power — filtered through Teotihuacan and other intermediary traditions over 2,000 years."
+    },
+    {
+      "source": "sami",
+      "target": "inuit",
+      "label": "Arctic ecological intelligence corridor",
+      "themes": [
+        "Ecology",
+        "Navigation",
+        "Stewardship",
+        "Oral Tradition"
+      ],
+      "description": "Sámi and Inuit ecological knowledge traditions represent Europe's and North America's most sophisticated cold-environment adaptive systems — both encode multi-variable environmental reading as survival intelligence."
+    },
+    {
+      "source": "zulu",
+      "target": "mali",
+      "label": "African military and institutional sophistication",
+      "themes": [
+        "Governance",
+        "Institutions",
+        "Trade",
+        "Networks"
+      ],
+      "description": "Two of Africa's most historically significant state formations — the Zulu military state and the Mali manuscript empire — represent distinct but parallel expressions of African institutional achievement, challenging colonial narratives of statelessness."
+    },
+    {
+      "source": "assyria",
+      "target": "sumer",
+      "label": "Mesopotamian institutional continuity",
+      "themes": [
+        "Writing",
+        "Governance",
+        "Institutions",
+        "Trade"
+      ],
+      "description": "Assyria inherited and extended the Sumerian knowledge tradition through the Akkadian period — Assyrian scribes copied Sumerian literary and astronomical texts for centuries, preserving the foundation of Mesopotamian civilization."
+    },
+    {
+      "source": "marquesas",
+      "target": "polynesia",
+      "label": "Polynesian dispersal hub",
+      "themes": [
+        "Navigation",
+        "Networks",
+        "Creation",
+        "Oral Tradition"
+      ],
+      "description": "The Marquesas served as a dispersal hub in the final phase of Polynesian expansion — canoes launched from Marquesan atolls reached Hawaiʻi to the north and Easter Island to the east."
+    },
+    {
+      "source": "palau",
+      "target": "philippines",
+      "label": "Micronesian-Philippine maritime interface",
+      "themes": [
+        "Navigation",
+        "Trade",
+        "Networks",
+        "Ecology"
+      ],
+      "description": "Palau and the Philippines share an active maritime border — Palauan and Philippine communities maintained exchange networks for centuries, with Philippine traders and craftspeople in regular contact with Micronesian communities."
+    },
+    {
+      "source": "maori",
+      "target": "kanaka_kumulipo",
+      "label": "Polynesian cosmological kinship",
+      "themes": [
+        "Creation",
+        "Oral Tradition",
+        "Navigation",
+        "Genealogy"
+      ],
+      "description": "Hawaiian and Māori cosmologies share the pō/ao (darkness/light) framework, the genealogical structure of creation, and the concept of land as ancestor — different cultural expressions of the same deep Pacific philosophical framework."
+    },
+    {
+      "source": "kanaka_kumulipo",
+      "target": "polynesia",
+      "label": "Hawaiian civilization within the Pacific network",
+      "themes": [
+        "Navigation",
+        "Creation",
+        "Governance",
+        "Networks"
+      ],
+      "description": "Hawaiian civilization is the northernmost expression of Polynesian navigational and cultural achievement — the Kumulipo genealogy traces directly back through the Polynesian Triangle, encoding the full arc of Pacific settlement."
+    },
+    {
+      "source": "vedic",
+      "target": "dravidian_sangam",
+      "label": "South Asian parallel knowledge traditions",
+      "themes": [
+        "Institutions",
+        "Writing",
+        "Oral Tradition",
+        "Astronomy"
+      ],
+      "description": "Sanskritic and Tamil traditions developed simultaneously in the same subcontinent as distinct but sometimes interacting knowledge systems — the Tolkāppiyam grammar parallels Panini's Ashtadhyayi as an independent linguistic achievement."
+    },
+    {
+      "source": "maya",
+      "target": "inca",
+      "label": "Independent New World calendar and engineering",
+      "themes": [
+        "Astronomy",
+        "Agriculture",
+        "Governance",
+        "Mathematics"
+      ],
+      "description": "Maya and Inca developed the two most sophisticated pre-Columbian civilizational systems in the Americas — fully independently, without contact, each achieving extraordinary precision in astronomy, agriculture, and state organization."
+    },
+    {
+      "source": "yoruba",
+      "target": "mali",
+      "label": "West African civilizational depth",
+      "themes": [
+        "Governance",
+        "Trade",
+        "Oral Tradition",
+        "Institutions"
+      ],
+      "description": "Yoruba city-states (Ife, Oyo) and the Mali Empire represent two of West Africa's most sophisticated pre-colonial political formations — Yoruba bronze casting and Mali manuscript culture as parallel expressions of African civilizational achievement."
+    },
+    {
+      "source": "maya_classic",
+      "target": "maya",
+      "label": "Classic to Postclassic Maya continuity",
+      "themes": [
+        "Writing",
+        "Astronomy",
+        "Governance",
+        "Oral Tradition"
+      ],
+      "description": "Classic Maya civilization did not collapse — it transformed. The same glyph system, calendar, and cosmological framework persisted through the Postclassic period and into the present, carried by 7 million Maya speakers."
+    },
+    {
+      "source": "andean_tawantinsuyu",
+      "target": "inca",
+      "label": "Andean civilizational expression",
+      "themes": [
+        "Governance",
+        "Agriculture",
+        "Networks",
+        "Institutions"
+      ],
+      "description": "The Tawantinsuyu (Inca Empire) as the most extensive political expression of Andean civilizational values — ayni, mit'a, and the quipu represent an entire philosophical architecture as much as a political system."
+    },
+    {
+      "source": "san",
+      "target": "tswana",
+      "label": "Southern African forager-herder ecology",
+      "themes": [
+        "Ecology",
+        "Stewardship",
+        "Trade",
+        "Networks"
+      ],
+      "description": "San foragers and Tswana agropastoralists shared overlapping territory across the Kalahari edge — ecological knowledge and material exchange across the hunter-gatherer / pastoral boundary."
+    },
+    {
+      "source": "san",
+      "target": "xhosa",
+      "label": "Southern African oral and ecological traditions",
+      "themes": [
+        "Oral Tradition",
+        "Ecology",
+        "Stewardship"
+      ],
+      "description": "San and Xhosa communities shared the Eastern Cape landscape — tracking, plant knowledge, and seasonal ecology passed across cultural boundaries over centuries."
+    },
+    {
+      "source": "khoekhoe",
+      "target": "xhosa",
+      "label": "Southern African frontier communities",
+      "themes": [
+        "Trade",
+        "Oral Tradition",
+        "Governance",
+        "Ecology"
+      ],
+      "description": "Khoekhoe pastoralists and Xhosa agropastoralists shared the Cape frontier zone — cattle exchange, marriage alliances, and ecological knowledge movement between the two communities."
+    },
+    {
+      "source": "tswana",
+      "target": "zulu",
+      "label": "Mfecane-era southern African transformation",
+      "themes": [
+        "Governance",
+        "Networks",
+        "Trade"
+      ],
+      "description": "The Mfecane disruption caused by Zulu expansion directly impacted Tswana communities — forced migrations and political transformations connecting these two traditions through a shared moment of civilizational crisis."
+    },
+    {
+      "source": "akkad",
+      "target": "assyria",
+      "label": "Northern Mesopotamian imperial lineage",
+      "themes": [
+        "Governance",
+        "Writing",
+        "Institutions",
+        "Empire"
+      ],
+      "description": "Assyria's imperial model drew directly on Akkadian administrative templates — standardized weights, appointed governors, written edicts, and cuneiform bureaucracy passed from Akkad through centuries to Assyria."
+    },
+    {
+      "source": "kush",
+      "target": "mali",
+      "label": "Trans-African knowledge traditions",
+      "themes": [
+        "Writing",
+        "Trade",
+        "Architecture",
+        "Networks"
+      ],
+      "description": "Kush and Mali represent the eastern and western poles of African civilizational achievement — connected through the trans-Saharan gold trade and shared through Islamic scholarly networks."
+    },
+    {
+      "source": "samoa",
+      "target": "polynesia",
+      "label": "Central Polynesian identity",
+      "themes": [
+        "Navigation",
+        "Governance",
+        "Oral Tradition",
+        "Creation"
+      ],
+      "description": "Samoa is one of the core nodes of the Polynesian Triangle — its matai governance system and fa'a Sāmoa values represent a central expression of broader Polynesian social and political philosophy."
+    },
+    {
+      "source": "tonga",
+      "target": "maori",
+      "label": "Polynesian voyaging lineage to Aotearoa",
+      "themes": [
+        "Navigation",
+        "Oral Tradition",
+        "Governance",
+        "Networks"
+      ],
+      "description": "Tongan maritime influence extended to Fiji and Samoa, and ancestral connections link Tongan political culture to Māori governance — both encode hierarchical ceremony, genealogy, and feather regalia as legitimacy."
+    },
+    {
+      "source": "marquesas",
+      "target": "maori",
+      "label": "Eastern Polynesia settlement corridor",
+      "themes": [
+        "Navigation",
+        "Oral Tradition",
+        "Creation",
+        "Genealogy"
+      ],
+      "description": "Marquesan and Māori traditions share genealogical connections through eastern Polynesia — the same ancestral voyaging that reached Hawaiʻi from the Marquesas also contributed to the founding of Aotearoa."
+    },
+    {
+      "source": "palau",
+      "target": "polynesia",
+      "label": "Micronesian-Polynesian Pacific network",
+      "themes": [
+        "Navigation",
+        "Trade",
+        "Networks",
+        "Ecology"
+      ],
+      "description": "Palauan and Polynesian navigational traditions operate in the same Pacific ocean space — the Lapita heritage connects these traditions through their common ancestors who mastered the open Pacific."
+    },
+    {
+      "source": "papua_new_guinea",
+      "target": "maori",
+      "label": "Austronesian heritage",
+      "themes": [
+        "Navigation",
+        "Agriculture",
+        "Oral Tradition",
+        "Networks"
+      ],
+      "description": "Māori and Papua New Guinean communities share Austronesian ancestry — the same maritime expansion that populated Melanesia eventually reached New Zealand, encoding a common heritage in language structure and crop knowledge."
+    },
+    {
+      "source": "thailand",
+      "target": "indonesia",
+      "label": "Maritime Southeast Asian corridor",
+      "themes": [
+        "Trade",
+        "Navigation",
+        "Governance",
+        "Networks"
+      ],
+      "description": "Thai and Indonesian states were linked through the Malacca Strait — the chokepoint of Indian Ocean commerce that both traditions either controlled or paid tribute to cross."
+    },
+    {
+      "source": "vietnam",
+      "target": "philippines",
+      "label": "South China Sea maritime network",
+      "themes": [
+        "Trade",
+        "Navigation",
+        "Networks",
+        "Agriculture"
+      ],
+      "description": "Vietnamese and Philippine communities shared the South China Sea as a highway — ceramic trade, rice knowledge, and maritime routes connecting the mainland to the archipelago for millennia."
+    },
+    {
+      "source": "khmer",
+      "target": "indonesia",
+      "label": "Hinduized maritime Southeast Asia",
+      "themes": [
+        "Architecture",
+        "Governance",
+        "Trade",
+        "Institutions"
+      ],
+      "description": "Khmer and Indonesian courts shared the Indianized cultural template — Sanskrit, Shiva-Vishnu cosmology, temple-mountain architecture, and court poetry as a shared Southeast Asian classical tradition."
+    },
+    {
+      "source": "moche",
+      "target": "aztec",
+      "label": "New World hydraulic urbanism",
+      "themes": [
+        "Water",
+        "Agriculture",
+        "Governance",
+        "Institutions"
+      ],
+      "description": "Moche valley irrigation and Aztec lake-city engineering as the Pacific and Atlantic expressions of New World hydraulic civilization — water management as the foundation of political power in the Americas."
+    },
+    {
+      "source": "tiwanaku",
+      "target": "maya",
+      "label": "New World highland-lowland civilizational parallels",
+      "themes": [
+        "Agriculture",
+        "Astronomy",
+        "Architecture",
+        "Governance"
+      ],
+      "description": "Tiwanaku and Classic Maya represent humanity's two most sophisticated pre-Columbian highland and lowland civilizational systems — independent inventions of architectural astronomy, agricultural engineering, and institutional governance."
+    },
+    {
+      "source": "nenets",
+      "target": "evenki",
+      "label": "Siberian Arctic pastoral interface",
+      "themes": [
+        "Ecology",
+        "Stewardship",
+        "Oral Tradition",
+        "Networks"
+      ],
+      "description": "Nenets and Evenki peoples share the West Siberian taiga-tundra boundary — both pastoral nomads moving between forest and open ground, trading knowledge, goods, and sometimes territory."
+    },
+    {
+      "source": "dine",
+      "target": "inuit",
+      "label": "North American ecological intelligence traditions",
+      "themes": [
+        "Ecology",
+        "Stewardship",
+        "Oral Tradition",
+        "Governance"
+      ],
+      "description": "Diné and Inuit represent the southwestern and northern poles of North American indigenous ecological knowledge — both encode detailed environmental reading as the foundation of community survival and governance."
+    },
+    {
+      "source": "sami",
+      "target": "chukchi",
+      "label": "Eurasian Arctic pastoral parallels",
+      "themes": [
+        "Ecology",
+        "Navigation",
+        "Stewardship",
+        "Networks"
+      ],
+      "description": "Sámi and Chukchi peoples represent the European and Asian ends of the Eurasian Arctic pastoral tradition — both developing reindeer herding and sea-ice knowledge as parallel adaptive responses to circumpolar ecology."
+    },
+    {
+      "source": "sakha",
+      "target": "nenets",
+      "label": "Siberian river-tundra interface",
+      "themes": [
+        "Ecology",
+        "Trade",
+        "Oral Tradition",
+        "Networks"
+      ],
+      "description": "Sakha horse-herders and Nenets reindeer-herders occupied adjacent Siberian ecological zones — trading horses for reindeer, furs for manufactured goods, and sharing seasonal ecological knowledge."
+    },
+    {
+      "source": "antarctic",
+      "target": "dine",
+      "label": "Southernmost and southwestern indigenous ecological knowledge",
+      "themes": [
+        "Ecology",
+        "Oral Tradition",
+        "Stewardship"
+      ],
+      "description": "Yaghan and Diné knowledge traditions represent two of humanity's most geographically extreme adaptive achievements — the southernmost maritime culture and one of North America's most ecologically sophisticated desert cultures."
+    },
+    {
+      "source": "olmec",
+      "target": "inca",
+      "label": "New World parallel civilization",
+      "themes": [
+        "Governance",
+        "Architecture",
+        "Trade",
+        "Institutions"
+      ],
+      "description": "Olmec colossal head engineering and Inca road engineering as the two poles of New World civilizational ambition — moving massive objects across difficult terrain as expressions of organized collective intelligence."
+    },
+    {
+      "source": "punt",
+      "target": "polynesia",
+      "label": "Indian Ocean navigation traditions",
+      "themes": [
+        "Navigation",
+        "Trade",
+        "Ecology",
+        "Networks"
+      ],
+      "description": "Punt's Red Sea monsoon navigation and Polynesian star-and-swell wayfinding represent independent mastery of ocean reading as a survival intelligence — maritime peoples who turned the sea into a road."
+    },
+    {
+      "source": "papua_new_guinea",
+      "target": "polynesia",
+      "label": "Lapita ancestral heritage",
+      "themes": [
+        "Navigation",
+        "Agriculture",
+        "Networks",
+        "Creation"
+      ],
+      "description": "The Lapita people, ancestral to both Melanesian and Polynesian cultures, originated in the Bismarck Archipelago near New Guinea — PNG and Polynesia share a common maritime ancestor."
+    },
+    {
+      "source": "korea",
+      "target": "vedic",
+      "label": "Buddhist transmission corridor",
+      "themes": [
+        "Institutions",
+        "Oral Tradition",
+        "Trade",
+        "Networks"
+      ],
+      "description": "Buddhist philosophy, art, and institutional models traveled from the Indian subcontinent through Central Asia and China into Korea — Korean Buddhism absorbed and transformed Vedic cosmological frameworks."
+    },
+    {
+      "source": "japan",
+      "target": "vedic",
+      "label": "Buddhist philosophical transmission",
+      "themes": [
+        "Institutions",
+        "Oral Tradition",
+        "Cosmology",
+        "Art"
+      ],
+      "description": "Japanese Buddhism carries Sanskrit cosmological architecture — the dharma, the bodhisattva ideal, the mandala worldview — transformed through Chinese and Korean transmission into distinctly Japanese forms."
     }
   ],
   "meta": {
