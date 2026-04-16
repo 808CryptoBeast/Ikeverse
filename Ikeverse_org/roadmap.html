@@ -2,234 +2,402 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ikeverse Roadmap | Quantum-Ancestral Odyssey</title>
-  <link rel="stylesheet" href="css/roadmap.css">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ikeverse Roadmap | The Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #030a18; --cyan: rgba(0,247,255,.9); --gold: rgba(255,215,0,.88);
+      --purple: rgba(157,80,255,.85); --text: rgba(255,255,255,.88);
+      --text2: rgba(255,255,255,.55);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Exo 2', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    /* ── VIDEO BG ── */
+    .ik-video-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .ik-video-bg video { width: 100%; height: 100%; object-fit: cover; opacity: .18; }
+    .ik-video-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(3,10,24,.8) 0%, rgba(3,10,24,.5) 50%, rgba(3,10,24,.9) 100%);
+    }
+
+    /* ── NAV ── */
+    .ik-nav {
+      position: sticky; top: 0; z-index: 8990;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; height: 56px;
+      background: rgba(3,7,20,.92);
+      border-bottom: 1px solid rgba(0,247,255,.1);
+      backdrop-filter: blur(12px);
+    }
+    .ik-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+    .ik-brand img { width: 32px; height: 32px; object-fit: contain; }
+    .ik-brand-name { font-family: 'Orbitron', monospace; font-size: .82rem; font-weight: 700; letter-spacing: .14em; color: rgba(0,247,255,.9); }
+    .ik-brand-badge { font-size: .58rem; padding: 2px 6px; border-radius: 4px; background: rgba(157,80,255,.15); border: 1px solid rgba(157,80,255,.3); color: rgba(157,80,255,.85); }
+    .ik-links { display: flex; align-items: center; gap: 2px; list-style: none; }
+    .ik-link { display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 8px; text-decoration: none; font-size: .82rem; color: rgba(255,255,255,.6); transition: all .15s; }
+    .ik-link:hover, .ik-link--active { color: rgba(0,247,255,.9); background: rgba(0,247,255,.07); }
+    .ik-link--admin { background: rgba(255,100,0,.08); border: 1px solid rgba(255,100,0,.2); color: rgba(255,160,60,.8); }
+    .ik-link--admin:hover { background: rgba(255,100,0,.15); color: rgba(255,160,60,1); }
+    .ik-burger { display: none; flex-direction: column; gap: 5px; width: 36px; height: 36px; align-items: center; justify-content: center; background: transparent; border: 1px solid rgba(255,255,255,.12); border-radius: 8px; cursor: pointer; }
+    .ik-burger-bar { display: block; width: 18px; height: 1.5px; background: rgba(255,255,255,.6); border-radius: 2px; }
+    .ik-drawer { position: fixed; top: 56px; left: 0; right: 0; z-index: 8980; background: rgba(3,7,20,.97); border-bottom: 1px solid rgba(0,247,255,.1); backdrop-filter: blur(12px); display: none; flex-direction: column; padding: 8px 0 12px; }
+    .ik-drawer.open { display: flex; }
+    .ik-drawer-link { padding: 12px 20px; font-size: .9rem; color: rgba(255,255,255,.7); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.04); display: flex; align-items: center; gap: 10px; }
+    .ik-drawer-link:hover { color: rgba(0,247,255,.9); }
+    .ik-drawer-link.admin { color: rgba(255,160,60,.8); }
+
+    /* ── MAIN ── */
+    main { position: relative; z-index: 2; }
+
+    /* ── HEADER ── */
+    .rd-header {
+      text-align: center; padding: 80px 20px 60px;
+    }
+    .rd-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(0,247,255,.5); font-family: 'Orbitron', monospace; margin-bottom: 12px; }
+    .rd-title {
+      font-family: 'Orbitron', monospace; font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700; letter-spacing: .08em; margin-bottom: 16px;
+      background: linear-gradient(135deg, #fff 0%, rgba(0,247,255,.9) 60%, rgba(157,80,255,.8) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .rd-sub { font-size: .95rem; color: rgba(255,255,255,.5); max-width: 580px; margin: 0 auto; line-height: 1.7; }
+
+    /* ── TIMELINE ── */
+    .rd-timeline { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; position: relative; }
+    .rd-timeline::before {
+      content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(0,247,255,.3) 10%, rgba(0,247,255,.3) 90%, transparent);
+      transform: translateX(-50%);
+    }
+
+    .rd-phase {
+      display: grid; grid-template-columns: 1fr 40px 1fr;
+      gap: 0 24px; margin-bottom: 60px; position: relative;
+    }
+    /* alternating: even phases flip columns */
+    .rd-phase:nth-child(even) .rd-phase-card { grid-column: 3; grid-row: 1; }
+    .rd-phase:nth-child(even) .rd-phase-marker { grid-column: 2; grid-row: 1; }
+    .rd-phase:nth-child(even) .rd-phase-empty { grid-column: 1; grid-row: 1; }
+
+    .rd-phase-marker {
+      grid-column: 2; grid-row: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 0; z-index: 1;
+    }
+    .rd-marker-core {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: radial-gradient(circle, var(--cyan) 0%, rgba(0,247,255,.3) 100%);
+      border: 2px solid rgba(0,247,255,.5); flex-shrink: 0; margin-top: 20px;
+      box-shadow: 0 0 12px rgba(0,247,255,.4);
+    }
+    .rd-marker-core.done   { background: radial-gradient(circle, rgba(60,220,100,.9) 0%, rgba(60,220,100,.3) 100%); border-color: rgba(60,220,100,.5); box-shadow: 0 0 12px rgba(60,220,100,.3); }
+    .rd-marker-core.active { background: radial-gradient(circle, var(--gold) 0%, rgba(255,215,0,.3) 100%); border-color: rgba(255,215,0,.5); box-shadow: 0 0 20px rgba(255,215,0,.4); animation: pulseMark 2s ease-in-out infinite; }
+    @keyframes pulseMark { 0%,100%{box-shadow:0 0 12px rgba(255,215,0,.4)} 50%{box-shadow:0 0 28px rgba(255,215,0,.7)} }
+
+    .rd-phase-card {
+      grid-column: 1; grid-row: 1;
+      background: rgba(6,14,36,.88); border: 1px solid rgba(0,247,255,.12);
+      border-radius: 14px; padding: 22px; transition: border-color .2s, transform .2s;
+    }
+    .rd-phase-card:hover { border-color: rgba(0,247,255,.28); transform: translateY(-2px); }
+    .rd-phase-card.done   { border-color: rgba(60,220,100,.15); }
+    .rd-phase-card.active { border-color: rgba(255,215,0,.22); }
+    .rd-phase-card.future { border-color: rgba(157,80,255,.15); opacity: .85; }
+
+    .rd-phase-date { font-size: .68rem; color: rgba(0,247,255,.5); letter-spacing: .1em; margin-bottom: 5px; font-family: 'Orbitron', monospace; }
+    .rd-phase-name { font-family: 'Orbitron', monospace; font-size: .88rem; font-weight: 700; margin-bottom: 8px; color: rgba(255,255,255,.9); }
+    .rd-phase-desc { font-size: .8rem; color: rgba(255,255,255,.5); line-height: 1.65; margin-bottom: 14px; }
+    .rd-achievements { list-style: none; display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .rd-achievements li { font-size: .78rem; color: rgba(255,255,255,.65); display: flex; align-items: flex-start; gap: 7px; line-height: 1.5; }
+    .rd-achievements li .rd-icon { flex-shrink: 0; width: 16px; }
+
+    .rd-progress-wrap { display: flex; align-items: center; gap: 10px; }
+    .rd-progress-bar-bg { flex: 1; height: 4px; border-radius: 2px; background: rgba(255,255,255,.08); overflow: hidden; }
+    .rd-progress-bar { height: 100%; border-radius: 2px; transition: width 1.2s ease; }
+    .rd-progress-bar.done   { background: linear-gradient(90deg, rgba(60,220,100,.7), rgba(60,220,100,.4)); width: 100%; }
+    .rd-progress-bar.active { background: linear-gradient(90deg, var(--gold), rgba(255,215,0,.4)); }
+    .rd-progress-bar.building { background: linear-gradient(90deg, var(--cyan), rgba(0,247,255,.3)); }
+    .rd-progress-bar.future  { background: linear-gradient(90deg, rgba(157,80,255,.6), rgba(157,80,255,.2)); }
+    .rd-progress-label { font-size: .65rem; font-family: 'Orbitron', monospace; letter-spacing: .08em; flex-shrink: 0; }
+    .rd-progress-label.done   { color: rgba(60,220,100,.8); }
+    .rd-progress-label.active { color: rgba(255,215,0,.8); }
+    .rd-progress-label.future { color: rgba(157,80,255,.7); }
+
+    .rd-phase-empty { grid-row: 1; } /* spacer */
+
+    /* ── FUTURE SECTION ── */
+    .rd-future {
+      max-width: 900px; margin: 0 auto; padding: 0 20px 80px;
+    }
+    .rd-future-header { text-align: center; margin-bottom: 32px; }
+    .rd-future-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 700px) { .rd-future-grid { grid-template-columns: 1fr; } }
+    .rd-future-card {
+      background: rgba(0,247,255,.03); border: 1px solid rgba(157,80,255,.18);
+      border-radius: 12px; padding: 18px;
+      transition: border-color .2s, background .2s;
+    }
+    .rd-future-card:hover { background: rgba(157,80,255,.06); border-color: rgba(157,80,255,.3); }
+    .rd-future-icon { font-size: 1.6rem; margin-bottom: 8px; }
+    .rd-future-title { font-family: 'Orbitron', monospace; font-size: .78rem; font-weight: 700; color: rgba(157,80,255,.85); letter-spacing: .06em; margin-bottom: 8px; }
+    .rd-future-text { font-size: .78rem; color: rgba(255,255,255,.5); line-height: 1.6; }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid rgba(0,247,255,.08); padding: 32px 20px; text-align: center; position: relative; z-index: 2; }
+    footer p { font-size: .78rem; color: rgba(255,255,255,.3); }
+    footer a { color: rgba(0,247,255,.6); text-decoration: none; }
+
+    @media (max-width: 700px) {
+      .ik-links { display: none !important; }
+      .ik-burger { display: flex !important; }
+      .rd-timeline::before { left: 20px; }
+      .rd-phase { grid-template-columns: 40px 1fr; }
+      .rd-phase-marker { grid-column: 1; }
+      .rd-phase-card  { grid-column: 2; }
+      .rd-phase-empty { display: none; }
+      .rd-phase:nth-child(even) .rd-phase-card   { grid-column: 2; }
+      .rd-phase:nth-child(even) .rd-phase-marker { grid-column: 1; }
+      .rd-phase:nth-child(even) .rd-phase-empty  { display: none; }
+    }
+  </style>
 </head>
 <body>
-  <!-- Cosmic Video Background -->
-  <div class="cosmic-video-bg">
-    <video autoplay muted loop id="roadmap-video">
-      <source src="assets/images/cosmicroadmap.mp4" type="video/mp4">
-    </video>
-    <div class="video-overlay"></div>
+
+<!-- VIDEO BG -->
+<div class="ik-video-bg">
+  <video autoplay muted loop playsinline>
+    <source src="assets/images/cosmicroadmap.mp4" type="video/mp4">
+    <source src="assets/images/cosmic.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- NAV -->
+<nav class="ik-nav">
+  <a href="index.html" class="ik-brand">
+    <img src="assets/images/KMicon.png" alt="" onerror="this.style.display='none'">
+    <span class="ik-brand-name">IKEVERSE</span>
+    <span class="ik-brand-badge">Beta</span>
+  </a>
+  <ul class="ik-links">
+    <li><a href="index.html"        class="ik-link"><i class="fas fa-home"></i> Home</a></li>
+    <li><a href="cosmic-weave.html" class="ik-link"><i class="fas fa-atom"></i> Cosmic Weave</a></li>
+    <li><a href="roadmap.html"      class="ik-link ik-link--active"><i class="fas fa-map"></i> Roadmap</a></li>
+    <li><a href="whitepaper.html"   class="ik-link"><i class="fas fa-scroll"></i> White Paper</a></li>
+    <li><a href="admin.html"        class="ik-link ik-link--admin"><i class="fas fa-shield-halved"></i> Admin</a></li>
+  </ul>
+  <button class="ik-burger" id="ik-burger" type="button" aria-label="Menu">
+    <span class="ik-burger-bar"></span><span class="ik-burger-bar"></span><span class="ik-burger-bar"></span>
+  </button>
+</nav>
+<div class="ik-drawer" id="ik-drawer">
+  <a href="index.html"        class="ik-drawer-link"><i class="fas fa-home"></i> Home</a>
+  <a href="cosmic-weave.html" class="ik-drawer-link"><i class="fas fa-atom"></i> Cosmic Weave</a>
+  <a href="roadmap.html"      class="ik-drawer-link"><i class="fas fa-map"></i> Roadmap</a>
+  <a href="whitepaper.html"   class="ik-drawer-link"><i class="fas fa-scroll"></i> White Paper</a>
+  <a href="admin.html"        class="ik-drawer-link admin"><i class="fas fa-shield-halved"></i> Admin</a>
+</div>
+
+<main>
+
+  <!-- HEADER -->
+  <div class="rd-header">
+    <p class="rd-eyebrow">The Journey</p>
+    <h1 class="rd-title">IKEVERSE ROADMAP</h1>
+    <p class="rd-sub">Building a living knowledge graph — from foundation research to a global platform connecting ancestral wisdom with modern understanding.</p>
   </div>
 
-  <!-- Navigation -->
-  <nav class="quantum-nav cosmic-nav">
-    <div class="nav-portal">
-      <div class="portal-ring outer"></div>
-      <div class="portal-ring middle"></div>
-      <div class="portal-ring inner"></div>
-      <div class="portal-center">
-        <span class="logo-icon">🌌</span>
-      </div>
-    </div>
-    
-    <div class="nav-links-container">
-      <ul class="nav-links">
-        <li class="nav-item">
-          <a href="index.html" class="nav-link">
-            <span class="link-icon"><i class="fas fa-home"></i></span>
-            <span class="link-text">Home</span>
-            <span class="link-pulse"></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="cosmic-weave.html" class="nav-link">
-            <span class="link-icon"><i class="fas fa-atom"></i></span>
-            <span class="link-text">Cosmic Weave</span>
-            <span class="link-pulse"></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="roadmap.html" class="nav-link active">
-            <span class="link-icon"><i class="fas fa-rocket"></i></span>
-            <span class="link-text">Roadmap</span>
-            <span class="link-pulse"></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="whitepaper.pdf" class="nav-link cta" target="_blank">
-            <span class="link-icon"><i class="fas fa-scroll"></i></span>
-            <span class="link-text">White Paper</span>
-            <span class="link-pulse"></span>
-          </a>
-        </li>
-      </ul>
-    </div>
-    
-    <div class="nav-scanline"></div>
-  </nav>
+  <!-- TIMELINE -->
+  <div class="rd-timeline">
 
-  <!-- Roadmap Header -->
-  <header class="roadmap-header">
-    <div class="header-content">
-      <h1>QUANTUM-ANCESTRAL ODYSSEY</h1>
-      <p class="subtitle">Navigating the cosmic currents of wisdom and innovation</p>
-      <div class="header-glyphs">
-        <span>🚀</span>
-        <span>🌠</span>
-        <span>🔭</span>
+    <!-- Phase 1 -->
+    <div class="rd-phase">
+      <div class="rd-phase-card done">
+        <div class="rd-phase-date">2023 – 2024</div>
+        <div class="rd-phase-name">PHASE 1 · FOUNDATION</div>
+        <p class="rd-phase-desc">Research, theoretical framework, and initial documentation of ancestral knowledge systems.</p>
+        <ul class="rd-achievements">
+          <li><span class="rd-icon">📚</span> Historical and archaeological research compilation across 55+ cultures</li>
+          <li><span class="rd-icon">🔍</span> Preliminary analysis of connections across civilizations</li>
+          <li><span class="rd-icon">🧠</span> Theoretical framework development — the living knowledge graph concept</li>
+          <li><span class="rd-icon">📊</span> Project roadmap, white paper first draft, and cultures.json schema</li>
+          <li><span class="rd-icon">🌐</span> Pikoverse ecosystem architecture designed</li>
+        </ul>
+        <div class="rd-progress-wrap">
+          <div class="rd-progress-bar-bg"><div class="rd-progress-bar done" style="width:100%"></div></div>
+          <span class="rd-progress-label done">COMPLETE ✓</span>
+        </div>
       </div>
+      <div class="rd-phase-marker"><div class="rd-marker-core done"></div></div>
+      <div class="rd-phase-empty"></div>
     </div>
-  </header>
 
-  <!-- Cosmic Roadmap -->
-  <div class="roadmap-container">
-    <div class="timeline-axis">
-      <div class="axis-glow"></div>
-      <div class="axis-particles"></div>
+    <!-- Phase 2 -->
+    <div class="rd-phase">
+      <div class="rd-phase-empty"></div>
+      <div class="rd-phase-marker"><div class="rd-marker-core done"></div></div>
+      <div class="rd-phase-card done">
+        <div class="rd-phase-date">2024 – 2025</div>
+        <div class="rd-phase-name">PHASE 2 · CODIFICATION</div>
+        <p class="rd-phase-desc">Building the digital infrastructure — cultures.json, the Cosmic Weave 3D globe, and the Ikeverse data architecture.</p>
+        <ul class="rd-achievements">
+          <li><span class="rd-icon">🌐</span> Cosmic Weave interactive 3D globe launched — 55 cultures, 113 connections</li>
+          <li><span class="rd-icon">⭐</span> Real celestial star map — 65 named stars with 8 cultural naming traditions</li>
+          <li><span class="rd-icon">🎯</span> Guided cultural tour — 5-culture stop experience</li>
+          <li><span class="rd-icon">🔗</span> All 55 cultures fully documented — story, research papers, reading links</li>
+          <li><span class="rd-icon">🛡️</span> Admin console — full CRUD for cultures, links, and export</li>
+          <li><span class="rd-icon">📱</span> Mobile-optimized with bottom-sheet culture cards and bottom nav dock</li>
+        </ul>
+        <div class="rd-progress-wrap">
+          <div class="rd-progress-bar-bg"><div class="rd-progress-bar done" style="width:100%"></div></div>
+          <span class="rd-progress-label done">COMPLETE ✓</span>
+        </div>
+      </div>
     </div>
-    
-    <div class="roadmap-phases">
-      <!-- Phase 1 -->
-      <div class="phase" data-phase="1">
-        <div class="phase-card">
-          <div class="phase-header">
-            <div class="phase-marker">
-              <div class="marker-core"></div>
-              <div class="marker-aura"></div>
-            </div>
-            <div class="phase-date">2023-2024</div>
-            <h3 class="phase-title">STELLAR IGNITION</h3>
-          </div>
-          <div class="phase-content">
-            <p class="phase-desc">Activating the quantum-ancestral connection protocols</p>
-            <ul class="phase-achievements">
-              <li><span>⚡</span> Decrypted Kemet pyramid algorithms</li>
-              <li><span>🌊</span> Polynesian wave navigation AI models</li>
-              <li><span>🧬</span> Olmec serpent genome mapping</li>
-            </ul>
-            <div class="phase-progress">
-              <div class="progress-bar" style="width: 100%"></div>
-              <span class="progress-text">COMPLETE</span>
-            </div>
-          </div>
+
+    <!-- Phase 3 -->
+    <div class="rd-phase">
+      <div class="rd-phase-card active">
+        <div class="rd-phase-date">2025 – 2026</div>
+        <div class="rd-phase-name">PHASE 3 · ACTIVATION</div>
+        <p class="rd-phase-desc">Bringing the knowledge graph to a wider audience — Next.js portal, culture profiles, and community features.</p>
+        <ul class="rd-achievements">
+          <li><span class="rd-icon">🚀</span> <strong>Pikoverse.xyz portal</strong> — Next.js landing page with embedded globe</li>
+          <li><span class="rd-icon">📄</span> Culture cards — 55 filterable cards pulling live from cultures.json</li>
+          <li><span class="rd-icon">🗺️</span> Dedicated /explore route — full-page immersive globe experience</li>
+          <li><span class="rd-icon">🔍</span> Global search — fuzzy search by name, region, era, and theme</li>
+          <li><span class="rd-icon">⭐</span> Star culture toggle — switch star names between 8 naming traditions</li>
+          <li><span class="rd-icon">📊</span> Compare mode — side-by-side civilizational comparison panel</li>
+          <li><span class="rd-icon">🌍</span> Expanded network — 113 links, zero isolated cultures, 4.1 avg connections</li>
+        </ul>
+        <div class="rd-progress-wrap">
+          <div class="rd-progress-bar-bg"><div class="rd-progress-bar active" style="width:72%"></div></div>
+          <span class="rd-progress-label active">IN PROGRESS · 72%</span>
         </div>
       </div>
-      
-      <!-- Phase 2 -->
-      <div class="phase" data-phase="2">
-        <div class="phase-card">
-          <div class="phase-header">
-            <div class="phase-marker">
-              <div class="marker-core"></div>
-              <div class="marker-aura"></div>
-            </div>
-            <div class="phase-date">2024-2025</div>
-            <h3 class="phase-title">CELESTIAL CONVERGENCE</h3>
-          </div>
-          <div class="phase-content">
-            <p class="phase-desc">Harmonizing ancient knowledge with quantum computation</p>
-            <ul class="phase-achievements">
-              <li><span>🔢</span> Mayan calendar quantum algorithms</li>
-              <li><span>🌀</span> Aboriginal songline neural networks</li>
-              <li><span>📜</span> Vedic mantras as quantum code</li>
-            </ul>
-            <div class="phase-progress">
-              <div class="progress-bar" style="width: 65%"></div>
-              <span class="progress-text">IN PROGRESS</span>
-            </div>
-          </div>
+      <div class="rd-phase-marker"><div class="rd-marker-core active"></div></div>
+      <div class="rd-phase-empty"></div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="rd-phase">
+      <div class="rd-phase-empty"></div>
+      <div class="rd-phase-marker"><div class="rd-marker-core"></div></div>
+      <div class="rd-phase-card future">
+        <div class="rd-phase-date">2026 – 2027</div>
+        <div class="rd-phase-name">PHASE 4 · GALACTIC WEAVING</div>
+        <p class="rd-phase-desc">Deep personalization, community contributions, and multi-modal knowledge access.</p>
+        <ul class="rd-achievements">
+          <li><span class="rd-icon">👤</span> User accounts — save favourite cultures, create custom knowledge paths</li>
+          <li><span class="rd-icon">📝</span> Community contributions — verified cultural scholars can add content</li>
+          <li><span class="rd-icon">🎮</span> Guided learning journeys — curated 8-culture thematic tours with quizzes</li>
+          <li><span class="rd-icon">🌐</span> Multilingual support — content in indigenous languages alongside English</li>
+          <li><span class="rd-icon">📡</span> API — open access to the knowledge graph for researchers and educators</li>
+          <li><span class="rd-icon">📱</span> Native mobile apps — iOS and Android with offline culture packs</li>
+        </ul>
+        <div class="rd-progress-wrap">
+          <div class="rd-progress-bar-bg"><div class="rd-progress-bar future" style="width:5%"></div></div>
+          <span class="rd-progress-label future">AWAITING PHASE 3</span>
         </div>
       </div>
-      
-      <!-- Phase 3 -->
-      <div class="phase" data-phase="3">
-        <div class="phase-card">
-          <div class="phase-header">
-            <div class="phase-marker">
-              <div class="marker-core"></div>
-              <div class="marker-aura"></div>
-            </div>
-            <div class="phase-date">2025-2026</div>
-            <h3 class="phase-title">GALACTIC WEAVING</h3>
-          </div>
-          <div class="phase-content">
-            <p class="phase-desc">Creating the cosmic knowledge tapestry</p>
-            <ul class="phase-achievements">
-              <li><span>🌐</span> Global indigenous knowledge DAO</li>
-              <li><span>⚛️</span> Quantum-shamanic interface devices</li>
-              <li><span>🧠</span> Neuro-cosmic consciousness mapping</li>
-            </ul>
-            <div class="phase-progress">
-              <div class="progress-bar" style="width: 15%"></div>
-              <span class="progress-text">UPCOMING</span>
-            </div>
-          </div>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="rd-phase">
+      <div class="rd-phase-card future">
+        <div class="rd-phase-date">2027 – beyond</div>
+        <div class="rd-phase-name">PHASE 5 · COSMIC SYNTHESIS</div>
+        <p class="rd-phase-desc">The knowledge graph becomes a living global institution — interoperable, self-sustaining, and community-governed.</p>
+        <ul class="rd-achievements">
+          <li><span class="rd-icon">🏛️</span> 12+ indigenous cosmologies fully documented and interoperable</li>
+          <li><span class="rd-icon">🤝</span> Partnerships with cultural institutions, universities, and elder councils</li>
+          <li><span class="rd-icon">🔗</span> Blockchain-secured oral history archive — immutable community records</li>
+          <li><span class="rd-icon">🧬</span> AI-assisted pattern recognition across knowledge traditions</li>
+          <li><span class="rd-icon">🌍</span> Education integration — K–12 and university curriculum modules</li>
+          <li><span class="rd-icon">🎓</span> Certified cultural practitioner pathways — community recognition</li>
+          <li><span class="rd-icon">⚡</span> Real-time collaborative knowledge building — decentralized</li>
+        </ul>
+        <div class="rd-progress-wrap">
+          <div class="rd-progress-bar-bg"><div class="rd-progress-bar future" style="width:0%"></div></div>
+          <span class="rd-progress-label future">VISIONING</span>
         </div>
       </div>
-      
-      <!-- Phase 4 -->
-      <div class="phase" data-phase="4">
-        <div class="phase-card">
-          <div class="phase-header">
-            <div class="phase-marker">
-              <div class="marker-core"></div>
-              <div class="marker-aura"></div>
-            </div>
-            <div class="phase-date">2026+</div>
-            <h3 class="phase-title">COSMIC SYNTHESIS</h3>
-          </div>
-          <div class="phase-content">
-            <p class="phase-desc">The great unification of knowledge streams</p>
-            <ul class="phase-achievements">
-              <li><span>♾️</span> Time-mind continuum exploration</li>
-              <li><span>🌌</span> Ancestral-quantum archive completion</li>
-              <li><span>🔄</span> Reality reweaving protocols</li>
-            </ul>
-            <div class="phase-progress">
-              <div class="progress-bar" style="width: 0%"></div>
-              <span class="progress-text">FUTURE</span>
-            </div>
-          </div>
-        </div>
+      <div class="rd-phase-marker"><div class="rd-marker-core future" style="opacity:.5"></div></div>
+      <div class="rd-phase-empty"></div>
+    </div>
+
+  </div>
+
+  <!-- FUTURE ADDITIONS -->
+  <div class="rd-future">
+    <div class="rd-future-header">
+      <p class="rd-eyebrow">Coming Next</p>
+      <h2 style="font-family:'Orbitron',monospace;font-size:1.4rem;margin-bottom:10px;color:rgba(255,255,255,.9);">FEATURES IN DEVELOPMENT</h2>
+      <p style="font-size:.85rem;color:rgba(255,255,255,.45);max-width:500px;margin:0 auto;">Planned additions to the Cosmic Weave globe and the broader Ikeverse platform.</p>
+    </div>
+    <div class="rd-future-grid">
+      <div class="rd-future-card">
+        <div class="rd-future-icon">🌌</div>
+        <div class="rd-future-title">Stellarium Mode</div>
+        <p class="rd-future-text">Full planetarium integration — real-time star positions, constellation overlays from multiple cultures, and precession simulation across centuries.</p>
+      </div>
+      <div class="rd-future-card">
+        <div class="rd-future-icon">🗂️</div>
+        <div class="rd-future-title">Lazy Loading</div>
+        <p class="rd-future-text">Split cultures.json into a 22KB lean metadata file loaded instantly, with rich detail (290KB) fetched per-culture on demand — cutting initial load by 42%.</p>
+      </div>
+      <div class="rd-future-card">
+        <div class="rd-future-icon">🔖</div>
+        <div class="rd-future-title">User Bookmarks</div>
+        <p class="rd-future-text">Save favourite cultures, annotate connections, and build personal knowledge paths stored in Supabase user profiles.</p>
+      </div>
+      <div class="rd-future-card">
+        <div class="rd-future-icon">🌙</div>
+        <div class="rd-future-title">Light / Dark Mode</div>
+        <p class="rd-future-text">Full light-mode variant of the globe and admin panel for accessibility and presentation use in bright environments.</p>
+      </div>
+      <div class="rd-future-card">
+        <div class="rd-future-icon">🎧</div>
+        <div class="rd-future-title">Ambient Audio</div>
+        <p class="rd-future-text">Optional cultural soundscapes per region — nature sounds, instruments, chants — activated when exploring specific culture nodes.</p>
+      </div>
+      <div class="rd-future-card">
+        <div class="rd-future-icon">📖</div>
+        <div class="rd-future-title">Print Cards</div>
+        <p class="rd-future-text">Export any culture as a clean one-page PDF summary — ideal for educators, researchers, and community presentations.</p>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="cosmic-footer">
-    <div class="footer-grid">
-      <div class="footer-about">
-        <h4><i class="fas fa-star"></i> IKEVERSE</h4>
-        <p>Weaving the quantum future with ancestral threads</p>
-      </div>
-      <div class="footer-sections">
-        <div class="footer-section">
-          <h5>Journey</h5>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="cosmic-weave.html">Cosmic Weave</a></li>
-            <li><a href="roadmap.html">Roadmap</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h5>Resources</h5>
-          <ul>
-            <li><a href="whitepaper.pdf">White Paper</a></li>
-            <li><a href="#">Research Portal</a></li>
-            <li><a href="#">Elder Council</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h5>Connect</h5>
-          <ul>
-            <li><a href="#">Quantum Forum</a></li>
-            <li><a href="#">Ancestral Network</a></li>
-            <li><a href="#">Join the DAO</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-pulse"></div>
-  </footer>
+</main>
 
-  <!-- Scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
-  <script src="js/roadmap.js"></script>
+<footer>
+  <p>
+    <a href="index.html">IKEVERSE</a> · Ka Ulana ʻIke ·
+    Part of <a href="https://pikoverse.xyz/">Pikoverse</a>
+    &nbsp;|&nbsp;
+    <a href="cosmic-weave.html">Cosmic Weave</a> ·
+    <a href="whitepaper.html">White Paper</a> ·
+    <a href="admin.html">Admin</a>
+  </p>
+</footer>
+
+<script>
+const burger = document.getElementById('ik-burger');
+const drawer = document.getElementById('ik-drawer');
+if (burger && drawer) {
+  burger.addEventListener('click', () => drawer.classList.toggle('open'));
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => drawer.classList.remove('open')));
+  document.addEventListener('keydown', e => { if(e.key==='Escape') drawer.classList.remove('open'); });
+}
+// Animate progress bars on scroll
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.style.width = e.target.getAttribute('data-w') || e.target.style.width; });
+}, { threshold: .2 });
+document.querySelectorAll('.rd-progress-bar').forEach(bar => obs.observe(bar));
+</script>
 </body>
 </html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ikeverse White Paper | Living Knowledge Globe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg:#030a18; --cyan:rgba(0,247,255,.9); --gold:rgba(255,215,0,.88); }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Exo 2', sans-serif; background: var(--bg); color: rgba(255,255,255,.88); overflow-x: hidden; line-height: 1.7; }
+
+    /* NAV */
+    .ik-nav {
+      position: sticky; top: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; height: 56px;
+      background: rgba(3,7,20,.94); border-bottom: 1px solid rgba(0,247,255,.1);
+      backdrop-filter: blur(12px);
+    }
+    .ik-brand { display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit; }
+    .ik-brand img { width:30px;height:30px;object-fit:contain; }
+    .ik-brand-name { font-family:'Orbitron',monospace;font-size:.8rem;font-weight:700;letter-spacing:.14em;color:rgba(0,247,255,.9); }
+    .ik-links { display:flex;align-items:center;gap:2px;list-style:none; }
+    .ik-link { display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;text-decoration:none;font-size:.82rem;color:rgba(255,255,255,.6);transition:all .15s; }
+    .ik-link:hover,.ik-link--active { color:rgba(0,247,255,.9);background:rgba(0,247,255,.07); }
+    .ik-link--admin { background:rgba(255,100,0,.08);border:1px solid rgba(255,100,0,.2);color:rgba(255,160,60,.8); }
+    .ik-burger { display:none;flex-direction:column;gap:5px;width:36px;height:36px;align-items:center;justify-content:center;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:8px;cursor:pointer; }
+    .ik-burger-bar { display:block;width:18px;height:1.5px;background:rgba(255,255,255,.6);border-radius:2px; }
+    .ik-drawer { position:fixed;top:56px;left:0;right:0;z-index:190;background:rgba(3,7,20,.97);border-bottom:1px solid rgba(0,247,255,.1);backdrop-filter:blur(12px);display:none;flex-direction:column;padding:8px 0; }
+    .ik-drawer.open { display:flex; }
+    .ik-drawer-link { padding:12px 20px;font-size:.9rem;color:rgba(255,255,255,.7);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;gap:10px; }
+    .ik-drawer-link:hover { color:rgba(0,247,255,.9); }
+
+    /* CONTENT */
+    .wp-layout { display:grid;grid-template-columns:220px 1fr;gap:0;max-width:1100px;margin:0 auto; }
+    @media(max-width:768px) { .wp-layout{grid-template-columns:1fr}.wp-sidebar{display:none}.ik-links{display:none!important}.ik-burger{display:flex!important} }
+
+    /* Sidebar TOC */
+    .wp-sidebar {
+      position: sticky; top: 56px; height: calc(100vh - 56px);
+      overflow-y: auto; padding: 32px 16px;
+      border-right: 1px solid rgba(0,247,255,.08);
+      scrollbar-width: thin; scrollbar-color: rgba(0,247,255,.15) transparent;
+    }
+    .wp-toc-title { font-family:'Orbitron',monospace;font-size:.7rem;letter-spacing:.12em;color:rgba(0,247,255,.4);margin-bottom:16px;text-transform:uppercase; }
+    .wp-toc-item { display:block;padding:7px 10px;border-radius:7px;font-size:.79rem;color:rgba(255,255,255,.5);text-decoration:none;border-left:2px solid transparent;transition:all .15s;margin-bottom:2px; }
+    .wp-toc-item:hover,.wp-toc-item.active { color:rgba(0,247,255,.85);border-left-color:rgba(0,247,255,.5);background:rgba(0,247,255,.05); }
+    .wp-toc-sub { padding-left:16px;font-size:.74rem;color:rgba(255,255,255,.4); }
+
+    /* Main content */
+    .wp-main { padding: 48px 40px 80px; max-width: 760px; }
+    @media(max-width:600px) { .wp-main{padding:32px 20px 60px} }
+
+    .wp-hero { margin-bottom: 48px; }
+    .wp-eyebrow { font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(0,247,255,.5);font-family:'Orbitron',monospace;margin-bottom:12px; }
+    .wp-title { font-family:'Orbitron',monospace;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;letter-spacing:.05em;margin-bottom:14px; background:linear-gradient(135deg,#fff 0%,rgba(0,247,255,.9) 60%,rgba(157,80,255,.8) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+    .wp-meta { font-size:.78rem;color:rgba(255,255,255,.35);margin-bottom:24px; }
+    .wp-abstract { background:rgba(0,247,255,.04);border:1px solid rgba(0,247,255,.12);border-radius:12px;padding:20px 24px;font-size:.88rem;color:rgba(255,255,255,.7);line-height:1.75;font-style:italic; }
+
+    h2.wp-h2 { font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;letter-spacing:.1em;color:rgba(0,247,255,.85);margin:40px 0 14px;padding-top:12px; border-bottom:1px solid rgba(0,247,255,.12);padding-bottom:8px; }
+    h3.wp-h3 { font-size:.92rem;font-weight:600;color:rgba(255,255,255,.8);margin:24px 0 10px; }
+    p.wp-p { font-size:.88rem;color:rgba(255,255,255,.65);line-height:1.8;margin-bottom:14px; }
+    ul.wp-ul, ol.wp-ol { padding-left:20px;margin-bottom:14px; }
+    ul.wp-ul li, ol.wp-ol li { font-size:.85rem;color:rgba(255,255,255,.6);line-height:1.75;margin-bottom:4px; }
+    strong.hi { color:rgba(0,247,255,.8); }
+
+    /* Stats grid */
+    .wp-stats { display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0; }
+    @media(max-width:600px){.wp-stats{grid-template-columns:1fr 1fr}}
+    .wp-stat { background:rgba(0,247,255,.05);border:1px solid rgba(0,247,255,.14);border-radius:10px;padding:14px;text-align:center; }
+    .wp-stat-n { font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:700;color:var(--cyan); }
+    .wp-stat-l { font-size:.68rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-top:2px; }
+
+    /* Navigation guide steps */
+    .wp-step { display:flex;gap:16px;margin-bottom:20px;padding:16px;background:rgba(6,14,36,.8);border:1px solid rgba(0,247,255,.1);border-radius:12px; }
+    .wp-step-num { width:36px;height:36px;border-radius:50%;background:rgba(0,247,255,.12);border:1px solid rgba(0,247,255,.3);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:.8rem;font-weight:700;color:var(--cyan);flex-shrink:0; }
+    .wp-step-body h4 { font-size:.88rem;font-weight:600;color:rgba(255,255,255,.85);margin-bottom:5px; }
+    .wp-step-body p { font-size:.8rem;color:rgba(255,255,255,.5);line-height:1.65; }
+
+    /* Feature table */
+    .wp-table { width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:.82rem; }
+    .wp-table th { text-align:left;padding:10px 12px;border-bottom:1px solid rgba(0,247,255,.2);color:rgba(0,247,255,.7);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600; }
+    .wp-table td { padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(255,255,255,.65);vertical-align:top; }
+    .wp-table tr:hover td { background:rgba(0,247,255,.03); }
+    .wp-badge { display:inline-block;padding:2px 7px;border-radius:5px;font-size:.65rem;font-weight:600;letter-spacing:.05em; }
+    .wp-badge--done   { background:rgba(60,220,100,.15);color:rgba(60,220,100,.85);border:1px solid rgba(60,220,100,.2); }
+    .wp-badge--active { background:rgba(255,215,0,.12);color:rgba(255,215,0,.8);border:1px solid rgba(255,215,0,.2); }
+    .wp-badge--future { background:rgba(157,80,255,.12);color:rgba(157,80,255,.8);border:1px solid rgba(157,80,255,.2); }
+
+    /* Callout */
+    .wp-callout { background:rgba(255,215,0,.05);border-left:3px solid rgba(255,215,0,.4);padding:14px 18px;border-radius:0 10px 10px 0;margin:20px 0; }
+    .wp-callout p { font-size:.85rem;color:rgba(255,215,0,.8);line-height:1.65;margin:0; }
+
+    /* CTA */
+    .wp-cta { display:flex;gap:10px;flex-wrap:wrap;margin-top:32px; }
+    .wp-btn { padding:11px 22px;border-radius:9px;font-size:.85rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:7px;cursor:pointer;border:none;font-family:'Exo 2',sans-serif;transition:all .15s; }
+    .wp-btn--primary { background:rgba(0,247,255,.12);border:1px solid rgba(0,247,255,.3);color:rgba(0,247,255,.9); }
+    .wp-btn--primary:hover { background:rgba(0,247,255,.2);transform:translateY(-1px); }
+    .wp-btn--ghost { background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.65); }
+    .wp-btn--ghost:hover { background:rgba(255,255,255,.1); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="ik-nav">
+  <a href="index.html" class="ik-brand">
+    <img src="assets/images/KMicon.png" alt="" onerror="this.style.display='none'">
+    <span class="ik-brand-name">IKEVERSE</span>
+  </a>
+  <ul class="ik-links">
+    <li><a href="index.html"        class="ik-link"><i class="fas fa-home"></i> Home</a></li>
+    <li><a href="cosmic-weave.html" class="ik-link"><i class="fas fa-atom"></i> Cosmic Weave</a></li>
+    <li><a href="roadmap.html"      class="ik-link"><i class="fas fa-map"></i> Roadmap</a></li>
+    <li><a href="whitepaper.html"   class="ik-link ik-link--active"><i class="fas fa-scroll"></i> White Paper</a></li>
+    <li><a href="admin.html"        class="ik-link ik-link--admin"><i class="fas fa-shield-halved"></i> Admin</a></li>
+  </ul>
+  <button class="ik-burger" id="ik-burger" type="button" aria-label="Menu">
+    <span class="ik-burger-bar"></span><span class="ik-burger-bar"></span><span class="ik-burger-bar"></span>
+  </button>
+</nav>
+<div class="ik-drawer" id="ik-drawer">
+  <a href="index.html"        class="ik-drawer-link"><i class="fas fa-home"></i> Home</a>
+  <a href="cosmic-weave.html" class="ik-drawer-link"><i class="fas fa-atom"></i> Cosmic Weave</a>
+  <a href="roadmap.html"      class="ik-drawer-link"><i class="fas fa-map"></i> Roadmap</a>
+  <a href="whitepaper.html"   class="ik-drawer-link"><i class="fas fa-scroll"></i> White Paper</a>
+  <a href="admin.html"        class="ik-drawer-link"><i class="fas fa-shield-halved"></i> Admin</a>
+</div>
+
+<div class="wp-layout">
+  <!-- SIDEBAR TOC -->
+  <aside class="wp-sidebar">
+    <div class="wp-toc-title">Contents</div>
+    <a href="#abstract"    class="wp-toc-item">Abstract</a>
+    <a href="#overview"    class="wp-toc-item">1. Overview</a>
+    <a href="#data"        class="wp-toc-item">2. Data Architecture</a>
+    <a href="#globe"       class="wp-toc-item">3. The Cosmic Weave Globe</a>
+    <a href="#navigation"  class="wp-toc-item">4. Navigation Guide</a>
+    <a href="#stars"       class="wp-toc-item wp-toc-sub">4.1 Star Map</a>
+    <a href="#tour"        class="wp-toc-item wp-toc-sub">4.2 Guided Tour</a>
+    <a href="#compare"     class="wp-toc-item wp-toc-sub">4.3 Compare Mode</a>
+    <a href="#admin"       class="wp-toc-item wp-toc-sub">4.4 Admin Console</a>
+    <a href="#features"    class="wp-toc-item">5. Feature Reference</a>
+    <a href="#cultures"    class="wp-toc-item">6. Cultural Coverage</a>
+    <a href="#methodology" class="wp-toc-item">7. Methodology</a>
+    <a href="#roadmap"     class="wp-toc-item">8. Roadmap</a>
+    <a href="#mission"     class="wp-toc-item">9. Mission</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="wp-main">
+
+    <!-- HERO -->
+    <div class="wp-hero">
+      <p class="wp-eyebrow">Version 2.0 · 2025</p>
+      <h1 class="wp-title">Ikeverse White Paper</h1>
+      <p class="wp-meta">Ka Ulana ʻIke — The Weaving of Knowledge &nbsp;·&nbsp; Part of the Pikoverse Ecosystem</p>
+      <div class="wp-abstract" id="abstract">
+        <strong style="color:rgba(0,247,255,.7)">Abstract:</strong>
+        The Ikeverse is a living knowledge graph — an interactive 3D globe connecting 55 civilizational traditions across 6 regions through 113 historically grounded links. It features a real celestial star map with 65 named stars and 8 cultural naming traditions, a guided cultural tour, side-by-side comparison mode, and a full administrative console. This document explains the platform's architecture, data model, navigation, and cultural methodology.
+      </div>
+    </div>
+
+    <!-- 1. OVERVIEW -->
+    <h2 class="wp-h2" id="overview">1. Overview</h2>
+    <p class="wp-p">The Ikeverse began as a question: what if we could see, at once, the connections between all the world's civilizational knowledge traditions? Not as a database, but as a living graph — rotating in real time, zoomable, explorable, with each node carrying the full story of a culture and each arc representing a real historical connection.</p>
+    <p class="wp-p">What emerged is the Cosmic Weave — a Three.js WebGL 3D globe with D3-powered flat-map mode, a real celestial star overlay, a guided tour system, and a comprehensive administrative console for managing the knowledge graph.</p>
+
+    <div class="wp-stats">
+      <div class="wp-stat"><div class="wp-stat-n">55</div><div class="wp-stat-l">Cultures</div></div>
+      <div class="wp-stat"><div class="wp-stat-n">113</div><div class="wp-stat-l">Links</div></div>
+      <div class="wp-stat"><div class="wp-stat-n">65</div><div class="wp-stat-l">Stars</div></div>
+      <div class="wp-stat"><div class="wp-stat-n">6</div><div class="wp-stat-l">Regions</div></div>
+    </div>
+
+    <!-- 2. DATA -->
+    <h2 class="wp-h2" id="data">2. Data Architecture</h2>
+    <p class="wp-p">The platform is driven by two JSON files served as static assets:</p>
+    <h3 class="wp-h3">cultures.json (466KB)</h3>
+    <p class="wp-p">The primary knowledge graph. Each culture object contains: <strong class="hi">id, name, symbol, region, era, coords</strong> (lon/lat), <strong class="hi">desc, tags, story</strong> (5 paragraphs), <strong class="hi">corePrinciples, knowledgeSystems, highlights, martialArts, notableSitesOrTexts, movement, modernLegacy, creationStories, guidingQuestions, keyTerms, modernConnections, recommendedReadings, readingLinks, researchPapers</strong>. The <code>links</code> array at the root describes connections between cultures with label, themes, and description.</p>
+    <h3 class="wp-h3">stars.json (82KB)</h3>
+    <p class="wp-p">Real stellar catalog data. Each star: <strong class="hi">id, ra, dec, mag, con</strong> (constellation), <strong class="hi">hawaiian_name, hawaiian_meaning, navigation_use, moolelo, distance_ly, type</strong>, and <strong class="hi">cultural_notes</strong> — a keyed object with entries for arabic, chinese, greek, mesopotamian, polynesian, maya, aboriginal_australian, japanese, maori, and more.</p>
+
+    <!-- 3. GLOBE -->
+    <h2 class="wp-h2" id="globe">3. The Cosmic Weave Globe</h2>
+    <p class="wp-p">The globe is built with <strong class="hi">Three.js r132</strong> (WebGL sphere with CanvasTexture earth map from D3 GeoEquirectangular projection), <strong class="hi">OrbitControls</strong> for drag/zoom, <strong class="hi">CSS2DRenderer</strong> for culture labels, and <strong class="hi">GSAP</strong> for node spawn and selection animations.</p>
+    <p class="wp-p">Culture nodes are colored by region (Africa gold, Middle East coral, Oceania cyan, Asia purple, Americas green, Europe blue). Geodesic arcs between connected cultures are Three.js TubeMesh objects with animated pulse-bead particles traveling their length. A Fresnel shader creates the cyan-violet atmospheric rim glow.</p>
+    <p class="wp-p">The flat map is built with <strong class="hi">D3 v7</strong> Mercator projection — the same culture data rendered as circles with connection arcs as bezier curves.</p>
+
+    <!-- 4. NAVIGATION GUIDE -->
+    <h2 class="wp-h2" id="navigation">4. How to Navigate the Cosmic Weave</h2>
+
+    <h3 class="wp-h3">Basic Controls</h3>
+    <div class="wp-step">
+      <div class="wp-step-num">1</div>
+      <div class="wp-step-body"><h4>Rotate the globe</h4><p>Click and drag anywhere on the globe. The globe auto-rotates when no culture is selected — rotating stops when you interact, and resumes on deselect.</p></div>
+    </div>
+    <div class="wp-step">
+      <div class="wp-step-num">2</div>
+      <div class="wp-step-body"><h4>Zoom</h4><p>Scroll wheel (desktop) or pinch gesture (mobile/tablet). Zoom limits: 1.3× minimum (close up), 8× maximum (far out). Zoom In / Out buttons in the toolbar also work.</p></div>
+    </div>
+    <div class="wp-step">
+      <div class="wp-step-num">3</div>
+      <div class="wp-step-body"><h4>Select a culture</h4><p>Click any glowing dot to select it. The globe flies to that culture, the detail panel fills on the right (or a bottom sheet slides up on mobile), and connected cultures highlight with arcs. Click the same dot again, or click empty space, to deselect.</p></div>
+    </div>
+    <div class="wp-step">
+      <div class="wp-step-num">4</div>
+      <div class="wp-step-body"><h4>Keyboard navigation</h4><p>← → ↑ ↓ cycle through cultures in order. Esc deselects. Press <kbd>/</kbd> anywhere to focus the search bar.</p></div>
+    </div>
+    <div class="wp-step">
+      <div class="wp-step-num">5</div>
+      <div class="wp-step-body"><h4>Switch to Map view</h4><p>Click <strong>Map</strong> tab to switch from 3D globe to a flat D3 world map. All interactions are identical — click any dot to select, drag to pan, scroll to zoom. Click <strong>Globe</strong> to return.</p></div>
+    </div>
+
+    <h3 class="wp-h3" id="stars">4.1 Star Map</h3>
+    <div class="wp-step">
+      <div class="wp-step-num">★</div>
+      <div class="wp-step-body">
+        <h4>Activate the star map</h4>
+        <p>Click the <strong>Stars</strong> button in the tab bar. A real celestial overlay appears — 65 named stars projected from their actual RA/Dec coordinates relative to the current globe rotation. Drag the globe to navigate the sky.</p>
+        <p style="margin-top:8px">The star overlay does not block globe dragging — OrbitControls remain fully active.</p>
+      </div>
+    </div>
+    <div class="wp-step">
+      <div class="wp-step-num">★</div>
+      <div class="wp-step-body">
+        <h4>Click a star</h4>
+        <p>Click any star to open its info panel — showing its Hawaiian name, moʻolelo (story), navigation use, distance, and how multiple cultures named it. ESC closes the panel.</p>
+      </div>
+    </div>
+    <div class="wp-step">
+      <div class="wp-step-num">★</div>
+      <div class="wp-step-body">
+        <h4>Change the naming tradition</h4>
+        <p>A pill button bar appears at the bottom of the globe when the star map is active: <strong>Hawaiʻi · Arabic · Chinese · Greek · Babylonian · Polynesian · Maya · Aboriginal</strong>. Click any to switch all visible star labels to that culture's naming tradition. The active culture's entry is highlighted first in the info panel when you click a star.</p>
+      </div>
+    </div>
+
+    <h3 class="wp-h3" id="tour">4.2 Guided Tour</h3>
+    <div class="wp-step">
+      <div class="wp-step-num">▶</div>
+      <div class="wp-step-body">
+        <h4>Start the tour</h4>
+        <p>Click the <strong>Tour</strong> button in the tab bar. The tour has two phases. <strong>Phase 1</strong>: 3 sequential UI tooltips explaining the globe, search bar, and star map — each with a pulsing highlight ring. <strong>Phase 2</strong>: the globe flies to 5 cultures (Kanaka Maoli → Kemet → Haudenosaunee → Vedic → Mali) and at each stop a culture card slides up from the bottom showing its story, highlights, and key terms.</p>
+      </div>
+    </div>
+    <div class="wp-step">
+      <div class="wp-step-num">▶</div>
+      <div class="wp-step-body">
+        <h4>During a culture stop</h4>
+        <p><strong>Explore fully</strong> — ends the tour and keeps that culture selected so you can read everything. <strong>Next culture →</strong> slides the card away and flies to the next stop. <strong>End tour</strong> exits at any point. The tour can be replayed anytime by clicking Tour again.</p>
+      </div>
+    </div>
+
+    <h3 class="wp-h3" id="compare">4.3 Compare Mode</h3>
+    <div class="wp-step">
+      <div class="wp-step-num">⇔</div>
+      <div class="wp-step-body">
+        <h4>Compare two cultures</h4>
+        <p>Select any culture, then click <strong>Compare</strong> in its detail panel. A hint bar appears. Select a second culture and click Compare again. A full-screen panel slides up showing both cultures side by side across 8 fields: overview, core principles, knowledge systems, highlights, martial arts, exchange &amp; movement, modern legacy, and modern connections. Shared tags and direct links are highlighted. Close with the × button or press Esc.</p>
+      </div>
+    </div>
+
+    <h3 class="wp-h3" id="admin">4.4 Admin Console</h3>
+    <p class="wp-p">Access the admin console at <code>admin.html</code> (or via the Admin link in the nav bar). Default password: <strong class="hi">ikeverse2026</strong>.</p>
+    <div class="wp-step">
+      <div class="wp-step-num">🛡</div>
+      <div class="wp-step-body">
+        <h4>Cultures tab</h4>
+        <p>Search and filter all 55 cultures by region. Click any to open the full editor — every field is editable. Array fields (story, highlights, key terms, etc.) have per-item editors. Reading links and research papers have structured title/URL/kind/description editors. Save saves to the editor state; Download cultures.json exports the full file for deployment.</p>
+      </div>
+    </div>
+    <div class="wp-step">
+      <div class="wp-step-num">🛡</div>
+      <div class="wp-step-body">
+        <h4>Links tab</h4>
+        <p>Manage all 113 connections. Edit source, target, label, description, and theme tags. Add Connection creates a new link — it validates that source ≠ target and the link doesn't already exist.</p>
+      </div>
+    </div>
+    <div class="wp-step">
+      <div class="wp-step-num">🛡</div>
+      <div class="wp-step-body">
+        <h4>Export &amp; Settings tab</h4>
+        <p>Download cultures.json (deploy to docs/cultures.json). Import an existing JSON file to replace the editor state. Supabase sync fields for push to a remote database. Live stats show current culture count, link count, and reading material coverage.</p>
+      </div>
+    </div>
+
+    <!-- 5. FEATURE REFERENCE -->
+    <h2 class="wp-h2" id="features">5. Feature Reference</h2>
+    <table class="wp-table">
+      <thead><tr><th>Feature</th><th>Description</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>3D Globe</td><td>Three.js WebGL sphere with real earth texture, atmosphere shader, and node animation</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Flat Map</td><td>D3 Mercator projection with culture dots and bezier connection arcs</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Star Map</td><td>65-star celestial overlay with real RA/Dec, constellation lines, hit zones</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Culture Name Toggle</td><td>Switch star labels between 8 naming traditions</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Guided Tour</td><td>2-phase: UI tooltips + 5-culture flyover with detail cards</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Compare Mode</td><td>Side-by-side civilizational comparison panel</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Admin Console</td><td>Full CRUD for cultures, links, and export</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Global Search</td><td>Real-time fuzzy search by name, region, era, tag</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Related Cultures</td><td>Suggests 3 culturally related nodes by shared tags</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Mobile Bottom Sheet</td><td>Drag-to-dismiss culture detail sheet on touch devices</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Weave Paths</td><td>Thematic tour paths through connected cultures</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Timeline Scrubber</td><td>Filter cultures by historical era</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Layer Threads</td><td>Highlight cultures by theme: food, water, navigation, trade, stewardship, governance</td><td><span class="wp-badge wp-badge--done">Live</span></td></tr>
+        <tr><td>Lazy Loading</td><td>Split cultures.json into lean meta + on-demand rich detail</td><td><span class="wp-badge wp-badge--future">Planned</span></td></tr>
+        <tr><td>User Accounts</td><td>Save favourites, notes, and custom paths</td><td><span class="wp-badge wp-badge--future">Planned</span></td></tr>
+        <tr><td>Stellarium Mode</td><td>Full planetarium with real-time star positions</td><td><span class="wp-badge wp-badge--future">Planned</span></td></tr>
+        <tr><td>PWA / Offline</td><td>Service worker, installable, offline culture packs</td><td><span class="wp-badge wp-badge--future">Planned</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- 6. CULTURAL COVERAGE -->
+    <h2 class="wp-h2" id="cultures">6. Cultural Coverage</h2>
+    <p class="wp-p">The Ikeverse covers <strong class="hi">55 civilizational traditions</strong> across 6 regions. Every culture has a complete data profile including story (5 paragraphs), core principles, knowledge systems, highlights, key terms, guiding questions, further reading links, and research papers pointing to open-access academic sources.</p>
+    <table class="wp-table">
+      <thead><tr><th>Region</th><th>Cultures</th><th>Example Nodes</th></tr></thead>
+      <tbody>
+        <tr><td>Africa</td><td>10</td><td>Kemet, Mali, Yoruba, Great Zimbabwe, San, Kush</td></tr>
+        <tr><td>Middle East</td><td>8</td><td>Mesopotamia, Sumer, Babylonia, Assyria, Akkad, Punt</td></tr>
+        <tr><td>Oceania</td><td>10</td><td>Kanaka Maoli, Polynesia, Māori, Papua New Guinea, Palau</td></tr>
+        <tr><td>Asia</td><td>13</td><td>Vedic, China, Japan, Korea, Khmer, Majapahit, Vietnam</td></tr>
+        <tr><td>Americas</td><td>10</td><td>Haudenosaunee, Maya, Aztec, Inca, Olmec, Diné, Inuit</td></tr>
+        <tr><td>Europe</td><td>4</td><td>Celtic, Norse, Sami, Antarctic (Yaghan)</td></tr>
+      </tbody>
+    </table>
+    <div class="wp-callout">
+      <p><strong>Zero-isolation policy:</strong> Every culture has at least 3 connections in the knowledge graph. Average: 4.1 links per culture. All 4 zero-connection cross-region pairs (Africa↔Europe, ME↔Oceania, Americas↔ME, Europe↔ME) have been filled with historically grounded links.</p>
+    </div>
+
+    <!-- 7. METHODOLOGY -->
+    <h2 class="wp-h2" id="methodology">7. Research Methodology</h2>
+    <p class="wp-p">All cultural content is drawn from open-access academic sources: JSTOR papers, UNESCO World Heritage documentation, national museums, university research portals, and primary texts via Project Gutenberg, Internet Archive, and CDLI. Every reading link and research paper has been verified for accessibility at time of documentation.</p>
+    <p class="wp-p">Links between cultures are grounded in documented historical contact: trade routes, diaspora networks, shared astronomical traditions, military or diplomatic encounters, cross-cultural scholarship exchange, and parallel independent invention. Suggested parallels are clearly labelled as such and distinguished from direct historical links.</p>
+    <p class="wp-p">Cultural content is written to honour living communities — the traditions documented here are not historical relics but living knowledge systems with ongoing practice. Where communities have documented their own traditions, primary community sources are prioritized over secondary academic interpretation.</p>
+
+    <!-- 8. ROADMAP -->
+    <h2 class="wp-h2" id="roadmap">8. Roadmap Summary</h2>
+    <p class="wp-p">See the full <a href="roadmap.html" style="color:rgba(0,247,255,.75)">Roadmap page</a> for detailed phase breakdowns. In brief:</p>
+    <ul class="wp-ul">
+      <li><strong class="hi">Phase 1 (complete)</strong> — Research foundation, framework development, initial documentation</li>
+      <li><strong class="hi">Phase 2 (complete)</strong> — Cosmic Weave globe, star map, admin console, full 55-culture data set</li>
+      <li><strong class="hi">Phase 3 (in progress · 72%)</strong> — Next.js portal, culture cards, /explore route, Pikoverse integration</li>
+      <li><strong class="hi">Phase 4 (2026)</strong> — User accounts, community contributions, multilingual support, API</li>
+      <li><strong class="hi">Phase 5 (2027+)</strong> — Decentralized governance, elder council integration, education platform</li>
+    </ul>
+
+    <!-- 9. MISSION -->
+    <h2 class="wp-h2" id="mission">9. Mission</h2>
+    <p class="wp-p">The Ikeverse exists to make the depth and connection of human civilizational knowledge visible, accessible, and alive. The globe is not a database — it is a living surface for exploration, where every node is a culture that shaped the world, every arc is a real human connection across time and geography, and every star is a story about how our ancestors navigated by the same sky.</p>
+    <p class="wp-p">We are building in the spirit of <em>I ka wā ma mua, ka wā ma hope</em> — the future is in the past. By reconnecting these knowledge traditions, we create conditions for a wiser future.</p>
+
+    <div class="wp-cta">
+      <a href="cosmic-weave.html" class="wp-btn wp-btn--primary"><i class="fas fa-atom"></i> Enter the Cosmic Weave</a>
+      <a href="roadmap.html" class="wp-btn wp-btn--ghost"><i class="fas fa-map"></i> View Roadmap</a>
+      <a href="admin.html"   class="wp-btn wp-btn--ghost"><i class="fas fa-shield-halved"></i> Admin Console</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const burger = document.getElementById('ik-burger');
+const drawer = document.getElementById('ik-drawer');
+if (burger && drawer) {
+  burger.addEventListener('click', () => drawer.classList.toggle('open'));
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => drawer.classList.remove('open')));
+  document.addEventListener('keydown', e => { if(e.key==='Escape') drawer.classList.remove('open'); });
+}
+// TOC active state on scroll
+const sections = document.querySelectorAll('[id]');
+const tocLinks  = document.querySelectorAll('.wp-toc-item');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      const match = document.querySelector(`.wp-toc-item[href="#${e.target.id}"]`);
+      if (match) match.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

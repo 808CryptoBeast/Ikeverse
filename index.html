@@ -3,364 +3,996 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ikeverse | Quantum-Ancestral Knowledge Matrix</title>
-  <meta name="description" content="Bridging ancient wisdom with quantum science through immersive visualization">
+  <title>Ikeverse | Living Knowledge Globe</title>
+  <meta name="description" content="55 cultures, 113 connections, 65 named stars — an interactive 3D globe bridging ancestral wisdom and modern understanding.">
+  <meta property="og:title" content="Ikeverse — Living Knowledge Globe">
+  <meta property="og:description" content="Explore 55 civilizational traditions connected across time and region in an interactive 3D knowledge graph.">
+  <meta property="og:image" content="assets/images/thelivingknowledge.png">
 
-  <link rel="stylesheet" href="Ikeverse_org/css/style.css">
-  <link rel="stylesheet" href="Ikeverse_org/css/starwars.css">
-  <link rel="stylesheet" href="Ikeverse_org/css/starwars.patch.css">
-  <link rel="stylesheet" href="Ikeverse_org/css/knowledge-matrix.css">
-  <link rel="stylesheet" href="Ikeverse_org/css/ikeverse-enhanced.css">
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="Ikeverse_org/css/style.css">
+  <link rel="stylesheet" href="Ikeverse_org/css/cosmic-weave.css">
 
-  <script src="Ikeverse_org/js/starwars.js" defer></script>
-  <script src="Ikeverse_org/js/site.js"></script>
+  <style>
+    /* ── Index-page overrides & additions ── */
+    :root {
+      --bg:      #030a18;
+      --cyan:    rgba(0,247,255,.9);
+      --gold:    rgba(255,215,0,.88);
+      --purple:  rgba(157,80,255,.85);
+      --text:    rgba(255,255,255,.88);
+      --text2:   rgba(255,255,255,.55);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+    body.loading .ik-loader { display: flex; }
+    body.loaded  .ik-loader { opacity: 0; pointer-events: none; transition: opacity .5s .3s; }
+
+    /* ── LOADER (matches cosmic-weave.html exactly) ── */
+    .ik-loader {
+      position: fixed; inset: 0; z-index: 99999;
+      background: var(--bg);
+      display: none;
+      flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 24px;
+    }
+    .ik-loader-rings { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; }
+    .ik-loader-ring {
+      position: absolute; inset: 0; border-radius: 50%;
+      border: 2px solid transparent;
+    }
+    .ik-loader-ring--1 { border-top-color: rgba(0,247,255,.85); animation: spin 1.4s linear infinite; }
+    .ik-loader-ring--2 { inset: 12px; border-top-color: rgba(157,80,255,.7); animation: spinR 2s linear infinite; }
+    .ik-loader-ring--3 { inset: 24px; border-top-color: rgba(255,215,0,.6); animation: spin 1.8s linear infinite; }
+    @keyframes spin  { to { transform: rotate(360deg); } }
+    @keyframes spinR { to { transform: rotate(-360deg); } }
+    .ik-loader-core {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .ik-loader-logo-img { width: 100%; height: 100%; object-fit: contain; }
+    .ik-loader-text { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .ik-loader-title {
+      font-family: 'Orbitron', monospace; font-size: .9rem; font-weight: 700;
+      letter-spacing: .2em; color: var(--cyan);
+    }
+    .ik-loader-sub { font-size: .75rem; color: rgba(0,247,255,.45); letter-spacing: .08em; }
+
+    /* ── NAV (matches cosmic-weave.html exactly) ── */
+    .ik-nav {
+      position: sticky; top: 0; z-index: 8990;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; height: 56px;
+      background: rgba(3,7,20,.92);
+      border-bottom: 1px solid rgba(0,247,255,.1);
+      backdrop-filter: blur(12px);
+    }
+    .ik-brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: inherit; flex-shrink: 0;
+    }
+    .ik-brand-icon {
+      width: 32px; height: 32px; position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ik-brand-img { width: 32px; height: 32px; object-fit: contain; }
+    .ik-brand-name {
+      font-family: 'Orbitron', monospace; font-size: .82rem; font-weight: 700;
+      letter-spacing: .14em; color: rgba(0,247,255,.9);
+    }
+    .ik-brand-badge {
+      font-size: .58rem; padding: 2px 6px; border-radius: 4px;
+      background: rgba(157,80,255,.15); border: 1px solid rgba(157,80,255,.3);
+      color: rgba(157,80,255,.85); letter-spacing: .06em;
+    }
+    .ik-links {
+      display: flex; align-items: center; gap: 2px; list-style: none;
+    }
+    .ik-link {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 12px; border-radius: 8px;
+      text-decoration: none; font-size: .82rem; color: rgba(255,255,255,.6);
+      transition: all .15s;
+    }
+    .ik-link:hover, .ik-link--active { color: rgba(0,247,255,.9); background: rgba(0,247,255,.07); }
+    .ik-link--cta {
+      background: rgba(0,247,255,.1); border: 1px solid rgba(0,247,255,.25);
+      color: rgba(0,247,255,.85);
+    }
+    .ik-link--cta:hover { background: rgba(0,247,255,.18); }
+    .ik-link--admin {
+      background: rgba(255,100,0,.08); border: 1px solid rgba(255,100,0,.25);
+      color: rgba(255,160,60,.85);
+    }
+    .ik-link--admin:hover { background: rgba(255,100,0,.15); color: rgba(255,160,60,1); }
+    .ik-icon { font-size: .8rem; }
+    .ik-burger {
+      display: none; flex-direction: column; gap: 5px;
+      width: 36px; height: 36px; align-items: center; justify-content: center;
+      background: transparent; border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px; cursor: pointer; padding: 8px;
+    }
+    .ik-burger-bar { display: block; width: 18px; height: 1.5px; background: rgba(255,255,255,.6); border-radius: 2px; transition: all .2s; }
+    .ik-burger.open .ik-burger-bar:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .ik-burger.open .ik-burger-bar:nth-child(2) { opacity: 0; }
+    .ik-burger.open .ik-burger-bar:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Drawer */
+    .ik-drawer {
+      position: fixed; top: 56px; left: 0; right: 0; z-index: 8980;
+      background: rgba(3,7,20,.97); border-bottom: 1px solid rgba(0,247,255,.1);
+      backdrop-filter: blur(12px);
+      display: none; flex-direction: column;
+      padding: 8px 0 12px;
+    }
+    .ik-drawer.open { display: flex; }
+    .ik-drawer-link {
+      padding: 12px 20px; font-size: .9rem; color: rgba(255,255,255,.7);
+      text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.04);
+      display: flex; align-items: center; gap: 10px; transition: color .15s;
+    }
+    .ik-drawer-link:hover { color: rgba(0,247,255,.9); }
+    .ik-drawer-link.admin { color: rgba(255,160,60,.8); }
+    .ik-drawer-link.admin:hover { color: rgba(255,160,60,1); }
+
+    /* ── VIDEO BACKGROUND ── */
+    .ik-video-bg {
+      position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+    }
+    .ik-video-bg video { width: 100%; height: 100%; object-fit: cover; opacity: .25; }
+    .ik-video-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(3,10,24,.7) 0%, rgba(3,10,24,.4) 40%, rgba(3,10,24,.85) 100%);
+    }
+
+    /* ── MAIN CONTENT ── */
+    main { position: relative; z-index: 2; }
+
+    /* ── HERO ── */
+    .ik-hero {
+      min-height: calc(100vh - 56px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 60px 20px 40px; text-align: center;
+    }
+    .ik-hero-eyebrow {
+      font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(0,247,255,.55); font-family: 'Orbitron', monospace;
+      margin-bottom: 16px;
+    }
+    .ik-hero-logo {
+      width: 120px; height: 120px; margin: 0 auto 24px;
+      border-radius: 50%; overflow: hidden;
+      box-shadow: 0 0 60px rgba(0,247,255,.2), 0 0 120px rgba(157,80,255,.1);
+      border: 1px solid rgba(0,247,255,.2);
+    }
+    .ik-hero-logo img { width: 100%; height: 100%; object-fit: contain; }
+    .ik-hero-title {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(2rem, 6vw, 4.5rem);
+      font-weight: 700; letter-spacing: .06em; line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff 0%, rgba(0,247,255,.9) 50%, rgba(157,80,255,.8) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .ik-hero-sub {
+      max-width: 680px; margin: 0 auto 36px;
+      font-size: 1.05rem; line-height: 1.75;
+      color: rgba(255,255,255,.65);
+    }
+    .ik-hero-stats {
+      display: flex; gap: 12px; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 40px;
+    }
+    .ik-stat {
+      padding: 10px 20px; border-radius: 10px;
+      border: 1px solid rgba(0,247,255,.18);
+      background: rgba(0,247,255,.05);
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .ik-stat__n { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 700; color: var(--cyan); }
+    .ik-stat__l { font-size: .68rem; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .08em; }
+    .ik-hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .ik-btn {
+      padding: 13px 28px; border-radius: 10px; font-size: .88rem;
+      font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex;
+      align-items: center; gap: 8px; transition: all .18s;
+      font-family: 'Exo 2', sans-serif; border: none;
+    }
+    .ik-btn--primary {
+      background: linear-gradient(135deg, rgba(0,180,255,.25), rgba(100,0,255,.2));
+      border: 1px solid rgba(0,247,255,.35); color: var(--cyan);
+    }
+    .ik-btn--primary:hover { background: rgba(0,200,255,.2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,200,255,.15); }
+    .ik-btn--ghost {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.15); color: rgba(255,255,255,.7);
+    }
+    .ik-btn--ghost:hover { background: rgba(255,255,255,.1); color: rgba(255,255,255,.9); }
+
+    /* ── FLOATING ICONS ── */
+    .ik-floating-icons {
+      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+    }
+    .ik-float {
+      position: absolute; opacity: 0;
+      animation: floatUp 12s ease-in-out infinite;
+    }
+    .ik-float img {
+      width: 68px; height: 68px; object-fit: contain;
+      /* Round the image into a circle */
+      border-radius: 50%;
+      border: 1px solid rgba(0,247,255,.22);
+      background: rgba(0,20,50,.45);
+      padding: 10px;
+      /* Multi-layered glow: cyan outer, purple mid */
+      box-shadow:
+        0 0 12px 2px rgba(0,247,255,.35),
+        0 0 28px 6px rgba(0,247,255,.15),
+        0 0 50px 12px rgba(157,80,255,.12),
+        inset 0 0 12px rgba(0,247,255,.08);
+      filter: drop-shadow(0 0 8px rgba(0,247,255,.5));
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%,100% {
+        box-shadow: 0 0 12px 2px rgba(0,247,255,.35), 0 0 28px 6px rgba(0,247,255,.15), 0 0 50px 12px rgba(157,80,255,.12), inset 0 0 12px rgba(0,247,255,.08);
+      }
+      50% {
+        box-shadow: 0 0 18px 4px rgba(0,247,255,.55), 0 0 40px 10px rgba(0,247,255,.25), 0 0 70px 18px rgba(157,80,255,.2), inset 0 0 16px rgba(0,247,255,.14);
+      }
+    }
+    /* Each icon gets a slightly different glow color & timing */
+    .ik-float:nth-child(1) { left: 8%;  top: 20%; animation-delay: 0s;  animation-duration: 14s; }
+    .ik-float:nth-child(1) img { border-color: rgba(0,247,255,.25); animation-delay: 0s; }
+    .ik-float:nth-child(2) { left: 15%; top: 60%; animation-delay: 4s;  animation-duration: 11s; }
+    .ik-float:nth-child(2) img { border-color: rgba(255,215,0,.22); box-shadow: 0 0 12px 2px rgba(255,215,0,.3), 0 0 28px 6px rgba(255,215,0,.12), 0 0 50px 12px rgba(255,150,0,.1), inset 0 0 12px rgba(255,215,0,.06); filter: drop-shadow(0 0 8px rgba(255,215,0,.4)); }
+    .ik-float:nth-child(3) { right: 10%; top: 25%; animation-delay: 2s; animation-duration: 13s; }
+    .ik-float:nth-child(3) img { border-color: rgba(157,80,255,.28); box-shadow: 0 0 12px 2px rgba(157,80,255,.4), 0 0 28px 6px rgba(157,80,255,.18), 0 0 50px 12px rgba(100,0,255,.12), inset 0 0 12px rgba(157,80,255,.08); filter: drop-shadow(0 0 8px rgba(157,80,255,.5)); }
+    .ik-float:nth-child(4) { right: 18%; top: 65%; animation-delay: 6s; animation-duration: 10s; }
+    .ik-float:nth-child(4) img { border-color: rgba(0,247,255,.22); animation-delay: 1.5s; }
+    .ik-float:nth-child(5) { left: 45%; top: 15%; animation-delay: 8s;  animation-duration: 15s; }
+    .ik-float:nth-child(5) img { border-color: rgba(255,215,0,.2); box-shadow: 0 0 12px 2px rgba(255,215,0,.28), 0 0 28px 6px rgba(255,215,0,.1), inset 0 0 12px rgba(255,215,0,.05); filter: drop-shadow(0 0 8px rgba(255,215,0,.35)); animation-delay: 2s; }
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translateY(20px) scale(.8) rotate(-5deg); }
+      15%  { opacity: .6; }
+      50%  { transform: translateY(-30px) scale(1.05) rotate(3deg); opacity: .5; }
+      85%  { opacity: .45; }
+      100% { opacity: 0; transform: translateY(-60px) scale(.88) rotate(-2deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ik-float { animation: none; opacity: .3; }
+      .ik-float img { animation: none; }
+    }
+
+    /* ── CRAWL SECTION ── */
+    .ik-crawl-section {
+      padding: 80px 20px; max-width: 900px; margin: 0 auto;
+    }
+    .ik-section-header { text-align: center; margin-bottom: 40px; }
+    .ik-section-eyebrow {
+      font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(0,247,255,.5); font-family: 'Orbitron', monospace;
+      margin-bottom: 10px;
+    }
+    .ik-section-title {
+      font-family: 'Orbitron', monospace; font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700; letter-spacing: .06em; margin-bottom: 12px;
+      color: rgba(255,255,255,.92);
+    }
+    .ik-section-sub { font-size: .9rem; color: rgba(255,255,255,.5); line-height: 1.7; }
+
+    .crawl-launcher {
+      text-align: center; margin-bottom: 24px;
+    }
+    .crawl-container {
+      position: relative; width: 100%; height: 480px;
+      border-radius: 16px; overflow: hidden;
+      background: radial-gradient(ellipse at 50% 0%, rgba(0,30,80,.9), #000 70%);
+      border: 1px solid rgba(0,247,255,.15);
+      perspective: 700px;
+    }
+    .crawl-starfield {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0,20,60,.5) 0%, #000 100%);
+    }
+    .crawl-intro {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; z-index: 5;
+      text-align: center; padding: 20px;
+      opacity: 0; transition: opacity .5s;
+      font-family: 'Orbitron', monospace;
+    }
+    .crawl-intro.visible { opacity: 1; }
+    .crawl-intro h2 {
+      font-size: 1.6rem; color: rgba(0,247,255,.9); letter-spacing: .15em;
+      margin-bottom: 10px; width: 100%; text-align: center;
+    }
+    .crawl-intro p {
+      font-size: .9rem; color: rgba(255,215,0,.6); letter-spacing: .2em;
+      width: 100%; text-align: center;
+    }
+
+    .crawl-viewport {
+      position: absolute; inset: 0; z-index: 3;
+      overflow: hidden;
+      transform-style: preserve-3d;
+    }
+    .crawl-content-wrap {
+      position: absolute; bottom: -40%; left: 10%; right: 10%;
+      transform: rotateX(22deg); transform-origin: 50% 100%;
+      opacity: 0; transition: opacity .6s;
+    }
+    /* Start from the midpoint: content begins visible at center, scrolls up */
+    .crawl-content-wrap.running { opacity: 1; animation: crawlScroll 80s linear forwards; }
+    @keyframes crawlScroll {
+      from { bottom: -40%; }
+      to   { bottom: 220%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .crawl-content-wrap.running { animation: none; bottom: 5%; }
+    }
+    .crawl-logo {
+      font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 700;
+      letter-spacing: .25em; color: rgba(255,215,0,.9);
+      text-align: center; margin-bottom: 32px;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+    }
+    .crawl-logo img { width: 56px; height: 56px; object-fit: contain; margin-bottom: 8px;
+      filter: drop-shadow(0 0 16px rgba(255,215,0,.4)); }
+    .crawl-text-block {
+      font-size: .88rem; line-height: 2; color: rgba(255,215,0,.8);
+      text-align: justify; margin-bottom: 20px;
+    }
+    .crawl-text-block .hi { color: rgba(0,247,255,.9); font-weight: 600; }
+    .crawl-divider {
+      text-align: center; font-size: 1.4rem; margin: 24px 0;
+      color: rgba(255,215,0,.5); letter-spacing: 16px;
+    }
+    .crawl-mission-title {
+      font-family: 'Orbitron', monospace; font-size: .78rem; letter-spacing: .2em;
+      color: rgba(0,247,255,.6); text-align: center; margin-bottom: 16px;
+    }
+    .crawl-mission-points { list-style: none; }
+    .crawl-mission-points li {
+      font-size: .85rem; color: rgba(255,215,0,.75); line-height: 1.9;
+      padding-left: 20px; position: relative;
+    }
+    .crawl-mission-points li::before { content: '→'; position: absolute; left: 0; color: rgba(0,247,255,.6); }
+    .crawl-end-text {
+      font-family: 'Orbitron', monospace; text-align: center;
+      font-size: .75rem; letter-spacing: .15em; color: rgba(255,215,0,.4);
+      margin-top: 40px; padding-bottom: 40px;
+    }
+    .crawl-controls-row {
+      display: flex; gap: 8px; justify-content: center; margin-top: 14px;
+    }
+    .crawl-ctrl {
+      padding: 7px 18px; border-radius: 8px; font-size: .78rem; cursor: pointer;
+      border: 1px solid rgba(0,247,255,.25); background: rgba(0,247,255,.08);
+      color: rgba(0,247,255,.8); font-family: 'Exo 2', sans-serif;
+      display: none; align-items: center; gap: 6px; transition: all .15s;
+    }
+    .crawl-ctrl:hover { background: rgba(0,247,255,.18); }
+    .crawl-ctrl.show { display: inline-flex; }
+
+    /* ── CULTURE NODES ── */
+    .ik-nodes-section { padding: 60px 20px; }
+    .ik-nodes-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    @media (max-width: 900px) { .ik-nodes-grid { grid-template-columns: 1fr; } }
+
+    .ik-node {
+      background: rgba(6,14,36,.85); border: 1px solid rgba(0,247,255,.12);
+      border-radius: 14px; overflow: hidden; transition: border-color .2s, transform .2s;
+    }
+    .ik-node:hover { border-color: rgba(0,247,255,.3); transform: translateY(-3px); }
+    .ik-node-head {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px; cursor: pointer;
+    }
+    .ik-node-sym { font-size: 2rem; flex-shrink: 0; }
+    .ik-node-name { font-family: 'Orbitron', monospace; font-size: .85rem; font-weight: 700; color: rgba(0,247,255,.9); }
+    .ik-node-sub { font-size: .72rem; color: rgba(255,255,255,.4); margin-top: 2px; }
+    .ik-node-chevron { margin-left: auto; font-size: .75rem; color: rgba(0,247,255,.5); transition: transform .2s; }
+    .ik-node.expanded .ik-node-chevron { transform: rotate(180deg); }
+    .ik-node-desc { padding: 0 16px 14px; font-size: .83rem; line-height: 1.65; color: rgba(255,255,255,.6); }
+    .ik-node-bridges {
+      display: none; border-top: 1px solid rgba(0,247,255,.08); padding: 14px 16px;
+    }
+    .ik-node.expanded .ik-node-bridges { display: block; }
+    .ik-bridge {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      gap: 8px; align-items: center; margin-bottom: 8px;
+    }
+    .ik-bridge:last-child { margin-bottom: 0; }
+    .ik-bridge-a { font-size: .76rem; color: rgba(255,215,0,.75); text-align: right; }
+    .ik-bridge-arrow { font-size: .72rem; color: rgba(0,247,255,.5); text-align: center; }
+    .ik-bridge-m { font-size: .76rem; color: rgba(157,80,255,.8); }
+
+    /* ── CONNECTIONS BANNER ── */
+    .ik-banner {
+      background: rgba(0,30,80,.4); border-top: 1px solid rgba(0,247,255,.1);
+      border-bottom: 1px solid rgba(0,247,255,.1);
+      padding: 60px 20px;
+    }
+    .ik-banner-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+    .ik-banner-title {
+      font-family: 'Orbitron', monospace; font-size: clamp(1.2rem, 3vw, 1.8rem);
+      margin-bottom: 12px; color: rgba(255,255,255,.9);
+    }
+    .ik-banner-sub { font-size: .9rem; color: rgba(255,255,255,.5); line-height: 1.7; max-width: 700px; margin: 0 auto 36px; }
+    .ik-bridge-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    }
+    @media (max-width: 768px) { .ik-bridge-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .ik-bridge-grid { grid-template-columns: 1fr; } }
+    .ik-bridge-card {
+      background: rgba(0,247,255,.04); border: 1px solid rgba(0,247,255,.1);
+      border-radius: 12px; padding: 20px 14px; text-align: center;
+      transition: border-color .2s, background .2s;
+    }
+    .ik-bridge-card:hover { background: rgba(0,247,255,.08); border-color: rgba(0,247,255,.25); }
+    .ik-bridge-icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .ik-bridge-card h4 { font-family: 'Orbitron', monospace; font-size: .8rem; margin-bottom: 8px; color: rgba(0,247,255,.8); letter-spacing: .06em; }
+    .ik-bridge-card p { font-size: .78rem; color: rgba(255,255,255,.5); line-height: 1.6; }
+
+    /* ── EXPLORE CTA ── */
+    .ik-explore-cta {
+      text-align: center; padding: 80px 20px;
+    }
+    .ik-explore-cta h2 {
+      font-family: 'Orbitron', monospace; font-size: clamp(1.4rem, 3vw, 2rem);
+      margin-bottom: 14px; color: rgba(255,255,255,.9);
+    }
+    .ik-explore-cta p { color: rgba(255,255,255,.5); max-width: 560px; margin: 0 auto 28px; line-height: 1.7; }
+
+    /* ── FOOTER ── */
+    .ik-footer {
+      border-top: 1px solid rgba(0,247,255,.08);
+      padding: 40px 20px 24px;
+    }
+    .ik-footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .ik-footer-brand {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+    }
+    .ik-footer-brand img { width: 28px; height: 28px; object-fit: contain; }
+    .ik-footer-brand span { font-family: 'Orbitron', monospace; font-size: .8rem; color: rgba(0,247,255,.7); letter-spacing: .12em; }
+    .ik-footer-text { font-size: .78rem; color: rgba(255,255,255,.35); line-height: 1.6; max-width: 300px; }
+    .ik-footer-links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ik-footer-link {
+      padding: 6px 14px; border-radius: 8px; font-size: .78rem;
+      border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.5);
+      text-decoration: none; transition: all .15s;
+    }
+    .ik-footer-link:hover { border-color: rgba(0,247,255,.3); color: rgba(0,247,255,.8); }
+    .ik-footer-copy { font-size: .72rem; color: rgba(255,255,255,.2); margin-top: 8px; }
+
+    @media (max-width: 768px) {
+      .ik-links { display: none !important; }
+      .ik-burger { display: flex !important; }
+      .ik-float img { width: 48px; height: 48px; padding: 8px; }
+    }
+  </style>
 </head>
-<body class="loading" data-mode="quantum">
-  <!-- Preloader -->
-  <div class="preloader">
-    <div class="quantum-spinner"></div>
-    <p>Initializing Knowledge Matrix...</p>
-  </div>
+<body class="loading">
 
-  <!-- Video Background -->
-  <div class="video-background">
-    <video autoplay muted loop id="starfield-video">
-      <source src="Ikeverse_org/assets/images/starfield.mp4" type="video/mp4">
-    </video>
-    <div class="video-overlay"></div>
+<!-- ── LOADER ── -->
+<div id="ik-loader" class="ik-loader" role="status" aria-live="polite">
+  <div class="ik-loader-rings">
+    <div class="ik-loader-ring ik-loader-ring--1"></div>
+    <div class="ik-loader-ring ik-loader-ring--2"></div>
+    <div class="ik-loader-ring ik-loader-ring--3"></div>
+    <div class="ik-loader-core">
+      <img src="Ikeverse_org/assets/images/thelivingknowledge.png" class="ik-loader-logo-img"
+           alt="Ikeverse" onerror="this.style.display='none'">
+    </div>
   </div>
+  <div class="ik-loader-text">
+    <span class="ik-loader-title">IKEVERSE</span>
+    <span class="ik-loader-sub" id="ik-loader-sub">Loading knowledge matrix…</span>
+  </div>
+</div>
 
-  <!-- Navigation -->
-  <nav class="quantum-nav">
-    <div class="nav-portal">
-      <div class="portal-ring outer"></div>
-      <div class="portal-ring middle"></div>
-      <div class="portal-ring inner"></div>
-      <div class="portal-center">
-        <span class="logo-icon">⚛</span>
+<!-- ── VIDEO BACKGROUND ── -->
+<div class="ik-video-bg">
+  <video autoplay muted loop playsinline>
+    <source src="Ikeverse_org/assets/images/cosmic.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- ── NAV ── -->
+<nav class="ik-nav" id="ik-nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="ik-brand" aria-label="Ikeverse home">
+    <span class="ik-brand-icon">
+      <img src="Ikeverse_org/assets/images/KMicon.png" alt="" class="ik-brand-img" onerror="this.style.display='none'">
+    </span>
+    <span class="ik-brand-name">IKEVERSE</span>
+    <span class="ik-brand-badge">Beta</span>
+  </a>
+
+  <ul class="ik-links" role="list">
+    <li><a href="index.html"        class="ik-link ik-link--active"><i class="fas fa-home ik-icon"></i><span>Home</span></a></li>
+    <li><a href="Ikeverse_org/cosmic-weave.html" class="ik-link"><i class="fas fa-atom ik-icon"></i><span>Cosmic Weave</span></a></li>
+    <li><a href="Ikeverse_org/roadmap.html"      class="ik-link"><i class="fas fa-map ik-icon"></i><span>Roadmap</span></a></li>
+    <li><a href="Ikeverse_org/whitepaper.html"   class="ik-link"><i class="fas fa-scroll ik-icon"></i><span>White Paper</span></a></li>
+    <li><a href="https://pikoverse.xyz/" class="ik-link" target="_blank" rel="noopener"><i class="fas fa-globe ik-icon"></i><span>Pikoverse</span></a></li>
+    <li><a href="Ikeverse_org/admin.html"        class="ik-link ik-link--admin"><i class="fas fa-shield-halved ik-icon"></i><span>Admin</span></a></li>
+  </ul>
+
+  <button class="ik-burger" id="ik-burger" type="button" aria-label="Open menu" aria-expanded="false">
+    <span class="ik-burger-bar"></span>
+    <span class="ik-burger-bar"></span>
+    <span class="ik-burger-bar"></span>
+  </button>
+</nav>
+
+<!-- Drawer -->
+<div class="ik-drawer" id="ik-drawer" aria-hidden="true">
+  <a href="index.html"        class="ik-drawer-link"><i class="fas fa-home"></i> Home</a>
+  <a href="Ikeverse_org/cosmic-weave.html" class="ik-drawer-link"><i class="fas fa-atom"></i> Cosmic Weave</a>
+  <a href="Ikeverse_org/roadmap.html"      class="ik-drawer-link"><i class="fas fa-map"></i> Roadmap</a>
+  <a href="Ikeverse_org/whitepaper.html"   class="ik-drawer-link"><i class="fas fa-scroll"></i> White Paper</a>
+  <a href="https://pikoverse.xyz/" class="ik-drawer-link" target="_blank" rel="noopener"><i class="fas fa-globe"></i> Pikoverse</a>
+  <a href="Ikeverse_org/admin.html"        class="ik-drawer-link admin"><i class="fas fa-shield-halved"></i> Admin</a>
+</div>
+
+<!-- ── MAIN ── -->
+<main>
+
+  <!-- HERO -->
+  <section class="ik-hero" id="top">
+    <!-- Floating asset icons -->
+    <div class="ik-floating-icons" aria-hidden="true">
+      <div class="ik-float">
+        <img src="Ikeverse_org/assets/images/KMicon.png" alt=""
+             style="border-radius:50%;background:rgba(0,20,50,.45);padding:10px;box-shadow:0 0 14px 3px rgba(0,247,255,.4),0 0 32px 8px rgba(0,247,255,.16),0 0 55px 14px rgba(157,80,255,.12)">
+      </div>
+      <div class="ik-float">
+        <img src="Ikeverse_org/assets/images/wisdomnet.png" alt="" onerror="this.style.display='none'"
+             style="border-radius:50%;background:rgba(30,15,0,.45);padding:10px;box-shadow:0 0 14px 3px rgba(255,215,0,.38),0 0 32px 8px rgba(255,215,0,.14),0 0 55px 14px rgba(255,120,0,.1)">
+      </div>
+      <div class="ik-float">
+        <img src="Ikeverse_org/assets/images/thelivingknowledge.png" alt=""
+             style="border-radius:50%;background:rgba(20,0,40,.45);padding:10px;box-shadow:0 0 14px 3px rgba(157,80,255,.45),0 0 32px 8px rgba(157,80,255,.18),0 0 55px 14px rgba(100,0,255,.12)">
+      </div>
+      <div class="ik-float">
+        <img src="Ikeverse_org/assets/images/KMicon.png" alt=""
+             style="border-radius:50%;background:rgba(0,20,50,.45);padding:10px;box-shadow:0 0 14px 3px rgba(0,247,255,.35),0 0 32px 8px rgba(0,247,255,.14),0 0 55px 14px rgba(0,180,255,.1)">
+      </div>
+      <div class="ik-float">
+        <img src="Ikeverse_org/assets/images/wisdomnet.png" alt="" onerror="this.style.display='none'"
+             style="border-radius:50%;background:rgba(30,15,0,.45);padding:10px;box-shadow:0 0 14px 3px rgba(255,215,0,.32),0 0 32px 8px rgba(255,215,0,.12),0 0 55px 14px rgba(255,120,0,.08)">
       </div>
     </div>
 
-    <div class="nav-links-container">
-      <ul class="nav-links">
-        <li class="nav-item">
-          <a href="/index.html" class="nav-link active">
-            <span class="link-icon"><i class="fas fa-home"></i></span>
-            <span class="link-text">Home</span>
-            <span class="link-pulse"></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="https://pikoverse.xyz/" class="nav-link">
-            <span class="link-icon"><i class="fas fa-globe"></i></span>
-            <span class="link-text">Pikoverse</span>
-            <span class="link-pulse"></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="Ikeverse_org/cosmic-weave.html" class="nav-link">
-            <span class="link-icon"><i class="fas fa-atom"></i></span>
-            <span class="link-text">Cosmic Weave</span>
-            <span class="link-pulse"></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="Ikeverse_org/roadmap.html" class="nav-link">
-            <span class="link-icon"><i class="fas fa-timeline"></i></span>
-            <span class="link-text">Timeline</span>
-            <span class="link-pulse"></span>
-          </a>
-        </li>
-      </ul>
-      <div class="nav-controls">
-        <div class="nav-mode-toggle">
-          <span class="mode-option active" data-mode="quantum">Q</span>
-          <span class="mode-option" data-mode="ancestral">A</span>
-        </div>
-      </div>
+    <p class="ik-hero-eyebrow">Ka Ulana ʻIke — The Weaving of Knowledge</p>
+
+    <div class="ik-hero-logo">
+      <img src="Ikeverse_org/assets/images/thelivingknowledge.png" alt="Ikeverse — The Living Knowledge">
     </div>
 
-    <!-- Mobile hamburger -->
-    <button class="nav-mobile-toggle" id="ikeNavToggle" aria-label="Open menu" aria-expanded="false">
-      <i class="fas fa-bars"></i>
-    </button>
+    <h1 class="ik-hero-title">THE LIVING<br>KNOWLEDGE GLOBE</h1>
 
-    <div class="nav-scanline"></div>
-    <div class="nav-hologram"></div>
-  </nav>
+    <p class="ik-hero-sub">
+      55 civilizational traditions. 113 living connections. 65 named stars.
+      An interactive 3D knowledge graph where ancient epistemologies and
+      emerging understanding converge into one living field.
+    </p>
 
-  <!-- Mobile drawer -->
-  <div class="nav-mobile-drawer" id="ikeNavDrawer" aria-hidden="true">
-    <a href="/index.html" class="nav-drawer-link">
-      <i class="fas fa-home"></i> Home
-    </a>
-    <a href="https://pikoverse.xyz/" class="nav-drawer-link">
-      <i class="fas fa-globe"></i> Pikoverse Hub
-    </a>
-    <a href="Ikeverse_org/cosmic-weave.html" class="nav-drawer-link">
-      <i class="fas fa-atom"></i> Cosmic Weave
-    </a>
-    <a href="Ikeverse_org/roadmap.html" class="nav-drawer-link">
-      <i class="fas fa-timeline"></i> Timeline
-    </a>
-  </div>
+    <div class="ik-hero-stats">
+      <div class="ik-stat"><span class="ik-stat__n">55</span><span class="ik-stat__l">Cultures</span></div>
+      <div class="ik-stat"><span class="ik-stat__n">113</span><span class="ik-stat__l">Connections</span></div>
+      <div class="ik-stat"><span class="ik-stat__n">65</span><span class="ik-stat__l">Named Stars</span></div>
+      <div class="ik-stat"><span class="ik-stat__n">6</span><span class="ik-stat__l">Regions</span></div>
+    </div>
 
-  <!-- Main Content -->
-  <main class="quantum-grid">
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="hero-content" data-animate="fade-up">
-        <h1 class="hero-title">
-          <span class="title-line">WEAVING THE</span>
-          <span class="title-line">QUANTUM-ANCESTRAL</span>
-          <span class="title-line">KNOWLEDGE MATRIX</span>
-        </h1>
-        <p class="hero-slogan">Decoding the sacred algorithms of our ancestors through quantum visualization</p>
-        <button class="quantum-btn pulse" id="enterMatrix">
-          <span class="btn-text">ENTER THE KNOWLEDGE FIELD</span>
-          <span class="btn-glow"></span>
-        </button>
+    <div class="ik-hero-ctas">
+      <a href="Ikeverse_org/cosmic-weave.html" class="ik-btn ik-btn--primary">
+        <i class="fas fa-atom"></i> Enter the Cosmic Weave
+      </a>
+      <a href="#crawl" class="ik-btn ik-btn--ghost" id="enterMatrix">
+        <i class="fas fa-play"></i> Begin Knowledge Flow
+      </a>
+    </div>
+  </section>
+
+  <!-- KNOWLEDGE CRAWL -->
+  <section class="ik-crawl-section" id="crawl">
+    <div class="ik-section-header">
+      <p class="ik-section-eyebrow">The Living Knowledge Matrix</p>
+      <h2 class="ik-section-title">THE IKEVERSE TRANSMISSION</h2>
+      <p class="ik-section-sub">A scrolling introduction to our mission — connecting ancestral wisdom to modern understanding</p>
+    </div>
+
+    <div class="crawl-launcher">
+      <button class="ik-btn ik-btn--primary" id="startCrawl">
+        <i class="fas fa-play"></i> Begin Knowledge Flow
+      </button>
+    </div>
+
+    <div class="crawl-container" id="crawlContainer">
+      <div class="crawl-starfield" id="crawlStarfield"></div>
+
+      <div class="crawl-intro" id="crawlIntro">
+        <h2>A LONG TIME AGO…</h2>
+        <p>In an Ancestral Memory…</p>
       </div>
-      <div class="hero-visual">
-        <div class="floating-glyphs">
-          <span>𓃭</span>
-          <span>⚛</span>
-          <span>𓃗</span>
-        </div>
-      </div>
-    </section>
 
-    <!-- Knowledge Galaxy Section -->
-    <section class="galaxy-section" id="galaxy">
-      <div class="section-header">
-        <h2>THE LIVING KNOWLEDGE MATRIX</h2>
-        <p class="section-subtitle">Interactive 3D visualization connecting ancient wisdom systems with modern science</p>
-        <div class="section-decoration">
-          <div class="deco-line"></div>
-          <div class="deco-glyph">𓃭</div>
-          <div class="deco-line"></div>
-        </div>
-      </div>
-      
-      <div class="galaxy-container">
-        <button class="crawl-play-btn" id="startCrawl">
-          <i class="fas fa-play"></i> BEGIN KNOWLEDGE FLOW
-        </button>
-        <div class="crawl-intro">
-          <div class="intro-content">
-            <h2>A LONG TIME AGO...</h2>
-            <p>In an Ancestral Memory...</p>
+      <div class="crawl-viewport">
+        <div class="crawl-content-wrap" id="crawlContent">
+
+          <div class="crawl-logo">
+            <img src="Ikeverse_org/assets/images/thelivingknowledge.png" alt="Ikeverse" onerror="this.style.display='none'">
+            THE IKEVERSE
+            <span style="font-family:'Exo 2';font-size:.7rem;letter-spacing:.12em;color:rgba(255,215,0,.5);">LIVING KNOWLEDGE GLOBE</span>
           </div>
-        </div>
-        <div class="starwars-crawl" id="ikeverseCrawl">
-          <div class="starwars-bg"></div>
-          <div class="starwars-crawl-content">
-            <div class="crawl-title">THE IKEVERSE</div>
-            <div class="crawl-text">
-              <p>Across millennia, our ancestors encoded <span class="highlight">profound Knowledge</span> into sacred chants that mapped celestial movements, geometric symbols revealing universal patterns, temple architectures aligned with cosmic energies, and oral traditions preserving advanced understanding through mnemonic technologies.</p>
-              <div class="cultural-divider">
-                <span class="hieroglyph">𓃭</span>
-                <span class="quantum-symbol">⚛</span>
-                <span class="hieroglyph">𓃗</span>
-              </div>
-              <p>The <span class="highlight sacred-term">Kumulipo</span> creation chant of Hawaii contains layered genealogical data that modern researchers recognize as a sophisticated taxonomy of ecological relationships. The hymns of <span class="highlight sacred-term">Kemet</span> describe neuroanatomy and light perception in terms now being validated by quantum biology.</p>
-              <p>This Platform serves as a sanctuary for reconnection, where <span class="highlight">quantum theory</span> converses with the Maya concept of cosmic entanglement, where <span class="highlight">blockchain</span> manifests the African principle of Sankofa, and where <span class="highlight">cryptography</span> meets the symbolic encoding of Dogon astronomical knowledge.</p>
-            </div>
-            <div class="crawl-mission">
-              <p>To awaken <span class="highlight">collective memory</span> by bridging the precision of ancient epistemologies with the potential of modern innovation.</p>
-            </div>
+
+          <div class="crawl-text-block">
+            Across millennia, our ancestors encoded <span class="hi">profound Knowledge</span>
+            into sacred chants mapping celestial movements, geometric symbols revealing universal patterns,
+            temple architectures aligned with cosmic energies, and oral traditions preserving advanced
+            understanding through mnemonic technologies.
           </div>
-        </div>
-        <div id="galaxy-viewport" class="stars-background"></div>
-      </div>
-    </section>
 
-    <!-- Cultural Nodes -->
-    <section class="nodes-section">
-      <div class="node-card" data-culture="kemet" data-animate="fade-up">
-        <div class="node-glow"></div>
-        <h3>KEMET</h3>
-        <p>Sacred geometry encoding quantum spin ratios — the ancient science of light, consciousness, and divine proportion.</p>
-        <div class="node-connections">
-          <span>↔ Fractal Algorithms</span>
-          <span>↔ Crystallography</span>
-        </div>
-      </div>
-      <div class="node-card" data-culture="olmec" data-animate="fade-up">
-        <div class="node-glow"></div>
-        <h3>OLMEC</h3>
-        <p>Serpent wisdom and fluid dynamics — the original knowledge keepers of the Americas and their cosmic calendrics.</p>
-        <div class="node-connections">
-          <span>↔ Topology</span>
-          <span>↔ Astrophysics</span>
-        </div>
-      </div>
-      <div class="node-card" data-culture="kumulipo" data-animate="fade-up">
-        <div class="node-glow"></div>
-        <h3>KUMULIPO</h3>
-        <p>The Hawaiian creation chant — chanted quantum entanglement mapping the genealogy of all life across dimensions.</p>
-        <div class="node-connections">
-          <span>↔ String Theory</span>
-          <span>↔ Holography</span>
-        </div>
-      </div>
-    </section>
-  </main>
+          <div class="crawl-divider">𓃭 · ⚛ · 🌊</div>
 
-  <!-- Footer -->
-  <footer class="quantum-footer">
-    <div class="footer-grid">
-      <div class="footer-about">
-        <h4>IKEVERSE</h4>
-        <p>Decolonizing knowledge through quantum-indigenous synthesis — built from Hawaiʻi with respect and future vision.</p>
-      </div>
-      <div class="footer-links">
-        <a href="#" class="social-link" data-tooltip="Join Our DAO">𓃭</a>
-        <a href="#" class="social-link" data-tooltip="Research Portal">𓃚</a>
-        <a href="#" class="social-link" data-tooltip="Elder Council">𓃗</a>
+          <div class="crawl-text-block">
+            The <span class="hi">Kumulipo</span> creation chant of Hawaiʻi contains layered genealogical data
+            that modern researchers recognize as a sophisticated taxonomy of ecological relationships.
+            The <span class="hi">Great Law of Peace</span> of the Haudenosaunee encoded seven-generation
+            governance thinking that influenced modern democratic constitutions.
+            From Aboriginal <span class="hi">songlines functioning as geospatial algorithms</span>
+            to Yoruba Ifá divination anticipating binary code — these traditions reveal a unified
+            understanding of reality where consciousness, mathematics, and nature interweave.
+          </div>
+
+          <div class="crawl-text-block">
+            The Ikeverse is a <span class="hi">living knowledge graph</span> — 55 civilizational traditions
+            mapped across time and region, connected by 113 historically grounded links,
+            navigable through an interactive 3D globe. Each node is a culture. Each arc is a real
+            historical connection. The star map shows 65 named stars with Hawaiian moʻolelo and
+            8 cultural naming traditions from Arabic to Aboriginal Australian.
+          </div>
+
+          <div class="crawl-divider">🌺 · 𓂀 · 🦅</div>
+
+          <p class="crawl-mission-title">— OUR MISSION —</p>
+          <ul class="crawl-mission-points">
+            <li>Preserve endangered wisdom traditions through accessible digital documentation</li>
+            <li>Map connections between ancient knowledge systems across civilizations</li>
+            <li>Build tools for pattern recognition across millennia of human inquiry</li>
+            <li>Honour the living communities who carry these traditions forward today</li>
+          </ul>
+
+          <div class="crawl-divider" style="margin-top:32px;">· · ·</div>
+          <div class="crawl-end-text">
+            <p>I KA WĀ MA MUA · KA WĀ MA HOPE</p>
+            <p style="font-size:.65rem;margin-top:6px;letter-spacing:.08em;color:rgba(255,215,0,.3);">The future is in the past — Hawaiian proverb</p>
+          </div>
+
+        </div>
       </div>
     </div>
-    <div class="footer-pulse"></div>
-  </footer>
 
-  <!-- Three.js -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
-  <script>
-    function loadCSS2DRenderer() {
-      return new Promise((resolve) => {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/renderers/CSS2DRenderer.js';
-        script.onload = function() {
-          if (typeof CSS2DRenderer !== 'undefined') { window.CSS2DRenderer = CSS2DRenderer; }
-          else if (typeof THREE !== 'undefined' && THREE.CSS2DRenderer) { window.CSS2DRenderer = THREE.CSS2DRenderer; }
-          else {
-            window.CSS2DRenderer = function() {
-              this.domElement = document.createElement('div');
-              this.setSize = function() {};
-              this.render = function() {};
-            };
-          }
-          resolve();
-        };
-        script.onerror = function() {
-          window.CSS2DRenderer = function() {
-            this.domElement = document.createElement('div');
-            this.setSize = function() {};
-            this.render = function() {};
-          };
-          resolve();
-        };
-        document.head.appendChild(script);
-      });
-    }
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <div class="crawl-controls-row">
+      <button class="crawl-ctrl" id="crawlPause"><i class="fas fa-pause"></i> Pause</button>
+      <button class="crawl-ctrl" id="crawlReplay"><i class="fas fa-rotate-right"></i> Replay</button>
+    </div>
+  </section>
 
-  <script>
-    let loadingFailed = false;
+  <!-- CULTURE NODES -->
+  <section class="ik-nodes-section">
+    <div style="max-width:1100px;margin:0 auto 32px;text-align:center;">
+      <p class="ik-section-eyebrow">Featured Traditions</p>
+      <h2 class="ik-section-title">KNOWLEDGE NODES</h2>
+    </div>
 
-    /* ── Mobile nav toggle ── */
-    (function() {
-      var toggle = document.getElementById('ikeNavToggle');
-      var drawer = document.getElementById('ikeNavDrawer');
-      if (!toggle || !drawer) return;
+    <div class="ik-nodes-grid">
 
-      function openDrawer() {
-        drawer.classList.add('is-open');
-        drawer.setAttribute('aria-hidden', 'false');
-        toggle.setAttribute('aria-expanded', 'true');
-        toggle.querySelector('i').className = 'fas fa-times';
-      }
-      function closeDrawer() {
-        drawer.classList.remove('is-open');
-        drawer.setAttribute('aria-hidden', 'true');
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.querySelector('i').className = 'fas fa-bars';
-      }
+      <!-- KEMET -->
+      <div class="ik-node" data-id="kemet">
+        <div class="ik-node-head" role="button" tabindex="0" aria-expanded="false">
+          <span class="ik-node-sym">𓂀</span>
+          <div>
+            <div class="ik-node-name">KEMET</div>
+            <div class="ik-node-sub">Ancient Egypt — The Original Science</div>
+          </div>
+          <i class="fas fa-chevron-down ik-node-chevron"></i>
+        </div>
+        <p class="ik-node-desc">Kemetic civilization encoded sacred mathematics and vibrational science into architecture, ritual, and cosmology. The 42 Principles of Ma'at mirror ethics decision frameworks; their geometry mirrors fractal mathematics.</p>
+        <div class="ik-node-bridges">
+          <div class="ik-bridge"><span class="ik-bridge-a">Sacred Geometry</span><span class="ik-bridge-arrow">↔</span><span class="ik-bridge-m">Fractal Algorithms</span></div>
+          <div class="ik-bridge"><span class="ik-bridge-a">42 Principles of Ma'at</span><span class="ik-bridge-arrow">↔</span><span class="ik-bridge-m">Ethical AI Frameworks</span></div>
+          <div class="ik-bridge"><span class="ik-bridge-a">Kemetic Astronomy</span><span class="ik-bridge-arrow">↔</span><span class="ik-bridge-m">Observational Science</span></div>
+          <div class="ik-bridge"><span class="ik-bridge-a">Sound Healing</span><span class="ik-bridge-arrow">↔</span><span class="ik-bridge-m">Cymatics & Vibrational Medicine</span></div>
+          <a href="Ikeverse_org/cosmic-weave.html?c=kemet" class="ik-btn ik-btn--ghost" style="margin-top:12px;font-size:.76rem;padding:7px 14px;">
+            <i class="fas fa-atom"></i> Explore in Globe
+          </a>
+        </div>
+      </div>
 
-      toggle.addEventListener('click', function() {
-        drawer.classList.contains('is-open') ? closeDrawer() : openDrawer();
-      });
-      drawer.querySelectorAll('.nav-drawer-link').forEach(function(a) {
-        a.addEventListener('click', closeDrawer);
-      });
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeDrawer();
-      });
-    })();
+      <!-- KANAKA MAOLI -->
+      <div class="ik-node" data-id="kanaka_kumulipo">
+        <div class="ik-node-head" role="button" tabindex="0" aria-expanded="false">
+          <span class="ik-node-sym">🌺</span>
+          <div>
+            <div class="ik-node-name">KANAKA MAOLI</div>
+            <div class="ik-node-sub">Hawaiʻi — The Chanted Genesis</div>
+          </div>
+          <i class="fas fa-chevron-down ik-node-chevron"></i>
+        </div>
+        <p class="ik-node-desc">The Kumulipo — 2,102 lines of chanted cosmology — encodes an evolutionary taxonomy of Pacific life. The Ahupuaʻa watershed governance system is studied today as a model of integrated land-sea management.</p>
+        <div class="ik-node-bridges">
+          <div class="ik-bridge"><span class="ik-bridge-a">Star Wayfinding</span><span class="ik-bridge-arrow">↔</span><span class="ik-bridge-m">Multi-variable Sensing AI</span></div>
+          <div class="ik-bridge"><span class="ik-bridge-a">Ahupuaʻa System</span><span class="ik-bridge-arrow">↔</span><span class="ik-bridge-m">Smart Watershed Ecology</span></div>
+          <div class="ik-bridge"><span class="ik-bridge-a">Kumulipo Epochs</span><span class="ik-bridge-arrow">↔</span><span class="ik-bridge-m">Cosmological Mapping</span></div>
+          <div class="ik-bridge"><span class="ik-bridge-a">Oli (Chant)</span><span class="ik-bridge-arrow">↔</span><span class="ik-bridge-m">Embodied Memory Technology</span></div>
+          <a href="Ikeverse_org/cosmic-weave.html?c=kanaka_kumulipo" class="ik-btn ik-btn--ghost" style="margin-top:12px;font-size:.76rem;padding:7px 14px;">
+            <i class="fas fa-atom"></i> Explore in Globe
+          </a>
+        </div>
+      </div>
 
-    document.addEventListener('DOMContentLoaded', function() {
-      // Mode toggle
-      document.querySelectorAll('.mode-option').forEach(function(option) {
-        option.addEventListener('click', function() {
-          document.querySelectorAll('.mode-option').forEach(function(o) { o.classList.remove('active'); });
-          this.classList.add('active');
-          document.body.setAttribute('data-mode', this.dataset.mode);
-          var pulse = document.createElement('div');
-          pulse.className = 'mode-pulse';
-          pulse.style.backgroundColor = this.dataset.mode === 'quantum' ? 'var(--quantum-blue)' : 'var(--ancestral-gold)';
-          document.body.appendChild(pulse);
-          setTimeout(function() { pulse.remove(); }, 1000);
-        });
-      });
+      <!-- HAUDENOSAUNEE -->
+      <div class="ik-node" data-id="haudenosaunee">
+        <div class="ik-node-head" role="button" tabindex="0" aria-expanded="false">
+          <span class="ik-node-sym">🦅</span>
+          <div>
+            <div class="ik-node-name">HAUDENOSAUNEE</div>
+            <div class="ik-node-sub">Six Nations — Great Law of Peace</div>
+          </div>
+          <i class="fas fa-chevron-down ik-node-chevron"></i>
+        </div>
+        <p class="ik-node-desc">The Haudenosaunee Confederacy's Great Law of Peace encoded seven-generation governance thinking — a constitutional model acknowledged as an influence on American democratic design. The first participatory democracy.</p>
+        <div class="ik-node-bridges">
+          <div class="ik-bridge"><span class="ik-bridge-a">Great Law of Peace</span><span class="ik-bridge-arrow">↔</span><span class="ik-bridge-m">Constitutional Democracy</span></div>
+          <div class="ik-bridge"><span class="ik-bridge-a">Seven-Generation Thinking</span><span class="ik-bridge-arrow">↔</span><span class="ik-bridge-m">Long-Term Environmental Policy</span></div>
+          <div class="ik-bridge"><span class="ik-bridge-a">Wampum Diplomacy</span><span class="ik-bridge-arrow">↔</span><span class="ik-bridge-m">Consensus-Based Governance</span></div>
+          <a href="Ikeverse_org/cosmic-weave.html?c=haudenosaunee" class="ik-btn ik-btn--ghost" style="margin-top:12px;font-size:.76rem;padding:7px 14px;">
+            <i class="fas fa-atom"></i> Explore in Globe
+          </a>
+        </div>
+      </div>
 
-      // Enter matrix scroll
-      var enterBtn = document.getElementById('enterMatrix');
-      if (enterBtn) {
-        enterBtn.addEventListener('click', function() {
-          document.getElementById('galaxy').scrollIntoView({ behavior: 'smooth' });
-        });
-      }
-    });
+    </div>
+  </section>
 
-    async function initializeApp() {
-      try {
-        await loadCSS2DRenderer();
-        if (!window.THREE) throw new Error('Three.js failed to load');
-        await loadScript('Ikeverse_org/js/galaxy.js');
-        completeLoading();
-      } catch (error) {
-        loadingFailed = true;
-        showErrorFallback(error.message);
-      }
-    }
+  <!-- CONNECTIONS BANNER -->
+  <section class="ik-banner">
+    <div class="ik-banner-inner">
+      <p class="ik-section-eyebrow">The Living Bridge</p>
+      <h2 class="ik-banner-title">Ancient Wisdom Meets Modern Understanding</h2>
+      <p class="ik-banner-sub">
+        These knowledge traditions share a core insight: reality is relational, recursive, and alive.
+        The Ikeverse maps 113 historically grounded connections across 55 civilizations
+        spanning 6 regions and 10,000+ years of human thought.
+      </p>
+      <div class="ik-bridge-grid">
+        <div class="ik-bridge-card">
+          <div class="ik-bridge-icon">🌐</div>
+          <h4>55 Cultures</h4>
+          <p>From Yaghan to Sakha, from Sumer to Samoa — every culture is a full node with story, research, and connections.</p>
+        </div>
+        <div class="ik-bridge-card">
+          <div class="ik-bridge-icon">🔗</div>
+          <h4>113 Connections</h4>
+          <p>Historically grounded links between cultures — trade routes, shared astronomy, governance parallels, diaspora networks.</p>
+        </div>
+        <div class="ik-bridge-card">
+          <div class="ik-bridge-icon">⭐</div>
+          <h4>65 Named Stars</h4>
+          <p>Real RA/Dec star positions with Hawaiian moʻolelo and 8 cultural naming traditions — Arabic to Aboriginal Australian.</p>
+        </div>
+        <div class="ik-bridge-card">
+          <div class="ik-bridge-icon">📚</div>
+          <h4>Research Access</h4>
+          <p>Every culture links to open-access papers, UNESCO resources, and primary texts — free scholarly access built in.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    function loadScript(src) {
-      return new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = src;
-        s.onload = resolve;
-        s.onerror = () => reject(new Error('Failed to load ' + src));
-        document.head.appendChild(s);
-      });
-    }
+  <!-- EXPLORE CTA -->
+  <section class="ik-explore-cta">
+    <img src="Ikeverse_org/assets/images/wisdomnet.png" alt="" style="width:80px;margin:0 auto 20px;display:block;opacity:.6;filter:drop-shadow(0 0 16px rgba(0,247,255,.3));" onerror="this.style.display='none'">
+    <h2>Ready to Explore the Weave?</h2>
+    <p>Enter the interactive 3D globe. Rotate, zoom, click any culture to read its full story, connections, and research. Activate the star map. Run the guided cultural tour.</p>
+    <div class="ik-hero-ctas">
+      <a href="Ikeverse_org/cosmic-weave.html" class="ik-btn ik-btn--primary">
+        <i class="fas fa-atom"></i> Open the Cosmic Weave
+      </a>
+      <a href="Ikeverse_org/roadmap.html" class="ik-btn ik-btn--ghost">
+        <i class="fas fa-map"></i> View the Roadmap
+      </a>
+    </div>
+  </section>
 
-    function completeLoading() {
-      setTimeout(function() {
-        document.body.classList.remove('loading');
-        document.body.classList.add('loaded');
-      }, 500);
-    }
+</main>
 
-    function showErrorFallback(msg) {
-      var div = document.createElement('div');
-      div.id = 'error-fallback';
-      div.innerHTML = '<div class="error-content"><h2>Loading Error</h2><p>' + msg + '</p><button id="reload-button">Reload</button></div>';
-      document.body.appendChild(div);
-      document.getElementById('reload-button').addEventListener('click', function() { location.reload(); });
-    }
+<!-- ── FOOTER ── -->
+<footer class="ik-footer">
+  <div class="ik-footer-inner">
+    <div>
+      <div class="ik-footer-brand">
+        <img src="Ikeverse_org/assets/images/KMicon.png" alt="" onerror="this.style.display='none'">
+        <span>IKEVERSE</span>
+      </div>
+      <p class="ik-footer-text">
+        Part of the <a href="https://pikoverse.xyz/" style="color:rgba(0,247,255,.6)">Pikoverse</a> ecosystem.
+        Built from Hawaiʻi. Honouring living knowledge traditions worldwide.
+      </p>
+      <p class="ik-footer-copy">© 2025 Ikeverse · Ka Ulana ʻIke</p>
+    </div>
+    <div class="ik-footer-links">
+      <a href="Ikeverse_org/cosmic-weave.html" class="ik-footer-link">Cosmic Weave</a>
+      <a href="Ikeverse_org/roadmap.html"      class="ik-footer-link">Roadmap</a>
+      <a href="Ikeverse_org/whitepaper.html"   class="ik-footer-link">White Paper</a>
+      <a href="Ikeverse_org/admin.html"        class="ik-footer-link">Admin</a>
+      <a href="https://pikoverse.xyz/" class="ik-footer-link" target="_blank" rel="noopener">Pikoverse ↗</a>
+    </div>
+  </div>
+</footer>
 
-    initializeApp();
+<!-- ── SCRIPTS ── -->
+<script>
+(function(){
+'use strict';
 
-    setTimeout(function() {
-      if (document.body.classList.contains('loading') && !loadingFailed) {
-        showErrorFallback('Loading is taking longer than expected');
-      }
-    }, 10000);
-  </script>
+// ── Loader sequence ──
+const LOADER_STEPS = [
+  'Loading cultures.json…',
+  'Building knowledge graph…',
+  'Initializing 3D globe…',
+  'Mapping star positions…',
+  'Ready.',
+];
+let stepIdx = 0;
+const subEl = document.getElementById('ik-loader-sub');
+const stepTimer = setInterval(() => {
+  if (stepIdx < LOADER_STEPS.length) {
+    if (subEl) subEl.textContent = LOADER_STEPS[stepIdx];
+    stepIdx++;
+  } else {
+    clearInterval(stepTimer);
+  }
+}, 400);
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.body.classList.remove('loading');
+    document.body.classList.add('loaded');
+    clearInterval(stepTimer);
+  }, 1800);
+});
+
+// ── Mobile nav ──
+const burger = document.getElementById('ik-burger');
+const drawer = document.getElementById('ik-drawer');
+if (burger && drawer) {
+  const open  = () => { drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); burger.setAttribute('aria-expanded','true'); burger.classList.add('open'); };
+  const close = () => { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); burger.setAttribute('aria-expanded','false'); burger.classList.remove('open'); };
+  burger.addEventListener('click', () => drawer.classList.contains('open') ? close() : open());
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') close(); });
+  document.addEventListener('click', e => {
+    if (!burger.contains(e.target) && !drawer.contains(e.target)) close();
+  });
+}
+
+// ── Enter matrix scroll ──
+document.getElementById('enterMatrix')?.addEventListener('click', e => {
+  e.preventDefault();
+  document.getElementById('crawl')?.scrollIntoView({ behavior: 'smooth' });
+});
+
+// ── Culture node accordion ──
+document.querySelectorAll('.ik-node-head').forEach(head => {
+  const node = head.closest('.ik-node');
+  head.addEventListener('click', () => {
+    const open = node.classList.toggle('expanded');
+    head.setAttribute('aria-expanded', String(open));
+  });
+  head.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); head.click(); }
+  });
+});
+
+// ── Star field for crawl ──
+function buildCrawlStarfield() {
+  const sf = document.getElementById('crawlStarfield');
+  if (!sf) return;
+  const count = window.matchMedia('(max-width:600px)').matches ? 80 : 220;
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.style.cssText = [
+      'position:absolute',
+      `left:${Math.random()*100}%`,
+      `top:${Math.random()*100}%`,
+      `width:${Math.random()*1.8+.4}px`,
+      `height:${Math.random()*1.8+.4}px`,
+      'border-radius:50%',
+      `background:rgba(255,255,255,${Math.random()*.5+.1})`,
+      `animation:twinkle ${Math.random()*4+2}s ease-in-out ${Math.random()*3}s infinite`,
+    ].join(';');
+    sf.appendChild(s);
+  }
+  const style = document.createElement('style');
+  style.textContent = '@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.9}}';
+  document.head.appendChild(style);
+}
+buildCrawlStarfield();
+
+// ── Crawl controller ──
+let crawlActive = false;
+const startBtn  = document.getElementById('startCrawl');
+const pauseBtn  = document.getElementById('crawlPause');
+const replayBtn = document.getElementById('crawlReplay');
+const intro     = document.getElementById('crawlIntro');
+const content   = document.getElementById('crawlContent');
+
+function showIntro() {
+  intro.classList.add('visible');
+  setTimeout(() => {
+    intro.classList.remove('visible');
+    setTimeout(startCrawlAnim, 600);
+  }, 2800);
+}
+
+function startCrawlAnim() {
+  content.classList.add('running');
+  crawlActive = true;
+  startBtn.style.display = 'none';
+  pauseBtn.classList.add('show');
+  replayBtn.classList.add('show');
+  content.addEventListener('animationend', onCrawlEnd, { once: true });
+}
+
+function onCrawlEnd() {
+  crawlActive = false;
+  pauseBtn.style.opacity = '.4';
+}
+
+startBtn?.addEventListener('click', () => {
+  startBtn.style.opacity = '0';
+  setTimeout(showIntro, 300);
+});
+
+pauseBtn?.addEventListener('click', () => {
+  const paused = content.style.animationPlayState === 'paused';
+  content.style.animationPlayState = paused ? 'running' : 'paused';
+  pauseBtn.innerHTML = paused
+    ? '<i class="fas fa-pause"></i> Pause'
+    : '<i class="fas fa-play"></i> Resume';
+});
+
+replayBtn?.addEventListener('click', () => {
+  content.classList.remove('running');
+  content.style.animationPlayState = '';
+  void content.offsetHeight; // reflow
+  startBtn.style.display = '';
+  startBtn.style.opacity = '1';
+  pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+});
+
+})();
+</script>
+
 </body>
 </html>
