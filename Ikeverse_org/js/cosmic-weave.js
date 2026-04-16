@@ -1553,8 +1553,11 @@ class CelestialStarOverlay {
     this._bgRafId=null;
     this._needsRedraw=true;
     this._selectedStar=null;
+    this._starCultureKey='hawaiian'; // current culture for star names
     // Build star info panel
     this._buildInfoPanel();
+    // Build culture toggle UI
+    this._buildCultureToggle();
     // Pre-generate 350 background stars
     this._bg=Array.from({length:350},()=>({
       x:Math.random(), y:Math.random(),
@@ -1578,6 +1581,7 @@ class CelestialStarOverlay {
   }
 
   _showStarInfo(star){
+    this._lastShownStar=star;
     const p=this._infoPanel; if(!p) return;
     this._selectedStar=star.id;
     const isHok=star.id==='Arcturus';
@@ -1613,7 +1617,17 @@ class CelestialStarOverlay {
         </div>
         ${navUse?`<div class="cw-sp-nav"><i class="fas fa-compass"></i> ${escapeHtml(navUse)}</div>`:''}
         ${moolelo?`<div class="cw-sp-section"><div class="cw-sp-label">Moʻolelo</div><div class="cw-sp-text">${escapeHtml(moolelo)}</div></div>`:''}
-        ${culturalKeys.length?`<div class="cw-sp-section"><div class="cw-sp-label">Across Traditions</div><div class="cw-sp-traditions">${culturalKeys.map(k=>`<div class="cw-sp-trad"><span class="cw-sp-trad-name">${escapeHtml(k)}</span><span class="cw-sp-trad-text">${escapeHtml(culturalNotes[k])}</span></div>`).join('')}</div></div>`:''}
+        ${culturalKeys.length?`<div class="cw-sp-section"><div class="cw-sp-label">Across Traditions</div><div class="cw-sp-traditions">
+          ${[...culturalKeys].sort((a,b)=>{
+            // Put active culture first
+            const ak=window._cwApp?.starOverlay?._starCultureKey||'hawaiian';
+            if(a===ak) return -1; if(b===ak) return 1;
+            return 0;
+          }).map(k=>`<div class="cw-sp-trad${k===(window._cwApp?.starOverlay?._starCultureKey||'hawaiian')?' cw-sp-trad--active':''}">
+            <span class="cw-sp-trad-name">${escapeHtml(k)}</span>
+            <span class="cw-sp-trad-text">${escapeHtml(culturalNotes[k])}</span>
+          </div>`).join('')}
+        </div></div>`:''}
         ${noteText?`<div class="cw-sp-note"><i class="fas fa-circle-info"></i> ${escapeHtml(noteText)}</div>`:''}
       </div>`;
     p.classList.add('cw-star-panel--open');
@@ -1624,12 +1638,73 @@ class CelestialStarOverlay {
     this._infoPanel?.classList.remove('cw-star-panel--open');
   }
 
+  _buildCultureToggle(){
+    const STAR_CULTURES=[
+      {key:'hawaiian',     label:'Hawaiʻi',    icon:'🌺'},
+      {key:'arabic',       label:'Arabic',     icon:'☪'},
+      {key:'chinese',      label:'Chinese',    icon:'龍'},
+      {key:'greek',        label:'Greek',      icon:'⚡'},
+      {key:'mesopotamian', label:'Babylonian', icon:'𒀭'},
+      {key:'polynesian',   label:'Polynesian', icon:'🌊'},
+      {key:'maya',         label:'Maya',       icon:'🔮'},
+      {key:'aboriginal_australian',label:'Aboriginal',icon:'🦘'},
+    ];
+    const wrap=document.createElement('div');
+    wrap.id='cw-star-culture-toggle';
+    /* Inline styles for guaranteed display — no CSS specificity issues */
+    Object.assign(wrap.style,{
+      position:'absolute', bottom:'18px', left:'50%', transform:'translateX(-50%)',
+      zIndex:'14500', display:'none', flexDirection:'column',
+      alignItems:'center', gap:'5px', pointerEvents:'all',
+    });
+    const pillsHtml=STAR_CULTURES.map(c=>`
+      <button class="cw-sct-pill" data-key="${c.key}" type="button" title="${c.label}"
+        style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:18px;border:1px solid transparent;background:transparent;cursor:pointer;font-size:.73rem;color:rgba(255,255,255,.55);transition:all .18s;font-family:inherit;white-space:nowrap;">
+        <span style="font-size:.9rem;line-height:1">${c.icon}</span>
+        <span class="cw-sct-text">${c.label}</span>
+      </button>`).join('');
+    wrap.innerHTML=`
+      <div style="font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,247,255,.38);font-family:'Orbitron',monospace;margin-bottom:2px;">Star names by tradition</div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px;background:rgba(3,7,20,.94);backdrop-filter:blur(18px);border:1px solid rgba(0,247,255,.2);border-radius:26px;padding:6px 10px;box-shadow:0 6px 24px rgba(0,0,0,.6),0 0 0 1px rgba(0,247,255,.06);">
+        ${pillsHtml}
+      </div>`;
+    /* Append inside globe container so it inherits its stacking context */
+    const anchor=this.container||document.getElementById('globe-viewport-3d')||document.body;
+    anchor.appendChild(wrap);
+    this._cultureToggleEl=wrap;
+    const refresh=()=>{
+      wrap.querySelectorAll('.cw-sct-pill').forEach(btn=>{
+        const on=btn.dataset.key===this._starCultureKey;
+        btn.style.background=on?'rgba(0,247,255,.14)':'transparent';
+        btn.style.borderColor=on?'rgba(0,247,255,.4)':'transparent';
+        btn.style.color=on?'rgba(0,247,255,.92)':'rgba(255,255,255,.55)';
+        btn.style.fontWeight=on?'600':'400';
+      });
+    };
+    refresh();
+    wrap.querySelectorAll('.cw-sct-pill').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        this._starCultureKey=btn.dataset.key;
+        this._needsRedraw=true;
+        refresh();
+        if(this._lastShownStar) this._showStarInfo(this._lastShownStar);
+      });
+      btn.addEventListener('mouseenter',()=>{if(btn.dataset.key!==this._starCultureKey) btn.style.background='rgba(0,247,255,.06)';});
+      btn.addEventListener('mouseleave',()=>{if(btn.dataset.key!==this._starCultureKey) btn.style.background='transparent';});
+    });
+    if(window.matchMedia?.('(max-width:600px)').matches)
+      wrap.querySelectorAll('.cw-sct-text').forEach(el=>el.style.display='none');
+  }
+
   toggle(globe){
     if(!this.svg) this._build();
     this.visible=!this.visible;
     this.svg.style.display=this.visible?'block':'none';
     this._hitLayer.style.display=this.visible?'block':'none';
-    this._hitLayer.style.pointerEvents=this.visible?'all':'none';
+    /* Keep hit layer pointer-events:none on the SVG container — individual circle
+       elements have pointer-events:all and will still receive star clicks.
+       Setting 'all' on the SVG itself blocked OrbitControls mouse drag. */
+    if(this._cultureToggleEl) this._cultureToggleEl.style.display=this.visible?'flex':'none';
     if(!this.visible){ this._closeInfo(); }
     if(this.visible) this._loop(globe);
     else if(this._rafId){ cancelAnimationFrame(this._rafId); this._rafId=null; }
@@ -1816,23 +1891,51 @@ class CelestialStarOverlay {
         this.svg.appendChild(E('circle',{cx:star.x.toFixed(1),cy:star.y.toFixed(1),r:(r*7).toFixed(1),fill:'none',stroke:'rgba(200,220,255,.10)','stroke-width':'.5','stroke-dasharray':'2 7'}));
       }
 
-      // Constellation label (only show for prominent stars)
-      const showLabel=isHok||star.mag<0.5||(star.h&&star.h.length>0&&star.mag<1.8);
+      // Constellation label — culture-aware
+      const cultureKey=this._starCultureKey||'hawaiian';
+      const rich=window._starData?.find?.(s=>s.id===star.id);
+      // Get culture name: hawaiian uses h field, others use cultural_notes
+      let cultureLabel='', cultureNote='';
+      if(cultureKey==='hawaiian'){
+        cultureLabel=star.h||'';
+        cultureNote=rich?.navigation_use||star.note||'';
+      } else {
+        const notes=rich?.cultural_notes||{};
+        const raw=notes[cultureKey]||'';
+        // Extract name from note (first phrase before —, dash, or whole text if short)
+        const dashIdx=raw.indexOf(' — ');
+        if(dashIdx>0&&dashIdx<60){
+          cultureLabel=raw.substring(0,dashIdx);
+          cultureNote=raw.substring(dashIdx+3,dashIdx+80);
+        } else {
+          cultureLabel=raw.length>0?raw.substring(0,Math.min(40,raw.indexOf('(')-1||raw.length)):star.id;
+          cultureNote='';
+        }
+      }
+      const hasName=cultureLabel.length>0;
+      const showLabel=isHok||star.mag<0.5||(hasName&&star.mag<2.0)||(!hasName&&star.h&&star.mag<1.8);
       if(showLabel){
-        const labelName=star.h||star.id;
+        const displayName=hasName?cultureLabel:(star.h||star.id);
         const ox=star.x>W*.78?-(r+5):r+6;
         const anch=star.x>W*.78?'end':'start';
-        const mainCol=isHok?'rgba(255,215,0,.95)':star.h?'rgba(0,247,255,.82)':'rgba(180,210,255,.55)';
+        const isHawaiian=cultureKey==='hawaiian';
+        const mainCol=isHok?'rgba(255,215,0,.95)':hasName?'rgba(0,247,255,.82)':'rgba(180,210,255,.55)';
         this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+3.5).toFixed(1),
-          'text-anchor':anch,fill:mainCol,'font-size':isHok?'11':star.h?'9':'8',
-          'font-family':'Orbitron,monospace','font-weight':isHok?'600':'400'},labelName));
-        if(star.h&&star.id!==star.h){
+          'text-anchor':anch,fill:mainCol,'font-size':isHok?'11':hasName?'9':'8',
+          'font-family':'Orbitron,monospace','font-weight':isHok?'600':'400'},displayName));
+        // Sub-label: show Western name when in a non-Hawaiian culture
+        if(!isHawaiian&&hasName){
+          this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+14).toFixed(1),
+            'text-anchor':anch,fill:'rgba(120,170,215,.35)','font-size':'7','font-family':'sans-serif'},star.id));
+        } else if(isHawaiian&&star.h&&star.id!==star.h){
           this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+14).toFixed(1),
             'text-anchor':anch,fill:'rgba(120,170,215,.35)','font-size':'7','font-family':'sans-serif'},star.id));
         }
-        if(isHok&&star.note){
+        // Culture note
+        if(cultureNote){
           this.svg.appendChild(E('text',{x:(star.x+ox).toFixed(1),y:(star.y+26).toFixed(1),
-            'text-anchor':anch,fill:'rgba(255,215,0,.42)','font-size':'6.5','font-family':'sans-serif','font-style':'italic'},star.note));
+            'text-anchor':anch,fill:'rgba(255,215,0,.32)','font-size':'6.5','font-family':'sans-serif','font-style':'italic'},
+            cultureNote.length>52?cultureNote.substring(0,50)+'…':cultureNote));
         }
       }
 
