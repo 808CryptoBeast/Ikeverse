@@ -175,7 +175,7 @@
       white-space: normal !important;
     }
 
-    .crawl-viewport { position: absolute; inset: 0; z-index: 3; overflow: hidden; transform-style: preserve-3d; }
+    .crawl-viewport { position: absolute; inset: 0; z-index: 3; overflow: hidden; }
 
     /* ─────────────────────────────────────────────────────
        CRAWL POSITION FIX
@@ -186,7 +186,7 @@
     ───────────────────────────────────────────────────── */
     .crawl-content-wrap {
       position: absolute;
-      bottom: -300%;        /* fully below container — nothing visible on load */
+      top: 100%;            /* top of content at container bottom — starts fully off-screen */
       left: 10%; right: 10%;
       transform: rotateX(22deg);
       transform-origin: 50% 100%;
@@ -195,10 +195,10 @@
     }
     .crawl-content-wrap.running { opacity: 1; animation: crawlScroll 90s linear forwards; }
     @keyframes crawlScroll {
-      from { bottom: -300%; }   /* same as initial — starts off-screen */
-      to   { bottom: 220%; }    /* scrolls until end text clears the top */
+      from { top: 100%; }   /* content begins just below the visible area */
+      to   { top: -300%; }  /* scrolls until everything has passed the top */
     }
-    @media (prefers-reduced-motion: reduce) { .crawl-content-wrap.running { animation: none; bottom: 5%; } }
+    @media (prefers-reduced-motion: reduce) { .crawl-content-wrap.running { animation: none; top: 10%; } }
 
     .crawl-logo { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 700; letter-spacing: .25em; color: rgba(255,215,0,.9); text-align: center; margin-bottom: 32px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
     .crawl-logo img { width: 56px; height: 56px; object-fit: contain; margin-bottom: 8px; filter: drop-shadow(0 0 16px rgba(255,215,0,.4)); border-radius: 50%; }
