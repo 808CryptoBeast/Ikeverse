@@ -1629,6 +1629,7 @@ class CelestialStarOverlay {
     this.visible=!this.visible;
     this.svg.style.display=this.visible?'block':'none';
     this._hitLayer.style.display=this.visible?'block':'none';
+    this._hitLayer.style.pointerEvents=this.visible?'all':'none';
     if(!this.visible){ this._closeInfo(); }
     if(this.visible) this._loop(globe);
     else if(this._rafId){ cancelAnimationFrame(this._rafId); this._rafId=null; }
@@ -2259,6 +2260,18 @@ void main(){
     cv.addEventListener('click',e=>this._onClickCanvas(e));
     cv.addEventListener('touchend',e=>{if(e.changedTouches.length){const t=e.changedTouches[0];this._setMouse(t.clientX,t.clientY);this._doClick();}},{passive:true});
     window.addEventListener('resize',debounce(()=>this._onResize(),120),{passive:true});
+    /* Also wire container so events fire when canvas doesn't fill perfectly */
+    if(this.container&&this.container!==cv){
+      this.container.addEventListener('mousemove',e=>{
+        // Only fire if not already handled by canvas itself
+        if(e.target===cv) return;
+        this._onMove(e);
+      });
+      this.container.addEventListener('click',e=>{
+        if(e.target===cv) return;
+        this._onClickCanvas(e);
+      });
+    }
   }
 
   _setMouse(cx,cy){
@@ -2693,154 +2706,6 @@ class D3Map {
 // ══════════════════════════════════════════════════════════
 // FORCE GRAPH CLASS
 // D3 force simulation on canvas — toggle mode from globe
-// ══════════════════════════════════════════════════════════
-class ForceGraph {
-  constructor(container) {
-    this.container=container;
-    this.canvas=null;this.ctx=null;
-    this.sim=null;this.nodes=[];this.links=[];
-    this.W=0;this.H=0;
-    this.selected=null;
-    this.dragging=null;
-    this.onSelect=null;this.onDeselect=null;
-    this._animId=null;this.time=0;
-  }
-
-  init(cultures,links){
-    this.nodes=cultures.map(c=>({...c,x:this.W/2+(Math.random()-.5)*200,y:this.H/2+(Math.random()-.5)*200,vx:0,vy:0}));
-    const nMap=new Map(this.nodes.map(n=>[n.id,n]));
-    this.links=links.map(l=>({source:nMap.get(l.source.id),target:nMap.get(l.target.id),data:l})).filter(l=>l.source&&l.target);
-    this.canvas=document.createElement('canvas');
-    this.canvas.style.cssText='width:100%;height:100%;display:block;cursor:pointer;touch-action:manipulation;';
-    this.container.appendChild(this.canvas);
-    this.ctx=this.canvas.getContext('2d');
-    this._resize();
-    this._buildSim();
-    this._bindEvents();
-    this._loop();
-  }
-
-  _resize(){
-    const dpr=window.devicePixelRatio||1,r=this.container.getBoundingClientRect();
-    this.W=r.width;this.H=r.height;
-    this.canvas.width=this.W*dpr;this.canvas.height=this.H*dpr;
-    this.ctx=this.canvas.getContext('2d');this.ctx.scale(dpr,dpr);
-    if(this.sim) this.sim.force('center',d3.forceCenter(this.W/2,this.H/2)).alpha(.3).restart();
-  }
-
-  _buildSim(){
-    /* Degree map for node sizing */
-    const deg=new Map();
-    this.links.forEach(l=>{deg.set(l.source.id,(deg.get(l.source.id)||0)+1);deg.set(l.target.id,(deg.get(l.target.id)||0)+1);});
-    this.nodes.forEach(n=>{n._deg=deg.get(n.id)||0;n._r=12+Math.min(n._deg*3,18);});
-    this.sim=d3.forceSimulation(this.nodes)
-      .force('link',d3.forceLink(this.links).id(d=>d.id).distance(d=>{
-        /* Stronger connections = shorter distance */
-        return 120;
-      }).strength(.4))
-      .force('charge',d3.forceManyBody().strength(-280))
-      .force('center',d3.forceCenter(this.W/2,this.H/2))
-      .force('collide',d3.forceCollide(d=>d._r+8))
-      .alphaDecay(.02).on('tick',()=>{});
-  }
-
-  _bindEvents(){
-    window.addEventListener('resize',debounce(()=>this._resize(),120),{passive:true});
-    this.canvas.addEventListener('click',e=>this._onClick(e));
-    this.canvas.addEventListener('mousemove',e=>this._onMove(e));
-    this.canvas.addEventListener('mousedown',e=>this._onDown(e));
-    this.canvas.addEventListener('mouseup',()=>this._onUp());
-    this.canvas.addEventListener('touchstart',e=>{if(e.touches.length===1){e.preventDefault();this._onDown(e.touches[0]);}},{passive:false});
-    this.canvas.addEventListener('touchmove',e=>{if(this.dragging){e.preventDefault();this._onMove(e.touches[0]);}},{passive:false});
-    this.canvas.addEventListener('touchend',e=>{this._onUp();if(e.changedTouches.length){this._onClick(e.changedTouches[0]);}},{passive:true});
-  }
-
-  _getPos(e){const r=this.canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
-  _hitNode(x,y){return this.nodes.find(n=>Math.hypot(x-n.x,y-n.y)<(n._r||14));}
-
-  _onDown(e){const{x,y}=this._getPos(e);const n=this._hitNode(x,y);if(n){this.dragging=n;this.sim.alphaTarget(.3).restart();n.fx=n.x;n.fy=n.y;}}
-  _onMove(e){
-    const{x,y}=this._getPos(e);
-    if(this.dragging){this.dragging.fx=x;this.dragging.fy=y;return;}
-    this.canvas.style.cursor=this._hitNode(x,y)?'pointer':'default';
-  }
-  _onUp(){if(this.dragging){this.dragging.fx=null;this.dragging.fy=null;this.sim.alphaTarget(0);this.dragging=null;}}
-  _onClick(e){
-    const{x,y}=this._getPos(e);const n=this._hitNode(x,y);
-    if(n&&!this.dragging){
-      if(this.selected?.id===n.id){this.selected=null;this.onDeselect?.();}
-      else{this.selected=n;this.onSelect?.(n);}
-    } else if(!n){this.selected=null;this.onDeselect?.();}
-  }
-
-  applyFilter(lens){this._filterLens=lens;}
-
-  _loop(){
-    this._animId=requestAnimationFrame(()=>this._loop());
-    this.time+=.016;
-    this.sim.tick();
-    this._draw();
-  }
-
-  _draw(){
-    const{ctx,W,H,time}=this;
-    ctx.clearRect(0,0,W,H);
-    /* Background */
-    const bg=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)*.7);
-    bg.addColorStop(0,'#0a0e1a');bg.addColorStop(1,'#040710');
-    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-    const lens=this._filterLens||'all';
-    const selId=this.selected?.id;
-    /* Links */
-    this.links.forEach(l=>{
-      const son=lens==='all'||(l.source.tags||[]).some(t=>LENS_ALIASES[lens]?.has(t));
-      const ton=lens==='all'||(l.target.tags||[]).some(t=>LENS_ALIASES[lens]?.has(t));
-      const active=selId&&(l.source.id===selId||l.target.id===selId);
-      ctx.beginPath();ctx.moveTo(l.source.x,l.source.y);ctx.lineTo(l.target.x,l.target.y);
-      ctx.strokeStyle=active?'rgba(0,247,255,.75)':(son&&ton)?'rgba(0,247,255,.12)':'rgba(0,247,255,.03)';
-      ctx.lineWidth=active?1.8:1;ctx.stroke();
-    });
-    /* Nodes */
-    this.nodes.forEach(n=>{
-      const on=lens==='all'||(n.tags||[]).some(t=>LENS_ALIASES[lens]?.has(t));
-      const sel=n.id===selId;
-      const hex=regionColor(n);const r=n._r||14;
-      ctx.globalAlpha=on?1:.1;
-      /* Glow */
-      const grd=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r*2.5);
-      grd.addColorStop(0,hex+'55');grd.addColorStop(1,hex+'00');
-      ctx.beginPath();ctx.arc(n.x,n.y,r*2.5,0,Math.PI*2);ctx.fillStyle=grd;ctx.fill();
-      /* Pulse ring on selected */
-      if(sel){
-        const pr=r+5+Math.sin(time*2.5)*4;
-        ctx.beginPath();ctx.arc(n.x,n.y,pr,0,Math.PI*2);
-        ctx.strokeStyle=hex+'99';ctx.lineWidth=1.5;
-        ctx.globalAlpha=on?(0.4+Math.sin(time*2.5)*.15):.1;ctx.stroke();
-        ctx.globalAlpha=on?1:.1;
-      }
-      /* Core */
-      ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
-      ctx.fillStyle=hex+(sel?'ff':'cc');
-      ctx.shadowColor=hex;ctx.shadowBlur=sel?20:8;ctx.fill();ctx.shadowBlur=0;
-      /* Symbol */
-      ctx.fillStyle='#fff';ctx.font=`${Math.max(10,r-2)}px sans-serif`;
-      ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(n.symbol,n.x,n.y);
-      /* Label */
-      ctx.fillStyle=sel?hex:'rgba(255,255,255,.7)';
-      ctx.font=`${sel?'600 ':' '}9px Orbitron,monospace`;
-      ctx.textAlign='center';ctx.textBaseline='top';
-      const words=n.name.split(' ');
-      words.forEach((w,i)=>ctx.fillText(w,n.x,n.y+r+3+i*11));
-      ctx.globalAlpha=1;
-    });
-    /* Degree legend */
-    ctx.fillStyle='rgba(0,247,255,.3)';ctx.font='10px Orbitron,monospace';
-    ctx.textAlign='left';ctx.textBaseline='bottom';
-    ctx.fillText('Node size = connection degree · Drag to rearrange',8,H-8);
-  }
-
-  destroy(){cancelAnimationFrame(this._animId);this.container.innerHTML='';}
-}
 
 // ══════════════════════════════════════════════════════════
 // TIMELINE CONTROLLER
@@ -3232,233 +3097,6 @@ function buildWeavePresets(lensCache,byId){
 }
 
 // LEARNING PATH SYSTEM — curated thematic culture tours
-// ══════════════════════════════════════════════════════════
-const LEARNING_PATHS = [
-  {
-    id:'ocean-navigators',
-    title:'Ocean Navigators',
-    icon:'🌊',
-    desc:'How humanity read the sea — star compasses, swell piloting, and wayfinding traditions across the Pacific and Atlantic.',
-    cultures:['kanaka_kumulipo','polynesia','maori','marquesas','samoa','tonga','palau','philippines','norse','antarctic'],
-  },
-  {
-    id:'river-civilizations',
-    title:'River Corridor Civilizations',
-    icon:'💧',
-    desc:'How rivers became the spines of civilization — irrigation, administration, and the politics of water.',
-    cultures:['mesopotamia','sumer','akkad','babylonia','assyria','kemet','kush','china','khmer','vietnam'],
-  },
-  {
-    id:'governance-innovations',
-    title:'Governance Innovations',
-    icon:'⚖️',
-    desc:'From deliberative assemblies to long-horizon ethics — how different traditions solved the problem of living together.',
-    cultures:['haudenosaunee','tswana','maori','mali','vedic','kemet','iceland','sami','dine','celtic'],
-  },
-  {
-    id:'ecological-intelligence',
-    title:'Ecological Intelligence',
-    icon:'🌿',
-    desc:'Knowledge systems built from deep observation of place — tracking, reef governance, and permafrost reading.',
-    cultures:['san','inuit','nenets','chukchi','sami','evenki','sakha','palau','khoekhoe','dine'],
-  },
-  {
-    id:'knowledge-writing',
-    title:'Knowledge & Writing Systems',
-    icon:'📜',
-    desc:'From cuneiform to quipu to Hangul — the diversity of human strategies for recording and transmitting knowledge.',
-    cultures:['sumer','kemet','maya','kush','mali','korea','china','vedic','dravidian_sangam','inca'],
-  },
-  {
-    id:'martial-traditions',
-    title:'Embodied Martial Traditions',
-    icon:'🥋',
-    desc:'Martial arts as philosophy, geometry, and cultural archive — weapon systems, warrior ethics, and lineage transmission.',
-    cultures:['japan','korea','philippines','indonesia','thailand','vietnam','zulu','celtic','haudenosaunee','vedic'],
-  },
-  {
-    id:'andean-pacific',
-    title:'Andean & Mesoamerican Civilizations',
-    icon:'🏔️',
-    desc:'Mountain empires and lowland city-states — terrace farming, calendrics, and landscape engineering in the Americas.',
-    cultures:['olmec','maya','maya_classic','aztec','moche','tiwanaku','inca','andean_tawantinsuyu','taino'],
-  },
-  {
-    id:'africa-deep',
-    title:'African Knowledge Traditions',
-    icon:'🌍',
-    desc:'The depth of African civilizational achievement — from forager tracking to manuscript culture to stone architecture.',
-    cultures:['san','khoekhoe','great_zimbabwe','tswana','xhosa','zulu','kemet','kush','mali','yoruba'],
-  },
-];
-
-class LearningPathUI {
-  constructor(app){ this.app=app; this._panel=null; this._step=0; this._active=null; }
-
-  open(){
-    if(this._panel) { this._panel.remove(); this._panel=null; }
-    const panel=document.createElement('div');
-    panel.className='cw-lp-panel';
-    panel.setAttribute('role','dialog');
-    panel.setAttribute('aria-label','Learning Paths');
-    panel.setAttribute('aria-modal','true');
-    // Add backdrop
-    const backdrop=document.createElement('div');
-    backdrop.className='cw-lp-backdrop'; backdrop.id='cw-lp-backdrop';
-    document.body.appendChild(backdrop);
-    requestAnimationFrame(()=>backdrop.classList.add('cw-lp-backdrop--show'));
-    backdrop.addEventListener('click',()=>this.close());
-    panel.innerHTML=`
-      <div class="cw-lp-header">
-        <h3 class="cw-lp-title"><i class="fas fa-route"></i> Weave Paths</h3>
-        <button class="cw-lp-close" type="button" aria-label="Close"><i class="fas fa-times"></i></button>
-      </div>
-      <p class="cw-lp-sub">Eight thematic journeys through the Ikeverse — each stop reveals a culture's role in the larger pattern</p>
-      <ul class="cw-lp-list">
-        ${LEARNING_PATHS.map(p=>`
-          <li><button class="cw-lp-btn" data-id="${p.id}" type="button">
-            <span class="cw-lp-icon">${p.icon}</span>
-            <span class="cw-lp-info">
-              <span class="cw-lp-name">${escapeHtml(p.title)}</span>
-              <span class="cw-lp-desc">${escapeHtml(p.desc)}</span>
-              <span class="cw-lp-count"><i class="fas fa-circle-nodes"></i> ${p.cultures.length} cultures</span>
-            </span>
-            <i class="fas fa-chevron-right cw-lp-arrow"></i>
-          </button></li>`).join('')}
-      </ul>`;
-    document.body.appendChild(panel);
-    this._panel=panel;
-    panel.querySelector('.cw-lp-close').addEventListener('click',()=>this.close());
-    panel.querySelectorAll('[data-id]').forEach(btn=>{
-      btn.addEventListener('click',()=>this.startPath(btn.dataset.id));
-    });
-    requestAnimationFrame(()=>panel.classList.add('cw-lp-panel--open'));
-  }
-
-  close(){
-    if(!this._panel) return;
-    this._panel.classList.remove('cw-lp-panel--open');
-    const bd=document.getElementById('cw-lp-backdrop');
-    if(bd){ bd.classList.remove('cw-lp-backdrop--show'); setTimeout(()=>bd.remove(),300); }
-    setTimeout(()=>{ this._panel?.remove(); this._panel=null; },300);
-    this._active=null;
-  }
-
-  startPath(id){
-    const path=LEARNING_PATHS.find(p=>p.id===id);
-    if(!path) return;
-    this._active=path; this._step=0;
-    this.close();
-    this._showStep();
-    this._showPathBar();
-  }
-
-  _showStep(){
-    if(!this._active) return;
-    const cid=this._active.cultures[this._step];
-    if(cid && this.app.byId?.get(cid)){
-      this.app.selectCulture(cid,true);
-      // Close star info panel if open (avoid overlap)
-      document.getElementById('cw-star-panel')?.classList.remove('cw-star-panel--open');
-    }
-  }
-
-  _showPathBar(){
-    document.getElementById('cw-lp-bar')?.remove();
-    if(!this._active) return;
-    const {title,icon,desc,cultures}=this._active;
-    const cid=cultures[this._step];
-    const c=this.app.byId?.get(cid);
-    const prev=this._step>0?this.app.byId?.get(cultures[this._step-1]):null;
-    const next=this._step<cultures.length-1?this.app.byId?.get(cultures[this._step+1]):null;
-
-    // Find direct link between current and previous culture
-    const allLinks=this.app.linksOfficial||[];
-    const prevLink=prev?allLinks.find(l=>(l.source?.id===cid&&l.target?.id===prev.id)||(l.target?.id===cid&&l.source?.id===prev.id)):null;
-    const nextLink=next?allLinks.find(l=>(l.source?.id===cid&&l.target?.id===next.id)||(l.target?.id===cid&&l.source?.id===next.id)):null;
-
-    const bar=document.createElement('div');
-    bar.id='cw-lp-bar';
-    bar.innerHTML=`
-      <div class="cw-lpb-track">
-        <div class="cw-lpb-progress" style="width:${((this._step+1)/cultures.length)*100}%"></div>
-      </div>
-      <div class="cw-lpb-inner">
-        <!-- Left: Path identity -->
-        <div class="cw-lpb-path-id">
-          <span class="cw-lpb-icon">${icon}</span>
-          <div>
-            <div class="cw-lpb-title">${escapeHtml(title)}</div>
-            <div class="cw-lpb-step">${this._step+1} of ${cultures.length}</div>
-          </div>
-        </div>
-
-        <!-- Center: Culture spotlight -->
-        ${c?`<div class="cw-lpb-spotlight">
-          <div class="cw-lpb-spot-head">
-            <span class="cw-lpb-spot-sym">${c.symbol||'🌐'}</span>
-            <div>
-              <div class="cw-lpb-spot-name">${escapeHtml(c.name.split('(')[0].trim())}</div>
-              <div class="cw-lpb-spot-era">${escapeHtml(c.era||'')} · ${escapeHtml(c.region||'')}</div>
-            </div>
-          </div>
-          <div class="cw-lpb-spot-desc">${escapeHtml((c.desc||'').substring(0,160))}${(c.desc||'').length>160?'…':''}</div>
-          ${(c.highlights||[]).length?`
-          <div class="cw-lpb-spot-highlights">
-            ${(c.highlights||[]).slice(0,2).map(h=>`<div class="cw-lpb-spot-hl"><i class="fas fa-bolt"></i> ${escapeHtml(h)}</div>`).join('')}
-          </div>`:''}
-          ${(c.keyTerms||[]).length?`
-          <div class="cw-lpb-spot-terms">
-            ${(c.keyTerms||[]).slice(0,5).map(t=>`<span class="cw-lpb-term">${escapeHtml(t)}</span>`).join('')}
-          </div>`:''}
-          <!-- Connections in path context -->
-          ${prevLink?`<div class="cw-lpb-conn cw-lpb-conn--prev">
-            <i class="fas fa-arrow-left"></i>
-            <span><strong>${escapeHtml((prev?.name||'').split('(')[0].trim())}</strong> — ${escapeHtml(prevLink.label||'Connection')}</span>
-          </div>`:''}
-          ${nextLink?`<div class="cw-lpb-conn cw-lpb-conn--next">
-            <span><strong>${escapeHtml((next?.name||'').split('(')[0].trim())}</strong> — ${escapeHtml(nextLink.label||'Connection')}</span>
-            <i class="fas fa-arrow-right"></i>
-          </div>`:''}
-          ${!prevLink&&!nextLink&&(prev||next)?`<div class="cw-lpb-thematic">
-            <i class="fas fa-share-nodes"></i>
-            <span>Part of a thematic journey through ${escapeHtml(title)}</span>
-            ${next?`<span class="cw-lpb-next-preview">Next: ${escapeHtml((next?.name||'').split('(')[0].trim())}</span>`:''}
-          </div>`:''}
-        </div>`:'<div class="cw-lpb-spotlight"><em>Loading…</em></div>'}
-
-        <!-- Right: Controls -->
-        <div class="cw-lpb-controls">
-          <div class="cw-lpb-dots">
-            ${cultures.map((_,i)=>`<span class="cw-lpb-dot${i===this._step?' cw-lpb-dot--active':i<this._step?' cw-lpb-dot--done':''}"></span>`).join('')}
-          </div>
-          <div class="cw-lpb-btns">
-            <button class="cw-lpb-btn" id="cw-lpb-prev" type="button" ${this._step===0?'disabled':''}><i class="fas fa-chevron-left"></i><span>Prev</span></button>
-            <button class="cw-lpb-btn cw-lpb-btn--primary" id="cw-lpb-next" type="button">
-              ${this._step===cultures.length-1?'<span>Complete</span><i class="fas fa-check"></i>':'<span>Next</span><i class="fas fa-chevron-right"></i>'}
-            </button>
-            <button class="cw-lpb-btn cw-lpb-btn--ghost" id="cw-lpb-exit" type="button" title="Exit path"><i class="fas fa-times"></i></button>
-          </div>
-        </div>
-      </div>`;
-
-    document.body.appendChild(bar);
-    requestAnimationFrame(()=>bar.classList.add('cw-lpb--visible'));
-    bar.querySelector('#cw-lpb-prev').addEventListener('click',()=>{
-      if(this._step>0){this._step--;this._showStep();this._showPathBar();}
-    });
-    bar.querySelector('#cw-lpb-next').addEventListener('click',()=>{
-      if(this._step<cultures.length-1){this._step++;this._showStep();this._showPathBar();}
-      else{this._active=null;bar.remove();document.getElementById('cw-lp-backdrop')?.remove();}
-    });
-    bar.querySelector('#cw-lpb-exit').addEventListener('click',()=>{
-      this._active=null;
-      bar.classList.remove('cw-lpb--visible');
-      setTimeout(()=>bar.remove(),300);
-      document.getElementById('cw-lp-backdrop')?.remove();
-    });
-  }
-}
 
 // ══════════════════════════════════════════════════════════
 // CULTURE COMPARISON MODE
@@ -3563,11 +3201,19 @@ class CultureCompare {
     requestAnimationFrame(()=>panel.classList.add('cw-compare-panel--open'));
     panel.querySelector('.cw-cmp-close').addEventListener('click',()=>{
       panel.classList.remove('cw-compare-panel--open');
-      setTimeout(()=>{ this._cultures=[]; this._panel=null; panel.remove(); },320);
-      // Reset compare button states
+      setTimeout(()=>{
+        this._cultures=[]; this._panel=null; panel.remove();
+      },320);
       document.querySelectorAll('.cw-compare-btn--active').forEach(b=>b.classList.remove('cw-compare-btn--active'));
       document.getElementById('cw-compare-hint')?.remove();
+      // Restore ESC key and allow continued browsing
+      document.body.style.overflow='';
     });
+    // Close on ESC
+    const _cmpEsc=(e)=>{ if(e.key==='Escape'){ panel.querySelector('.cw-cmp-close').click(); document.removeEventListener('keydown',_cmpEsc); }};
+    document.addEventListener('keydown',_cmpEsc);
+    // Prevent body scroll behind panel
+    document.body.style.overflow='hidden';
   }
 }
 
@@ -3620,7 +3266,7 @@ class CosmicWeave {
     this.layers={paths:true,food:false,water:false,navigation:false,trade:false,stewardship:false,governance:false};
     this.eraWindow=null;  /* null = all | {start,end} */
     /* Modules */
-    this.globe=null;this.map=null;this.graph=null;
+    this.globe=null;this.map=null;
     this.timeline=null;this.tour=null;
     this.tooltip=null;this.starOverlay=null;
     /* Containers */
@@ -3646,10 +3292,7 @@ class CosmicWeave {
     this.map=new D3Map(this._containers.map);
     this.map.onSelect=c=>this.selectCulture(c.id,true);
     this.map.onDeselect=()=>this.deselectAll();
-    /* Init graph (lazy) */
-    this.graph=new ForceGraph(this._containers.graph);
-    this.graph.onSelect=c=>this.selectCulture(c.id,true);
-    this.graph.onDeselect=()=>this.deselectAll();
+    /* Graph removed */
     /* Timeline */
     this.timeline=new TimelineController(document.getElementById('tlMount')||document.createElement('div'));
     this.timeline.onChange=w=>{this.eraWindow=w;this._applyFilter();};
@@ -3676,10 +3319,9 @@ class CosmicWeave {
     setDetailDefault();
     /* Set mode */
     this.setMode('globe');
-    /* Lazy-load map+graph data */
+    /* Lazy-load map data */
     setTimeout(()=>{
       this.map.init(data.world,this.cultures,this.linksOfficial);
-      this.graph.init(this.cultures,this.linksOfficial);
     },800);
     /* Weave preset selector */
     this._populateWeaveSelect();
@@ -3695,11 +3337,11 @@ class CosmicWeave {
   /* ── Mode switching ── */
   setMode(mode){
     this.mode=mode;
-    ['globe','map','graph'].forEach(m=>{
+    ['globe','map'].forEach(m=>{
       const el=this._containers[m];if(el) el.style.display=m===mode?'block':'none';
     });
-    ['tabGlobe','tabMap','tabGraph'].forEach((id,i)=>{
-      const m=['globe','map','graph'][i];
+    ['tabGlobe','tabMap'].forEach((id,i)=>{
+      const m=['globe','map'][i];
       document.getElementById(id)?.classList.toggle('active',mode===m);
     });
     /* Show/hide timeline based on mode */
@@ -3742,10 +3384,11 @@ class CosmicWeave {
       if(this.mode==='globe') this.globe.focusOn(c);
     }
     if(this.mode==='map') this.map?.focusOn(c);
-    if(this.mode==='graph'){if(this.graph) this.graph.selected=this.graph.nodes.find(n=>n.id===id)||null;}
+    
     this.map?.render(id,this.lens);
     /* Panels */
     renderDetailPanel(c,document.getElementById('culture-name'));
+    this._updateMobileSheet(c);
     /* Landmark preview disabled */
     const allL=this.showSuggested?[...this.linksOfficial,...this.linksSuggested]:this.linksOfficial;
     renderConnections(c,allL,this.byId);
@@ -3755,10 +3398,118 @@ class CosmicWeave {
     /* Deep link */
     if(push){try{const u=new URL(location.href);u.searchParams.set('c',id);history.replaceState({},'',u);}catch{}}
     /* Mobile scroll to details */
-    if(IS_COARSE) setTimeout(()=>document.querySelector('.cw-panel--details')?.scrollIntoView({behavior:'smooth',block:'start'}),400);
+    if(IS_COARSE){
+      /* Mobile: open the bottom sheet panel with culture details */
+      setTimeout(()=>{
+        const sheet=document.getElementById('cw-mobile-sheet');
+        if(sheet){
+          sheet.classList.add('cw-mobile-sheet--open');
+          document.getElementById('cw-mobile-sheet-overlay')?.classList.add('cw-mso--show');
+        } else {
+          document.querySelector('.cw-panel--details')?.scrollIntoView({behavior:'smooth',block:'start'});
+        }
+      },350);
+    }
   }
 
   selectById(id){this.selectCulture(id,true);}
+
+  _buildMobileSheet(){
+    // Full-height bottom drawer for mobile culture details
+    const overlay=document.createElement('div');
+    overlay.id='cw-mobile-sheet-overlay';
+    overlay.className='cw-mso';
+    overlay.addEventListener('click',()=>this._closeMobileSheet());
+    document.body.appendChild(overlay);
+
+    const sheet=document.createElement('div');
+    sheet.id='cw-mobile-sheet';
+    sheet.className='cw-mobile-sheet';
+    // Clone detail panel content into the sheet
+    sheet.innerHTML=`
+      <div class="cw-msh-handle"><div class="cw-msh-pill"></div></div>
+      <div class="cw-msh-header">
+        <div class="cw-msh-title-row">
+          <span id="cw-msh-sym" class="cw-msh-sym">🌐</span>
+          <div>
+            <div id="cw-msh-name" class="cw-msh-name">Select a culture</div>
+            <div id="cw-msh-meta" class="cw-msh-meta"></div>
+          </div>
+          <button class="cw-msh-close" type="button" aria-label="Close">
+            <i class="fas fa-chevron-down"></i>
+          </button>
+        </div>
+        <div id="cw-msh-tags" class="cw-msh-tags"></div>
+      </div>
+      <div class="cw-msh-body" id="cw-msh-body">
+        <div class="cw-msh-section" id="cw-msh-desc"></div>
+        <div id="cw-msh-extra"></div>
+      </div>
+      <div class="cw-msh-actions">
+        <button class="cw-msh-action cw-msh-action--primary" id="cw-msh-share" type="button">
+          <i class="fas fa-share-nodes"></i> Share
+        </button>
+        <button class="cw-msh-action" id="cw-msh-compare" type="button">
+          <i class="fas fa-code-compare"></i> Compare
+        </button>
+        <button class="cw-msh-action" id="cw-msh-close-btn" type="button">
+          <i class="fas fa-chevron-down"></i> Close
+        </button>
+      </div>`;
+    document.body.appendChild(sheet);
+
+    // Drag to close
+    let dragY=0, startY=0;
+    sheet.querySelector('.cw-msh-handle').addEventListener('touchstart',e=>{startY=e.touches[0].clientY;},{passive:true});
+    sheet.addEventListener('touchmove',e=>{
+      dragY=e.touches[0].clientY-startY;
+      if(dragY>0) sheet.style.transform=`translateY(${dragY}px)`;
+    },{passive:true});
+    sheet.addEventListener('touchend',()=>{
+      if(dragY>100) this._closeMobileSheet();
+      else sheet.style.transform='';
+      dragY=0;
+    },{passive:true});
+
+    sheet.querySelector('.cw-msh-close').addEventListener('click',()=>this._closeMobileSheet());
+    sheet.querySelector('#cw-msh-close-btn').addEventListener('click',()=>this._closeMobileSheet());
+    sheet.querySelector('#cw-msh-share').addEventListener('click',()=>{
+      if(navigator.clipboard) navigator.clipboard.writeText(location.href);
+    });
+    sheet.querySelector('#cw-msh-compare').addEventListener('click',()=>{
+      const c=this.byId?.get(this.selectedId); if(c) this.compare?.toggle(c);
+    });
+  }
+
+  _updateMobileSheet(culture){
+    if(!IS_COARSE||!culture) return;
+    const byId=n=>document.getElementById(n);
+    byId('cw-msh-sym').textContent=culture.symbol||'🌐';
+    byId('cw-msh-name').textContent=culture.name.split('(')[0].trim();
+    byId('cw-msh-meta').textContent=`${culture.era||''} · ${culture.region||''}`;
+    byId('cw-msh-tags').innerHTML=(culture.tags||[]).slice(0,5).map(t=>`<span class="culture-tag">${escapeHtml(t)}</span>`).join('');
+    byId('cw-msh-desc').textContent=culture.desc||'';
+    // Quick facts in body
+    const extra=byId('cw-msh-extra');
+    const highlights=(culture.highlights||[]).slice(0,3);
+    const keyTerms=(culture.keyTerms||[]).slice(0,6);
+    const story=(culture.story||[])[0]||'';
+    extra.innerHTML=`
+      ${story?`<div class="cw-msh-story">${escapeHtml(story.length>300?story.substring(0,300)+'…':story)}</div>`:''}
+      ${highlights.length?`<div class="cw-msh-label"><i class="fas fa-bolt"></i> Highlights</div>
+        ${highlights.map(h=>`<div class="cw-msh-hl">${escapeHtml(h)}</div>`).join('')}`:''}
+      ${keyTerms.length?`<div class="cw-msh-label"><i class="fas fa-key"></i> Key Terms</div>
+        <div class="cw-msh-terms">${keyTerms.map(t=>`<span class="cw-msh-term">${escapeHtml(t)}</span>`).join('')}</div>`:''}
+      <div style="height:80px"></div>`;
+  }
+
+  _closeMobileSheet(){
+    const sheet=document.getElementById('cw-mobile-sheet');
+    const overlay=document.getElementById('cw-mobile-sheet-overlay');
+    sheet?.classList.remove('cw-mobile-sheet--open');
+    sheet && (sheet.style.transform='');
+    overlay?.classList.remove('cw-mso--show');
+  }
 
   _buildSearch(){
     // Inject search UI into the toolbar
@@ -3861,51 +3612,148 @@ class CosmicWeave {
     });
   }
 
-  _showTour(){
-    if(localStorage.getItem('ik_tour_done')) return;
-    const STEPS=[
-      {target:'#globe-viewport-3d',title:'The Cosmic Weave',text:'This is the knowledge globe. Every node is a culture — click any to explore it. Rotate by dragging, zoom with scroll.'},
-      {target:'#btnStarMap',title:'Star Map',text:'Toggle the real celestial star map. 65 named stars with Hawaiian moʻolelo (stories) and navigation use. Click any star to read its story.'},
-      {target:'#btnLearningPath',title:'Weave Paths',text:'Eight thematic journeys — Ocean Navigators, Governance Innovations, Martial Traditions, and more. Each stop shows why that culture belongs in the path.'},
-      {target:'.cw-search-wrap',title:'Search',text:'Search any culture by name, region, tag, or era. Press / anywhere to focus the search bar.'},
-      {target:'#connections',title:'Connections',text:'When you select a culture, its links appear here. Each connection has a historical description and theme tags.'},
+  _showTour(force=false){
+    if(!force&&localStorage.getItem('ik_tour_done')) return;
+
+    /* ─── Phase 1: UI walkthrough (3 tooltip steps) ─── */
+    const UI_STEPS=[
+      {target:'#globe-viewport-3d',title:'The Cosmic Weave',
+       text:'55 cultures as a living knowledge graph. Drag to rotate · scroll to zoom · click any glowing node to explore its full story, connections, and research.'},
+      {target:'.cw-search-wrap',title:'Search & explore',
+       text:'Search any culture by name, region, or theme. Press <kbd>/</kbd> anywhere to focus. Or browse connections in the panel below when a culture is selected.'},
+      {target:'#btnStarMap',title:'Star Map',
+       text:'65 Hawaiian-named stars with real RA/Dec coordinates. Click any star to read its moʻolelo — its navigation use and how 8+ cultures across history named it.'},
     ];
-    let step=0;
+
+    /* ─── Phase 2: Culture stops — fly to 5 cultures showing their card ─── */
+    const CULTURE_STOPS=[
+      'kanaka_kumulipo','kemet','haudenosaunee','vedic','mali'
+    ];
+
+    let uiStep=0;
+    let tourActive=true;
     const overlay=document.createElement('div');
     overlay.className='cw-tour-overlay'; overlay.id='cw-tour';
     document.body.appendChild(overlay);
-    const showStep=()=>{
-      const s=STEPS[step];
+
+    const endTour=()=>{
+      tourActive=false;
+      overlay.remove();
+      document.getElementById('cw-tour-culture-card')?.remove();
+      localStorage.setItem('ik_tour_done','1');
+    };
+
+    /* UI tooltip step */
+    const showUIStep=()=>{
+      if(!tourActive) return;
+      document.getElementById('cw-tour-culture-card')?.remove();
+      const s=UI_STEPS[uiStep];
       const target=document.querySelector(s.target);
-      const rect=target?.getBoundingClientRect()||{top:300,left:300,width:100,height:40};
-      const isLast=step===STEPS.length-1;
+      const rect=target?.getBoundingClientRect()||{top:200,left:200,width:120,height:40};
+      const boxTop=Math.min(rect.bottom+14, window.innerHeight-210);
+      const boxLeft=Math.max(12,Math.min(rect.left, window.innerWidth-310));
       overlay.innerHTML=`
-        <div class="cw-tour-box" style="top:${Math.min(rect.bottom+12,window.innerHeight-180)}px;left:${Math.max(12,Math.min(rect.left,window.innerWidth-320))}px">
-          <div class="cw-tour-step">${step+1} of ${STEPS.length}</div>
+        <div class="cw-tour-box" style="top:${boxTop}px;left:${boxLeft}px;">
+          <div class="cw-tour-pill">${uiStep+1} of ${UI_STEPS.length}</div>
           <div class="cw-tour-title">${s.title}</div>
           <div class="cw-tour-text">${s.text}</div>
+          <div class="cw-tour-progress">
+            ${[...UI_STEPS,...CULTURE_STOPS].map((_,i)=>
+              `<div class="cw-tour-dot${i===uiStep?' cw-tour-dot--active':i<uiStep?' cw-tour-dot--done':''}"></div>`
+            ).join('')}
+          </div>
           <div class="cw-tour-btns">
-            <button class="cw-tour-skip" type="button">Skip tour</button>
-            <button class="cw-tour-next" type="button">${isLast?'Done':'Next →'}</button>
+            <button class="cw-tour-skip" type="button">Skip</button>
+            <button class="cw-tour-next" type="button">Next →</button>
           </div>
         </div>
-        <div class="cw-tour-highlight" style="top:${rect.top-4}px;left:${rect.left-4}px;width:${rect.width+8}px;height:${rect.height+8}px"></div>`;
+        <div class="cw-tour-pulse" style="top:${rect.top-6}px;left:${rect.left-6}px;width:${rect.width+12}px;height:${rect.height+12}px;"></div>`;
       overlay.querySelector('.cw-tour-next').addEventListener('click',()=>{
-        if(isLast){overlay.remove();localStorage.setItem('ik_tour_done','1');}
-        else{step++;showStep();}
+        uiStep++;
+        if(uiStep>=UI_STEPS.length) startCultureTour(0);
+        else showUIStep();
       });
-      overlay.querySelector('.cw-tour-skip').addEventListener('click',()=>{
-        overlay.remove();localStorage.setItem('ik_tour_done','1');
+      overlay.querySelector('.cw-tour-skip').addEventListener('click',endTour);
+    };
+
+    /* Culture stop card */
+    const showCultureStop=(idx)=>{
+      if(!tourActive) return;
+      const cid=CULTURE_STOPS[idx];
+      const c=this.byId?.get(cid);
+      if(!c){if(idx+1<CULTURE_STOPS.length)setTimeout(()=>showCultureStop(idx+1),400);else endTour();return;}
+      const isLast=idx===CULTURE_STOPS.length-1;
+      const totalSteps=UI_STEPS.length+CULTURE_STOPS.length;
+      const globalIdx=UI_STEPS.length+idx;
+
+      /* Fly globe to this culture */
+      this.selectCulture(cid,true);
+
+      /* Overlay becomes dimmer backdrop only */
+      overlay.innerHTML=`
+        <div class="cw-tour-progress cw-tour-progress--float">
+          ${Array.from({length:totalSteps},(_,i)=>
+            `<div class="cw-tour-dot${i===globalIdx?' cw-tour-dot--active':i<globalIdx?' cw-tour-dot--done':''}"></div>`
+          ).join('')}
+        </div>`;
+
+      /* Culture stop card */
+      const card=document.createElement('div');
+      card.id='cw-tour-culture-card';
+      card.className='cw-tour-culture-card';
+      const highlights=(c.highlights||[]).slice(0,2);
+      const keyTerms=(c.keyTerms||[]).slice(0,5);
+      const story=(c.story||[c.desc||''])[0]||'';
+      card.innerHTML=`
+        <div class="cw-tcc-skip-row">
+          <span class="cw-tcc-progress">Culture ${idx+1} of ${CULTURE_STOPS.length}</span>
+          <button class="cw-tour-skip" type="button">End tour</button>
+        </div>
+        <div class="cw-tcc-head">
+          <span class="cw-tcc-sym">${c.symbol||'🌐'}</span>
+          <div>
+            <div class="cw-tcc-name">${c.name.split('(')[0].trim()}</div>
+            <div class="cw-tcc-era">${c.era||''} · ${c.region||''}</div>
+          </div>
+        </div>
+        <p class="cw-tcc-story">${escapeHtml(story.length>240?story.substring(0,240)+'…':story)}</p>
+        ${highlights.length?`<div class="cw-tcc-highlights">
+          ${highlights.map(h=>`<div class="cw-tcc-hl"><i class="fas fa-bolt"></i>${escapeHtml(h)}</div>`).join('')}
+        </div>`:''}
+        ${keyTerms.length?`<div class="cw-tcc-terms">
+          ${keyTerms.map(t=>`<span class="cw-tcc-term">${escapeHtml(t)}</span>`).join('')}
+        </div>`:''}
+        <div class="cw-tcc-footer">
+          <button class="cw-tcc-explore" type="button"><i class="fas fa-arrow-up-right-from-square"></i> Explore fully</button>
+          <button class="cw-tcc-next" type="button">${isLast?'<i class="fas fa-check"></i> Done':'Next culture →'}</button>
+        </div>`;
+      document.body.appendChild(card);
+      requestAnimationFrame(()=>card.classList.add('cw-tcc--open'));
+
+      card.querySelector('.cw-tour-skip').addEventListener('click',()=>{card.remove();endTour();});
+      card.querySelector('.cw-tcc-explore').addEventListener('click',()=>{card.remove();endTour();});
+      card.querySelector('.cw-tcc-next').addEventListener('click',()=>{
+        card.classList.remove('cw-tcc--open');
+        setTimeout(()=>{
+          card.remove();
+          if(isLast) endTour();
+          else showCultureStop(idx+1);
+        },280);
       });
     };
-    setTimeout(showStep, 1200);
+
+    const startCultureTour=(idx)=>{
+      overlay.innerHTML=''; // clear UI tooltips, keep as dim backdrop
+      showCultureStop(idx);
+    };
+
+    setTimeout(showUIStep, 800);
   }
 
   deselectAll(){
     this.selectedId=null;
     this.globe?.deselectAll();
     if(this.map) this.map.render(null,this.lens);
-    if(this.graph) this.graph.selected=null;
     LAYER_CFGS.forEach(cfg=>this.globe?.highlightLayer(cfg.key,null,this.cultures,false));
     setDetailDefault();
     try{const u=new URL(location.href);u.searchParams.delete('c');history.replaceState({},'',u);}catch{}
@@ -3919,7 +3767,7 @@ class CosmicWeave {
     this.globe?.setLensArcs(lens==='all'?[]:(this.lensCache.get(lens)||[]),lens!=='all');
     this._applyFilter();
     this.map?.render(this.selectedId,lens);
-    this.graph?.applyFilter(lens);
+    
     /* Update weave preset to matching lens */
     if(lens!=='all'){
       const k=this.weaveOrder.find(k=>this.weavePresets.get(k)?.lens===lens);
@@ -3943,7 +3791,7 @@ class CosmicWeave {
     }
     this.globe?.applyFilter(lens,visibleIds,!!this.eraWindow);
     this.map?.render(this.selectedId,lens);
-    this.graph?.applyFilter(lens);
+    
   }
 
   /* ── Weave paths ── */
@@ -4018,6 +3866,9 @@ class CosmicWeave {
     /* ── Global Search ── */
     this._buildSearch();
 
+    /* ── Mobile Bottom Sheet ── */
+    if(IS_COARSE) this._buildMobileSheet();
+
     /* ── Share Button ── */
     document.getElementById('btnShare')?.addEventListener('click',()=>{
       const url=location.href;
@@ -4031,10 +3882,6 @@ class CosmicWeave {
         }).catch(()=>prompt('Copy this URL:',url));
       } else { prompt('Copy this URL:',url); }
     });
-
-    /* ── Learning Paths ── */
-    this.learningPath=new LearningPathUI(this);
-    document.getElementById('btnLearningPath')?.addEventListener('click',()=>this.learningPath.open());
 
     /* ── Culture Compare ── */
     this.compare=new CultureCompare(this);
@@ -4050,7 +3897,11 @@ class CosmicWeave {
     /* Tabs */
     document.getElementById('tabGlobe')?.addEventListener('click',()=>this.setMode('globe'));
     document.getElementById('tabMap')?.addEventListener('click',()=>this.setMode('map'));
-    document.getElementById('tabGraph')?.addEventListener('click',()=>this.setMode('graph'));
+    /* Tour button — always runs the culture-stops guided tour */
+    document.getElementById('btnTour')?.addEventListener('click',()=>{
+      this._showTour(true); // force=true: bypass localStorage guard
+    });
+    
     /* Lenses */
     document.querySelectorAll('.cw-lens').forEach(b=>b.addEventListener('click',()=>this.setLens(b.dataset.lens)));
     /* Layers */

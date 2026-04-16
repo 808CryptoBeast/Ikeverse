@@ -33,11 +33,11 @@
 
     /* ── Viewports ── */
     .viz-stage { position:relative; }
-    #globe-viewport-3d, #map-viewport, #graph-viewport {
+    #globe-viewport-3d, #map-viewport {
       width:100%; height:100%; position:absolute; top:0; left:0;
     }
     #map-viewport  { display:none; }
-    #graph-viewport{ display:none; }
+    
 
     /* ── Tour progress bar ── */
     #tourProgress {
@@ -126,12 +126,11 @@
       .globe-control { width:44px; height:44px; }
     }
     @media (max-width:600px){
-      #globe-viewport-3d canvas, #map-viewport svg, #graph-viewport canvas { height:320px!important; }
+      #globe-viewport-3d canvas, #map-viewport svg { height:320px!important; }
       .viz-stage { height:320px!important; }
     }
 
-    /* ── Force graph hint ── */
-    .graph-hint { font-size:10px; font-family:Orbitron,monospace; color:rgba(0,247,255,.4); text-align:center; padding:4px 0 0; letter-spacing:.08em; }
+    
 
     /* ── Keyboard hint ── */
     .cw-keyboard-hint { display:none; font-size:.75rem; color:rgba(0,247,255,.4); font-family:Orbitron,monospace; letter-spacing:.08em; text-align:center; padding:6px 0 2px; }
@@ -230,14 +229,11 @@
             <button id="tabMap"    class="cw-mode-tab" role="tab" aria-selected="false" type="button" title="Flat Map">
               <i class="fas fa-map"></i><span>Map</span>
             </button>
-            <button id="tabGraph"  class="cw-mode-tab" role="tab" aria-selected="false" type="button" title="Force Graph">
-              <i class="fas fa-diagram-project"></i><span>Graph</span>
-            </button>
+            
             <button id="btnTour"   class="cw-mode-tab cw-mode-tab--tour"  type="button" title="Guided Tour">
               <i class="fas fa-play-circle"></i><span>Tour</span>
             </button>
-            <button id="btnLearningPath" class="cw-ctrl-btn" type="button" title="Learning Paths"><i class="fas fa-route"></i> Paths</button>
-            <button id="btnShare" class="cw-ctrl-btn" type="button" title="Share this culture (copy URL)"><i class="fas fa-share-nodes"></i></button>
+            
             <button id="btnStarMap" class="cw-mode-tab cw-mode-tab--stars" type="button" title="Hawaiian Star Map">
               <i class="fas fa-star-and-crescent"></i><span>Stars</span>
             </button>
@@ -254,6 +250,7 @@
             <div class="cw-ctrl-divider"></div>
             <button class="cw-ctrl" id="toggleLabels" title="Toggle labels"   type="button"><i class="fas fa-tag"></i></button>
             <button class="cw-ctrl cw-ctrl--purple" id="btnDiscover" title="Random culture" type="button"><i class="fas fa-dice"></i></button>
+            <button id="btnShare" class="cw-ctrl" type="button" title="Share / copy link"><i class="fas fa-share-nodes"></i></button>
             <button class="cw-ctrl" id="btnResetMap"  title="Reset map"       type="button"><i class="fas fa-rotate-left"></i></button>
             <button class="cw-ctrl" id="btnCopyLink"  title="Copy link"       type="button"><i class="fas fa-link"></i></button>
           </div>
@@ -300,9 +297,8 @@
         <div id="globe-viewport-3d"></div>
         <!-- D3 map -->
         <div id="map-viewport"></div>
-        <!-- Force graph -->
-        <div id="graph-viewport"></div>
-        <p class="graph-hint" id="graphHint" style="display:none;position:absolute;bottom:8px;left:0;right:0;">Node size = connections · Drag to rearrange · Click to select</p>
+        
+        
       </div>
 
       <!-- Tour progress -->
@@ -457,15 +453,7 @@
       // Normalize OrbitControls to THREE namespace
       if(typeof OrbitControls !== 'undefined') THREE.OrbitControls = OrbitControls;
     });
-    // Graph hint visibility
-    document.getElementById('tabGraph')?.addEventListener('click', function(){
-      document.getElementById('graphHint').style.display='block';
-    });
-    ['tabGlobe','tabMap'].forEach(id=>{
-      document.getElementById(id)?.addEventListener('click',()=>{
-        document.getElementById('graphHint').style.display='none';
-      });
-    });
+
   </script>
   <script src="js/cosmic-weave.js"></script>
 
