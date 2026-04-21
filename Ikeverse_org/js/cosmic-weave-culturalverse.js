@@ -237,8 +237,39 @@
     });
   }
 
+  /* ── Disable tour ───────────────────────────────────────── */
+  function disableTour () {
+    // Remove the Tour button from the toolbar
+    const btnTour = document.getElementById('btnTour');
+    if (btnTour) btnTour.remove();
+
+    // Remove tour progress bar
+    const tourProgress = document.getElementById('tourProgress');
+    if (tourProgress) tourProgress.remove();
+
+    // Neutralize _showTour so it never fires even if called
+    const waitForApp2 = setInterval(() => {
+      if (window._cwApp) {
+        clearInterval(waitForApp2);
+        window._cwApp._showTour = () => {};
+        // Also stop any running tour
+        if (window._cwApp.tour) {
+          window._cwApp.tour.stop?.();
+          window._cwApp.tour.start = () => {};
+          window._cwApp.tour.toggle = () => {};
+        }
+        // Clean up any tour DOM that may have been injected
+        document.getElementById('cw-tour')?.remove();
+        document.getElementById('cw-tour-culture-card')?.remove();
+      }
+    }, 100);
+  }
+
   /* ── Init ───────────────────────────────────────────────── */
   async function init () {
+    // Disable tour immediately before anything else loads
+    disableTour();
+
     // Load live lesson counts from Supabase in the background
     await loadLiveCounts();
 
