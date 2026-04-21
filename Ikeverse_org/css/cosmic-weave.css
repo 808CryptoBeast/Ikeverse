@@ -3385,3 +3385,500 @@ body{
   box-shadow: 0 0 0 2000px rgba(0,0,0,.35);
   pointer-events: none;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   COSMIC WEAVE — ADDITIONS
+   Append to the bottom of cosmic-weave.css
+
+   Contains:
+   · Missing guided tour CSS (cw-tour-*, cw-tcc-*)
+   · Culturalverse integration button + lesson panel
+   · Star panel active tradition highlight (fix)
+   · Mobile sheet content rendering fix
+   · General polish
+═══════════════════════════════════════════════════════════ */
+
+/* ── Guided tour — missing styles ─────────────────────────── */
+
+/* Progress dots (floating bar during culture stops) */
+.cw-tour-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 8px 16px;
+  background: rgba(4,7,15,.85);
+  border-top: 1px solid rgba(0,247,255,.1);
+}
+
+.cw-tour-progress--float {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99001;
+  border-radius: 20px;
+  border: 1px solid rgba(0,247,255,.18);
+  background: rgba(3,6,20,.96);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0,0,0,.6);
+  padding: 8px 16px;
+}
+
+/* Step pill badge */
+.cw-tour-pill {
+  font-family: 'Orbitron', monospace;
+  font-size: .65rem;
+  letter-spacing: .1em;
+  color: rgba(0,247,255,.5);
+  background: rgba(0,247,255,.07);
+  border: 1px solid rgba(0,247,255,.15);
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+/* Tour progress dots */
+.cw-tour-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(0,247,255,.18);
+  transition: background .25s, transform .25s;
+  flex-shrink: 0;
+}
+.cw-tour-dot--active {
+  background: rgba(0,247,255,.9);
+  transform: scale(1.25);
+}
+.cw-tour-dot--done {
+  background: rgba(0,247,255,.45);
+}
+
+/* Pulse highlight ring around target element */
+.cw-tour-pulse {
+  position: fixed;
+  border-radius: 12px;
+  border: 2px solid rgba(0,247,255,.7);
+  box-shadow:
+    0 0 0 4px rgba(0,247,255,.12),
+    0 0 24px rgba(0,247,255,.2);
+  pointer-events: none;
+  z-index: 99001;
+  animation: cwTourPulse 1.8s ease-in-out infinite;
+}
+@keyframes cwTourPulse {
+  0%,100% { box-shadow: 0 0 0 4px rgba(0,247,255,.12), 0 0 24px rgba(0,247,255,.2); }
+  50%      { box-shadow: 0 0 0 8px rgba(0,247,255,.06), 0 0 40px rgba(0,247,255,.3); }
+}
+
+/* ── Culture stop card (phase 2 of tour) ─────────────────── */
+.cw-tour-culture-card {
+  position: fixed;
+  bottom: -420px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(420px, 94vw);
+  z-index: 99002;
+  background: rgba(3,7,22,.98);
+  border: 1px solid rgba(0,247,255,.22);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 -8px 60px rgba(0,0,0,.7), 0 0 40px rgba(0,247,255,.06);
+  backdrop-filter: blur(20px);
+  transition: bottom .38s cubic-bezier(.4,0,.2,1);
+}
+.cw-tour-culture-card.cw-tcc--open {
+  bottom: 24px;
+}
+
+.cw-tcc-skip-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.cw-tcc-progress {
+  font-family: 'Orbitron', monospace;
+  font-size: .65rem;
+  letter-spacing: .1em;
+  color: rgba(0,247,255,.4);
+}
+
+.cw-tcc-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+.cw-tcc-sym  { font-size: 2rem; line-height: 1; flex-shrink: 0; }
+.cw-tcc-name {
+  font-family: 'Orbitron', monospace;
+  font-size: .95rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: rgba(0,247,255,.92);
+  margin-bottom: 3px;
+}
+.cw-tcc-era  { font-size: .75rem; color: rgba(255,255,255,.38); }
+
+.cw-tcc-story {
+  font-size: .84rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,.72);
+  margin-bottom: 12px;
+  border-left: 2px solid rgba(0,247,255,.2);
+  padding-left: 12px;
+}
+
+.cw-tcc-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+.cw-tcc-hl {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: .8rem;
+  color: rgba(255,215,0,.75);
+  line-height: 1.4;
+}
+.cw-tcc-hl i { font-size: .65rem; color: rgba(255,215,0,.5); margin-top: 3px; flex-shrink: 0; }
+
+.cw-tcc-terms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+.cw-tcc-term {
+  font-size: .72rem;
+  padding: 2px 9px;
+  border-radius: 12px;
+  background: rgba(0,247,255,.07);
+  border: 1px solid rgba(0,247,255,.15);
+  color: rgba(0,247,255,.7);
+}
+
+.cw-tcc-footer {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.cw-tcc-explore {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 16px; border-radius: 10px; font-size: .8rem;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.05);
+  color: rgba(255,255,255,.65); cursor: pointer;
+  transition: all .18s;
+}
+.cw-tcc-explore:hover { border-color: rgba(0,247,255,.3); color: rgba(0,247,255,.85); }
+.cw-tcc-next {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 20px; border-radius: 10px; font-size: .8rem;
+  border: 1px solid rgba(0,247,255,.35);
+  background: rgba(0,247,255,.12);
+  color: rgba(0,247,255,.95); cursor: pointer;
+  font-family: 'Orbitron', monospace; font-weight: 600; letter-spacing: .04em;
+  transition: all .18s;
+}
+.cw-tcc-next:hover { background: rgba(0,247,255,.22); border-color: rgba(0,247,255,.6); }
+
+/* ── Culturalverse integration panel ─────────────────────── */
+
+.cw-culturalverse-panel {
+  margin-top: 14px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(60,179,113,.25);
+  background: linear-gradient(
+    135deg,
+    rgba(60,179,113,.06) 0%,
+    rgba(60,179,113,.03) 60%,
+    rgba(0,0,0,0) 100%
+  );
+}
+
+.cw-cv-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid rgba(60,179,113,.15);
+  background: rgba(60,179,113,.04);
+}
+.cw-cv-icon {
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(60,179,113,.12);
+  border: 1px solid rgba(60,179,113,.25);
+  font-size: .9rem;
+  flex-shrink: 0;
+}
+.cw-cv-label {
+  font-family: 'Orbitron', monospace;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: rgba(60,179,113,.9);
+  flex: 1;
+}
+.cw-cv-badge {
+  font-family: 'Orbitron', monospace;
+  font-size: .62rem;
+  letter-spacing: .08em;
+  color: rgba(60,179,113,.6);
+  background: rgba(60,179,113,.1);
+  border: 1px solid rgba(60,179,113,.2);
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+
+.cw-cv-lessons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+}
+.cw-cv-lesson-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .8rem;
+  color: rgba(200,221,208,.7);
+  padding: 3px 0;
+}
+.cw-cv-lesson-item i { font-size: .65rem; color: rgba(60,179,113,.5); flex-shrink: 0; }
+
+.cw-cv-actions {
+  display: flex;
+  gap: 8px;
+  padding: 0 14px 14px;
+}
+.cw-cv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(60,179,113,.35);
+  background: rgba(60,179,113,.1);
+  color: rgba(60,179,113,.95);
+  cursor: pointer;
+  font-size: .8rem;
+  font-family: 'Orbitron', monospace;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-decoration: none;
+  transition: all .18s ease;
+  flex: 1;
+  justify-content: center;
+}
+.cw-cv-btn:hover {
+  background: rgba(60,179,113,.2);
+  border-color: rgba(60,179,113,.6);
+  box-shadow: 0 4px 18px rgba(60,179,113,.15);
+  transform: translateY(-1px);
+}
+.cw-cv-btn--ghost {
+  border-color: rgba(60,179,113,.18);
+  background: transparent;
+  color: rgba(60,179,113,.6);
+}
+.cw-cv-btn--ghost:hover {
+  background: rgba(60,179,113,.08);
+  color: rgba(60,179,113,.85);
+}
+
+/* ── Star panel tradition highlight fix ─────────────────── */
+.cw-sp-trad--active .cw-sp-trad-name {
+  color: rgba(0,247,255,.9);
+  font-weight: 700;
+}
+.cw-sp-trad--active .cw-sp-trad-text {
+  color: rgba(255,255,255,.85);
+}
+.cw-sp-trad--active {
+  background: rgba(0,247,255,.04);
+  border-radius: 6px;
+  padding: 4px 6px;
+  margin: -4px -6px;
+}
+
+/* ── Mobile sheet content fix ───────────────────────────── */
+.cw-mobile-sheet {
+  position: fixed;
+  bottom: -100%;
+  left: 0; right: 0;
+  z-index: 9500;
+  max-height: 80vh;
+  background: rgba(3,7,20,.98);
+  border-top: 1px solid rgba(0,247,255,.15);
+  border-radius: 20px 20px 0 0;
+  transition: bottom .35s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.cw-mobile-sheet--open { bottom: 0; }
+
+.cw-msh-handle {
+  display: flex; justify-content: center;
+  padding: 10px 0 4px;
+  flex-shrink: 0;
+}
+.cw-msh-pill {
+  width: 40px; height: 4px;
+  border-radius: 2px;
+  background: rgba(255,255,255,.2);
+}
+
+.cw-msh-header {
+  padding: 8px 20px 14px;
+  border-bottom: 1px solid rgba(0,247,255,.1);
+  flex-shrink: 0;
+}
+.cw-msh-title-row {
+  display: flex; align-items: center; gap: 12px;
+}
+.cw-msh-sym  { font-size: 1.8rem; flex-shrink: 0; }
+.cw-msh-name {
+  font-family: 'Orbitron', monospace;
+  font-size: .92rem; font-weight: 700;
+  color: rgba(255,255,255,.94); letter-spacing: .04em;
+  flex: 1;
+}
+.cw-msh-meta { font-size: .72rem; color: rgba(0,247,255,.4); margin-top: 2px; }
+.cw-msh-close {
+  width: 34px; height: 34px; border-radius: 9px;
+  border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05);
+  color: rgba(255,255,255,.6); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .9rem; flex-shrink: 0;
+}
+.cw-msh-tags {
+  display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px;
+}
+.cw-msh-body {
+  flex: 1; overflow-y: auto; padding: 16px 20px;
+  scrollbar-width: thin; scrollbar-color: rgba(0,247,255,.2) transparent;
+}
+.cw-msh-section { margin-bottom: 14px; }
+.cw-msh-story {
+  font-size: .86rem; line-height: 1.62; color: rgba(255,255,255,.72);
+  border-left: 2px solid rgba(0,247,255,.18); padding-left: 12px;
+  margin-bottom: 14px;
+}
+.cw-msh-label {
+  font-family: 'Orbitron', monospace; font-size: .65rem;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(0,247,255,.4); margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.cw-msh-hl {
+  font-size: .82rem; color: rgba(255,215,0,.75);
+  padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.cw-msh-hl:last-child { border-bottom: none; }
+.cw-msh-terms {
+  display: flex; flex-wrap: wrap; gap: 5px;
+}
+.cw-msh-term {
+  font-size: .72rem; padding: 3px 8px; border-radius: 10px;
+  background: rgba(0,247,255,.07); border: 1px solid rgba(0,247,255,.14);
+  color: rgba(0,247,255,.7);
+}
+.cw-msh-actions {
+  display: flex; gap: 8px; padding: 12px 20px;
+  border-top: 1px solid rgba(255,255,255,.07);
+  flex-shrink: 0;
+}
+.cw-msh-action {
+  flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 10px 14px; border-radius: 10px; font-size: .8rem; cursor: pointer;
+  border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05);
+  color: rgba(255,255,255,.65); transition: all .18s;
+}
+.cw-msh-action:hover { border-color: rgba(0,247,255,.28); color: rgba(0,247,255,.85); }
+.cw-msh-action--primary {
+  border-color: rgba(0,247,255,.28); background: rgba(0,247,255,.1);
+  color: rgba(0,247,255,.9);
+}
+.cw-msh-action--primary:hover { background: rgba(0,247,255,.18); }
+
+/* Mobile sheet overlay backdrop */
+.cw-mso {
+  position: fixed; inset: 0; z-index: 9499;
+  background: rgba(0,0,0,.5); opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+}
+.cw-mso--show { opacity: 1; pointer-events: auto; }
+
+/* ── Culture key terms compact ───────────────────────────── */
+.cw-key-terms-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px 14px 12px;
+}
+.cw-key-term {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,247,255,.16);
+  background: rgba(0,247,255,.07);
+  color: rgba(0,247,255,.75);
+  font-size: .73rem;
+  letter-spacing: .03em;
+  cursor: default;
+  transition: background .15s, border-color .15s;
+}
+
+/* ── General polish ─────────────────────────────────────── */
+
+/* Smoother node hover */
+.gx-node-label {
+  transition: opacity .2s, border-color .2s !important;
+}
+
+/* Culture card hover lift already in main CSS but add will-change */
+.culture-extra-card {
+  will-change: transform;
+}
+
+/* Tour overlay pointer-events fix — box is interactive, backdrop is not */
+.cw-tour-overlay { pointer-events: none; }
+.cw-tour-box,
+.cw-tour-culture-card { pointer-events: all; }
+
+/* Keyboard hint */
+.cw-keyboard-hint {
+  display: none;
+  font-size: .75rem;
+  color: rgba(0,247,255,.35);
+  font-family: 'Orbitron', monospace;
+  letter-spacing: .08em;
+  text-align: center;
+  padding: 6px 0 2px;
+}
+@media (hover: hover) { .cw-keyboard-hint { display: block; } }
+
+/* ── Mobile breakpoint fixes ────────────────────────────── */
+@media (max-width: 600px) {
+  .cw-tour-culture-card {
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    bottom: -100%;
+    left: 0;
+    transform: none;
+  }
+  .cw-tour-culture-card.cw-tcc--open {
+    bottom: 0;
+  }
+  .cw-culturalverse-panel { margin: 10px 0 0; }
+  .cw-cv-actions { flex-direction: column; }
+}
