@@ -733,109 +733,13 @@
 
     svg.appendChild(compassG);
 
-    /* ── ʻIWA FRIGATEBIRD — center, NOT rotated with compass ── */
-    /* Placed in a separate group so it stays upright while compass rotates */
-    const iwaG = E('g', { class: 'cw-iwa-bird', transform: `translate(${cx},${cy})` });
-
-    /* Glow halo */
-    iwaG.appendChild(E('circle', { cx:0, cy:0, r: birdR * 1.4,
-      fill:'rgba(0,247,255,.04)', 'pointer-events':'none' }));
-    iwaG.appendChild(E('circle', { cx:0, cy:0, r: birdR * 0.9,
-      fill:'rgba(0,247,255,.06)', 'pointer-events':'none' }));
-
-    /* ʻIwa frigatebird — uses the actual tribal ʻiwa PNG from the project.
-       Image is black on white. We:
-         1. invert(1)       → white bird on black bg
-         2. sepia+hue-rotate → shift to cyan
-         3. saturate+brightness → make it glow
-         mix-blend-mode: screen on the group → black bg disappears,
-         only the glowing bird shape remains.
-    */
-    const imgW = birdR * 3.2;   // image is roughly 2.5:1 wide
-    const imgH = birdR * 1.9;
-
-    /* Outer glow ring behind bird */
-    iwaG.appendChild(E('ellipse', {
-      cx: '0', cy: '0',
-      rx: String(birdR * 1.3), ry: String(birdR * 0.9),
-      fill: 'radial-gradient(circle,rgba(0,247,255,.12),transparent)',
-      opacity: '0.7',
-      style: 'pointer-events:none;',
-    }));
-    iwaG.appendChild(E('ellipse', {
-      cx: '0', cy: '0',
-      rx: String(birdR * 1.1), ry: String(birdR * 0.75),
-      fill: 'none',
-      stroke: 'rgba(0,247,255,.08)',
-      'stroke-width': '1',
-      style: 'pointer-events:none;',
-    }));
-
-    /* The ʻiwa image — centered at 0,0 */
-    const iwaImg = E('image', {
-      href: 'assets/images/iwa-middle.png',
-      x: String(-imgW / 2),
-      y: String(-imgH / 2),
-      width:  String(imgW),
-      height: String(imgH),
-      preserveAspectRatio: 'xMidYMid meet',
-      cursor: 'pointer',
-      class: 'cw-iwa-clickable',
-      style: [
-        /* Step 1: invert black→white */
-        'filter:',
-        '  invert(1)',
-        '  sepia(1)',
-        '  saturate(6)',
-        '  hue-rotate(148deg)',   /* 148° lands on cyan */
-        '  brightness(1.25);',
-        'mix-blend-mode: screen;',
-        'pointer-events: all;',
-        'transition: filter .2s, transform .2s;',
-      ].join(''),
-    });
-    /* Hover brighten via JS */
-    iwaImg.addEventListener('mouseenter', () => {
-      iwaImg.style.filter = 'invert(1) sepia(1) saturate(8) hue-rotate(148deg) brightness(1.7)';
-      iwaImg.style.transform = 'scale(1.06)';
-    });
-    iwaImg.addEventListener('mouseleave', () => {
-      iwaImg.style.filter = 'invert(1) sepia(1) saturate(6) hue-rotate(148deg) brightness(1.25)';
-      iwaImg.style.transform = 'scale(1)';
-    });
-
-    iwaG.appendChild(iwaImg);
-
-    /* Invisible large hitzone for easy clicking */
-    const hitzone = E('circle', {
-      cx:0, cy:0, r: birdR,
-      fill:'transparent', cursor:'pointer',
-      style:'pointer-events:all;',
-      class:'cw-iwa-hit',
-    });
-    iwaG.appendChild(hitzone);
-
-    /* Click label beneath bird */
-    const clickHint = E('text', {
-      x:0, y: birdR * 0.85,
-      'text-anchor':'middle', 'dominant-baseline':'middle',
-      fill:'rgba(0,247,255,.35)',
-      'font-size':'7', 'font-family':'Orbitron,monospace',
-      'letter-spacing':'.08em', 'pointer-events':'none',
-    }, 'ʻIWA · CLICK');
-    iwaG.appendChild(clickHint);
-
-    svg.appendChild(iwaG);
-
-    /* Wire click — directly on SVG elements since hitlayer is separate */
-    svg.addEventListener('click', (e) => {
-      const t = e.target;
-      if (t.classList.contains('cw-iwa-hit') || t.classList.contains('cw-iwa-clickable') ||
-          t.closest('.cw-iwa-clickable') || t.closest('.cw-iwa-bird')) {
-        showIwaMoolelo();
-        e.stopPropagation();
-      }
-    }, { capture: false });
+    /* ── ʻIWA glow halo only — bird lives in HTML layer (ensureIwaBird) ── */
+    const iwaGlowG = E('g', { transform: `translate(${cx},${cy})`, 'pointer-events':'none' });
+    iwaGlowG.appendChild(E('circle', { cx:'0', cy:'0', r: String(birdR * 1.6),
+      fill:'none', stroke:'rgba(0,247,255,.07)', 'stroke-width':'1.5' }));
+    iwaGlowG.appendChild(E('circle', { cx:'0', cy:'0', r: String(birdR * 0.95),
+      fill:'none', stroke:'rgba(0,247,255,.04)', 'stroke-width':'0.7' }));
+    svg.appendChild(iwaGlowG);
   }
 
   /* ════════════════════════════════════════════════════════════
@@ -1017,6 +921,98 @@
   }
 
   /* ════════════════════════════════════════════════════════════
+     ʻIWA BIRD — HTML layer (avoids SVG image white-box issue)
+     Uses mix-blend-mode: screen properly on an HTML img element.
+     Animates the ʻiwa migration path to Hawaiʻi on open.
+  ════════════════════════════════════════════════════════════ */
+  function ensureIwaBird (container) {
+    if (document.getElementById('cw-iwa-html')) return;
+
+    // Inject migration + soar keyframes once
+    if (!document.getElementById('cw-iwa-keyframes')) {
+      const ks = document.createElement('style');
+      ks.id = 'cw-iwa-keyframes';
+      ks.textContent = `
+        /* ʻIwa migration: flies in from SE (bottom-right) arcing to center */
+        @keyframes cw-iwa-migrate {
+          0%   { transform: translate(55%, 50%) scale(0.22) rotate(12deg); opacity: 0; }
+          15%  { opacity: 0.5; }
+          40%  { transform: translate(22%, 18%) scale(0.65) rotate(5deg); opacity: 0.85; }
+          68%  { transform: translate(-4%, -6%) scale(1.05) rotate(-2deg); opacity: 1; }
+          80%  { transform: translate(2%, 3%) scale(0.97) rotate(1deg); opacity: 1; }
+          90%  { transform: translate(-1%, -2%) scale(1.01) rotate(0deg); opacity: 1; }
+          100% { transform: translate(0%, 0%) scale(1) rotate(0deg); opacity: 1; }
+        }
+        /* Gentle soaring after landing */
+        @keyframes cw-iwa-soar {
+          0%,100% { transform: translateY(0px) rotate(0deg) scale(1); }
+          20%     { transform: translateY(-5px) rotate(-1.2deg) scale(1.01); }
+          50%     { transform: translateY(-8px) rotate(0.3deg) scale(1.015); }
+          75%     { transform: translateY(-3px) rotate(1deg) scale(0.99); }
+        }
+        #cw-iwa-html {
+          position: absolute;
+          top: 50%; left: 50%;
+          /* Size relative to container — bird is ~28% of container width */
+          width: 28%;
+          max-width: 220px;
+          min-width: 90px;
+          transform: translate(-50%, -50%);
+          pointer-events: all;
+          cursor: pointer;
+          z-index: 20;
+          /* Remove white PNG background:
+             invert(1)         = black bird → white bird, white bg → black bg
+             sepia+hue-rotate  = shift to cyan
+             mix-blend-mode: screen = black bg disappears on dark canvas */
+          filter: invert(1) sepia(1) saturate(7) hue-rotate(148deg) brightness(1.3);
+          mix-blend-mode: screen;
+          animation:
+            cw-iwa-migrate 2.4s cubic-bezier(.25,.46,.45,.94) forwards,
+            cw-iwa-soar 4.5s ease-in-out 2.4s infinite;
+          user-select: none;
+          -webkit-user-drag: none;
+        }
+        #cw-iwa-html:hover {
+          filter: invert(1) sepia(1) saturate(10) hue-rotate(148deg) brightness(1.9);
+        }
+        #cw-iwa-hint {
+          position: absolute;
+          top: calc(50% + 13%);
+          left: 50%;
+          transform: translateX(-50%);
+          font-family: Orbitron, monospace;
+          font-size: 9px;
+          letter-spacing: .1em;
+          color: rgba(0,247,255,.4);
+          pointer-events: none;
+          z-index: 21;
+          animation: cw-iwa-migrate 2.4s cubic-bezier(.25,.46,.45,.94) forwards;
+        }
+      `;
+      document.head.appendChild(ks);
+    }
+
+    const img = document.createElement('img');
+    img.id  = 'cw-iwa-html';
+    img.src = 'assets/images/iwa-middle.png';
+    img.alt = 'ʻIwa frigatebird — click for moʻolelo';
+    img.draggable = false;
+    img.addEventListener('click', showIwaMoolelo);
+    container.appendChild(img);
+
+    const hint = document.createElement('div');
+    hint.id = 'cw-iwa-hint';
+    hint.textContent = 'ʻIWA · CLICK';
+    container.appendChild(hint);
+  }
+
+  function removeIwaBird () {
+    document.getElementById('cw-iwa-html')?.remove();
+    document.getElementById('cw-iwa-hint')?.remove();
+  }
+
+  /* ════════════════════════════════════════════════════════════
      PATCH THE EXISTING STAR OVERLAY
   ════════════════════════════════════════════════════════════ */
   function patchStarOverlay (overlay, globe) {
@@ -1031,6 +1027,7 @@
       overlay._build = function () {
         origBuild();
         ensureCompassBg(this.container);
+        ensureIwaBird(this.container);
         // Wire click events on the SVG (hit layer for stars)
         this._hitLayer?.addEventListener('click', (e) => {
           const starId = e.target.dataset?.starId;
@@ -1056,8 +1053,9 @@
         // Draw enhanced stars (on top, with glow + Hawaiian labels)
         drawEnhancedStars(this.svg, g, W, H);
 
-        // Add compass image background if not done
+        // Add compass image background + ʻiwa bird if not done
         ensureCompassBg(this.container);
+        ensureIwaBird(this.container);
 
         // Update hit layer for our stars
         _updateEnhancedHitLayer(this._hitLayer, g, W, H);
@@ -1080,15 +1078,16 @@
           const H = this.container.clientHeight || 560;
           if (!this.svg) {
             this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            this.svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:12;';
+            this.svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:12;background:transparent;';
             this.container.appendChild(this.svg);
           }
           this.svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
           this.svg.innerHTML = '';
-          this.svg.appendChild((() => { const r = document.createElementNS('http://www.w3.org/2000/svg','rect'); r.setAttribute('width',W); r.setAttribute('height',H); r.setAttribute('fill','rgba(0,2,14,.82)'); return r; })());
+          this.svg.appendChild((() => { const r = document.createElementNS('http://www.w3.org/2000/svg','rect'); r.setAttribute('width',W); r.setAttribute('height',H); r.setAttribute('fill','rgba(0,2,14,.08)'); r.setAttribute('pointer-events','none'); return r; })());
           drawCompassRose(this.svg, W, H, getCameraHeading(g.camera));
           drawEnhancedStars(this.svg, g, W, H);
           ensureCompassBg(this.container);
+          ensureIwaBird(this.container);
         };
         requestAnimationFrame(tick);
       };
@@ -1307,6 +1306,7 @@
           if (p) p.style.right = '-420px';
           const bg = document.getElementById('cw-hsc-compass-bg');
           if (bg) bg.style.opacity = '0';
+          removeIwaBird();
         } else {
           const bg = document.getElementById('cw-hsc-compass-bg');
           if (bg) bg.style.opacity = '0.55';
