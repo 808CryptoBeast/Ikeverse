@@ -925,91 +925,117 @@
      Uses mix-blend-mode: screen properly on an HTML img element.
      Animates the ʻiwa migration path to Hawaiʻi on open.
   ════════════════════════════════════════════════════════════ */
-  function ensureIwaBird (container) {
-    if (document.getElementById('cw-iwa-html')) return;
+  /* ensureIwaBird(container, cx, cy)
+     cx, cy = exact pixel center of the compass inside the container.
+     Uses a zero-size anchor <div> placed AT the compass center,
+     so the bird img inside is always pixel-perfect centered on the compass.
+     Migration animation offsets from that anchor via transform only.
+  */
+  function ensureIwaBird (container, cx, cy) {
+    const compassCx = Math.round(cx || container.clientWidth  / 2);
+    const compassCy = Math.round(cy || container.clientHeight / 2);
 
-    // Inject migration + soar keyframes once
+    // Inject keyframes + base styles once
     if (!document.getElementById('cw-iwa-keyframes')) {
       const ks = document.createElement('style');
       ks.id = 'cw-iwa-keyframes';
       ks.textContent = `
-        /* ʻIwa migration: flies in from SE (bottom-right) arcing to center */
+        /* Migration: ʻiwa flies in from SE, arcs to compass center */
         @keyframes cw-iwa-migrate {
-          0%   { transform: translate(55%, 50%) scale(0.22) rotate(12deg); opacity: 0; }
-          15%  { opacity: 0.5; }
-          40%  { transform: translate(22%, 18%) scale(0.65) rotate(5deg); opacity: 0.85; }
-          68%  { transform: translate(-4%, -6%) scale(1.05) rotate(-2deg); opacity: 1; }
-          80%  { transform: translate(2%, 3%) scale(0.97) rotate(1deg); opacity: 1; }
-          90%  { transform: translate(-1%, -2%) scale(1.01) rotate(0deg); opacity: 1; }
-          100% { transform: translate(0%, 0%) scale(1) rotate(0deg); opacity: 1; }
+          0%   { transform: translate(calc(-50% + 320px), calc(-50% + 210px)) scale(0.18) rotate(18deg); opacity: 0; }
+          12%  { opacity: 0.45; }
+          38%  { transform: translate(calc(-50% + 120px), calc(-50% + 75px))  scale(0.6)  rotate(8deg);  opacity: 0.8; }
+          65%  { transform: translate(calc(-50% - 12px),  calc(-50% - 14px))  scale(1.06) rotate(-3deg); opacity: 1; }
+          80%  { transform: translate(calc(-50% + 5px),   calc(-50% + 6px))   scale(0.97) rotate(1.5deg); }
+          90%  { transform: translate(calc(-50% - 2px),   calc(-50% - 3px))   scale(1.01) rotate(-0.5deg); }
+          100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
         }
-        /* Gentle soaring after landing */
+        /* Gentle thermal soar after arriving */
         @keyframes cw-iwa-soar {
-          0%,100% { transform: translateY(0px) rotate(0deg) scale(1); }
-          20%     { transform: translateY(-5px) rotate(-1.2deg) scale(1.01); }
-          50%     { transform: translateY(-8px) rotate(0.3deg) scale(1.015); }
-          75%     { transform: translateY(-3px) rotate(1deg) scale(0.99); }
+          0%,100% { transform: translate(-50%,-50%) translateY(0px)   rotate(0deg)    scale(1); }
+          22%     { transform: translate(-50%,-50%) translateY(-7px)  rotate(-1.4deg) scale(1.012); }
+          50%     { transform: translate(-50%,-50%) translateY(-10px) rotate(0.2deg)  scale(1.018); }
+          76%     { transform: translate(-50%,-50%) translateY(-4px)  rotate(1.1deg)  scale(0.992); }
         }
+        /* Anchor: zero-size div pinned to compass center pixel */
+        #cw-iwa-anchor {
+          position: absolute;
+          width: 0; height: 0;
+          pointer-events: none;
+          z-index: 20;
+        }
+        /* Bird img centered on the anchor */
         #cw-iwa-html {
           position: absolute;
-          top: 50%; left: 50%;
-          /* Size relative to container — bird is ~28% of container width */
+          /* size = ~28% of container, capped */
           width: 28%;
           max-width: 220px;
-          min-width: 90px;
+          min-width: 80px;
+          /* centered on anchor */
           transform: translate(-50%, -50%);
           pointer-events: all;
           cursor: pointer;
-          z-index: 20;
-          /* Remove white PNG background:
-             invert(1)         = black bird → white bird, white bg → black bg
-             sepia+hue-rotate  = shift to cyan
-             mix-blend-mode: screen = black bg disappears on dark canvas */
+          /* invert black→white, colorize cyan, blend-mode removes white bg box */
           filter: invert(1) sepia(1) saturate(7) hue-rotate(148deg) brightness(1.3);
           mix-blend-mode: screen;
           animation:
-            cw-iwa-migrate 2.4s cubic-bezier(.25,.46,.45,.94) forwards,
-            cw-iwa-soar 4.5s ease-in-out 2.4s infinite;
+            cw-iwa-migrate 2.6s cubic-bezier(.25,.46,.45,.94) forwards,
+            cw-iwa-soar    4.8s ease-in-out 2.6s infinite;
           user-select: none;
           -webkit-user-drag: none;
+          transition: filter .18s;
         }
         #cw-iwa-html:hover {
-          filter: invert(1) sepia(1) saturate(10) hue-rotate(148deg) brightness(1.9);
+          filter: invert(1) sepia(1) saturate(11) hue-rotate(148deg) brightness(2);
         }
+        /* Click hint below bird */
         #cw-iwa-hint {
           position: absolute;
-          top: calc(50% + 13%);
-          left: 50%;
+          /* nudge down ~60% of the img height from anchor */
+          top: 60px;
+          left: 0;
           transform: translateX(-50%);
+          white-space: nowrap;
           font-family: Orbitron, monospace;
-          font-size: 9px;
-          letter-spacing: .1em;
-          color: rgba(0,247,255,.4);
+          font-size: 8px;
+          letter-spacing: .12em;
+          color: rgba(0,247,255,.38);
           pointer-events: none;
-          z-index: 21;
-          animation: cw-iwa-migrate 2.4s cubic-bezier(.25,.46,.45,.94) forwards;
+          animation: cw-iwa-migrate 2.6s cubic-bezier(.25,.46,.45,.94) forwards;
         }
       `;
       document.head.appendChild(ks);
     }
 
-    const img = document.createElement('img');
-    img.id  = 'cw-iwa-html';
-    img.src = 'assets/images/iwa-middle.png';
-    img.alt = 'ʻIwa frigatebird — click for moʻolelo';
-    img.draggable = false;
-    img.addEventListener('click', showIwaMoolelo);
-    container.appendChild(img);
+    // Create or update the anchor position
+    let anchor = document.getElementById('cw-iwa-anchor');
+    if (!anchor) {
+      anchor = document.createElement('div');
+      anchor.id = 'cw-iwa-anchor';
 
-    const hint = document.createElement('div');
-    hint.id = 'cw-iwa-hint';
-    hint.textContent = 'ʻIWA · CLICK';
-    container.appendChild(hint);
+      const img = document.createElement('img');
+      img.id  = 'cw-iwa-html';
+      img.src = 'assets/images/iwa-middle.png';
+      img.alt = 'ʻIwa frigatebird — click for moʻolelo';
+      img.draggable = false;
+      img.addEventListener('click', showIwaMoolelo);
+      anchor.appendChild(img);
+
+      const hint = document.createElement('div');
+      hint.id = 'cw-iwa-hint';
+      hint.textContent = 'ʻIWA · CLICK';
+      anchor.appendChild(hint);
+
+      container.appendChild(anchor);
+    }
+
+    // Always update anchor position to exact compass center
+    anchor.style.left = compassCx + 'px';
+    anchor.style.top  = compassCy + 'px';
   }
 
   function removeIwaBird () {
-    document.getElementById('cw-iwa-html')?.remove();
-    document.getElementById('cw-iwa-hint')?.remove();
+    document.getElementById('cw-iwa-anchor')?.remove();
   }
 
   /* ════════════════════════════════════════════════════════════
@@ -1053,9 +1079,9 @@
         // Draw enhanced stars (on top, with glow + Hawaiian labels)
         drawEnhancedStars(this.svg, g, W, H);
 
-        // Add compass image background + ʻiwa bird if not done
+        // Add compass image + ʻiwa bird pinned to SVG compass center
         ensureCompassBg(this.container);
-        ensureIwaBird(this.container);
+        ensureIwaBird(this.container, W / 2, H / 2);
 
         // Update hit layer for our stars
         _updateEnhancedHitLayer(this._hitLayer, g, W, H);
@@ -1087,7 +1113,7 @@
           drawCompassRose(this.svg, W, H, getCameraHeading(g.camera));
           drawEnhancedStars(this.svg, g, W, H);
           ensureCompassBg(this.container);
-          ensureIwaBird(this.container);
+          ensureIwaBird(this.container, W / 2, H / 2);
         };
         requestAnimationFrame(tick);
       };
