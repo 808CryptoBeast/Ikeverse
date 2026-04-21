@@ -695,7 +695,7 @@
     bg = document.createElement('img');
     bg.id = 'cw-hsc-compass-bg';
     // Save hawaiian-star-compass.png to assets/images/ in your repo
-    bg.src = 'assets/images/hawaiian-star-compass.png';
+    bg.src = 'assets/images/hawaiian-star-compass.jpg';
     bg.alt = 'Nainoa\'s Hawaiian Star Compass';
     bg.style.cssText = `
       position: absolute;
