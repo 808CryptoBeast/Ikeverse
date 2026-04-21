@@ -419,128 +419,396 @@
   /* ════════════════════════════════════════════════════════════
      DRAW THE COMPASS ROSE — SVG ring with 32 houses
   ════════════════════════════════════════════════════════════ */
+  /* ══ ʻIWA FRIGATEBIRD moʻolelo ══════════════════════════════ */
+  const IWA_MOOLELO = {
+    name: "ʻIwa",
+    meaning: "Frigatebird / Thief",
+    significance: "The ʻIwa — the frigatebird — is the master navigator's compass made flesh. Hawaiian voyagers called it ʻiwa, meaning 'thief,' because it steals fish from other seabirds in flight. But to the navigator, the ʻiwa was something far more sacred: a living landmark in the open ocean.",
+    navigation: [
+      "The ʻiwa never lands on the water — it cannot swim and its feathers are not waterproofed. When a navigator spots ʻiwa in the open ocean, land is within 60 miles.",
+      "ʻIwa always fly toward land at sunset to roost. Watching which direction they fly at dusk gives the navigator a bearing toward the nearest island.",
+      "When ʻiwa circle high on thermals above the sea, they mark the edge of a reef or shallow bank — even one not visible. The birds know where the fish are, and the fish know where the reef is.",
+      "A large flock of ʻiwa flying in formation, all heading the same direction, is one of the strongest land-finding signs available to a navigator far from shore.",
+    ],
+    ecology: "The ʻiwa (Fregata minor, Great Frigatebird) has the largest wingspan-to-body-weight ratio of any bird — perfectly adapted for soaring on thermals without flapping for hours. The male inflates a brilliant red throat pouch during mating season. They range up to 400km from shore in search of food, but always return to land each night.",
+    symbol: "In the Hōkūleʻa tradition, the ʻiwa represents the union of celestial navigation and nature reading — the complete voyager uses both stars and living signs. The bird at the center of Nainoa's star compass is not decoration. It is a reminder that the ocean is alive, and that navigation is a conversation with that life.",
+    cultural: "The ʻiwa appears in Hawaiian mele (chants) as a symbol of grace, mastery, and the ability to move between worlds — the sky above and the ocean below. For Nainoa Thompson, the ʻiwa placed at the heart of the compass honors the bird that helped the first Hawaiians find their islands across 2,400 miles of open Pacific."
+  };
+
+  function showIwaMoolelo () {
+    const existing = document.getElementById('cw-iwa-modal');
+    if (existing) { existing.remove(); return; }
+
+    const modal = document.createElement('div');
+    modal.id = 'cw-iwa-modal';
+    modal.style.cssText = `
+      position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+      z-index:20000; width:min(500px,96vw); max-height:85vh; overflow-y:auto;
+      background:rgba(2,5,18,.98); border:1px solid rgba(0,247,255,.2);
+      border-radius:20px; padding:0;
+      box-shadow:0 24px 80px rgba(0,0,0,.85), 0 0 60px rgba(0,247,255,.06);
+      font-family:'Exo 2',sans-serif; scrollbar-width:thin;
+      scrollbar-color:rgba(0,247,255,.2) transparent;
+    `;
+
+    modal.innerHTML = `
+      <div style="position:relative;">
+        <!-- Header with bird silhouette -->
+        <div style="padding:28px 28px 20px;border-bottom:1px solid rgba(0,247,255,.1);
+                    background:linear-gradient(180deg,rgba(0,247,255,.05),transparent);
+                    display:flex;align-items:center;gap:20px;">
+          <!-- SVG frigatebird -->
+          <svg viewBox="0 0 120 80" width="90" height="60" style="flex-shrink:0;filter:drop-shadow(0 0 12px rgba(0,247,255,.5));">
+            <g fill="rgba(0,247,255,.85)" stroke="none">
+              <!-- Body -->
+              <ellipse cx="60" cy="42" rx="22" ry="10"/>
+              <!-- Head -->
+              <ellipse cx="82" cy="34" rx="10" ry="8"/>
+              <!-- Beak (hooked) -->
+              <path d="M 90,32 Q 102,30 104,34 Q 102,36 94,36 Z"/>
+              <!-- Tail (forked — distinctive frigatebird feature) -->
+              <path d="M 40,44 Q 20,55 8,70 Q 15,58 22,52"/>
+              <path d="M 40,44 Q 22,48 6,54 Q 14,46 22,44"/>
+              <!-- Left wing (spread) -->
+              <path d="M 58,38 Q 30,20 4,28 Q 15,24 30,28 Q 44,30 58,40"/>
+              <path d="M 58,38 Q 40,16 12,10 Q 26,14 42,22 Q 52,28 58,38"/>
+              <!-- Right wing (spread) -->
+              <path d="M 62,38 Q 88,22 116,28 Q 104,24 90,28 Q 76,30 62,40"/>
+              <path d="M 62,38 Q 82,16 108,10 Q 96,14 80,22 Q 68,28 62,38"/>
+              <!-- Throat pouch (male) -->
+              <ellipse cx="82" cy="40" rx="6" ry="5" fill="rgba(255,50,50,.4)" stroke="rgba(255,100,100,.3)" stroke-width="0.8"/>
+            </g>
+          </svg>
+          <div>
+            <div style="font-family:Orbitron,monospace;font-size:1.3rem;font-weight:700;
+                        letter-spacing:.08em;color:rgba(0,247,255,.95);
+                        text-shadow:0 0 24px rgba(0,247,255,.6);margin-bottom:4px;">ʻIWA</div>
+            <div style="font-size:.8rem;color:rgba(255,215,0,.6);font-style:italic;margin-bottom:2px;">${IWA_MOOLELO.meaning}</div>
+            <div style="font-size:.72rem;color:rgba(255,255,255,.3);font-family:Orbitron,monospace;letter-spacing:.06em;">
+              Fregata minor · Great Frigatebird
+            </div>
+          </div>
+          <button onclick="this.closest('#cw-iwa-modal').remove()" style="
+            position:absolute;top:16px;right:16px;width:34px;height:34px;
+            border-radius:9px;border:1px solid rgba(255,255,255,.12);
+            background:rgba(255,255,255,.05);color:rgba(255,255,255,.7);
+            cursor:pointer;display:flex;align-items:center;justify-content:center;
+            font-size:.85rem;">✕</button>
+        </div>
+
+        <div style="padding:22px 28px;display:flex;flex-direction:column;gap:18px;">
+
+          <!-- Significance -->
+          <p style="font-size:.88rem;line-height:1.75;color:rgba(255,255,255,.78);
+                    border-left:3px solid rgba(0,247,255,.3);padding-left:14px;
+                    font-style:italic;">
+            ${IWA_MOOLELO.significance}
+          </p>
+
+          <!-- Navigation Signs -->
+          <div>
+            <div style="font-family:Orbitron,monospace;font-size:.68rem;font-weight:700;
+                        letter-spacing:.14em;text-transform:uppercase;
+                        color:rgba(0,247,255,.5);margin-bottom:12px;
+                        display:flex;align-items:center;gap:8px;">
+              <i class="fas fa-compass"></i> How Navigators Read the ʻIwa
+            </div>
+            ${IWA_MOOLELO.navigation.map((n, i) => `
+              <div style="display:flex;gap:12px;margin-bottom:10px;
+                          padding:10px 12px;border-radius:10px;
+                          background:rgba(0,247,255,.04);
+                          border:1px solid rgba(0,247,255,.08);">
+                <div style="font-family:Orbitron,monospace;font-size:.7rem;
+                            color:rgba(0,247,255,.4);flex-shrink:0;
+                            margin-top:2px;width:18px;text-align:center;">
+                  ${i + 1}
+                </div>
+                <div style="font-size:.82rem;line-height:1.6;color:rgba(255,255,255,.72);">${n}</div>
+              </div>`).join('')}
+          </div>
+
+          <!-- Ecology -->
+          <div style="padding:14px;border-radius:12px;
+                      background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.1);">
+            <div style="font-family:Orbitron,monospace;font-size:.65rem;letter-spacing:.12em;
+                        color:rgba(255,215,0,.5);margin-bottom:8px;text-transform:uppercase;">
+              <i class="fas fa-feather"></i> The Bird Itself
+            </div>
+            <p style="font-size:.82rem;line-height:1.65;color:rgba(255,255,255,.68);">
+              ${IWA_MOOLELO.ecology}
+            </p>
+          </div>
+
+          <!-- Symbol -->
+          <div style="padding:14px;border-radius:12px;
+                      background:rgba(157,0,255,.05);border:1px solid rgba(157,0,255,.15);">
+            <div style="font-family:Orbitron,monospace;font-size:.65rem;letter-spacing:.12em;
+                        color:rgba(157,0,255,.6);margin-bottom:8px;text-transform:uppercase;">
+              <i class="fas fa-star"></i> The Bird at the Center
+            </div>
+            <p style="font-size:.82rem;line-height:1.65;color:rgba(255,255,255,.68);">
+              ${IWA_MOOLELO.symbol}
+            </p>
+          </div>
+
+          <!-- Cultural -->
+          <div style="padding:14px;border-radius:12px;
+                      background:rgba(60,179,113,.04);border:1px solid rgba(60,179,113,.12);">
+            <div style="font-family:Orbitron,monospace;font-size:.65rem;letter-spacing:.12em;
+                        color:rgba(60,179,113,.6);margin-bottom:8px;text-transform:uppercase;">
+              <i class="fas fa-scroll"></i> Moʻolelo
+            </div>
+            <p style="font-size:.82rem;line-height:1.65;color:rgba(255,255,255,.68);">
+              ${IWA_MOOLELO.cultural}
+            </p>
+          </div>
+
+        </div>
+      </div>`;
+
+    document.body.appendChild(modal);
+    // Close on backdrop click outside modal content
+    setTimeout(() => {
+      document.addEventListener('click', function closeOnOutside(e) {
+        if (!modal.contains(e.target)) {
+          modal.remove();
+          document.removeEventListener('click', closeOnOutside);
+        }
+      });
+    }, 100);
+  }
+
   function drawCompassRose (svg, W, H, cameraHeading) {
     const cx = W / 2, cy = H / 2;
-    const outerR = Math.min(W, H) * 0.48;
-    const innerR = outerR * 0.78;
-    const tickR  = outerR * 0.88;
+    const outerR   = Math.min(W, H) * 0.47;
+    const innerR   = outerR * 0.76;
+    const spokeR   = outerR * 0.94; // where spoke labels end (inside outer ring)
+    const birdR    = outerR * 0.22; // frigatebird hitzone radius
 
-    const E = (tag, attrs) => {
+    const E = (tag, attrs, text) => {
       const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
       Object.entries(attrs).forEach(([k,v]) => el.setAttribute(k, v));
+      if (text != null) el.textContent = text;
       return el;
     };
 
     const compassG = E('g', { class: 'cw-compass-rose' });
-    // Rotate compass by -cameraHeading so north stays at top
     compassG.setAttribute('transform', `translate(${cx},${cy}) rotate(${-cameraHeading})`);
 
-    /* Outer decorative rings */
-    [outerR, outerR * 0.96, innerR].forEach((r, i) => {
-      compassG.appendChild(E('circle', {
-        cx: 0, cy: 0, r,
-        fill: 'none',
-        stroke: i === 0 ? 'rgba(0,247,255,.35)' : i === 1 ? 'rgba(0,247,255,.12)' : 'rgba(255,215,0,.15)',
-        'stroke-width': i === 0 ? '1.5' : '0.7',
-      }));
-    });
+    /* ── Rings ── */
+    compassG.appendChild(E('circle', { cx:0, cy:0, r: outerR, fill:'none',
+      stroke:'rgba(0,247,255,.4)', 'stroke-width':'1.8' }));
+    compassG.appendChild(E('circle', { cx:0, cy:0, r: outerR * 0.975, fill:'none',
+      stroke:'rgba(0,247,255,.1)', 'stroke-width':'0.6' }));
+    compassG.appendChild(E('circle', { cx:0, cy:0, r: innerR, fill:'none',
+      stroke:'rgba(255,215,0,.18)', 'stroke-width':'0.8' }));
+    compassG.appendChild(E('circle', { cx:0, cy:0, r: innerR * 0.96, fill:'none',
+      stroke:'rgba(255,215,0,.06)', 'stroke-width':'0.4' }));
 
-    /* 32 house ticks + labels */
-    COMPASS_HOUSES.forEach(house => {
+    /* ── All 32 houses — tick + BOTH outer label AND inner radial spoke label ── */
+    COMPASS_HOUSES.forEach((house, idx) => {
       const rad = (house.bearing - 90) * Math.PI / 180;
-      const isCardinal     = house.type === 'cardinal';
+      const isCardinal      = house.type === 'cardinal';
       const isIntercardinal = house.type === 'intercardinal';
-      const tickLen = isCardinal ? outerR * 0.14 : isIntercardinal ? outerR * 0.09 : outerR * 0.06;
-      const tickOuter = outerR;
-      const tickInner = outerR - tickLen;
 
-      // Tick mark
+      /* Tick mark on outer ring */
+      const tickLen = isCardinal ? outerR * 0.13 : isIntercardinal ? outerR * 0.08 : outerR * 0.055;
       compassG.appendChild(E('line', {
-        x1: tickOuter * Math.cos(rad), y1: tickOuter * Math.sin(rad),
-        x2: tickInner * Math.cos(rad), y2: tickInner * Math.sin(rad),
+        x1: outerR * Math.cos(rad),       y1: outerR * Math.sin(rad),
+        x2: (outerR - tickLen) * Math.cos(rad), y2: (outerR - tickLen) * Math.sin(rad),
         stroke: house.color,
-        'stroke-width': isCardinal ? '2.5' : isIntercardinal ? '1.8' : '0.9',
+        'stroke-width': isCardinal ? '2.8' : isIntercardinal ? '2' : '1',
         'stroke-linecap': 'round',
-        opacity: isCardinal ? '1' : isIntercardinal ? '0.85' : '0.6',
+        opacity: isCardinal ? '1' : isIntercardinal ? '0.9' : '0.65',
       }));
 
-      // Label (only for unique house names + cardinals)
-      const showLabel = isCardinal || isIntercardinal || [0, 4, 8, 12, 16, 20, 24, 28].includes(COMPASS_HOUSES.indexOf(house));
-      if (!showLabel && !isCardinal && !isIntercardinal) return;
+      /* ── OUTER label (outside ring) — house name ── */
+      const outerLabelR = outerR + (isCardinal ? 26 : isIntercardinal ? 20 : 15);
+      const olx = outerLabelR * Math.cos(rad);
+      const oly = outerLabelR * Math.sin(rad);
 
-      const labelR = outerR + (isCardinal ? 28 : isIntercardinal ? 22 : 18);
-      const lx = labelR * Math.cos(rad);
-      const ly = labelR * Math.sin(rad);
-      const labelAngle = house.bearing; // counter-rotate label so it's readable
-
-      const text = E('text', {
-        x: lx, y: ly,
-        'text-anchor': 'middle',
-        'dominant-baseline': 'middle',
+      const outerLabel = E('text', {
+        x: olx, y: oly,
+        'text-anchor': 'middle', 'dominant-baseline': 'middle',
         fill: house.color,
         'font-size': isCardinal ? '11' : isIntercardinal ? '9' : '7.5',
         'font-family': 'Orbitron,monospace',
-        'font-weight': isCardinal ? '700' : '500',
-        'letter-spacing': '.08em',
-        transform: `rotate(${labelAngle}, ${lx}, ${ly})`,
-        filter: isCardinal ? `drop-shadow(0 0 6px ${house.color})` : isIntercardinal ? `drop-shadow(0 0 4px ${house.color})` : 'none',
-        opacity: isCardinal ? '1' : '0.85',
-      });
-      text.textContent = house.name;
-      compassG.appendChild(text);
+        'font-weight': isCardinal ? '700' : isIntercardinal ? '600' : '500',
+        'letter-spacing': '.07em',
+        transform: `rotate(${house.bearing}, ${olx}, ${oly})`,
+        filter: isCardinal
+          ? `drop-shadow(0 0 8px ${house.color})`
+          : isIntercardinal ? `drop-shadow(0 0 5px ${house.color})` : 'none',
+        opacity: isCardinal ? '1' : '0.88',
+      }, house.name);
+      compassG.appendChild(outerLabel);
 
-      // Cardinal meaning sub-label
+      /* Cardinal bearing sub-label outside */
       if (isCardinal) {
-        const subText = E('text', {
-          x: lx, y: ly + (house.bearing === 90 || house.bearing === 270 ? 0 : 13),
+        const slx = (outerLabelR + 12) * Math.cos(rad);
+        const sly = (outerLabelR + 12) * Math.sin(rad);
+        compassG.appendChild(E('text', {
+          x: slx, y: sly,
           'text-anchor': 'middle', 'dominant-baseline': 'middle',
-          fill: 'rgba(255,255,255,.35)',
-          'font-size': '7', 'font-family': 'Orbitron,monospace',
-          transform: `rotate(${labelAngle}, ${lx}, ${ly + 13})`,
-        });
-        subText.textContent = house.meaning;
-        compassG.appendChild(subText);
+          fill: 'rgba(255,255,255,.32)', 'font-size': '7',
+          'font-family': 'Orbitron,monospace',
+          transform: `rotate(${house.bearing}, ${slx}, ${sly})`,
+        }, house.meaning));
       }
+
+      /* ── INNER radial spoke label — radiates from inner ring toward center ──
+         This recreates the radial text spokes visible in the compass image.
+         Text sits between innerR and innerR*0.45, rotated along the spoke.
+      ── */
+      const spokeMidR = innerR * 0.68;
+      const slx = spokeMidR * Math.cos(rad);
+      const sly = spokeMidR * Math.sin(rad);
+
+      // Rotate text so it reads along the spoke (outward from center)
+      // Flip text on left side so it reads correctly
+      const textAngle = house.bearing <= 180 ? house.bearing : house.bearing - 180;
+      const flip      = house.bearing > 180 ? 'scale(-1,-1)' : '';
+
+      // Degree label for ALL houses on inner spoke
+      const degStr = `${house.bearing.toFixed(2)}°`;
+      const spokeLabel = E('text', {
+        x: 0, y: 0,
+        'text-anchor': 'middle', 'dominant-baseline': 'middle',
+        fill: isCardinal ? house.color : isIntercardinal ? `${house.color}cc` : `${house.color}88`,
+        'font-size': isCardinal ? '8' : isIntercardinal ? '7' : '6',
+        'font-family': 'Orbitron,monospace',
+        'font-weight': isCardinal ? '700' : '500',
+        'letter-spacing': '.06em',
+        filter: isCardinal ? `drop-shadow(0 0 6px ${house.color})` : 'none',
+        transform: `translate(${slx},${sly}) rotate(${textAngle + 90}) ${flip}`,
+        'pointer-events': 'none',
+      }, `${house.name} · ${house.meaning}`);
+      compassG.appendChild(spokeLabel);
+
+      /* Spoke line from inner ring inward */
+      const spokeInnerR = innerR * 0.38;
+      const alpha = isCardinal ? '0.5' : isIntercardinal ? '0.3' : '0.15';
+      compassG.appendChild(E('line', {
+        x1: innerR * Math.cos(rad),       y1: innerR * Math.sin(rad),
+        x2: spokeInnerR * Math.cos(rad),  y2: spokeInnerR * Math.sin(rad),
+        stroke: house.color,
+        'stroke-width': isCardinal ? '0.9' : isIntercardinal ? '0.6' : '0.4',
+        'stroke-dasharray': isCardinal ? '3 4' : '2 5',
+        opacity: alpha,
+        'pointer-events': 'none',
+      }));
     });
 
-    /* Four horizon wind quadrant labels */
+    /* ── Four horizon wind labels (outside outerR) ── */
     HORIZON_WINDS.forEach(wind => {
       const rad = (wind.bearing - 90) * Math.PI / 180;
-      const lr  = outerR + 58;
+      const lr  = outerR + 55;
       const lx  = lr * Math.cos(rad), ly = lr * Math.sin(rad);
-      const text = E('text', {
-        x: lx, y: ly,
-        'text-anchor': 'middle', 'dominant-baseline': 'middle',
-        fill: 'rgba(167,139,250,.6)',
-        'font-size': '8.5', 'font-family': 'Orbitron,monospace', 'font-weight': '600',
+
+      compassG.appendChild(E('text', {
+        x: lx, y: ly, 'text-anchor': 'middle', 'dominant-baseline': 'middle',
+        fill: 'rgba(167,139,250,.72)',
+        'font-size': '8.5', 'font-family': 'Orbitron,monospace', 'font-weight': '700',
         'letter-spacing': '.1em',
         transform: `rotate(${wind.bearing}, ${lx}, ${ly})`,
-      });
-      text.textContent = wind.name;
-      compassG.appendChild(text);
+        filter: 'drop-shadow(0 0 6px rgba(167,139,250,.5))',
+      }, wind.name));
 
-      const sub = E('text', {
-        x: lx, y: ly + 10,
+      compassG.appendChild(E('text', {
+        x: (lr + 11) * Math.cos(rad), y: (lr + 11) * Math.sin(rad),
         'text-anchor': 'middle', 'dominant-baseline': 'middle',
-        fill: 'rgba(167,139,250,.35)',
-        'font-size': '6.5', 'font-family': 'Orbitron,monospace',
-        transform: `rotate(${wind.bearing}, ${lx}, ${ly + 10})`,
-      });
-      sub.textContent = wind.meaning;
-      compassG.appendChild(sub);
+        fill: 'rgba(167,139,250,.35)', 'font-size': '6.5',
+        'font-family': 'Orbitron,monospace',
+        transform: `rotate(${wind.bearing}, ${(lr+11)*Math.cos(rad)}, ${(lr+11)*Math.sin(rad)})`,
+      }, wind.meaning));
     });
 
-    /* North arrow (always at top of compass ring, rotates with ring) */
-    const northRad = -Math.PI / 2; // up
-    const arrowTip = (outerR - 18);
-    const arrowPath = E('path', {
-      d: `M 0,-${arrowTip} L -6,-${arrowTip-20} L 0,-${arrowTip-8} L 6,-${arrowTip-20} Z`,
+    /* ── North arrow ── */
+    const arrowTip = outerR - 16;
+    compassG.appendChild(E('path', {
+      d: `M 0,-${arrowTip} L -7,-${arrowTip - 22} L 0,-${arrowTip - 9} L 7,-${arrowTip - 22} Z`,
       fill: '#00f7ff',
-      filter: 'drop-shadow(0 0 8px rgba(0,247,255,.8))',
-    });
-    compassG.appendChild(arrowPath);
+      filter: 'drop-shadow(0 0 10px rgba(0,247,255,.9))',
+    }));
 
     svg.appendChild(compassG);
+
+    /* ── ʻIWA FRIGATEBIRD — center, NOT rotated with compass ── */
+    /* Placed in a separate group so it stays upright while compass rotates */
+    const iwaG = E('g', { class: 'cw-iwa-bird', transform: `translate(${cx},${cy})` });
+
+    /* Glow halo */
+    iwaG.appendChild(E('circle', { cx:0, cy:0, r: birdR * 1.4,
+      fill:'rgba(0,247,255,.04)', 'pointer-events':'none' }));
+    iwaG.appendChild(E('circle', { cx:0, cy:0, r: birdR * 0.9,
+      fill:'rgba(0,247,255,.06)', 'pointer-events':'none' }));
+
+    /* ʻIwa SVG silhouette — frigatebird with forked tail + spread wings */
+    const birdScale = birdR / 55; // normalise to our radius
+    const birdPath = E('g', {
+      transform: `scale(${birdScale}) translate(-60,-42)`,
+      fill: 'rgba(0,247,255,.75)',
+      filter: 'drop-shadow(0 0 8px rgba(0,247,255,.6))',
+      cursor: 'pointer',
+      style: 'pointer-events:all;',
+      class: 'cw-iwa-clickable',
+    });
+
+    /* Body */
+    birdPath.appendChild(E('ellipse', { cx:'60', cy:'42', rx:'22', ry:'10' }));
+    /* Head */
+    birdPath.appendChild(E('ellipse', { cx:'82', cy:'34', rx:'10', ry:'8' }));
+    /* Hooked beak */
+    birdPath.appendChild(E('path', { d:'M 90,32 Q 104,29 106,34 Q 103,37 94,36 Z' }));
+    /* Forked tail — distinctive frigatebird */
+    birdPath.appendChild(E('path', { d:'M 40,44 Q 18,56 6,72 Q 14,58 24,50' }));
+    birdPath.appendChild(E('path', { d:'M 40,46 Q 20,50 4,56 Q 14,48 24,46' }));
+    /* Left wing upper */
+    birdPath.appendChild(E('path', { d:'M 58,38 Q 28,18 2,26 Q 16,22 32,26 Q 46,30 58,40' }));
+    /* Left wing lower */
+    birdPath.appendChild(E('path', { d:'M 58,40 Q 38,14 10,8 Q 26,12 42,20 Q 52,28 58,40' }));
+    /* Right wing upper */
+    birdPath.appendChild(E('path', { d:'M 62,38 Q 92,18 118,26 Q 104,22 88,26 Q 74,30 62,40' }));
+    /* Right wing lower */
+    birdPath.appendChild(E('path', { d:'M 62,40 Q 82,14 110,8 Q 94,12 78,20 Q 68,28 62,40' }));
+    /* Throat pouch (red — male) */
+    birdPath.appendChild(E('ellipse', {
+      cx:'82', cy:'41', rx:'7', ry:'5.5',
+      fill:'rgba(255,60,60,.45)', stroke:'rgba(255,120,120,.3)', 'stroke-width':'0.8',
+    }));
+
+    iwaG.appendChild(birdPath);
+
+    /* Invisible large hitzone for easy clicking */
+    const hitzone = E('circle', {
+      cx:0, cy:0, r: birdR,
+      fill:'transparent', cursor:'pointer',
+      style:'pointer-events:all;',
+      class:'cw-iwa-hit',
+    });
+    iwaG.appendChild(hitzone);
+
+    /* Click label beneath bird */
+    const clickHint = E('text', {
+      x:0, y: birdR * 0.85,
+      'text-anchor':'middle', 'dominant-baseline':'middle',
+      fill:'rgba(0,247,255,.35)',
+      'font-size':'7', 'font-family':'Orbitron,monospace',
+      'letter-spacing':'.08em', 'pointer-events':'none',
+    }, 'ʻIWA · CLICK');
+    iwaG.appendChild(clickHint);
+
+    svg.appendChild(iwaG);
+
+    /* Wire click — directly on SVG elements since hitlayer is separate */
+    svg.addEventListener('click', (e) => {
+      const t = e.target;
+      if (t.classList.contains('cw-iwa-hit') || t.classList.contains('cw-iwa-clickable') ||
+          t.closest('.cw-iwa-clickable') || t.closest('.cw-iwa-bird')) {
+        showIwaMoolelo();
+        e.stopPropagation();
+      }
+    }, { capture: false });
   }
 
   /* ════════════════════════════════════════════════════════════
