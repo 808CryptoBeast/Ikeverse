@@ -931,6 +931,49 @@
      so the bird img inside is always pixel-perfect centered on the compass.
      Migration animation offsets from that anchor via transform only.
   */
+  /* ── Canvas pixel-processor: converts black-on-white PNG → transparent cyan PNG ──
+     Avoids the CSS blend-mode stacking context problem entirely.
+     White/light pixels → fully transparent.
+     Dark pixels → cyan with glow opacity proportional to darkness.
+     Returns a data: URL with proper alpha channel, or null on CORS failure.
+  */
+  function _processIwaImage (src, callback) {
+    if (window._iwaDataUrl !== undefined) { callback(window._iwaDataUrl); return; }
+    const tmp = new Image();
+    tmp.crossOrigin = 'anonymous';
+    tmp.onload = () => {
+      try {
+        const c = document.createElement('canvas');
+        c.width = tmp.naturalWidth; c.height = tmp.naturalHeight;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(tmp, 0, 0);
+        const id = ctx.getImageData(0, 0, c.width, c.height);
+        const d  = id.data;
+        for (let i = 0; i < d.length; i += 4) {
+          // Luminance of the original pixel (0=black bird, 1=white bg)
+          const lum = (d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114) / 255;
+          if (lum > 0.55) {
+            d[i+3] = 0;               // background → fully transparent
+          } else {
+            const str = 1 - lum / 0.55; // 0..1 how dark the pixel is
+            d[i]   = 0;                  // R=0
+            d[i+1] = Math.round(247 * str);  // G
+            d[i+2] = Math.round(255 * str);  // B
+            d[i+3] = Math.round(245 * str);  // A — opaque where darkest
+          }
+        }
+        ctx.putImageData(id, 0, 0);
+        window._iwaDataUrl = c.toDataURL();
+        callback(window._iwaDataUrl);
+      } catch (e) {
+        window._iwaDataUrl = null;
+        callback(null);
+      }
+    };
+    tmp.onerror = () => { window._iwaDataUrl = null; callback(null); };
+    tmp.src = src;
+  }
+
   function ensureIwaBird (container, cx, cy) {
     const compassCx = Math.round(cx || container.clientWidth  / 2);
     const compassCy = Math.round(cy || container.clientHeight / 2);
@@ -940,44 +983,39 @@
       const ks = document.createElement('style');
       ks.id = 'cw-iwa-keyframes';
       ks.textContent = `
-        /* Migration: ʻiwa flies in from SE, arcs to compass center */
         @keyframes cw-iwa-migrate {
-          0%   { transform: translate(calc(-50% + 320px), calc(-50% + 210px)) scale(0.18) rotate(18deg); opacity: 0; }
+          0%   { transform: translate(calc(-50% + 320px), calc(-50% + 200px)) scale(0.18) rotate(18deg); opacity: 0; }
           12%  { opacity: 0.45; }
-          38%  { transform: translate(calc(-50% + 120px), calc(-50% + 75px))  scale(0.6)  rotate(8deg);  opacity: 0.8; }
-          65%  { transform: translate(calc(-50% - 12px),  calc(-50% - 14px))  scale(1.06) rotate(-3deg); opacity: 1; }
+          38%  { transform: translate(calc(-50% + 120px), calc(-50% + 74px))  scale(0.62) rotate(8deg);  opacity: 0.82; }
+          65%  { transform: translate(calc(-50% - 12px),  calc(-50% - 14px))  scale(1.07) rotate(-3deg); opacity: 1; }
           80%  { transform: translate(calc(-50% + 5px),   calc(-50% + 6px))   scale(0.97) rotate(1.5deg); }
           90%  { transform: translate(calc(-50% - 2px),   calc(-50% - 3px))   scale(1.01) rotate(-0.5deg); }
           100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
         }
-        /* Gentle thermal soar after arriving */
         @keyframes cw-iwa-soar {
           0%,100% { transform: translate(-50%,-50%) translateY(0px)   rotate(0deg)    scale(1); }
-          22%     { transform: translate(-50%,-50%) translateY(-7px)  rotate(-1.4deg) scale(1.012); }
-          50%     { transform: translate(-50%,-50%) translateY(-10px) rotate(0.2deg)  scale(1.018); }
-          76%     { transform: translate(-50%,-50%) translateY(-4px)  rotate(1.1deg)  scale(0.992); }
+          22%     { transform: translate(-50%,-50%) translateY(-8px)  rotate(-1.5deg) scale(1.013); }
+          50%     { transform: translate(-50%,-50%) translateY(-12px) rotate(0.2deg)  scale(1.02); }
+          76%     { transform: translate(-50%,-50%) translateY(-5px)  rotate(1.2deg)  scale(0.991); }
         }
-        /* Anchor: zero-size div pinned to compass center pixel */
         #cw-iwa-anchor {
           position: absolute;
           width: 0; height: 0;
           pointer-events: none;
           z-index: 20;
         }
-        /* Bird img centered on the anchor */
         #cw-iwa-html {
           position: absolute;
-          /* size = ~28% of container, capped */
-          width: 42%;
-          max-width: 320px;
-          min-width: 110px;
-          /* centered on anchor */
+          width: 52%;
+          max-width: 380px;
+          min-width: 130px;
           transform: translate(-50%, -50%);
           pointer-events: all;
           cursor: pointer;
-          /* invert black→white, colorize cyan, blend-mode removes white bg box */
-          filter: invert(1) grayscale(1) contrast(30) sepia(1) hue-rotate(148deg) saturate(9) brightness(1.5);
-          mix-blend-mode: screen;
+          /* Glow added via drop-shadow after canvas processing removes the box */
+          filter: drop-shadow(0 0 10px rgba(0,247,255,.55))
+                  drop-shadow(0 0 24px rgba(0,247,255,.28))
+                  drop-shadow(0 0 48px rgba(0,247,255,.12));
           animation:
             cw-iwa-migrate 2.6s cubic-bezier(.25,.46,.45,.94) forwards,
             cw-iwa-soar    4.8s ease-in-out 2.6s infinite;
@@ -985,14 +1023,26 @@
           -webkit-user-drag: none;
           transition: filter .18s;
         }
-        #cw-iwa-html:hover {
-          filter: invert(1) grayscale(1) contrast(30) sepia(1) hue-rotate(148deg) saturate(12) brightness(2.2);
+        #cw-iwa-html.fallback {
+          /* Fallback if canvas fails: filter-based with screen blend */
+          filter: invert(1) grayscale(1) contrast(40)
+                  sepia(1) hue-rotate(148deg) saturate(10) brightness(1.6)
+                  drop-shadow(0 0 12px rgba(0,247,255,.6));
+          mix-blend-mode: screen;
         }
-        /* Click hint below bird */
+        #cw-iwa-html:hover {
+          filter: drop-shadow(0 0 14px rgba(0,247,255,.9))
+                  drop-shadow(0 0 32px rgba(0,247,255,.5))
+                  drop-shadow(0 0 60px rgba(0,247,255,.25));
+        }
+        #cw-iwa-html.fallback:hover {
+          filter: invert(1) grayscale(1) contrast(40)
+                  sepia(1) hue-rotate(148deg) saturate(14) brightness(2.2);
+          mix-blend-mode: screen;
+        }
         #cw-iwa-hint {
           position: absolute;
-          /* nudge down ~60% of the img height from anchor */
-          top: 84px;
+          top: 100px;
           left: 0;
           transform: translateX(-50%);
           white-space: nowrap;
@@ -1007,7 +1057,7 @@
       document.head.appendChild(ks);
     }
 
-    // Create or update the anchor position
+    // Create anchor + bird if not yet in DOM
     let anchor = document.getElementById('cw-iwa-anchor');
     if (!anchor) {
       anchor = document.createElement('div');
@@ -1015,10 +1065,20 @@
 
       const img = document.createElement('img');
       img.id  = 'cw-iwa-html';
-      img.src = 'assets/images/iwa-middle.png';
       img.alt = 'ʻIwa frigatebird — click for moʻolelo';
       img.draggable = false;
       img.addEventListener('click', showIwaMoolelo);
+
+      // Process image: white bg → transparent, black bird → cyan
+      _processIwaImage('assets/images/iwa-middle.png', (dataUrl) => {
+        if (dataUrl) {
+          img.src = dataUrl;          // clean transparent cyan bird
+        } else {
+          img.src = 'assets/images/iwa-middle.png';  // fallback raw
+          img.classList.add('fallback');              // CSS filter fallback
+        }
+      });
+
       anchor.appendChild(img);
 
       const hint = document.createElement('div');
@@ -1029,7 +1089,7 @@
       container.appendChild(anchor);
     }
 
-    // Always update anchor position to exact compass center
+    // Always update anchor to exact compass center pixels
     anchor.style.left = compassCx + 'px';
     anchor.style.top  = compassCy + 'px';
   }
