@@ -743,41 +743,68 @@
     iwaG.appendChild(E('circle', { cx:0, cy:0, r: birdR * 0.9,
       fill:'rgba(0,247,255,.06)', 'pointer-events':'none' }));
 
-    /* ʻIwa SVG silhouette — frigatebird with forked tail + spread wings */
-    const birdScale = birdR / 55; // normalise to our radius
-    const birdPath = E('g', {
-      transform: `scale(${birdScale}) translate(-60,-42)`,
-      fill: 'rgba(0,247,255,.75)',
-      filter: 'drop-shadow(0 0 8px rgba(0,247,255,.6))',
-      cursor: 'pointer',
-      style: 'pointer-events:all;',
-      class: 'cw-iwa-clickable',
-    });
+    /* ʻIwa frigatebird — uses the actual tribal ʻiwa PNG from the project.
+       Image is black on white. We:
+         1. invert(1)       → white bird on black bg
+         2. sepia+hue-rotate → shift to cyan
+         3. saturate+brightness → make it glow
+         mix-blend-mode: screen on the group → black bg disappears,
+         only the glowing bird shape remains.
+    */
+    const imgW = birdR * 3.2;   // image is roughly 2.5:1 wide
+    const imgH = birdR * 1.9;
 
-    /* Body */
-    birdPath.appendChild(E('ellipse', { cx:'60', cy:'42', rx:'22', ry:'10' }));
-    /* Head */
-    birdPath.appendChild(E('ellipse', { cx:'82', cy:'34', rx:'10', ry:'8' }));
-    /* Hooked beak */
-    birdPath.appendChild(E('path', { d:'M 90,32 Q 104,29 106,34 Q 103,37 94,36 Z' }));
-    /* Forked tail — distinctive frigatebird */
-    birdPath.appendChild(E('path', { d:'M 40,44 Q 18,56 6,72 Q 14,58 24,50' }));
-    birdPath.appendChild(E('path', { d:'M 40,46 Q 20,50 4,56 Q 14,48 24,46' }));
-    /* Left wing upper */
-    birdPath.appendChild(E('path', { d:'M 58,38 Q 28,18 2,26 Q 16,22 32,26 Q 46,30 58,40' }));
-    /* Left wing lower */
-    birdPath.appendChild(E('path', { d:'M 58,40 Q 38,14 10,8 Q 26,12 42,20 Q 52,28 58,40' }));
-    /* Right wing upper */
-    birdPath.appendChild(E('path', { d:'M 62,38 Q 92,18 118,26 Q 104,22 88,26 Q 74,30 62,40' }));
-    /* Right wing lower */
-    birdPath.appendChild(E('path', { d:'M 62,40 Q 82,14 110,8 Q 94,12 78,20 Q 68,28 62,40' }));
-    /* Throat pouch (red — male) */
-    birdPath.appendChild(E('ellipse', {
-      cx:'82', cy:'41', rx:'7', ry:'5.5',
-      fill:'rgba(255,60,60,.45)', stroke:'rgba(255,120,120,.3)', 'stroke-width':'0.8',
+    /* Outer glow ring behind bird */
+    iwaG.appendChild(E('ellipse', {
+      cx: '0', cy: '0',
+      rx: String(birdR * 1.3), ry: String(birdR * 0.9),
+      fill: 'radial-gradient(circle,rgba(0,247,255,.12),transparent)',
+      opacity: '0.7',
+      style: 'pointer-events:none;',
+    }));
+    iwaG.appendChild(E('ellipse', {
+      cx: '0', cy: '0',
+      rx: String(birdR * 1.1), ry: String(birdR * 0.75),
+      fill: 'none',
+      stroke: 'rgba(0,247,255,.08)',
+      'stroke-width': '1',
+      style: 'pointer-events:none;',
     }));
 
-    iwaG.appendChild(birdPath);
+    /* The ʻiwa image — centered at 0,0 */
+    const iwaImg = E('image', {
+      href: 'assets/images/iwa-middle.png',
+      x: String(-imgW / 2),
+      y: String(-imgH / 2),
+      width:  String(imgW),
+      height: String(imgH),
+      preserveAspectRatio: 'xMidYMid meet',
+      cursor: 'pointer',
+      class: 'cw-iwa-clickable',
+      style: [
+        /* Step 1: invert black→white */
+        'filter:',
+        '  invert(1)',
+        '  sepia(1)',
+        '  saturate(6)',
+        '  hue-rotate(148deg)',   /* 148° lands on cyan */
+        '  brightness(1.25);',
+        'mix-blend-mode: screen;',
+        'pointer-events: all;',
+        'transition: filter .2s, transform .2s;',
+      ].join(''),
+    });
+    /* Hover brighten via JS */
+    iwaImg.addEventListener('mouseenter', () => {
+      iwaImg.style.filter = 'invert(1) sepia(1) saturate(8) hue-rotate(148deg) brightness(1.7)';
+      iwaImg.style.transform = 'scale(1.06)';
+    });
+    iwaImg.addEventListener('mouseleave', () => {
+      iwaImg.style.filter = 'invert(1) sepia(1) saturate(6) hue-rotate(148deg) brightness(1.25)';
+      iwaImg.style.transform = 'scale(1)';
+    });
+
+    iwaG.appendChild(iwaImg);
 
     /* Invisible large hitzone for easy clicking */
     const hitzone = E('circle', {
