@@ -968,15 +968,15 @@
         #cw-iwa-html {
           position: absolute;
           /* size = ~28% of container, capped */
-          width: 28%;
-          max-width: 220px;
-          min-width: 80px;
+          width: 42%;
+          max-width: 320px;
+          min-width: 110px;
           /* centered on anchor */
           transform: translate(-50%, -50%);
           pointer-events: all;
           cursor: pointer;
           /* invert black→white, colorize cyan, blend-mode removes white bg box */
-          filter: invert(1) sepia(1) saturate(7) hue-rotate(148deg) brightness(1.3);
+          filter: invert(1) grayscale(1) contrast(30) sepia(1) hue-rotate(148deg) saturate(9) brightness(1.5);
           mix-blend-mode: screen;
           animation:
             cw-iwa-migrate 2.6s cubic-bezier(.25,.46,.45,.94) forwards,
@@ -986,13 +986,13 @@
           transition: filter .18s;
         }
         #cw-iwa-html:hover {
-          filter: invert(1) sepia(1) saturate(11) hue-rotate(148deg) brightness(2);
+          filter: invert(1) grayscale(1) contrast(30) sepia(1) hue-rotate(148deg) saturate(12) brightness(2.2);
         }
         /* Click hint below bird */
         #cw-iwa-hint {
           position: absolute;
           /* nudge down ~60% of the img height from anchor */
-          top: 60px;
+          top: 84px;
           left: 0;
           transform: translateX(-50%);
           white-space: nowrap;
