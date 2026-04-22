@@ -3,7 +3,8 @@
 <html lang="en" data-mode="quantum">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <!-- PATCH 1: Enhanced viewport meta — prevents iOS auto-zoom, fills notch -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>The Cosmic Weave | Ikeverse</title>
   <meta name="description" content="Interactive 3D globe connecting ancestral wisdom traditions — Three.js WebGL sphere with force graph, timeline scrubber, and guided tour.">
 
@@ -25,7 +26,7 @@
       box-shadow:0 2px 8px rgba(0,0,0,.5);
     }
     .gx-node-label:hover { background:rgba(4,9,18,.88); border-color:rgba(0,247,255,.45); }
-    @media(max-width:600px){ .gx-node-label { font-size:8px; padding:2px 5px; } }
+    @media(max-width:600px){ .gx-node-label { font-size:13px !important; padding:3px 7px !important; } }
 
     /* ── Star map toggle button ── */
     #btnStarMap { background:rgba(20,0,60,.12); border-color:rgba(100,0,200,.35); }
@@ -37,7 +38,6 @@
       width:100%; height:100%; position:absolute; top:0; left:0;
     }
     #map-viewport  { display:none; }
-    
 
     /* ── Tour progress bar ── */
     #tourProgress {
@@ -52,6 +52,7 @@
       font-family:Orbitron,monospace; font-size:10px; padding:4px 10px;
       border:1px solid rgba(0,247,255,.25); background:rgba(0,247,255,.07);
       color:rgba(255,255,255,.8); border-radius:999px; cursor:pointer;
+      min-width:44px; min-height:44px;
     }
     .tl-btn:hover { background:rgba(0,247,255,.15); }
 
@@ -61,6 +62,7 @@
       background:rgba(0,247,255,.06); color:rgba(0,247,255,.85);
       padding:3px 10px; border-radius:999px; font-size:.75rem;
       font-family:Orbitron,monospace; transition:all .2s;
+      min-height:36px;
     }
     .culture-tag--btn:hover { background:rgba(0,247,255,.15); border-color:rgba(0,247,255,.5); }
     .culture-tag--active {
@@ -82,15 +84,10 @@
       background:rgba(0,247,255,.1); border-color:rgba(0,247,255,.35);
       transform:translateX(3px);
     }
-    .cw-reading-icon {
-      font-size:14px; color:rgba(0,247,255,.7); flex-shrink:0; margin-top:2px;
-    }
+    .cw-reading-icon { font-size:14px; color:rgba(0,247,255,.7); flex-shrink:0; margin-top:2px; }
     .cw-reading-body { display:flex; flex-direction:column; gap:2px; flex:1; min-width:0; }
     .cw-reading-title { font-size:.82rem; font-weight:500; color:rgba(220,240,255,.9); line-height:1.4; }
-    .cw-reading-kind {
-      font-size:.68rem; font-family:Orbitron,monospace; letter-spacing:.06em;
-      color:rgba(255,215,0,.65); text-transform:uppercase;
-    }
+    .cw-reading-kind { font-size:.68rem; font-family:Orbitron,monospace; letter-spacing:.06em; color:rgba(255,215,0,.65); text-transform:uppercase; }
     .cw-reading-desc { font-size:.75rem; color:rgba(180,200,220,.65); line-height:1.4; }
     .cw-reading-ext { font-size:10px; color:rgba(0,247,255,.4); flex-shrink:0; margin-top:3px; }
 
@@ -99,7 +96,7 @@
     .connection-symbol { font-size:1.4rem; flex-shrink:0; }
     .connection-region { font-size:.72rem; color:rgba(180,200,220,.55); display:block; }
     .connection-fly-btn {
-      margin-left:auto; flex-shrink:0; width:30px; height:30px;
+      margin-left:auto; flex-shrink:0; width:44px; height:44px;
       border:1px solid rgba(0,247,255,.2); background:rgba(0,247,255,.06);
       color:rgba(0,247,255,.7); border-radius:50%; cursor:pointer;
       display:flex; align-items:center; justify-content:center; font-size:11px;
@@ -110,12 +107,15 @@
       color:#fff; transform:scale(1.1);
     }
     .connection-card--suggested { border-color:rgba(157,0,255,.25)!important; }
-    .connection-suggested-badge {
-      font-size:.68rem; font-family:Orbitron,monospace; color:rgba(157,0,255,.7);
-      margin-top:4px; letter-spacing:.06em;
+    .connection-suggested-badge { font-size:.68rem; font-family:Orbitron,monospace; color:rgba(157,0,255,.7); margin-top:4px; letter-spacing:.06em; }
+
+    /* ── PATCH 2: Mobile toolbar — all controls get 44px touch targets ── */
+    .cw-ctrl, .cw-mode-tab, .cw-lens, .cw-layer-btn {
+      min-width: 44px;
+      min-height: 44px;
     }
 
-    /* ── Mobile toolbar scroll ── */
+    /* ── PATCH 3: Toolbar responsive layout ── */
     @media (max-width:860px){
       .cw-world-toolbar { flex-direction:column; gap:8px; padding:10px; }
       .cw-toolbar-left, .cw-toolbar-right { width:100%; justify-content:flex-start; }
@@ -124,17 +124,76 @@
       .cw-toolbar-row::-webkit-scrollbar { display:none; }
       .cw-lens, .cw-layer-btn { flex-shrink:0; font-size:.78rem; padding:.42rem .65rem; white-space:nowrap; }
       .globe-control { width:44px; height:44px; }
-    }
-    @media (max-width:600px){
-      #globe-viewport-3d canvas, #map-viewport svg { height:320px!important; }
-      .viz-stage { height:320px!important; }
+      input[type="range"] { height:28px; }
     }
 
-    
+    /* ── PATCH 4: Icon-only mode on very small screens ── */
+    @media (max-width:479px){
+      .cw-ctrl span, .cw-mode-tab span { display:none !important; }
+      .cw-ctrl, .cw-mode-tab {
+        padding:0 !important; display:flex !important;
+        align-items:center; justify-content:center;
+      }
+    }
+
+    /* ── PATCH 5: Globe viewport — dvh instead of vh, fills true screen ── */
+    @media (max-width:600px){
+      .viz-stage {
+        height: 100svh !important;
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+      }
+      #globe-viewport-3d canvas { height:100% !important; }
+    }
+
+    /* ── PATCH 6: Prevent iOS bounce scroll behind globe ── */
+    #globe-viewport-3d {
+      overscroll-behavior: none;
+      overflow: hidden;
+      touch-action: none;
+    }
+    canvas { touch-action: none; }
+
+    /* ── PATCH 7: Safe area insets for notch phones ── */
+    .cw-world-toolbar {
+      padding-left: max(12px, env(safe-area-inset-left));
+      padding-right: max(12px, env(safe-area-inset-right));
+    }
+    #cw-hsc-panel,
+    .cw-mobile-sheet,
+    #cw-iwa-modal {
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+
+    /* ── PATCH 8: Search input — prevent iOS auto-zoom (needs 16px+) ── */
+    .cw-search-input { font-size: 16px !important; }
+    @media (max-width:639px){
+      .cw-search-results {
+        position: fixed !important;
+        top: 60px !important;
+        left: 8px !important;
+        right: 8px !important;
+        width: auto !important;
+        max-height: 60vh !important;
+        overflow-y: auto !important;
+        z-index: 50000 !important;
+      }
+    }
 
     /* ── Keyboard hint ── */
     .cw-keyboard-hint { display:none; font-size:.75rem; color:rgba(0,247,255,.4); font-family:Orbitron,monospace; letter-spacing:.08em; text-align:center; padding:6px 0 2px; }
     @media(hover:hover){.cw-keyboard-hint{display:block;}}
+  </style>
+
+  <!-- PATCH 9: Base body/html dvh fix for iOS Safari -->
+  <style>
+    html { height: -webkit-fill-available; }
+    body {
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      min-height: 100dvh;
+      overscroll-behavior-y: none;
+    }
   </style>
 </head>
 
@@ -148,120 +207,46 @@
   </div>
 
   <!-- Nav -->
-  <!-- ── Ikeverse Navigation ── -->
   <nav class="ik-nav" id="ik-nav" role="navigation" aria-label="Main navigation">
-
-    <!-- Brand / Home button -->
     <a href="../index.html" class="ik-brand" aria-label="Ikeverse — go to home">
       <span class="ik-brand-icon">
-        <img src="assets/images/KMicon.png" alt="" class="ik-brand-img"
-             onerror="this.style.display='none'">
+        <img src="assets/images/KMicon.png" alt="" class="ik-brand-img" onerror="this.style.display='none'">
         <span class="ik-brand-fallback" aria-hidden="true">🌌</span>
       </span>
       <span class="ik-brand-name">IKEVERSE</span>
       <span class="ik-brand-badge">Beta</span>
     </a>
-
-    <!-- Desktop links -->
     <ul class="ik-links" role="list">
-  <li>
-    <a href="../index.html" class="ik-link">
-      <i class="fas fa-home ik-icon"></i>
-      <span>Home</span>
-    </a>
-  </li>
-
-  <li>
-    <a href="cosmic-weave.html" class="ik-link ik-link--active" aria-current="page">
-      <i class="fas fa-atom ik-icon"></i>
-      <span>Cosmic Weave</span>
-    </a>
-  </li>
-
-  <li>
-    <a href="https://pikoverse.xyz/ikeverse/culturalverse.html" class="ik-link">
-      <i class="fas fa-scroll ik-icon"></i>
-      <span>Culturalverse</span>
-    </a>
-  </li>
-
-  <li>
-    <a href="roadmap.html" class="ik-link">
-      <i class="fas fa-map ik-icon"></i>
-      <span>Journey</span>
-    </a>
-  </li>
-
-  <li>
-    <a href="whitepaper.pdf" class="ik-link ik-link--cta" target="_blank" rel="noopener">
-      <i class="fas fa-file-alt ik-icon"></i>
-      <span>White Paper</span>
-    </a>
-  </li>
-</ul>
-
-    <!-- Hamburger (mobile) -->
+      <li><a href="../index.html" class="ik-link"><i class="fas fa-home ik-icon"></i><span>Home</span></a></li>
+      <li><a href="cosmic-weave.html" class="ik-link ik-link--active" aria-current="page"><i class="fas fa-atom ik-icon"></i><span>Cosmic Weave</span></a></li>
+      <li><a href="https://pikoverse.xyz/ikeverse/culturalverse.html" class="ik-link"><i class="fas fa-scroll ik-icon"></i><span>Culturalverse</span></a></li>
+      <li><a href="roadmap.html" class="ik-link"><i class="fas fa-map ik-icon"></i><span>Journey</span></a></li>
+      <li><a href="whitepaper.pdf" class="ik-link ik-link--cta" target="_blank" rel="noopener"><i class="fas fa-file-alt ik-icon"></i><span>White Paper</span></a></li>
+    </ul>
     <button class="ik-burger" id="ik-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ik-drawer">
       <span class="ik-burger-bar"></span>
       <span class="ik-burger-bar"></span>
       <span class="ik-burger-bar"></span>
     </button>
-
-    <!-- Decorative line -->
     <div class="ik-nav-line" aria-hidden="true"></div>
   </nav>
 
   <!-- Mobile drawer -->
   <div class="ik-drawer" id="ik-drawer" aria-hidden="true" role="dialog" aria-label="Navigation menu">
-  <div class="ik-drawer-header">
-    <span class="ik-drawer-logo">IKEVERSE</span>
-    <button class="ik-drawer-close" id="ik-drawer-close" type="button" aria-label="Close menu">
-      <i class="fas fa-times"></i>
-    </button>
+    <div class="ik-drawer-header">
+      <span class="ik-drawer-logo">IKEVERSE</span>
+      <button class="ik-drawer-close" id="ik-drawer-close" type="button" aria-label="Close menu"><i class="fas fa-times"></i></button>
+    </div>
+    <ul class="ik-drawer-links" role="list">
+      <li><a href="../index.html" class="ik-drawer-link"><i class="fas fa-home"></i><span>Home</span></a></li>
+      <li><a href="cosmic-weave.html" class="ik-drawer-link ik-drawer-link--active" aria-current="page"><i class="fas fa-atom"></i><span>Cosmic Weave</span></a></li>
+      <li><a href="https://pikoverse.xyz/ikeverse/culturalverse.html" class="ik-drawer-link"><i class="fas fa-scroll"></i><span>Culturalverse</span></a></li>
+      <li><a href="roadmap.html" class="ik-drawer-link"><i class="fas fa-map"></i><span>Journey</span></a></li>
+      <li><a href="whitepaper.pdf" class="ik-drawer-link ik-drawer-link--cta" target="_blank" rel="noopener"><i class="fas fa-file-alt"></i><span>White Paper</span></a></li>
+    </ul>
+    <div class="ik-drawer-footer"><span>Ikeverse · Living Knowledge</span></div>
   </div>
 
-  <ul class="ik-drawer-links" role="list">
-    <li>
-      <a href="../index.html" class="ik-drawer-link">
-        <i class="fas fa-home"></i>
-        <span>Home</span>
-      </a>
-    </li>
-
-    <li>
-      <a href="cosmic-weave.html" class="ik-drawer-link ik-drawer-link--active" aria-current="page">
-        <i class="fas fa-atom"></i>
-        <span>Cosmic Weave</span>
-      </a>
-    </li>
-
-    <li>
-      <a href="https://pikoverse.xyz/ikeverse/culturalverse.html" class="ik-drawer-link">
-        <i class="fas fa-scroll"></i>
-        <span>Culturalverse</span>
-      </a>
-    </li>
-
-    <li>
-      <a href="roadmap.html" class="ik-drawer-link">
-        <i class="fas fa-map"></i>
-        <span>Journey</span>
-      </a>
-    </li>
-
-    <li>
-      <a href="whitepaper.pdf" class="ik-drawer-link ik-drawer-link--cta" target="_blank" rel="noopener">
-        <i class="fas fa-file-alt"></i>
-        <span>White Paper</span>
-      </a>
-    </li>
-  </ul>
-
-  <div class="ik-drawer-footer">
-    <span>Ikeverse · Living Knowledge</span>
-  </div>
-</div>
-  <!-- Overlay backdrop -->
   <div class="ik-overlay" id="ik-overlay" aria-hidden="true"></div>
 
   <!-- Hero -->
@@ -280,68 +265,63 @@
       <!-- ── Toolbar ── -->
       <div class="cw-world-toolbar" role="toolbar" aria-label="Globe controls">
 
-        <!-- ── Row 1: Mode + Controls ── -->
+        <!-- Row 1: Mode + Controls -->
         <div class="cw-toolbar-row1">
-
-          <!-- Mode tabs -->
           <div class="cw-mode-tabs" role="tablist" aria-label="View mode">
-            <button id="tabGlobe"  class="cw-mode-tab active" role="tab" aria-selected="true"  type="button" title="3D Globe">
+            <button id="tabGlobe" class="cw-mode-tab active" role="tab" aria-selected="true" type="button" title="3D Globe" aria-label="3D Globe view">
               <i class="fas fa-globe"></i><span>Globe</span>
             </button>
-            <button id="tabMap"    class="cw-mode-tab" role="tab" aria-selected="false" type="button" title="Flat Map">
+            <button id="tabMap" class="cw-mode-tab" role="tab" aria-selected="false" type="button" title="Flat Map" aria-label="Flat Map view">
               <i class="fas fa-map"></i><span>Map</span>
             </button>
-            
-            <button id="btnStarMap" class="cw-mode-tab cw-mode-tab--stars" type="button" title="Hawaiian Star Map">
+            <button id="btnStarMap" class="cw-mode-tab cw-mode-tab--stars" type="button" title="Hawaiian Star Map" aria-label="Hawaiian Star Map">
               <i class="fas fa-star-and-crescent"></i><span>Stars</span>
             </button>
           </div>
 
-          <!-- Spacer -->
           <div class="cw-toolbar-spacer"></div>
 
-          <!-- Controls cluster -->
           <div class="cw-controls-cluster" aria-label="View controls">
-            <button class="cw-ctrl" id="zoomIn"       title="Zoom in"         type="button"><i class="fas fa-plus"></i></button>
-            <button class="cw-ctrl" id="zoomOut"      title="Zoom out"        type="button"><i class="fas fa-minus"></i></button>
-            <button class="cw-ctrl" id="resetView"    title="Reset view"      type="button"><i class="fas fa-arrows-rotate"></i></button>
+            <button class="cw-ctrl" id="zoomIn"       title="Zoom in"         type="button" aria-label="Zoom in"><i class="fas fa-plus"></i></button>
+            <button class="cw-ctrl" id="zoomOut"      title="Zoom out"        type="button" aria-label="Zoom out"><i class="fas fa-minus"></i></button>
+            <button class="cw-ctrl" id="resetView"    title="Reset view"      type="button" aria-label="Reset view"><i class="fas fa-arrows-rotate"></i></button>
             <div class="cw-ctrl-divider"></div>
-            <button class="cw-ctrl" id="toggleLabels" title="Toggle labels"   type="button"><i class="fas fa-tag"></i></button>
-            <button class="cw-ctrl cw-ctrl--purple" id="btnDiscover" title="Random culture" type="button"><i class="fas fa-dice"></i></button>
-            <button id="btnShare" class="cw-ctrl" type="button" title="Share / copy link"><i class="fas fa-share-nodes"></i></button>
-            <button class="cw-ctrl" id="btnResetMap"  title="Reset map"       type="button"><i class="fas fa-rotate-left"></i></button>
-            <button class="cw-ctrl" id="btnCopyLink"  title="Copy link"       type="button"><i class="fas fa-link"></i></button>
+            <button class="cw-ctrl" id="toggleLabels" title="Toggle labels"   type="button" aria-label="Toggle labels"><i class="fas fa-tag"></i></button>
+            <button class="cw-ctrl cw-ctrl--purple" id="btnDiscover" title="Random culture" type="button" aria-label="Discover random culture"><i class="fas fa-dice"></i></button>
+            <button id="btnShare" class="cw-ctrl" type="button" title="Share / copy link" aria-label="Share link"><i class="fas fa-share-nodes"></i></button>
+            <button class="cw-ctrl" id="btnResetMap"  title="Reset map"       type="button" aria-label="Reset map"><i class="fas fa-rotate-left"></i></button>
+            <button class="cw-ctrl" id="btnCopyLink"  title="Copy link"       type="button" aria-label="Copy link"><i class="fas fa-link"></i></button>
           </div>
         </div>
 
-        <!-- ── Row 2: Lens filters ── -->
+        <!-- Row 2: Lens filters -->
         <div class="cw-filter-row" aria-label="Lens filters">
           <span class="cw-filter-label">LENS</span>
           <div class="cw-filter-scroll">
-            <button class="cw-lens active" data-lens="all"       type="button"><i class="fas fa-layer-group"></i> All</button>
-            <button class="cw-lens cw-lens--creation"    data-lens="Creation"      type="button"><i class="fas fa-sparkles"></i> Creation</button>
-            <button class="cw-lens cw-lens--nav"         data-lens="Navigation"    type="button"><i class="fas fa-compass"></i> Navigation</button>
-            <button class="cw-lens cw-lens--martial"     data-lens="Martial Arts"  type="button"><i class="fas fa-hand-fist"></i> Martial Arts</button>
-            <button class="cw-lens cw-lens--steward"     data-lens="Stewardship"   type="button"><i class="fas fa-leaf"></i> Stewardship</button>
-            <button class="cw-lens cw-lens--ecology"     data-lens="Ecology"       type="button"><i class="fas fa-water"></i> Ecology</button>
-            <button class="cw-lens cw-lens--gov"         data-lens="Governance"    type="button"><i class="fas fa-scale-balanced"></i> Governance</button>
-            <button class="cw-lens cw-lens--lit"         data-lens="Literature"    type="button"><i class="fas fa-book-open"></i> Literature</button>
-            <button class="cw-lens cw-lens--astro"       data-lens="Astronomy"     type="button"><i class="fas fa-star"></i> Astronomy</button>
+            <button class="cw-lens active" data-lens="all"          type="button"><i class="fas fa-layer-group"></i> All</button>
+            <button class="cw-lens cw-lens--creation"  data-lens="Creation"    type="button"><i class="fas fa-sparkles"></i> Creation</button>
+            <button class="cw-lens cw-lens--nav"       data-lens="Navigation"  type="button"><i class="fas fa-compass"></i> Navigation</button>
+            <button class="cw-lens cw-lens--martial"   data-lens="Martial Arts" type="button"><i class="fas fa-hand-fist"></i> Martial Arts</button>
+            <button class="cw-lens cw-lens--steward"   data-lens="Stewardship" type="button"><i class="fas fa-leaf"></i> Stewardship</button>
+            <button class="cw-lens cw-lens--ecology"   data-lens="Ecology"     type="button"><i class="fas fa-water"></i> Ecology</button>
+            <button class="cw-lens cw-lens--gov"       data-lens="Governance"  type="button"><i class="fas fa-scale-balanced"></i> Governance</button>
+            <button class="cw-lens cw-lens--lit"       data-lens="Literature"  type="button"><i class="fas fa-book-open"></i> Literature</button>
+            <button class="cw-lens cw-lens--astro"     data-lens="Astronomy"   type="button"><i class="fas fa-star"></i> Astronomy</button>
           </div>
         </div>
 
-        <!-- ── Row 3: Connection layer filters ── -->
+        <!-- Row 3: Connection layer filters -->
         <div class="cw-filter-row" aria-label="Connection filters">
           <span class="cw-filter-label">PATH</span>
           <div class="cw-filter-scroll">
-            <button class="cw-layer-btn active" data-layer="paths"       type="button"><i class="fas fa-route"></i> Weave Path</button>
-            <button class="cw-layer-btn" data-layer="food"               type="button"><i class="fas fa-seedling"></i> Food</button>
-            <button class="cw-layer-btn" data-layer="water"              type="button"><i class="fas fa-water"></i> Water</button>
-            <button class="cw-layer-btn" data-layer="navigation"         type="button"><i class="fas fa-compass"></i> Nav</button>
-            <button class="cw-layer-btn" data-layer="trade"              type="button"><i class="fas fa-coins"></i> Trade</button>
-            <button class="cw-layer-btn" data-layer="stewardship"        type="button"><i class="fas fa-leaf"></i> Stewardship</button>
-            <button class="cw-layer-btn" data-layer="governance"         type="button"><i class="fas fa-scale-balanced"></i> Gov</button>
-            <button class="cw-layer-btn" data-layer="suggested"          type="button"><i class="fas fa-wand-magic-sparkles"></i> Suggested</button>
+            <button class="cw-layer-btn active" data-layer="paths"      type="button"><i class="fas fa-route"></i> Weave Path</button>
+            <button class="cw-layer-btn" data-layer="food"              type="button"><i class="fas fa-seedling"></i> Food</button>
+            <button class="cw-layer-btn" data-layer="water"             type="button"><i class="fas fa-water"></i> Water</button>
+            <button class="cw-layer-btn" data-layer="navigation"        type="button"><i class="fas fa-compass"></i> Nav</button>
+            <button class="cw-layer-btn" data-layer="trade"             type="button"><i class="fas fa-coins"></i> Trade</button>
+            <button class="cw-layer-btn" data-layer="stewardship"       type="button"><i class="fas fa-leaf"></i> Stewardship</button>
+            <button class="cw-layer-btn" data-layer="governance"        type="button"><i class="fas fa-scale-balanced"></i> Gov</button>
+            <button class="cw-layer-btn" data-layer="suggested"         type="button"><i class="fas fa-wand-magic-sparkles"></i> Suggested</button>
             <button id="toggleLayerLegend" class="cw-layer-btn cw-layer-btn--legend" type="button"><i class="fas fa-circle-info"></i> Guide</button>
           </div>
         </div>
@@ -349,20 +329,16 @@
         <div id="layerLegend" class="cw-layer-legend cw-scroll" hidden></div>
       </div><!-- /toolbar -->
 
-      <!-- ── Viz stage ── -->
+      <!-- ── Viz stage — PATCH: height responsive, dvh on mobile ── -->
       <div class="viz-stage" style="height:560px;overflow:hidden;position:relative;">
-        <!-- Three.js globe -->
         <div id="globe-viewport-3d"></div>
-        <!-- D3 map -->
         <div id="map-viewport"></div>
-        
-        
       </div>
 
       <!-- Tour progress -->
       <div id="tourProgress"></div>
 
-      <!-- Timeline scrubber (mounted here by TimelineController) -->
+      <!-- Timeline scrubber -->
       <div id="tlMount"></div>
 
       <div class="culture-tooltip" id="tooltip"></div>
@@ -405,9 +381,7 @@
       </header>
       <div class="cw-panel-body">
         <div class="cw-path-controls">
-          <div class="cw-path-select">
-            <select id="weavePreset"></select>
-          </div>
+          <div class="cw-path-select"><select id="weavePreset"></select></div>
           <div class="cw-path-buttons">
             <button id="weavePrev"    type="button"><i class="fas fa-arrow-left"></i> Prev</button>
             <button id="weaveNext"    type="button">Next <i class="fas fa-arrow-right"></i></button>
@@ -434,8 +408,10 @@
         <div class="cw-panel-title"><i class="fas fa-project-diagram"></i> Connections</div>
         <div class="cw-panel-sub">Related threads. Click a card to jump.</div>
       </header>
-      <div class="cw-panel-body"><div id="cw-related-panel" class="cw-related-panel" style="display:none"></div>
-      <div id="connections"></div></div>
+      <div class="cw-panel-body">
+        <div id="cw-related-panel" class="cw-related-panel" style="display:none"></div>
+        <div id="connections"></div>
+      </div>
     </section>
 
   </section><!-- /globe-section -->
@@ -443,19 +419,15 @@
   <!-- Footer -->
   <footer class="ik-footer">
     <div class="ik-footer-inner">
-      <!-- Brand -->
       <div class="ik-footer-brand">
         <div class="ik-footer-logo-wrap">
-          <img src="assets/images/thelivingknowledge.png" alt="Ikeverse" class="ik-footer-logo"
-               onerror="this.style.display='none'">
+          <img src="assets/images/thelivingknowledge.png" alt="Ikeverse" class="ik-footer-logo" onerror="this.style.display='none'">
         </div>
         <div>
           <div class="ik-footer-site">IKEVERSE</div>
           <div class="ik-footer-tagline">Living Knowledge · Decolonizing Consciousness</div>
         </div>
       </div>
-
-      <!-- Links -->
       <nav class="ik-footer-nav" aria-label="Footer navigation">
         <div class="ik-footer-col">
           <div class="ik-footer-col-title">Explore</div>
@@ -469,8 +441,6 @@
           <a href="whitepaper.pdf" class="ik-footer-link" target="_blank" rel="noopener">White Paper</a>
         </div>
       </nav>
-
-      <!-- Stats strip -->
       <div class="ik-footer-stats">
         <div class="ik-footer-stat"><span class="ik-footer-stat-n">55</span><span class="ik-footer-stat-l">Cultures</span></div>
         <div class="ik-footer-stat"><span class="ik-footer-stat-n">64</span><span class="ik-footer-stat-l">Connections</span></div>
@@ -478,8 +448,6 @@
         <div class="ik-footer-stat"><span class="ik-footer-stat-n">8</span><span class="ik-footer-stat-l">Learning Paths</span></div>
       </div>
     </div>
-
-    <!-- Bottom bar -->
     <div class="ik-footer-bottom">
       <span>© 2026 Ikeverse · All cultures honored, no knowledge exploited.</span>
       <span class="ik-footer-dot">·</span>
@@ -487,7 +455,7 @@
     </div>
   </footer>
 
-  <!-- ── Scripts: Three.js must load before cosmic-weave.js ── -->
+  <!-- ── Scripts ── -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
   <script>
     (function(){
@@ -504,18 +472,18 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/topojson@3"></script>
-  <!-- Small delay to let Three.js extras settle -->
   <script>
     window.addEventListener('load', function() {
-      if(THREE.OrbitControls) return; // already attached
-      // Normalize OrbitControls to THREE namespace
+      if(THREE.OrbitControls) return;
       if(typeof OrbitControls !== 'undefined') THREE.OrbitControls = OrbitControls;
     });
-
   </script>
+
+  <!-- PATCH 10: Load order — mobile patch goes second, before addons -->
   <script src="js/cosmic-weave.js"></script>
+  <script src="js/cosmic-weave-mobile.js"></script>
   <script src="js/cosmic-weave-culturalverse.js"></script>
-  <script src="js/cosmic-weave-starmap.js"></script> 
+  <script src="js/cosmic-weave-starmap.js"></script>
 
   <!-- ── Loading Screen ── -->
   <div id="ik-loader" class="ik-loader" aria-live="polite" aria-label="Loading Ikeverse">
@@ -525,8 +493,7 @@
         <div class="ik-loader-ring ik-loader-ring--2"></div>
         <div class="ik-loader-ring ik-loader-ring--3"></div>
         <div class="ik-loader-core">
-          <img src="assets/images/thelivingknowledge.png" class="ik-loader-logo-img"
-               alt="Ikeverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <img src="assets/images/thelivingknowledge.png" class="ik-loader-logo-img" alt="Ikeverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <span class="ik-loader-glyph" style="display:none">🌌</span>
         </div>
       </div>
@@ -567,16 +534,10 @@
     burger?.addEventListener('click', ()=> drawer.classList.contains('ik-drawer--open') ? closeDrawer() : openDrawer());
     closeBtn?.addEventListener('click', closeDrawer);
     overlay?.addEventListener('click', closeDrawer);
-
-    // Close on Escape
     document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
-
-    // Scroll shadow
     window.addEventListener('scroll', ()=>{
       nav?.classList.toggle('ik-nav--scrolled', window.scrollY > 10);
     }, {passive:true});
-
-    // Close drawer on any drawer link click
     drawer?.querySelectorAll('.ik-drawer-link').forEach(a=>{
       a.addEventListener('click', closeDrawer);
     });
@@ -591,12 +552,8 @@
     const sub=document.getElementById('ik-loader-sub');
     if(!loader) return;
     const steps=[
-      [10,'Loading star catalog…'],
-      [30,'Mapping cultures…'],
-      [55,'Building knowledge graph…'],
-      [75,'Rendering globe…'],
-      [90,'Connecting traditions…'],
-      [100,'Ready'],
+      [10,'Loading star catalog…'],[30,'Mapping cultures…'],[55,'Building knowledge graph…'],
+      [75,'Rendering globe…'],[90,'Connecting traditions…'],[100,'Ready'],
     ];
     let si=0;
     const tick=()=>{
@@ -607,7 +564,6 @@
       if(pct<100) setTimeout(tick, si===1?200:400+Math.random()*300);
     };
     tick();
-    // Hide after page fully loads + a short grace period
     const hide=()=>{
       if(fill) fill.style.width='100%';
       if(sub) sub.textContent='Ready';
@@ -616,11 +572,8 @@
         setTimeout(()=>loader.remove(),600);
       },350);
     };
-    if(document.readyState==='complete'){
-      setTimeout(hide,800);
-    } else {
-      window.addEventListener('load',()=>setTimeout(hide,600));
-    }
+    if(document.readyState==='complete'){setTimeout(hide,800);}
+    else{window.addEventListener('load',()=>setTimeout(hide,600));}
   })();
   </script>
 </body>
