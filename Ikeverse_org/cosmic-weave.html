@@ -210,7 +210,9 @@
   <nav class="ik-nav" id="ik-nav" role="navigation" aria-label="Main navigation">
     <a href="../index.html" class="ik-brand" aria-label="Ikeverse — go to home">
       <span class="ik-brand-icon">
-        <img src="assets/images/KMicon.png" alt="" class="ik-brand-img" onerror="this.style.display='none'">
+        <img src="assets/images/KMicon.png" alt="" class="ik-brand-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+             style="width:100%;height:100%;object-fit:cover;border-radius:50%;mix-blend-mode:luminosity;">
         <span class="ik-brand-fallback" aria-hidden="true">🌌</span>
       </span>
       <span class="ik-brand-name">IKEVERSE</span>
@@ -484,6 +486,7 @@
   <script src="js/cosmic-weave-mobile.js"></script>
   <script src="js/cosmic-weave-culturalverse.js"></script>
   <script src="js/cosmic-weave-starmap.js"></script>
+  <script src="js/cosmic-weave-optimize.js"></script>
 
   <!-- ── Loading Screen ── -->
   <div id="ik-loader" class="ik-loader" aria-live="polite" aria-label="Loading Ikeverse">
@@ -493,7 +496,9 @@
         <div class="ik-loader-ring ik-loader-ring--2"></div>
         <div class="ik-loader-ring ik-loader-ring--3"></div>
         <div class="ik-loader-core">
-          <img src="assets/images/thelivingknowledge.png" class="ik-loader-logo-img" alt="Ikeverse" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <img src="assets/images/thelivingknowledge.png" class="ik-loader-logo-img" alt="Ikeverse"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+               style="width:100%;height:100%;object-fit:cover;border-radius:50%;mix-blend-mode:luminosity;">
           <span class="ik-loader-glyph" style="display:none">🌌</span>
         </div>
       </div>
