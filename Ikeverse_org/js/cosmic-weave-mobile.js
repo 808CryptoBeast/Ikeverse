@@ -187,47 +187,126 @@
   ══════════════════════════════════════════════════════════ */
   function patchGlobe (app) {
     const globe = app.globe;
+    const canvas = globe.renderer.domElement;
 
-    /* ── 1. Pixel ratio cap ── */
+    /* ══ 1. PIXEL RATIO CAP ════════════════════════════════
+       3× on a modern phone = 9× the pixels of 1×.
+       1.5× cuts GPU work ~44% with no visible quality loss. */
     globe.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    /* Re-size so the cap takes effect immediately */
     const { clientWidth: w, clientHeight: h } = globe.container;
     globe.renderer.setSize(w, h);
 
-    /* ── 2. Canvas touch-action ── */
-    const canvas = globe.renderer.domElement;
-    canvas.style.touchAction  = 'none';
-    canvas.style.userSelect   = 'none';
+    /* ══ 2. CANVAS TOUCH SETUP ═════════════════════════════ */
+    canvas.style.touchAction      = 'none';
+    canvas.style.userSelect       = 'none';
     canvas.style.webkitUserSelect = 'none';
+    /* Prevent page wheel-scroll behind the globe */
+    canvas.addEventListener('wheel', e => e.preventDefault(), { passive: false });
+    /* Prevent page scroll on touch without blocking OrbitControls */
+    canvas.addEventListener('touchstart', e => {
+      if (e.touches.length > 1) e.preventDefault(); // block pinch-scroll
+    }, { passive: false });
 
-    /* ── 3. OrbitControls mobile tuning ── */
-    if (globe.controls) {
-      if (IS_COARSE) {
-        globe.controls.autoRotateSpeed = 0.18;   // was 0.35 — gentler on phone
-        globe.controls.dampingFactor   = 0.06;   // was 0.04 — snappier stop
-        globe.controls.rotateSpeed     = 0.6;    // was default 1.0 — easier control
-        globe.controls.zoomSpeed       = 0.7;    // was 1.0
-      }
-      /* Pinch-zoom should not scroll the page underneath */
-      canvas.addEventListener('wheel', e => { e.preventDefault(); }, { passive: false });
+    /* ══ 3. ORBIT CONTROLS TUNING ══════════════════════════
+       Key values for mobile feel:
+         rotateSpeed  — how fast the globe spins per pixel of swipe
+         dampingFactor — how quickly it decelerates after lift (higher = stops faster)
+         zoomSpeed    — pinch sensitivity
+       Current problem: rotateSpeed 0.6 still feels too loose.
+       We want the globe to feel "gripped" not "flung". */
+    if (globe.controls && IS_COARSE) {
+      globe.controls.autoRotateSpeed = 0.15;   // very gentle idle rotation
+      globe.controls.rotateSpeed     = 0.38;   // ↓ from 0.6 — globe follows finger precisely, not lunges
+      globe.controls.dampingFactor   = 0.10;   // ↑ from 0.06 — stops quickly, no spin-out
+      globe.controls.zoomSpeed       = 0.45;   // ↓ pinch zoom much less jumpy
+      globe.controls.enableDamping   = true;   // must be on for dampingFactor to apply
+      globe.controls.minDistance     = 1.4;    // don't let pinch go inside globe
+      globe.controls.maxDistance     = 6.0;    // don't zoom out too far on mobile
     }
 
-    /* ── 4. Raycaster: larger tolerance on touch devices ── */
+    /* ══ 4. DRAG-THRESHOLD TAP DETECTION ══════════════════
+       THE ROOT CAUSE OF "TOO SENSITIVE":
+       cosmic-weave.js fires _doClick() on EVERY touchend, even
+       after a drag. This means rotating the globe accidentally
+       selects cultures constantly.
+
+       Fix: intercept touchend on the canvas. Track how far the
+       finger moved. Only let the click through if movement < 12px
+       AND touch duration < 300ms (a deliberate tap).
+
+       We replace the canvas touchend listener the original code
+       added by cloning the canvas (removes old listeners) and
+       re-adding only ours + delegating to OrbitControls manually.
+       Simpler: we patch globe._doClick directly to check the flag. */
+
+    let _touchStartX = 0;
+    let _touchStartY = 0;
+    let _touchStartT = 0;
+    let _isDragging   = false;
+    const DRAG_THRESHOLD = 12;  // px — movement under this = tap
+    const TAP_MAX_MS     = 280; // ms — longer than this = intentional drag
+
+    canvas.addEventListener('touchstart', e => {
+      if (e.touches.length !== 1) return;
+      _touchStartX = e.touches[0].clientX;
+      _touchStartY = e.touches[0].clientY;
+      _touchStartT = Date.now();
+      _isDragging  = false;
+    }, { passive: true });
+
+    canvas.addEventListener('touchmove', e => {
+      if (e.touches.length !== 1) return;
+      const dx = e.touches[0].clientX - _touchStartX;
+      const dy = e.touches[0].clientY - _touchStartY;
+      if (Math.hypot(dx, dy) > DRAG_THRESHOLD) _isDragging = true;
+    }, { passive: true });
+
+    /* Patch globe._doClick to respect the drag flag */
+    const _origDoClick = globe._doClick.bind(globe);
+    globe._doClick = function () {
+      /* Suppress click if finger dragged or held too long */
+      if (_isDragging) return;
+      if (Date.now() - _touchStartT > TAP_MAX_MS) return;
+      _origDoClick();
+    };
+
+    /* ══ 5. DOUBLE-TAP TO RESET ════════════════════════════
+       Two quick taps (not on a node) → reset camera + resume rotation */
     if (IS_COARSE) {
-      globe.raycaster.params.Line    = { threshold: 0.08 };
-      globe.raycaster.params.Points  = { threshold: 0.08 };
-      /* Also increase all node sphere sizes for easier tapping */
+      let _lastTap = 0;
+      canvas.addEventListener('touchend', () => {
+        const now = Date.now();
+        const sinceLast = now - _lastTap;
+        if (sinceLast < 260 && sinceLast > 40 && !_isDragging) {
+          if (!app.selectedId) {
+            globe.camera.position.set(0, 0, 2.8);
+            globe.controls?.update();
+            if (globe.controls) globe.controls.autoRotate = true;
+          } else {
+            /* Double-tap while culture selected → deselect */
+            app.deselectAll?.();
+          }
+        }
+        _lastTap = now;
+      }, { passive: true });
+    }
+
+    /* ══ 6. NODE TAP TARGETS ═══════════════════════════════
+       Scale node meshes up on touch devices so they're
+       thumb-friendly without increasing visual size too much. */
+    if (IS_COARSE) {
+      globe.raycaster.params.Line   = { threshold: 0.06 };
+      globe.raycaster.params.Points = { threshold: 0.06 };
       globe.nodeObjs.forEach(obj => {
-        const mat = obj.mesh.geometry;
-        /* Scale the mesh up on coarse devices — hit area matches visual */
         if (!obj._mobilePadded) {
-          obj.mesh.scale.setScalar(IS_SMALL() ? 1.9 : 1.55);
+          /* Scale up hitzone without making nodes look huge */
+          obj.mesh.scale.setScalar(IS_SMALL() ? 1.7 : 1.4);
           obj._mobilePadded = true;
         }
       });
     }
 
-    /* ── 5. Orientation change → resize ── */
+    /* ══ 7. ORIENTATION CHANGE → RESIZE ═══════════════════ */
     window.addEventListener('orientationchange', () => {
       setTimeout(() => {
         const { clientWidth: nw, clientHeight: nh } = globe.container;
@@ -235,37 +314,38 @@
         globe.camera.updateProjectionMatrix();
         globe.renderer.setSize(nw, nh);
         globe.labelRenderer?.setSize(nw, nh);
-      }, 300); // give browser time to finish rotation
+      }, 350);
     });
 
-    /* ── 6. Double-tap to reset view on mobile ── */
+    /* ══ 8. REDUCE LABEL DENSITY ON MOBILE ════════════════
+       On small screens, only show labels for the selected node
+       and its immediate connections — not all front-facing nodes. */
     if (IS_COARSE) {
-      let lastTap = 0;
-      canvas.addEventListener('touchend', () => {
-        const now = Date.now();
-        if (now - lastTap < 280) {
-          /* Double-tap: if nothing selected, reset camera */
-          if (!app.selectedId && globe.controls) {
-            globe.controls.reset?.();
-            globe.camera.position.set(0, 0, 2.8);
-            globe.controls.autoRotate = true;
-          }
-        }
-        lastTap = now;
-      }, { passive: true });
+      /* Override the label opacity logic by reducing threshold */
+      const _origAnimate = globe._animate?.bind(globe);
+      if (_origAnimate) {
+        globe._animate = function () {
+          _origAnimate();
+          /* After each frame, suppress labels except selected */
+          globe.nodeObjs?.forEach(obj => {
+            if (!obj.label?.element) return;
+            const isSel = obj === globe.selected;
+            const isConn = globe.selected && globe.arcObjs?.some(
+              a => (a.sN === globe.selected && a.tN === obj) ||
+                   (a.tN === globe.selected && a.sN === obj)
+            );
+            if (!isSel && !isConn) {
+              obj.label.element.style.opacity = '0';
+            }
+          });
+        };
+      }
     }
 
-    /* ── 7. Prevent passive violation from OrbitControls ── */
-    /* OrbitControls adds its own touchstart/touchmove on the canvas.
-       We can't easily change it, but we can stop the console warning
-       by ensuring the canvas element does not have conflicting listeners. */
-    canvas.addEventListener('touchstart', e => {
-      /* allow OrbitControls to handle, just prevent page scroll */
-    }, { passive: false });
-
-    console.info('[CW+Mobile] Globe patches applied —',
-      `pixelRatio: ${globe.renderer.getPixelRatio().toFixed(1)}×`,
-      IS_COARSE ? '| coarse-pointer mode' : ''
+    console.info('[CW+Mobile] Globe patches v2 applied —',
+      `pixelRatio ${globe.renderer.getPixelRatio().toFixed(1)}×`,
+      `| rotateSpeed ${globe.controls?.rotateSpeed ?? '?'}`,
+      `| damping ${globe.controls?.dampingFactor ?? '?'}`
     );
   }
 
