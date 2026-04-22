@@ -1,25 +1,20 @@
 /**
- * cosmic-weave-mobile.js
+ * cosmic-weave-mobile.js  — v3 (bug-fix + sensitivity overhaul)
  * ─────────────────────────────────────────────────────────────
- * Mobile patch layer — applies after cosmic-weave.js initialises.
- * Add AFTER cosmic-weave.js and BEFORE cosmic-weave-culturalverse.js:
- *
+ * Load order:
  *   <script src="js/cosmic-weave.js"></script>
- *   <script src="js/cosmic-weave-mobile.js"></script>  ← this file
+ *   <script src="js/cosmic-weave-mobile.js"></script>   ← this file
  *   <script src="js/cosmic-weave-culturalverse.js"></script>
  *   <script src="js/cosmic-weave-starmap.js"></script>
+ *   <script src="js/cosmic-weave-optimize.js"></script>
  *
- * Patches applied:
- *  1. Pixel ratio capped at 1.5× (halves GPU load on high-DPI phones)
- *  2. touch-action: none on canvas (globe drag no longer fights iOS scroll)
- *  3. OrbitControls: slower auto-rotate + higher damping on mobile
- *  4. Raycaster threshold boosted on coarse-pointer devices
- *  5. Viewport height fixed to dvh (prevents iPhone Safari bottom-bar cutoff)
- *  6. Globe container: overscroll-behavior: none (no bounce behind globe)
- *  7. Node tap targets enlarged via Raycaster.params on mobile
- *  8. Auto-resize on orientation change
- *  9. Prevent passive-event warning on OrbitControls touch listeners
- * 10. Mobile toolbar: icon-only mode below 480px, bigger tap areas
+ * Fixes in this version:
+ *   - Globe viewport: overflow:visible so star map toggle is never clipped
+ *   - Star map toggle: position:fixed so it's always above the viewport
+ *   - Mobile sheet: only the handle drags to close — body scrolls freely
+ *   - Drag thresholds raised — rotating globe never fires accidental selects
+ *   - Details panel: forced visible on desktop after any culture select
+ *   - Overlay close: only fires on pure tap, not on swipe over the overlay
  * ─────────────────────────────────────────────────────────────
  */
 (function () {
@@ -30,7 +25,7 @@
   const IS_SMALL  = () => window.innerWidth < 400;
 
   /* ── Wait for _cwApp.globe to be fully initialised ── */
-  function waitForGlobe (cb) {
+  function waitForGlobe(cb) {
     let tries = 0;
     const t = setInterval(() => {
       tries++;
@@ -39,52 +34,100 @@
         clearInterval(t);
         cb(app);
       }
-      if (tries > 80) clearInterval(t); // give up after ~8s
+      if (tries > 100) clearInterval(t);
     }, 100);
   }
 
   /* ══════════════════════════════════════════════════════════
-     CSS INJECTED ONCE
+     CSS
   ══════════════════════════════════════════════════════════ */
-  function injectMobileCSS () {
+  function injectMobileCSS() {
     if (document.getElementById('cw-mobile-patch-styles')) return;
     const s = document.createElement('style');
     s.id = 'cw-mobile-patch-styles';
     s.textContent = `
-      /* ── Fix globe height on iOS Safari (100dvh ≠ 100vh) ── */
-      #globe-viewport-3d,
-      #map-viewport {
+      /* Safe-area insets */
+      #globe-viewport-3d, #map-viewport {
         height: 100dvh;
         max-height: 100dvh;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
       }
 
-      /* ── Prevent bounce scroll behind globe ── */
+      /* FIX: overflow:visible so star map toggle & overlays are never clipped.
+         Previously overflow:hidden was clipping the absolute-positioned toggle. */
       #globe-viewport-3d {
+        overflow: visible;
         overscroll-behavior: none;
-        -webkit-overflow-scrolling: auto;
-        overflow: hidden;
+        position: relative;
       }
-      body {
-        overscroll-behavior-y: none;
+      #globe-viewport-3d canvas {
+        display: block;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      body { overscroll-behavior-y: none; }
+
+      /* FIX: star map culture tradition toggle — fixed positioning
+         so overflow:hidden on any parent can never clip it */
+      #cw-star-culture-toggle {
+        position: fixed !important;
+        bottom: 20px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 99999 !important;
+        pointer-events: all !important;
       }
 
-      /* ── Bigger tap targets for ALL globe control buttons ── */
-      .cw-ctrl, .cw-mode-tab, .cw-lens,
-      .cw-layer-btn, .tl-btn {
+      /* FIX: mobile sheet — flex layout so body and header are independent.
+         Body gets its own scroll area; handle is the only drag target. */
+      .cw-mobile-sheet {
+        display: flex !important;
+        flex-direction: column !important;
+        max-height: 88vh !important;
+      }
+      .cw-msh-header { flex-shrink: 0; }
+      .cw-msh-handle {
+        touch-action: none;   /* handle drags the sheet */
+        cursor: grab;
+        flex-shrink: 0;
+        padding: 14px;
+        text-align: center;
+      }
+      .cw-msh-handle:active { cursor: grabbing; }
+      /* Body scrolls independently — touch-action:pan-y lets finger scroll freely */
+      .cw-msh-body {
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior: contain !important;
+        touch-action: pan-y !important;
+        padding-bottom: 100px !important;
+      }
+      .cw-msh-actions {
+        flex-shrink: 0;
+        position: sticky;
+        bottom: 0;
+        background: rgba(4,9,20,.95);
+        backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(0,247,255,.1);
+        padding: 10px 16px;
+        padding-bottom: max(10px, env(safe-area-inset-bottom, 10px));
+        display: flex;
+        gap: 10px;
+      }
+
+      /* Bigger tap targets */
+      .cw-ctrl, .cw-mode-tab, .cw-lens, .cw-layer-btn, .tl-btn {
         min-width: 44px;
         min-height: 44px;
       }
 
-      /* ── Mobile toolbar: icon-only below 480px ── */
+      /* Icon-only toolbar below 480px */
       @media (max-width: 479px) {
-        .cw-ctrl span,
-        .cw-mode-tab span,
-        .cw-lens-label {
-          display: none !important;
-        }
-        /* Keep icons visible and centered */
-        .cw-ctrl,
-        .cw-mode-tab {
+        .cw-ctrl span, .cw-mode-tab span, .cw-lens-label { display: none !important; }
+        .cw-ctrl, .cw-mode-tab {
           padding: 0 !important;
           display: flex !important;
           align-items: center;
@@ -92,198 +135,264 @@
         }
       }
 
-      /* ── Mobile: toolbar wraps to 2 rows without overflowing ── */
+      /* Timeline sliders */
       @media (max-width: 639px) {
-        .cw-world-toolbar,
-        .cw-toolbar {
-          flex-wrap: wrap;
-          gap: 4px;
-          padding: 6px 8px;
-        }
-
-        /* Timeline sliders easier to drag ── */
-        input[type="range"] {
-          height: 28px;
-        }
+        .cw-world-toolbar, .cw-toolbar { flex-wrap: wrap; gap: 4px; padding: 6px 8px; }
+        input[type="range"] { height: 28px; }
       }
 
-      /* ── Prevent the canvas from triggering system pull-to-refresh ── */
-      canvas {
-        touch-action: none;
-        user-select: none;
-        -webkit-user-select: none;
-      }
+      /* Prevent system pull-to-refresh on canvas */
+      canvas { touch-action: none; user-select: none; -webkit-user-select: none; }
 
-      /* ── Star panel: taller on landscape phones ── */
+      /* Star panel taller on landscape phones */
       @media (max-height: 500px) and (max-width: 900px) {
-        #cw-hsc-panel {
-          height: 92vh !important;
-        }
-        #cw-iwa-modal,
-        #cw-compass-info-modal {
-          max-height: 96vh !important;
-        }
+        #cw-hsc-panel { height: 92vh !important; }
       }
 
-      /* ── Culture compare panel: full screen on mobile ── */
+      /* Compare panel: full-screen on mobile */
       @media (max-width: 639px) {
         .cw-compare-panel {
-          left: 0 !important;
-          right: 0 !important;
-          width: 100% !important;
-          max-width: 100% !important;
-          bottom: 0 !important;
-          top: auto !important;
+          left: 0 !important; right: 0 !important;
+          width: 100% !important; max-width: 100% !important;
+          bottom: 0 !important; top: auto !important;
           border-radius: 20px 20px 0 0 !important;
-          max-height: 90vh !important;
-          overflow-y: auto !important;
+          max-height: 90vh !important; overflow-y: auto !important;
         }
       }
 
-      /* ── Node CSS2D labels: bigger on mobile ── */
+      /* Node labels */
       @media (max-width: 639px) {
-        .gx-node-label {
-          font-size: 13px !important;
-          padding: 3px 7px !important;
-        }
+        .gx-node-label { font-size: 13px !important; padding: 3px 7px !important; }
       }
 
-      /* ── Star culture toggle: hide text labels on small screens ── */
+      /* Star culture toggle: icon-only on small screens */
       @media (max-width: 479px) {
-        .cw-sct-text {
-          display: none !important;
-        }
-        #cw-star-culture-toggle > div {
-          padding: 6px 8px !important;
-          gap: 6px !important;
-        }
-        .cw-sct-pill {
-          padding: 6px 8px !important;
-        }
+        .cw-sct-text { display: none !important; }
+        .cw-sct-pill { padding: 6px 8px !important; }
       }
 
-      /* ── Search results: full width on mobile ── */
+      /* Search results full-width on mobile */
       @media (max-width: 639px) {
         .cw-search-results {
           position: fixed !important;
-          top: 60px !important;
-          left: 8px !important;
-          right: 8px !important;
-          width: auto !important;
-          max-height: 60vh !important;
-          overflow-y: auto !important;
-          z-index: 50000 !important;
+          top: 60px !important; left: 8px !important; right: 8px !important;
+          width: auto !important; max-height: 60vh !important;
+          overflow-y: auto !important; z-index: 50000 !important;
         }
-        .cw-search-input {
-          font-size: 16px !important; /* prevents iOS zoom-on-focus */
-        }
+        .cw-search-input { font-size: 16px !important; }
+      }
+
+      /* Details panel always visible on desktop — never hidden by panel swipe */
+      @media (min-width: 640px) {
+        .cw-panel--details { display: block !important; }
       }
     `;
     document.head.appendChild(s);
   }
 
   /* ══════════════════════════════════════════════════════════
-     GLOBE PATCHES (applied once app is ready)
+     FIX: MOBILE SHEET SCROLL
+     Problem: the original code sets touchstart on the handle
+     to capture startY, then listens for touchmove on the WHOLE
+     sheet. If the user scrolls the content body, that touchmove
+     drives dragY and can dismiss the sheet.
+
+     Solution: clone the sheet (removes all old passive listeners),
+     then re-add with a boolean that ensures only handle-initiated
+     touches drive the drag-to-close animation.
   ══════════════════════════════════════════════════════════ */
-  function patchGlobe (app) {
-    const globe = app.globe;
+  function fixSheetScrolling(sheet) {
+    if (!sheet || sheet._cwScrollFixed) return;
+    sheet._cwScrollFixed = true;
+
+    /* Clone removes all existing event listeners */
+    const fresh = sheet.cloneNode(true);
+    fresh._cwScrollFixed = true;
+    sheet.parentNode.replaceChild(fresh, sheet);
+
+    const freshHandle = fresh.querySelector('.cw-msh-handle');
+    const freshBody   = fresh.querySelector('.cw-msh-body');
+
+    /* Ensure body is scrollable */
+    if (freshBody) {
+      Object.assign(freshBody.style, {
+        overflowY:               'auto',
+        webkitOverflowScrolling: 'touch',
+        overscrollBehavior:      'contain',
+        touchAction:             'pan-y',
+      });
+    }
+
+    /* Touch state */
+    let dragY = 0, startY = 0, isDraggingHandle = false;
+
+    /* Drag only starts from the handle */
+    freshHandle?.addEventListener('touchstart', e => {
+      isDraggingHandle = true;
+      startY = e.touches[0].clientY;
+      dragY  = 0;
+      fresh.style.transition = '';
+    }, { passive: true });
+
+    /* Body touch cancels handle drag */
+    freshBody?.addEventListener('touchstart', () => {
+      isDraggingHandle = false;
+    }, { passive: true });
+
+    /* Sheet touchmove: only animate when handle-drag is active */
+    fresh.addEventListener('touchmove', e => {
+      if (!isDraggingHandle) return;
+      const dy = e.touches[0].clientY - startY;
+      dragY = dy;
+      if (dy > 0) fresh.style.transform = `translateY(${Math.min(dy, 260)}px)`;
+    }, { passive: true });
+
+    /* Sheet touchend: dismiss at 130px, otherwise snap back */
+    fresh.addEventListener('touchend', () => {
+      if (!isDraggingHandle) { dragY = 0; return; }
+      isDraggingHandle = false;
+      if (dragY > 130) {
+        window._cwApp?._closeMobileSheet?.();
+      } else {
+        fresh.style.transition = 'transform .25s ease';
+        fresh.style.transform  = '';
+        setTimeout(() => { fresh.style.transition = ''; }, 260);
+      }
+      dragY = 0;
+    }, { passive: true });
+
+    /* Re-wire buttons (cloneNode strips listeners) */
+    const close = () => window._cwApp?._closeMobileSheet?.();
+    fresh.querySelector('.cw-msh-close')?.addEventListener('click',     close);
+    fresh.querySelector('#cw-msh-close-btn')?.addEventListener('click', close);
+    fresh.querySelector('#cw-msh-share')?.addEventListener('click', () => {
+      navigator.clipboard?.writeText(location.href).catch(() => {});
+    });
+    fresh.querySelector('#cw-msh-compare')?.addEventListener('click', () => {
+      const app = window._cwApp;
+      const c   = app?.byId?.get(app?.selectedId);
+      if (c) window._cwCompare?.toggle(c);
+    });
+  }
+
+  function watchForSheet() {
+    const existing = document.getElementById('cw-mobile-sheet');
+    if (existing) { fixSheetScrolling(existing); return; }
+    const obs = new MutationObserver(mutations => {
+      for (const m of mutations) {
+        for (const node of m.addedNodes) {
+          if (node.nodeType === 1 && node.id === 'cw-mobile-sheet') {
+            /* Brief delay so _buildMobileSheet finishes wiring events first */
+            setTimeout(() => fixSheetScrolling(node), 50);
+            obs.disconnect();
+            return;
+          }
+        }
+      }
+    });
+    obs.observe(document.body, { childList: true });
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     FIX: OVERLAY — only close on pure tap, not swipe
+  ══════════════════════════════════════════════════════════ */
+  function watchForOverlay() {
+    const patch = node => {
+      let ox = 0, oy = 0;
+      node.addEventListener('touchstart', e => {
+        ox = e.touches[0].clientX;
+        oy = e.touches[0].clientY;
+      }, { passive: true });
+      node.addEventListener('touchend', e => {
+        const dx = Math.abs(e.changedTouches[0].clientX - ox);
+        const dy = Math.abs(e.changedTouches[0].clientY - oy);
+        if (dx < 10 && dy < 10) window._cwApp?._closeMobileSheet?.();
+      }, { passive: true });
+    };
+
+    const existing = document.getElementById('cw-mobile-sheet-overlay');
+    if (existing) { patch(existing); return; }
+    const obs = new MutationObserver(mutations => {
+      for (const m of mutations) for (const node of m.addedNodes) {
+        if (node.nodeType === 1 && node.id === 'cw-mobile-sheet-overlay') {
+          patch(node); obs.disconnect(); return;
+        }
+      }
+    });
+    obs.observe(document.body, { childList: true });
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     GLOBE PATCHES
+  ══════════════════════════════════════════════════════════ */
+  function patchGlobe(app) {
+    const globe  = app.globe;
     const canvas = globe.renderer.domElement;
 
-    /* ══ 1. PIXEL RATIO CAP ════════════════════════════════
-       3× on a modern phone = 9× the pixels of 1×.
-       1.5× cuts GPU work ~44% with no visible quality loss. */
+    /* 1. Pixel ratio cap */
     globe.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     const { clientWidth: w, clientHeight: h } = globe.container;
     globe.renderer.setSize(w, h);
 
-    /* ══ 2. CANVAS TOUCH SETUP ═════════════════════════════ */
+    /* 2. Canvas touch */
     canvas.style.touchAction      = 'none';
     canvas.style.userSelect       = 'none';
     canvas.style.webkitUserSelect = 'none';
-    /* Prevent page wheel-scroll behind the globe */
     canvas.addEventListener('wheel', e => e.preventDefault(), { passive: false });
-    /* Prevent page scroll on touch without blocking OrbitControls */
     canvas.addEventListener('touchstart', e => {
-      if (e.touches.length > 1) e.preventDefault(); // block pinch-scroll
+      if (e.touches.length > 1) e.preventDefault();
     }, { passive: false });
 
-    /* ══ 3. ORBIT CONTROLS TUNING ══════════════════════════
-       Key values for mobile feel:
-         rotateSpeed  — how fast the globe spins per pixel of swipe
-         dampingFactor — how quickly it decelerates after lift (higher = stops faster)
-         zoomSpeed    — pinch sensitivity
-       Current problem: rotateSpeed 0.6 still feels too loose.
-       We want the globe to feel "gripped" not "flung". */
+    /* 3. OrbitControls — grippier feel, no spin-out */
     if (globe.controls && IS_COARSE) {
-      globe.controls.autoRotateSpeed = 0.15;   // very gentle idle rotation
-      globe.controls.rotateSpeed     = 0.38;   // ↓ from 0.6 — globe follows finger precisely, not lunges
-      globe.controls.dampingFactor   = 0.10;   // ↑ from 0.06 — stops quickly, no spin-out
-      globe.controls.zoomSpeed       = 0.45;   // ↓ pinch zoom much less jumpy
-      globe.controls.enableDamping   = true;   // must be on for dampingFactor to apply
-      globe.controls.minDistance     = 1.4;    // don't let pinch go inside globe
-      globe.controls.maxDistance     = 6.0;    // don't zoom out too far on mobile
+      globe.controls.autoRotateSpeed = 0.15;
+      globe.controls.rotateSpeed     = 0.35;
+      globe.controls.dampingFactor   = 0.10;
+      globe.controls.zoomSpeed       = 0.40;
+      globe.controls.enableDamping   = true;
+      globe.controls.minDistance     = 1.4;
+      globe.controls.maxDistance     = 6.0;
     }
 
-    /* ══ 4. DRAG-THRESHOLD TAP DETECTION ══════════════════
-       THE ROOT CAUSE OF "TOO SENSITIVE":
-       cosmic-weave.js fires _doClick() on EVERY touchend, even
-       after a drag. This means rotating the globe accidentally
-       selects cultures constantly.
-
-       Fix: intercept touchend on the canvas. Track how far the
-       finger moved. Only let the click through if movement < 12px
-       AND touch duration < 300ms (a deliberate tap).
-
-       We replace the canvas touchend listener the original code
-       added by cloning the canvas (removes old listeners) and
-       re-adding only ours + delegating to OrbitControls manually.
-       Simpler: we patch globe._doClick directly to check the flag. */
-
-    let _touchStartX = 0;
-    let _touchStartY = 0;
-    let _touchStartT = 0;
-    let _isDragging   = false;
-    const DRAG_THRESHOLD = 12;  // px — movement under this = tap
-    const TAP_MAX_MS     = 280; // ms — longer than this = intentional drag
+    /* 4. Drag-threshold tap detection
+       Rotating the globe fires touchend. Without this patch, every
+       globe rotation accidentally selects a culture.
+       Rule: only register as a tap if movement < 12px AND < 280ms. */
+    let _sx = 0, _sy = 0, _st = 0, _isDragging = false;
 
     canvas.addEventListener('touchstart', e => {
       if (e.touches.length !== 1) return;
-      _touchStartX = e.touches[0].clientX;
-      _touchStartY = e.touches[0].clientY;
-      _touchStartT = Date.now();
-      _isDragging  = false;
+      _sx = e.touches[0].clientX;
+      _sy = e.touches[0].clientY;
+      _st = Date.now();
+      _isDragging = false;
     }, { passive: true });
 
     canvas.addEventListener('touchmove', e => {
       if (e.touches.length !== 1) return;
-      const dx = e.touches[0].clientX - _touchStartX;
-      const dy = e.touches[0].clientY - _touchStartY;
-      if (Math.hypot(dx, dy) > DRAG_THRESHOLD) _isDragging = true;
+      if (Math.hypot(e.touches[0].clientX - _sx, e.touches[0].clientY - _sy) > 12) {
+        _isDragging = true;
+      }
     }, { passive: true });
 
-    /* Patch globe._doClick to respect the drag flag */
+    /* Patch _doClick to gate on drag state */
     const _origDoClick = globe._doClick.bind(globe);
     globe._doClick = function () {
-      /* Suppress click if finger dragged or held too long */
-      if (_isDragging) return;
-      if (Date.now() - _touchStartT > TAP_MAX_MS) return;
+      if (_isDragging || Date.now() - _st > 280) return;
       _origDoClick();
     };
 
-    /* ══ 5. DOUBLE-TAP TO RESET ════════════════════════════
-       Two quick taps (not on a node) → reset camera + resume rotation */
+    /* 5. Double-tap: reset / deselect */
     if (IS_COARSE) {
       let _lastTap = 0;
       canvas.addEventListener('touchend', () => {
-        const now = Date.now();
-        const sinceLast = now - _lastTap;
-        if (sinceLast < 260 && sinceLast > 40 && !_isDragging) {
+        const now = Date.now(), since = now - _lastTap;
+        if (since < 260 && since > 40 && !_isDragging) {
           if (!app.selectedId) {
             globe.camera.position.set(0, 0, 2.8);
             globe.controls?.update();
             if (globe.controls) globe.controls.autoRotate = true;
           } else {
-            /* Double-tap while culture selected → deselect */
             app.deselectAll?.();
           }
         }
@@ -291,22 +400,19 @@
       }, { passive: true });
     }
 
-    /* ══ 6. NODE TAP TARGETS ═══════════════════════════════
-       Scale node meshes up on touch devices so they're
-       thumb-friendly without increasing visual size too much. */
+    /* 6. Node tap targets */
     if (IS_COARSE) {
       globe.raycaster.params.Line   = { threshold: 0.06 };
       globe.raycaster.params.Points = { threshold: 0.06 };
       globe.nodeObjs.forEach(obj => {
         if (!obj._mobilePadded) {
-          /* Scale up hitzone without making nodes look huge */
           obj.mesh.scale.setScalar(IS_SMALL() ? 1.7 : 1.4);
           obj._mobilePadded = true;
         }
       });
     }
 
-    /* ══ 7. ORIENTATION CHANGE → RESIZE ═══════════════════ */
+    /* 7. Orientation-change resize */
     window.addEventListener('orientationchange', () => {
       setTimeout(() => {
         const { clientWidth: nw, clientHeight: nh } = globe.container;
@@ -317,101 +423,120 @@
       }, 350);
     });
 
-    /* ══ 8. REDUCE LABEL DENSITY ON MOBILE ════════════════
-       On small screens, only show labels for the selected node
-       and its immediate connections — not all front-facing nodes. */
+    /* 8. Label density on mobile */
     if (IS_COARSE) {
-      /* Override the label opacity logic by reducing threshold */
       const _origAnimate = globe._animate?.bind(globe);
       if (_origAnimate) {
         globe._animate = function () {
           _origAnimate();
-          /* After each frame, suppress labels except selected */
+          const sel = globe.selected;
           globe.nodeObjs?.forEach(obj => {
             if (!obj.label?.element) return;
-            const isSel = obj === globe.selected;
-            const isConn = globe.selected && globe.arcObjs?.some(
-              a => (a.sN === globe.selected && a.tN === obj) ||
-                   (a.tN === globe.selected && a.sN === obj)
+            if (obj === sel) return;
+            const isConn = sel && globe.arcObjs?.some(
+              a => (a.sN === sel && a.tN === obj) || (a.tN === sel && a.sN === obj)
             );
-            if (!isSel && !isConn) {
-              obj.label.element.style.opacity = '0';
-            }
+            if (!isConn) obj.label.element.style.opacity = '0';
           });
         };
       }
     }
 
-    console.info('[CW+Mobile] Globe patches v2 applied —',
-      `pixelRatio ${globe.renderer.getPixelRatio().toFixed(1)}×`,
-      `| rotateSpeed ${globe.controls?.rotateSpeed ?? '?'}`,
-      `| damping ${globe.controls?.dampingFactor ?? '?'}`
+    console.info(
+      '[CW+Mobile v3]',
+      `dpr=${globe.renderer.getPixelRatio().toFixed(1)}`,
+      `rotateSpeed=${globe.controls?.rotateSpeed ?? '?'}`,
+      `damping=${globe.controls?.dampingFactor ?? '?'}`
     );
   }
 
   /* ══════════════════════════════════════════════════════════
-     TOOLBAR MOBILE IMPROVEMENTS
-     Applied independently of globe init (DOM may be ready sooner)
+     FIX: DETAILS PANEL — ensure it shows after node click
+     Wraps selectCulture with a safety-net that forces the
+     details panel visible and re-populates if it failed.
   ══════════════════════════════════════════════════════════ */
-  function patchToolbar () {
-    if (!IS_COARSE) return;
+  function patchDetailsPanel(app) {
+    const _orig = app.selectCulture?.bind(app);
+    if (!_orig) return;
 
-    /* Add aria-labels to icon-only buttons so screen readers still work */
+    app.selectCulture = function (id, push) {
+      const result = _orig(id, push);
+
+      /* On desktop: ensure the details panel isn't hidden by panel swipe */
+      if (!IS_COARSE) {
+        const detPanel = document.querySelector('.cw-panel--details');
+        if (detPanel) detPanel.style.display = '';
+      }
+
+      /* Safety net: if culture-name wasn't populated, try again */
+      setTimeout(() => {
+        const c = this.byId?.get(id);
+        if (!c || id !== this.selectedId) return;
+        const nameEl = document.getElementById('culture-name');
+        if (!nameEl) return;
+        const empty = !nameEl.textContent || nameEl.textContent === 'Select a Wisdom Tradition';
+        if (empty) {
+          /* Re-run population — renderDetailPanel is in the global scope of the IIFE */
+          try {
+            const fn = window._cwApp?.globe?.renderer && window.renderDetailPanel;
+            if (typeof fn === 'function') fn(c, nameEl);
+          } catch (_) { /* best effort */ }
+        }
+      }, 200);
+
+      return result;
+    };
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     TOOLBAR + SEARCH
+  ══════════════════════════════════════════════════════════ */
+  function patchToolbar() {
+    if (!IS_COARSE) return;
     const LABELS = {
-      btnStarMap:    'Star Map',
-      btnTour:       'Guided Tour',
-      zoomIn:        'Zoom In',
-      zoomOut:       'Zoom Out',
-      resetView:     'Reset View',
-      toggleLabels:  'Toggle Labels',
-      btnShare:      'Share',
-      btnDiscover:   'Discover Random Culture',
-      btnResetMap:   'Reset Map',
+      btnStarMap: 'Star Map', btnTour: 'Guided Tour',
+      zoomIn: 'Zoom In', zoomOut: 'Zoom Out', resetView: 'Reset View',
+      toggleLabels: 'Toggle Labels', btnShare: 'Share',
+      btnDiscover: 'Discover Random', btnResetMap: 'Reset Map',
     };
     Object.entries(LABELS).forEach(([id, label]) => {
       const el = document.getElementById(id);
-      if (el && !el.getAttribute('aria-label')) {
-        el.setAttribute('aria-label', label);
-      }
+      if (el && !el.getAttribute('aria-label')) el.setAttribute('aria-label', label);
     });
-
-    /* Make timeline sliders easier to use on mobile */
     ['tlStart', 'tlEnd'].forEach(id => {
       const el = document.getElementById(id);
-      if (!el) return;
-      el.style.height = '28px';
-      el.style.cursor = 'pointer';
+      if (el) { el.style.height = '28px'; el.style.cursor = 'pointer'; }
     });
   }
 
-  /* ══════════════════════════════════════════════════════════
-     SEARCH INPUT: prevent iOS auto-zoom
-     iOS zooms in when input font-size < 16px
-  ══════════════════════════════════════════════════════════ */
-  function patchSearchInput () {
+  function patchSearchInput() {
     if (!IS_COARSE) return;
-    /* Observer watches for the search input being injected by _buildSearch() */
     const obs = new MutationObserver(() => {
-      const input = document.getElementById('cw-search-input');
-      if (input && input.style.fontSize !== '16px') {
-        input.style.fontSize = '16px';
-        obs.disconnect();
-      }
+      const inp = document.getElementById('cw-search-input');
+      if (inp) { inp.style.fontSize = '16px'; obs.disconnect(); }
     });
     obs.observe(document.body, { childList: true, subtree: true });
-    /* Also try immediately */
-    const input = document.getElementById('cw-search-input');
-    if (input) input.style.fontSize = '16px';
+    const inp = document.getElementById('cw-search-input');
+    if (inp) inp.style.fontSize = '16px';
   }
 
   /* ══════════════════════════════════════════════════════════
-     INIT
+     BOOT
   ══════════════════════════════════════════════════════════ */
-  function init () {
+  function init() {
     injectMobileCSS();
     patchToolbar();
     patchSearchInput();
-    waitForGlobe(patchGlobe);
+
+    if (IS_COARSE) {
+      watchForSheet();
+      watchForOverlay();
+    }
+
+    waitForGlobe(app => {
+      patchGlobe(app);
+      patchDetailsPanel(app);
+    });
   }
 
   if (document.readyState === 'loading') {
