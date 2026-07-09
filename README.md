@@ -19,6 +19,8 @@ Ikeverse ("Ka Ulana ʻIke — The Weaving of Knowledge") is a Three.js-powered 3
 - Historical timeline scrubber
 - Culture comparison panel
 - Touch-first mobile support (single-finger drag-to-rotate, tap-to-select, responsive layout)
+- Cinematic "Ikeverse Transmission" scrolling intro on the landing page (3D perspective crawl, `index.html`)
+- SEO foundation: sitemap, robots.txt, canonical URLs, Open Graph + Twitter Card metadata on every public page
 
 ## Tech stack
 
@@ -39,6 +41,8 @@ All third-party libraries load from CDN (see the `<script>` tags in `Ikeverse_or
 Ikeverse/
 ├── index.html                      # Landing page (hero, knowledge crawl, featured culture nodes)
 ├── LICENSE                         # MIT
+├── robots.txt                      # Crawler rules (disallows /Ikeverse_org/admin.html)
+├── sitemap.xml                     # Sitemap for the public pages
 └── Ikeverse_org/
     ├── cosmic-weave.html           # The 3D globe app — the core product
     ├── roadmap.html                # Public roadmap / journey page
@@ -95,17 +99,19 @@ Sibling / related projects in the same ecosystem:
 
 | Project | Relationship | Link |
 |---|---|---|
-| **Pikoverse** | Parent ecosystem hub | https://pikoverse.xyz/ |
-| **IkeStar** | Sky-focused observatory layer — Hawaiian star formations, wayfinding, moʻolelo. Linked from the "Star Map" control in the globe app. | https://808cryptobeast.github.io/Ikestar/ |
+| **Pikoverse** | Main ecosystem hub | https://pikoverse.xyz/ |
+| **The Living Knowledge Platform** | The broader platform Ikeverse's globe and culture graph are part of (separate repo, Next.js) — this is where the Phase 3 "Pikoverse.xyz portal" / `/explore` route roadmap items live | https://808cryptobeast.github.io/The-Living-Knowledge-Platform/ |
+| **IkeStar** | Sky-focused observatory layer — Hawaiian star formations, wayfinding, moʻolelo. Linked from the "Star Map" control in the globe app. | https://808cryptobeast.github.io/IkeStar/ |
 | **AMP** | Marketplace / creative hub in the wider Pikoverse ecosystem | via pikoverse.xyz |
 | **DigitalVerse** | Blockchain/Web3 education universe, positioned within the broader Ikeverse learning vision | via pikoverse.xyz |
-| **NaluLF** | XRPL forensics tooling | via pikoverse.xyz |
+| **NaluLF** | Nalu Ledger Forensics — XRPL forensics tooling | https://808cryptobeast.github.io/NaluLF/ |
 
 **Notes for future cross-project work:**
 - Shared tagline: *"Ka Ulana ʻIke — The Weaving of Knowledge"* is used verbatim on both Ikeverse and Pikoverse — keep it consistent if it's reused elsewhere.
 - Ikeverse's brand accents are cyan (`rgba(0,247,255,.9)`), gold (`rgba(255,215,0,.88)`), and purple (`rgba(157,80,255,.85)`) — the purple is intentionally close to Pikoverse's reserved `--color-ikeverse` token.
 - The stats quoted on the homepage (55 cultures / 113 connections / 65 stars) are pulled directly from `docs/cultures.json` and `docs/stars.json` — update the copy in `index.html` if those datasets grow.
 - This repo has no build tooling and deploys as static files via GitHub Pages from `808CryptoBeast/Ikeverse` — any new sibling project linking here should point at `https://808cryptobeast.github.io/Ikeverse/`.
+- Every public HTML page links out to the ecosystem (footer on `index.html`, a dedicated "Part of the Pikoverse Ecosystem" section on `roadmap.html`) — add new sibling projects to both places, and to the table above, when their URLs are confirmed.
 
 ## License
 
