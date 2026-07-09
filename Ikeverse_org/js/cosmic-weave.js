@@ -3993,10 +3993,6 @@ class CosmicWeave {
     /* ── Mobile Swipe ── */
     initSwipeGestures(this);
 
-    document.getElementById('btnStarMap')?.addEventListener('click',()=>{
-      const visible=this.starOverlay?.toggle(this.globe);
-      document.getElementById('btnStarMap')?.classList.toggle('active',!!visible);
-    });
     /* Tabs */
     document.getElementById('tabGlobe')?.addEventListener('click',()=>this.setMode('globe'));
     document.getElementById('tabMap')?.addEventListener('click',()=>this.setMode('map'));

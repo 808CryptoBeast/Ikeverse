@@ -60,12 +60,21 @@
           overscroll-behavior: none;
         }
 
+        /* touch-action: none on canvas is already set unconditionally
+           (no media query) in cosmic-weave.html, so it's not repeated here. */
         #globe-viewport-3d canvas,
         #map-viewport canvas,
         canvas {
-          touch-action: none;
           user-select: none;
           -webkit-user-select: none;
+        }
+
+        /* Node labels sit on top of the canvas and otherwise swallow the
+           touchstart that begins a drag-to-rotate gesture. Tap-to-select
+           already works via canvas raycasting (see cosmic-weave.js
+           _doClick), so labels don't need their own touch target here. */
+        .gx-node-label {
+          pointer-events: none !important;
         }
 
         body {
