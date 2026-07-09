@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /Ikeverse_org/admin.html
+
+Sitemap: https://808cryptobeast.github.io/Ikeverse/sitemap.xml

@@ -7,6 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>The Cosmic Weave | Ikeverse</title>
   <meta name="description" content="Interactive 3D globe connecting ancestral wisdom traditions — Three.js WebGL sphere with force graph, timeline scrubber, and guided tour.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The Cosmic Weave | Ikeverse">
+  <meta property="og:description" content="Interactive 3D globe connecting ancestral wisdom traditions — Three.js WebGL sphere with force graph, timeline scrubber, and guided tour.">
+  <meta property="og:image" content="https://808cryptobeast.github.io/Ikeverse/Ikeverse_org/assets/images/thelivingknowledge.png">
+  <meta property="og:url" content="https://808cryptobeast.github.io/Ikeverse/Ikeverse_org/cosmic-weave.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Cosmic Weave | Ikeverse">
+  <meta name="twitter:description" content="Interactive 3D globe connecting ancestral wisdom traditions — Three.js WebGL sphere with force graph, timeline scrubber, and guided tour.">
+  <meta name="twitter:image" content="https://808cryptobeast.github.io/Ikeverse/Ikeverse_org/assets/images/thelivingknowledge.png">
+  <link rel="canonical" href="https://808cryptobeast.github.io/Ikeverse/Ikeverse_org/cosmic-weave.html">
 
   <link rel="icon" href="assets/images/KMicon.png" type="image/png">
   <link rel="apple-touch-icon" href="assets/images/KMicon.png">
@@ -202,17 +212,27 @@
 <body>
   <!-- Video background -->
   <div class="cosmic-video-background">
-    <video autoplay muted loop playsinline id="cosmic-video">
+    <video muted loop playsinline preload="none" id="cosmic-video">
       <source src="assets/images/cosmic.mp4" type="video/mp4">
     </video>
     <div class="video-overlay"></div>
   </div>
+  <script>
+    (function () {
+      var v = document.getElementById('cosmic-video');
+      if (v && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        v.setAttribute('preload', 'auto');
+        v.load();
+        v.play().catch(function () {});
+      }
+    })();
+  </script>
 
   <!-- Nav -->
   <nav class="ik-nav" id="ik-nav" role="navigation" aria-label="Main navigation">
     <a href="../index.html" class="ik-brand" aria-label="Ikeverse — go to home">
       <span class="ik-brand-icon">
-        <img src="assets/images/KMicon.png" alt="" class="ik-brand-img"
+        <img src="assets/images/KMicon.png" alt="" class="ik-brand-img" width="1024" height="1024"
              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
              style="width:100%;height:100%;object-fit:cover;border-radius:50%;mix-blend-mode:luminosity;">
         <span class="ik-brand-fallback" aria-hidden="true">🌌</span>
@@ -425,7 +445,7 @@
     <div class="ik-footer-inner">
       <div class="ik-footer-brand">
         <div class="ik-footer-logo-wrap">
-          <img src="assets/images/thelivingknowledge.png" alt="Ikeverse" class="ik-footer-logo" onerror="this.style.display='none'">
+          <img src="assets/images/thelivingknowledge.png" alt="Ikeverse" class="ik-footer-logo" width="1024" height="1024" onerror="this.style.display='none'">
         </div>
         <div>
           <div class="ik-footer-site">IKEVERSE</div>
@@ -495,7 +515,7 @@
         <div class="ik-loader-ring ik-loader-ring--2"></div>
         <div class="ik-loader-ring ik-loader-ring--3"></div>
         <div class="ik-loader-core">
-          <img src="assets/images/thelivingknowledge.png" class="ik-loader-logo-img" alt="Ikeverse"
+          <img src="assets/images/thelivingknowledge.png" class="ik-loader-logo-img" alt="Ikeverse" width="1024" height="1024"
                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
                style="width:100%;height:100%;object-fit:cover;border-radius:50%;mix-blend-mode:luminosity;">
           <span class="ik-loader-glyph" style="display:none">🌌</span>

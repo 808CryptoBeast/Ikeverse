@@ -5,10 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Ikeverse | Living Knowledge Globe</title>
   <meta name="description" content="55 cultures, 113 connections, 65 named stars — an interactive 3D globe bridging ancestral wisdom and modern understanding.">
+  <meta property="og:type" content="website">
   <meta property="og:title" content="Ikeverse — Living Knowledge Globe">
   <meta property="og:description" content="Explore 55 civilizational traditions connected across time and region in an interactive 3D knowledge graph.">
-  <meta property="og:image" content="Ikeverse_org/assets/images/thelivingknowledge.png">
+  <meta property="og:image" content="https://808cryptobeast.github.io/Ikeverse/Ikeverse_org/assets/images/thelivingknowledge.png">
   <meta property="og:url" content="https://808cryptobeast.github.io/Ikeverse/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ikeverse — Living Knowledge Globe">
+  <meta name="twitter:description" content="Explore 55 civilizational traditions connected across time and region in an interactive 3D knowledge graph.">
+  <meta name="twitter:image" content="https://808cryptobeast.github.io/Ikeverse/Ikeverse_org/assets/images/thelivingknowledge.png">
   <link rel="canonical" href="https://808cryptobeast.github.io/Ikeverse/">
   <link rel="icon" href="Ikeverse_org/assets/images/KMicon.png" type="image/png">
   <link rel="apple-touch-icon" href="Ikeverse_org/assets/images/KMicon.png">
@@ -489,7 +494,7 @@ main { position: relative; z-index: 2; }
     <div class="ik-loader-ring ik-loader-ring--3"></div>
     <div class="ik-loader-core">
       <img src="Ikeverse_org/assets/images/thelivingknowledge.png" class="ik-loader-logo-img"
-           alt="Ikeverse" onerror="this.style.display='none'">
+           alt="Ikeverse" width="1024" height="1024" onerror="this.style.display='none'">
     </div>
   </div>
   <div class="ik-loader-text">
@@ -500,7 +505,7 @@ main { position: relative; z-index: 2; }
 
 <!-- ── VIDEO BG ── -->
 <div class="ik-video-bg">
-  <video autoplay muted loop playsinline>
+  <video id="ik-bg-video" muted loop playsinline preload="none">
     <source src="Ikeverse_org/assets/images/cosmic.mp4" type="video/mp4">
   </video>
 </div>
@@ -510,7 +515,7 @@ main { position: relative; z-index: 2; }
   <a href="index.html" class="ik-brand" aria-label="Ikeverse home">
     <span class="ik-brand-icon">
       <img src="Ikeverse_org/assets/images/KMicon.png" alt="" class="ik-brand-img"
-           onerror="this.style.display='none'">
+           width="1024" height="1024" onerror="this.style.display='none'">
     </span>
     <span class="ik-brand-name">IKEVERSE</span>
     <span class="ik-brand-badge">Beta</span>
@@ -550,23 +555,23 @@ main { position: relative; z-index: 2; }
     <!-- Floating icons — round with per-icon glow colours -->
     <div class="ik-floating-icons" aria-hidden="true">
       <div class="ik-float">
-        <img src="Ikeverse_org/assets/images/KMicon.png" alt=""
+        <img src="Ikeverse_org/assets/images/KMicon.png" alt="" width="1024" height="1024"
              style="border-radius:50%;background:rgba(0,20,50,.45);padding:10px;box-shadow:0 0 14px 3px rgba(0,247,255,.4),0 0 32px 8px rgba(0,247,255,.16),0 0 55px 14px rgba(157,80,255,.12)">
       </div>
       <div class="ik-float">
-        <img src="Ikeverse_org/assets/images/wisdomnet.png" alt="" onerror="this.style.display='none'"
+        <img src="Ikeverse_org/assets/images/wisdomnet.png" alt="" width="1536" height="1024" onerror="this.style.display='none'"
              style="border-radius:50%;background:rgba(30,15,0,.45);padding:10px;box-shadow:0 0 14px 3px rgba(255,215,0,.38),0 0 32px 8px rgba(255,215,0,.14),0 0 55px 14px rgba(255,120,0,.1)">
       </div>
       <div class="ik-float">
-        <img src="Ikeverse_org/assets/images/thelivingknowledge.png" alt=""
+        <img src="Ikeverse_org/assets/images/thelivingknowledge.png" alt="" width="1024" height="1024"
              style="border-radius:50%;background:rgba(20,0,40,.45);padding:10px;box-shadow:0 0 14px 3px rgba(157,80,255,.45),0 0 32px 8px rgba(157,80,255,.18),0 0 55px 14px rgba(100,0,255,.12)">
       </div>
       <div class="ik-float">
-        <img src="Ikeverse_org/assets/images/KMicon.png" alt=""
+        <img src="Ikeverse_org/assets/images/KMicon.png" alt="" width="1024" height="1024"
              style="border-radius:50%;background:rgba(0,20,50,.45);padding:10px;box-shadow:0 0 14px 3px rgba(0,247,255,.35),0 0 32px 8px rgba(0,247,255,.14),0 0 55px 14px rgba(0,180,255,.1)">
       </div>
       <div class="ik-float">
-        <img src="Ikeverse_org/assets/images/wisdomnet.png" alt="" onerror="this.style.display='none'"
+        <img src="Ikeverse_org/assets/images/wisdomnet.png" alt="" width="1536" height="1024" onerror="this.style.display='none'"
              style="border-radius:50%;background:rgba(30,15,0,.45);padding:10px;box-shadow:0 0 14px 3px rgba(255,215,0,.32),0 0 32px 8px rgba(255,215,0,.12),0 0 55px 14px rgba(255,120,0,.08)">
       </div>
     </div>
@@ -574,7 +579,7 @@ main { position: relative; z-index: 2; }
     <p class="ik-hero-eyebrow">Ka Ulana ʻIke — The Weaving of Knowledge</p>
 
     <div class="ik-hero-logo">
-      <img src="Ikeverse_org/assets/images/thelivingknowledge.png" alt="Ikeverse — The Living Knowledge">
+      <img src="Ikeverse_org/assets/images/thelivingknowledge.png" alt="Ikeverse — The Living Knowledge" width="1024" height="1024">
     </div>
 
     <h1 class="ik-hero-title">THE LIVING<br>KNOWLEDGE GLOBE</h1>
@@ -630,7 +635,7 @@ main { position: relative; z-index: 2; }
 
           <div class="crawl-logo">
             <img src="Ikeverse_org/assets/images/thelivingknowledge.png" alt="Ikeverse"
-                 onerror="this.style.display='none'">
+                 width="1024" height="1024" onerror="this.style.display='none'">
             THE IKEVERSE
             <span style="font-family:'Exo 2';font-size:.7rem;letter-spacing:.12em;color:rgba(255,215,0,.5);">LIVING KNOWLEDGE GLOBE</span>
           </div>
@@ -801,7 +806,7 @@ main { position: relative; z-index: 2; }
 
   <!-- EXPLORE CTA -->
   <section class="ik-explore-cta">
-    <img src="Ikeverse_org/assets/images/wisdomnet.png" alt=""
+    <img src="Ikeverse_org/assets/images/wisdomnet.png" alt="" width="1536" height="1024"
          style="width:80px;margin:0 auto 20px;display:block;opacity:.6;border-radius:50%;filter:drop-shadow(0 0 16px rgba(0,247,255,.3));"
          onerror="this.style.display='none'">
     <h2>Ready to Explore the Weave?</h2>
@@ -823,7 +828,7 @@ main { position: relative; z-index: 2; }
   <div class="ik-footer-inner">
     <div>
       <div class="ik-footer-brand">
-        <img src="Ikeverse_org/assets/images/KMicon.png" alt="" onerror="this.style.display='none'">
+        <img src="Ikeverse_org/assets/images/KMicon.png" alt="" width="1024" height="1024" onerror="this.style.display='none'">
         <span>IKEVERSE</span>
       </div>
       <p class="ik-footer-text">
@@ -846,6 +851,14 @@ main { position: relative; z-index: 2; }
 <script>
 (function () {
   'use strict';
+
+  /* ── Background video: skip entirely for reduced-motion users ── */
+  const bgVideo = document.getElementById('ik-bg-video');
+  if (bgVideo && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    bgVideo.setAttribute('preload', 'auto');
+    bgVideo.load();
+    bgVideo.play().catch(() => {});
+  }
 
   /* ── Loader ── */
   const STEPS = ['Loading cultures.json…','Building knowledge graph…','Initializing 3D globe…','Mapping star positions…','Ready.'];
